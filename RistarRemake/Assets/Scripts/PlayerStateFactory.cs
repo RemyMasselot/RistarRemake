@@ -11,18 +11,15 @@ public class PlayerStateFactory
     }
 
     public PlayerBaseState Idle() {
-        return new PlayerIdleState();
+        return new PlayerIdleState(_context, this);
     }
-    public PlayerBaseState Walk()
-    {
-        return new PlayerIdleState();
+    public PlayerBaseState Walk() {
+        return new PlayerWalkState(_context, this);
     }
-    public PlayerBaseState Jump()
-    {
-        return new PlayerIdleState();
+    public PlayerBaseState Jump() {
+        return new PlayerJumpState(_context, this);
     }
-    public PlayerBaseState Grounded()
-    {
-        return new PlayerIdleState();
+    public PlayerBaseState Grounded() {
+        return new PlayerGroundedState(_context, this);
     }
 }
