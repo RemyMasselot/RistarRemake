@@ -28,7 +28,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             ""id"": ""0d280664-e35a-4520-9ab0-b94cf2c2ff0b"",
             ""actions"": [
                 {
-                    ""name"": ""MOVE"",
+                    ""name"": ""WALK"",
                     ""type"": ""Value"",
                     ""id"": ""c6bb8ecd-e53b-4138-9bbd-c1f6bee0de0e"",
                     ""expectedControlType"": ""Axis"",
@@ -54,7 +54,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MOVE"",
+                    ""action"": ""WALK"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -65,7 +65,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MOVE"",
+                    ""action"": ""WALK"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -76,7 +76,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MOVE"",
+                    ""action"": ""WALK"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -87,7 +87,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MOVE"",
+                    ""action"": ""WALK"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -98,7 +98,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MOVE"",
+                    ""action"": ""WALK"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -109,7 +109,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MOVE"",
+                    ""action"": ""WALK"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -120,7 +120,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MOVE"",
+                    ""action"": ""WALK"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -131,7 +131,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MOVE"",
+                    ""action"": ""WALK"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -142,7 +142,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MOVE"",
+                    ""action"": ""WALK"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -181,7 +181,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
 }");
         // LAND
         m_LAND = asset.FindActionMap("LAND", throwIfNotFound: true);
-        m_LAND_MOVE = m_LAND.FindAction("MOVE", throwIfNotFound: true);
+        m_LAND_WALK = m_LAND.FindAction("WALK", throwIfNotFound: true);
         m_LAND_JUMP = m_LAND.FindAction("JUMP", throwIfNotFound: true);
         // WALL
         m_WALL = asset.FindActionMap("WALL", throwIfNotFound: true);
@@ -246,13 +246,13 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     // LAND
     private readonly InputActionMap m_LAND;
     private List<ILANDActions> m_LANDActionsCallbackInterfaces = new List<ILANDActions>();
-    private readonly InputAction m_LAND_MOVE;
+    private readonly InputAction m_LAND_WALK;
     private readonly InputAction m_LAND_JUMP;
     public struct LANDActions
     {
         private @Controller m_Wrapper;
         public LANDActions(@Controller wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MOVE => m_Wrapper.m_LAND_MOVE;
+        public InputAction @WALK => m_Wrapper.m_LAND_WALK;
         public InputAction @JUMP => m_Wrapper.m_LAND_JUMP;
         public InputActionMap Get() { return m_Wrapper.m_LAND; }
         public void Enable() { Get().Enable(); }
@@ -263,9 +263,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_LANDActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_LANDActionsCallbackInterfaces.Add(instance);
-            @MOVE.started += instance.OnMOVE;
-            @MOVE.performed += instance.OnMOVE;
-            @MOVE.canceled += instance.OnMOVE;
+            @WALK.started += instance.OnWALK;
+            @WALK.performed += instance.OnWALK;
+            @WALK.canceled += instance.OnWALK;
             @JUMP.started += instance.OnJUMP;
             @JUMP.performed += instance.OnJUMP;
             @JUMP.canceled += instance.OnJUMP;
@@ -273,9 +273,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(ILANDActions instance)
         {
-            @MOVE.started -= instance.OnMOVE;
-            @MOVE.performed -= instance.OnMOVE;
-            @MOVE.canceled -= instance.OnMOVE;
+            @WALK.started -= instance.OnWALK;
+            @WALK.performed -= instance.OnWALK;
+            @WALK.canceled -= instance.OnWALK;
             @JUMP.started -= instance.OnJUMP;
             @JUMP.performed -= instance.OnJUMP;
             @JUMP.canceled -= instance.OnJUMP;
@@ -336,7 +336,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     public WALLActions @WALL => new WALLActions(this);
     public interface ILANDActions
     {
-        void OnMOVE(InputAction.CallbackContext context);
+        void OnWALK(InputAction.CallbackContext context);
         void OnJUMP(InputAction.CallbackContext context);
     }
     public interface IWALLActions

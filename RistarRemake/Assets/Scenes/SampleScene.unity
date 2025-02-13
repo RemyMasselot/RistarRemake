@@ -441,6 +441,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed6ed46f9903e5448e4c11c775460e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Walk:
+    m_Name: Walk
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 278fc40b-79c1-4532-9cc1-58144707b668
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  Jump:
+    m_Name: Jump
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: f7aaf072-df4a-4c49-b5ac-6b6a71f6eedb
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  Transform: {fileID: 947795820}
+  WalkSpeed: 10
 --- !u!1 &1224850334
 GameObject:
   m_ObjectHideFlags: 0
