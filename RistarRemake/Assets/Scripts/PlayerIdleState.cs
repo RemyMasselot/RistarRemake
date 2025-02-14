@@ -9,7 +9,7 @@ public class PlayerIdleState : PlayerBaseState
     
     public override void EnterState(){ }
     public override void UpdateState(){
-        
+        CheckSwitchStates();
     }
     public override void FixedUpdateState(){}
     public override void ExitState(){}
@@ -20,6 +20,12 @@ public class PlayerIdleState : PlayerBaseState
         if (Mathf.Abs(moveValue) > 0)
         {
             SwitchState(_factory.Walk());
+        }
+
+        // Passage en state JUMP
+        if (_ctx.Jump.WasPerformedThisFrame())
+        {
+            SwitchState(_factory.Jump());
         }
     }
 }

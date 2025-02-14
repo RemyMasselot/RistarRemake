@@ -8,8 +8,12 @@ public class PlayerWalkState : PlayerBaseState
 {
     public PlayerWalkState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
-    public override void EnterState() { }
-    public override void UpdateState() { }
+    public override void EnterState() {
+        Debug.Log("ENTER WALK");
+    }
+    public override void UpdateState() {
+        CheckSwitchStates();
+    }
     public override void FixedUpdateState() {
         // Déplacements du personnage
         float moveValue = _ctx.Walk.ReadValue<float>();

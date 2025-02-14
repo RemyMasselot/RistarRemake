@@ -50,4 +50,10 @@ public class PlayerStateMachine : MonoBehaviour
     {
         _currentState.UpdateState();
     }
+
+    ///////////////////////////////////////////////////////       UPDATE       ///////////////////////////////////////////////////////
+    void FixedUpdate()
+    {
+        _currentState.FixedUpdateState();
+    }
 }

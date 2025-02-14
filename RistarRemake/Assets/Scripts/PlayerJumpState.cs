@@ -10,7 +10,9 @@ public class PlayerJumpState : PlayerBaseState
     public override void EnterState() {
         HandleJump();
     }
-    public override void UpdateState() { }
+    public override void UpdateState() {
+        CheckSwitchStates();
+    }
     public override void FixedUpdateState() { }
     public override void ExitState() { }
     public override void InitializeSubState() { }

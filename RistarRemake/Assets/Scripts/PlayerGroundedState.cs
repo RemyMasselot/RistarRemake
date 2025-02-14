@@ -22,5 +22,12 @@ public class PlayerGroundedState : PlayerBaseState
         {
             SwitchState(_factory.Jump());
         }
+
+        // Passage en state WALK
+        float moveValue = _ctx.Walk.ReadValue<float>();
+        if (Mathf.Abs(moveValue) > 0)
+        {
+            SwitchState(_factory.Walk());
+        }
     }
 }

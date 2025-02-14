@@ -10,6 +10,9 @@ public class PlayerStateFactory
     _context = currentContext;
     }
 
+    public PlayerBaseState Grounded() {
+        return new PlayerGroundedState(_context, this);
+    }
     public PlayerBaseState Idle() {
         return new PlayerIdleState(_context, this);
     }
@@ -18,8 +21,5 @@ public class PlayerStateFactory
     }
     public PlayerBaseState Jump() {
         return new PlayerJumpState(_context, this);
-    }
-    public PlayerBaseState Grounded() {
-        return new PlayerGroundedState(_context, this);
     }
 }
