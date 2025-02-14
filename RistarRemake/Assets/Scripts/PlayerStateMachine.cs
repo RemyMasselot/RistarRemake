@@ -22,8 +22,13 @@ public class PlayerStateMachine : MonoBehaviour
     public Transform Transform;
     public float WalkSpeed = 10;
 
+    // JUMP
+    [field:SerializeField] public float JumpForce { get; private set; } = 5f;
+
     // getters and setters
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
+    public Rigidbody2D Rb { get { return GetComponent<Rigidbody2D>(); } }
+
 
     private void Awake()
     {
@@ -55,5 +60,11 @@ public class PlayerStateMachine : MonoBehaviour
     void FixedUpdate()
     {
         _currentState.FixedUpdateState();
+    }
+
+    ///////////////////////////////////////////////////////       COLLISION       ///////////////////////////////////////////////////////
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        CurrentState.OnCollision(collision);
     }
 }

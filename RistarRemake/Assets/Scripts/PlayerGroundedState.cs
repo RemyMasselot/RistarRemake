@@ -30,4 +30,6 @@ public class PlayerGroundedState : PlayerBaseState
             SwitchState(_factory.Walk());
         }
     }
+
+    public override void OnCollision(Collision2D collision) { }
 }

@@ -28,4 +28,6 @@ public class PlayerIdleState : PlayerBaseState
             SwitchState(_factory.Jump());
         }
     }
+
+    public override void OnCollision(Collision2D collision) { }
 }

@@ -411,6 +411,7 @@ MonoBehaviour:
     m_Flags: 0
   Transform: {fileID: 947795820}
   WalkSpeed: 10
+  <JumpForce>k__BackingField: 5
 --- !u!61 &947795822
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -496,7 +497,7 @@ GameObject:
   - component: {fileID: 1224850335}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

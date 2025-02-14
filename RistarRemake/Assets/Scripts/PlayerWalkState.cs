@@ -21,5 +21,20 @@ public class PlayerWalkState : PlayerBaseState
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
-    public override void CheckSwitchStates() { }
+    public override void CheckSwitchStates() {
+        // Passage en state IDLE
+        float moveValue = _ctx.Walk.ReadValue<float>();
+        if (Mathf.Abs(moveValue) > 0)
+        {
+            SwitchState(_factory.Idle());
+        }
+
+        // Passage en state JUMP
+        if (_ctx.Jump.WasPerformedThisFrame())
+        {
+            SwitchState(_factory.Jump());
+        }
+    }
+
+    public override void OnCollision(Collision2D collision) { }
 }

@@ -18,8 +18,7 @@ public abstract class PlayerBaseState
     public abstract void ExitState();
     public abstract void CheckSwitchStates();
     public abstract void InitializeSubState();
-
-    void UpdateStates() { }
+    public abstract void OnCollision(Collision2D collision);
     protected void SwitchState(PlayerBaseState newState) { 
         // current state exits state
         ExitState();
