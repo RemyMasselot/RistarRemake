@@ -44,6 +44,24 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GRAB"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea1e952e-be62-48cb-94a3-2eb27b08dd57"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AIM"",
+                    ""type"": ""Value"",
+                    ""id"": ""06094fc3-a728-4de6-81ce-5599eae51248"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -167,6 +185,83 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""action"": ""JUMP"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b2ccc430-e03d-42a2-8859-106d048df1ed"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GRAB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e4fe697-b48c-4ac5-b902-12c2b8e26f99"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GRAB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""94b86222-21e3-4949-8501-3d13c6f33698"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AIM"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""02ee9b69-144b-4c61-b58b-1923b33f2e16"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AIM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""45583b6b-db44-4946-ab32-f608a0e92149"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AIM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""f86a4d78-579b-4340-a8eb-1bfe6c9aaeec"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AIM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""fbb0de69-4ccc-4343-b5aa-64fe73589ab9"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AIM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -183,6 +278,8 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         m_LAND = asset.FindActionMap("LAND", throwIfNotFound: true);
         m_LAND_WALK = m_LAND.FindAction("WALK", throwIfNotFound: true);
         m_LAND_JUMP = m_LAND.FindAction("JUMP", throwIfNotFound: true);
+        m_LAND_GRAB = m_LAND.FindAction("GRAB", throwIfNotFound: true);
+        m_LAND_AIM = m_LAND.FindAction("AIM", throwIfNotFound: true);
         // WALL
         m_WALL = asset.FindActionMap("WALL", throwIfNotFound: true);
     }
@@ -248,12 +345,16 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     private List<ILANDActions> m_LANDActionsCallbackInterfaces = new List<ILANDActions>();
     private readonly InputAction m_LAND_WALK;
     private readonly InputAction m_LAND_JUMP;
+    private readonly InputAction m_LAND_GRAB;
+    private readonly InputAction m_LAND_AIM;
     public struct LANDActions
     {
         private @Controller m_Wrapper;
         public LANDActions(@Controller wrapper) { m_Wrapper = wrapper; }
         public InputAction @WALK => m_Wrapper.m_LAND_WALK;
         public InputAction @JUMP => m_Wrapper.m_LAND_JUMP;
+        public InputAction @GRAB => m_Wrapper.m_LAND_GRAB;
+        public InputAction @AIM => m_Wrapper.m_LAND_AIM;
         public InputActionMap Get() { return m_Wrapper.m_LAND; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -269,6 +370,12 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @JUMP.started += instance.OnJUMP;
             @JUMP.performed += instance.OnJUMP;
             @JUMP.canceled += instance.OnJUMP;
+            @GRAB.started += instance.OnGRAB;
+            @GRAB.performed += instance.OnGRAB;
+            @GRAB.canceled += instance.OnGRAB;
+            @AIM.started += instance.OnAIM;
+            @AIM.performed += instance.OnAIM;
+            @AIM.canceled += instance.OnAIM;
         }
 
         private void UnregisterCallbacks(ILANDActions instance)
@@ -279,6 +386,12 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @JUMP.started -= instance.OnJUMP;
             @JUMP.performed -= instance.OnJUMP;
             @JUMP.canceled -= instance.OnJUMP;
+            @GRAB.started -= instance.OnGRAB;
+            @GRAB.performed -= instance.OnGRAB;
+            @GRAB.canceled -= instance.OnGRAB;
+            @AIM.started -= instance.OnAIM;
+            @AIM.performed -= instance.OnAIM;
+            @AIM.canceled -= instance.OnAIM;
         }
 
         public void RemoveCallbacks(ILANDActions instance)
@@ -338,6 +451,8 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     {
         void OnWALK(InputAction.CallbackContext context);
         void OnJUMP(InputAction.CallbackContext context);
+        void OnGRAB(InputAction.CallbackContext context);
+        void OnAIM(InputAction.CallbackContext context);
     }
     public interface IWALLActions
     {

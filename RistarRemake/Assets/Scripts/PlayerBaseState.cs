@@ -18,7 +18,6 @@ public abstract class PlayerBaseState
     public abstract void ExitState();
     public abstract void CheckSwitchStates();
     public abstract void InitializeSubState();
-    public abstract void OnCollision(Collision2D collision);
     protected void SwitchState(PlayerBaseState newState) { 
         // current state exits state
         ExitState();
@@ -29,6 +28,8 @@ public abstract class PlayerBaseState
         // switch current state of context
         _ctx.CurrentState = newState;
     }
+    public abstract void OnCollision(Collision2D collision);
+    //public abstract IEnumerator GetEnumerator();
     protected void SetSuperState() { }
     protected void SetSubState() { }
 }

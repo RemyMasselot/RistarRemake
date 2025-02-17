@@ -17,13 +17,23 @@ public class PlayerStateMachine : MonoBehaviour
     Controller controls;
     public InputAction Walk;
     public InputAction Jump;
+    public InputAction Grab;
+    public InputAction Aim;
+
+    // ANIM
+    public Animator Animator;
 
     // MOVE
     public Transform Transform;
     public float WalkSpeed = 10;
 
     // JUMP
-    [field:SerializeField] public float JumpForce { get; private set; } = 5f;
+    [field:SerializeField] public float JumpForceV { get; private set; } = 7f;
+    [field:SerializeField] public float JumpForceH { get; private set; } = 3f;
+
+    // GRAB
+    public GameObject Arms;
+    [field: SerializeField] public ArmDetection ArmDetection { get; set; }
 
     // getters and setters
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
@@ -48,6 +58,8 @@ public class PlayerStateMachine : MonoBehaviour
         controls.Enable();
         Walk = controls.LAND.WALK;
         Jump = controls.LAND.JUMP;
+        Grab = controls.LAND.GRAB;
+        Aim = controls.LAND.AIM;
     }
 
     ///////////////////////////////////////////////////////       UPDATE       ///////////////////////////////////////////////////////
