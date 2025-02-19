@@ -15,14 +15,14 @@ public class PlayerWalkState : PlayerBaseState
     }
     public override void FixedUpdateState() {
         // Déplacements du personnage
-        float moveValue = _ctx.Walk.ReadValue<float>();
+        float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2(moveValue * _ctx.WalkSpeed * Time.deltaTime, 0);
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() {
         // Passage en state IDLE
-        float moveValue = _ctx.Walk.ReadValue<float>();
+        float moveValue = _ctx.MoveH.ReadValue<float>();
         if (moveValue == 0)
         {
             _ctx.Animator.SetBool("Walk", false);

@@ -26,4 +26,12 @@ public class PlayerStateFactory
     {
         return new PlayerGrabState(_context, this);
     }
+    public PlayerBaseState WallIdle()
+    {
+        return new PlayerWallIdleState(_context, this);
+    }
+    public PlayerBaseState WallClimb()
+    {
+        return new PlayerWallClimbState(_context, this);
+    }
 }

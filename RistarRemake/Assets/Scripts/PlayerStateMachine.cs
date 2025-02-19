@@ -15,7 +15,8 @@ public class PlayerStateMachine : MonoBehaviour
     [Space(10)]
     [Header("INPUT ACTIONS")]
     Controller controls;
-    public InputAction Walk;
+    public InputAction MoveH;
+    public InputAction MoveV;
     public InputAction Jump;
     public InputAction Grab;
     public InputAction Aim;
@@ -56,7 +57,8 @@ public class PlayerStateMachine : MonoBehaviour
         // Set input actions
         controls = new Controller();
         controls.Enable();
-        Walk = controls.LAND.WALK;
+        MoveH = controls.LAND.MOVEH;
+        MoveV = controls.LAND.MOVEV;
         Jump = controls.LAND.JUMP;
         Grab = controls.LAND.GRAB;
         Aim = controls.LAND.AIM;

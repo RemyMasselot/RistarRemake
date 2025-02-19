@@ -6,9 +6,18 @@
             "id": "0d280664-e35a-4520-9ab0-b94cf2c2ff0b",
             "actions": [
                 {
-                    "name": "WALK",
+                    "name": "MOVEH",
                     "type": "Value",
                     "id": "c6bb8ecd-e53b-4138-9bbd-c1f6bee0de0e",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MOVEV",
+                    "type": "Value",
+                    "id": "820da1ca-eeb2-49ec-97a2-d5cfb2902ce0",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
@@ -50,7 +59,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "WALK",
+                    "action": "MOVEH",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -61,7 +70,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "WALK",
+                    "action": "MOVEH",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -72,7 +81,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "WALK",
+                    "action": "MOVEH",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -83,7 +92,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "WALK",
+                    "action": "MOVEH",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -94,7 +103,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "WALK",
+                    "action": "MOVEH",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -105,7 +114,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "WALK",
+                    "action": "MOVEH",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -116,7 +125,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "WALK",
+                    "action": "MOVEH",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -127,7 +136,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "WALK",
+                    "action": "MOVEH",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -138,7 +147,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "WALK",
+                    "action": "MOVEH",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -238,6 +247,105 @@
                     "processors": "",
                     "groups": "",
                     "action": "AIM",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "WS",
+                    "id": "aef00640-c28a-41ba-bf92-8d8e63fbb718",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVEV",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "802a0ba0-d4b7-4b0d-be7e-f99fafa0707a",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVEV",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "7925ca58-b297-49b7-a5ef-ba561cbef17d",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVEV",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "ZS",
+                    "id": "41b72c0b-8f15-4204-8607-2b042ca9c912",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVEV",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "e46a0c64-5e9f-42c8-9de0-f60addf15306",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVEV",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "ade0455f-a071-45a9-ace7-57899453e5d0",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVEV",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "GAMEPAD",
+                    "id": "9adfa1a8-9f15-4e59-800d-199c644cc86e",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVEV",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "8cbeeb97-b845-45cb-a82f-fbb521267e48",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVEV",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "6a747689-60d5-4d66-b7cc-b1c9e6bbad19",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVEV",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

@@ -22,7 +22,7 @@ public class PlayerIdleState : PlayerBaseState
     public override void InitializeSubState(){}
     public override void CheckSwitchStates(){
         // Passage en state WALK
-        float moveValue = _ctx.Walk.ReadValue<float>();
+        float moveValue = _ctx.MoveH.ReadValue<float>();
         if (Mathf.Abs(moveValue) > 0)
         {
             _ctx.Animator.SetBool("Idle", false);

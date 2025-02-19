@@ -16,7 +16,7 @@ public class PlayerJumpState : PlayerBaseState
         CheckSwitchStates();
     }
     public override void FixedUpdateState() {
-        float moveValue = _ctx.Walk.ReadValue<float>();
+        float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValue, _ctx.Rb.velocity.y);
     }
     public override void ExitState() { }

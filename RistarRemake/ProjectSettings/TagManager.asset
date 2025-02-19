@@ -5,8 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Floor
-  - Ladder
   - Enemy
+  - LadderV
+  - LadderH
   layers:
   - Default
   - TransparentFX

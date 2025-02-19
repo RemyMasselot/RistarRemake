@@ -28,9 +28,18 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             ""id"": ""0d280664-e35a-4520-9ab0-b94cf2c2ff0b"",
             ""actions"": [
                 {
-                    ""name"": ""WALK"",
+                    ""name"": ""MOVEH"",
                     ""type"": ""Value"",
                     ""id"": ""c6bb8ecd-e53b-4138-9bbd-c1f6bee0de0e"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MOVEV"",
+                    ""type"": ""Value"",
+                    ""id"": ""820da1ca-eeb2-49ec-97a2-d5cfb2902ce0"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -72,7 +81,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""WALK"",
+                    ""action"": ""MOVEH"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -83,7 +92,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""WALK"",
+                    ""action"": ""MOVEH"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -94,7 +103,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""WALK"",
+                    ""action"": ""MOVEH"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -105,7 +114,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""WALK"",
+                    ""action"": ""MOVEH"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -116,7 +125,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""WALK"",
+                    ""action"": ""MOVEH"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -127,7 +136,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""WALK"",
+                    ""action"": ""MOVEH"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -138,7 +147,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""WALK"",
+                    ""action"": ""MOVEH"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -149,7 +158,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""WALK"",
+                    ""action"": ""MOVEH"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -160,7 +169,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""WALK"",
+                    ""action"": ""MOVEH"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -262,6 +271,105 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""action"": ""AIM"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""WS"",
+                    ""id"": ""aef00640-c28a-41ba-bf92-8d8e63fbb718"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MOVEV"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""802a0ba0-d4b7-4b0d-be7e-f99fafa0707a"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MOVEV"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""7925ca58-b297-49b7-a5ef-ba561cbef17d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MOVEV"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""ZS"",
+                    ""id"": ""41b72c0b-8f15-4204-8607-2b042ca9c912"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MOVEV"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""e46a0c64-5e9f-42c8-9de0-f60addf15306"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MOVEV"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""ade0455f-a071-45a9-ace7-57899453e5d0"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MOVEV"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""GAMEPAD"",
+                    ""id"": ""9adfa1a8-9f15-4e59-800d-199c644cc86e"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MOVEV"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""8cbeeb97-b845-45cb-a82f-fbb521267e48"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MOVEV"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""6a747689-60d5-4d66-b7cc-b1c9e6bbad19"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MOVEV"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -276,7 +384,8 @@ public partial class @Controller: IInputActionCollection2, IDisposable
 }");
         // LAND
         m_LAND = asset.FindActionMap("LAND", throwIfNotFound: true);
-        m_LAND_WALK = m_LAND.FindAction("WALK", throwIfNotFound: true);
+        m_LAND_MOVEH = m_LAND.FindAction("MOVEH", throwIfNotFound: true);
+        m_LAND_MOVEV = m_LAND.FindAction("MOVEV", throwIfNotFound: true);
         m_LAND_JUMP = m_LAND.FindAction("JUMP", throwIfNotFound: true);
         m_LAND_GRAB = m_LAND.FindAction("GRAB", throwIfNotFound: true);
         m_LAND_AIM = m_LAND.FindAction("AIM", throwIfNotFound: true);
@@ -343,7 +452,8 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     // LAND
     private readonly InputActionMap m_LAND;
     private List<ILANDActions> m_LANDActionsCallbackInterfaces = new List<ILANDActions>();
-    private readonly InputAction m_LAND_WALK;
+    private readonly InputAction m_LAND_MOVEH;
+    private readonly InputAction m_LAND_MOVEV;
     private readonly InputAction m_LAND_JUMP;
     private readonly InputAction m_LAND_GRAB;
     private readonly InputAction m_LAND_AIM;
@@ -351,7 +461,8 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     {
         private @Controller m_Wrapper;
         public LANDActions(@Controller wrapper) { m_Wrapper = wrapper; }
-        public InputAction @WALK => m_Wrapper.m_LAND_WALK;
+        public InputAction @MOVEH => m_Wrapper.m_LAND_MOVEH;
+        public InputAction @MOVEV => m_Wrapper.m_LAND_MOVEV;
         public InputAction @JUMP => m_Wrapper.m_LAND_JUMP;
         public InputAction @GRAB => m_Wrapper.m_LAND_GRAB;
         public InputAction @AIM => m_Wrapper.m_LAND_AIM;
@@ -364,9 +475,12 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_LANDActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_LANDActionsCallbackInterfaces.Add(instance);
-            @WALK.started += instance.OnWALK;
-            @WALK.performed += instance.OnWALK;
-            @WALK.canceled += instance.OnWALK;
+            @MOVEH.started += instance.OnMOVEH;
+            @MOVEH.performed += instance.OnMOVEH;
+            @MOVEH.canceled += instance.OnMOVEH;
+            @MOVEV.started += instance.OnMOVEV;
+            @MOVEV.performed += instance.OnMOVEV;
+            @MOVEV.canceled += instance.OnMOVEV;
             @JUMP.started += instance.OnJUMP;
             @JUMP.performed += instance.OnJUMP;
             @JUMP.canceled += instance.OnJUMP;
@@ -380,9 +494,12 @@ public partial class @Controller: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(ILANDActions instance)
         {
-            @WALK.started -= instance.OnWALK;
-            @WALK.performed -= instance.OnWALK;
-            @WALK.canceled -= instance.OnWALK;
+            @MOVEH.started -= instance.OnMOVEH;
+            @MOVEH.performed -= instance.OnMOVEH;
+            @MOVEH.canceled -= instance.OnMOVEH;
+            @MOVEV.started -= instance.OnMOVEV;
+            @MOVEV.performed -= instance.OnMOVEV;
+            @MOVEV.canceled -= instance.OnMOVEV;
             @JUMP.started -= instance.OnJUMP;
             @JUMP.performed -= instance.OnJUMP;
             @JUMP.canceled -= instance.OnJUMP;
@@ -449,7 +566,8 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     public WALLActions @WALL => new WALLActions(this);
     public interface ILANDActions
     {
-        void OnWALK(InputAction.CallbackContext context);
+        void OnMOVEH(InputAction.CallbackContext context);
+        void OnMOVEV(InputAction.CallbackContext context);
         void OnJUMP(InputAction.CallbackContext context);
         void OnGRAB(InputAction.CallbackContext context);
         void OnAIM(InputAction.CallbackContext context);
