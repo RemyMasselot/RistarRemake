@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerGrabState : PlayerBaseState
@@ -13,41 +12,48 @@ public class PlayerGrabState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER GRAB");
+        _ctx.Animator.SetBool("Grab", true);
         _dir = _ctx.Aim.ReadValue<Vector2>();
         float angle = Mathf.Atan2(_dir.x, _dir.y) * Mathf.Rad2Deg;
         Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
         _ctx.Arms.transform.rotation = _dirQ;
-        _ctx.Arms.active = true;
-        _ctx.StartCoroutine(GrabDetectionVerif());
+        //_ctx.Arms.active = true;
+        //_ctx.StartCoroutine(GrabDetectionVerif());
     }
     public override void UpdateState()
     {
-        CheckSwitchStates();
+        //CheckSwitchStates();
+        if (_ctx.ArmDetection.EndAnim == true && _ctx.ArmDetection.ObjectDetected == 0)
+        {
+            _ctx.Animator.SetBool("Grab", false);
+            SwitchState(_factory.Idle());
+        }
     }
     public override void FixedUpdateState() { }
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
     public override void OnCollision(Collision2D collision) {
-        //if (collision.gameObject.CompareTag("Ladder"))
-        //{
-        //    _ctx.ArmDetection.ObjectDetected = 0;
-        //    SwitchState(_factory.Idle());
-        //}
-        //else if (collision.gameObject.CompareTag("Enemy"))
-        //{
-        //    _ctx.ArmDetection.ObjectDetected = 0;
-        //    SwitchState(_factory.Idle());
-        //}
+        if (collision.gameObject.CompareTag("Ladder"))
+        {
+            _ctx.ArmDetection.ObjectDetected = 0;
+            _ctx.Animator.SetBool("Grab", false);
+            SwitchState(_factory.Idle());
+        }
+        else if (collision.gameObject.CompareTag("Enemy"))
+        {
+            _ctx.ArmDetection.ObjectDetected = 0;
+            _ctx.Animator.SetBool("Grab", false);
+            SwitchState(_factory.Idle());
+        }
     }
 
-    private IEnumerator GrabDetectionVerif()
+    public void GrabDetectionVerif(int _numObject)
     {
-        yield return new WaitForNextFrameUnit();
-        switch (_ctx.ArmDetection.ObjectDetected)
+        switch (_numObject)
         {
             case 1:
-                GrabNothing();
+                GrabOther();
                 break;
             case 2:
                 GrabEnemy();
@@ -56,36 +62,38 @@ public class PlayerGrabState : PlayerBaseState
                 GrabLadder();
                 break;
         }
-        Debug.Log(_ctx.ArmDetection.ObjectDetected);
-        _ctx.StartCoroutine(SwitchStateEndAnim());
+        Debug.Log(_numObject);
     }
 
-    private void GrabNothing()
+    private void GrabOther()
     {
-        
+        Debug.Log("Other Detected");
+        _ctx.Animator.SetBool("Grab", false);
+        SwitchState(_factory.Idle());
     }
     private void GrabEnemy()
     {
+        Debug.Log("Enemy Detected");
         //Enlever le contrôle du joueur
         //Déplacer le perso jusqu'au point de contact des mains
         //Tuer l'ennemi
     }
     private void GrabLadder()
     {
+        Debug.Log("Ladder Detected");
         _ctx.Rb.velocity = _dir.normalized * 100;
-        Debug.Log("PULSE");
         //SwitchState(_factory.Idle());
         //Enlever le contrôle du joueur
         //Déplacer le perso jusqu'au point de contact des mains
         //Passage du perso en state IDLECLIMB
     }
 
-    private IEnumerator SwitchStateEndAnim()
-    {
-        yield return new WaitForSeconds(1);
-        Debug.Log("END ANIM");
-        //_ctx.ArmDetection.ObjectDetected = 0;
-        _ctx.Arms.active = false;
-        SwitchState(_factory.Idle());
-    }
+    //public void SwitchState()
+    //{
+    //    //yield return new WaitForSeconds(1);
+    //    //Debug.Log("END ANIM");
+    //    //_ctx.ArmDetection.ObjectDetected = 0;
+    //    //_ctx.Arms.active = false;
+    //    SwitchState(_factory.Idle());
+    //}
 }

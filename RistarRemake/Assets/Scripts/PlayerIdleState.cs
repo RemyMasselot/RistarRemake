@@ -39,7 +39,7 @@ public class PlayerIdleState : PlayerBaseState
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {
-            //_ctx.Animator.SetBool("Idle", false);
+           _ctx.Animator.SetBool("Idle", false);
            SwitchState(_factory.Grab());
         }
     }

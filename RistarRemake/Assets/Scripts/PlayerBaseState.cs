@@ -29,7 +29,6 @@ public abstract class PlayerBaseState
         _ctx.CurrentState = newState;
     }
     public abstract void OnCollision(Collision2D collision);
-    //public abstract IEnumerator GetEnumerator();
     protected void SetSuperState() { }
     protected void SetSubState() { }
 }

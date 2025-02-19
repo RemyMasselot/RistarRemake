@@ -26,6 +26,7 @@ public class PlayerJumpState : PlayerBaseState
         if (_ctx.Grab.WasPerformedThisFrame())
         {
             //_ctx.Animator.SetBool("Idle", false);
+            _ctx.Animator.SetBool("Jump", false);
             SwitchState(_factory.Grab());
         }
     }
@@ -33,6 +34,7 @@ public class PlayerJumpState : PlayerBaseState
     {
         if (collision.gameObject.CompareTag("Floor"))
         {
+            // Passage en state IDLE
             _ctx.Animator.SetBool("Jump", false);
             SwitchState(_factory.Idle());
         }
