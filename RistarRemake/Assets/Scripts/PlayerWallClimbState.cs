@@ -53,6 +53,13 @@ public class PlayerWallClimbState : PlayerBaseState
             }
         }
 
+        // Passage en state FALL
+        if (_ctx.Back.WasPerformedThisFrame())
+        {
+            _ctx.Animator.SetBool("WallClimb", false);
+            SwitchState(_factory.Fall());
+        }
+
         //// Passage en state JUMP
         //if (_ctx.Jump.WasPerformedThisFrame())
         //{

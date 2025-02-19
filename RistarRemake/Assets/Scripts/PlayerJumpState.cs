@@ -10,7 +10,7 @@ public class PlayerJumpState : PlayerBaseState
     public override void EnterState() {
         //Debug.Log("JUMP ENTER");
         _ctx.Animator.SetBool("Jump", true);
-        HandleJump();
+        _ctx.Rb.velocity = new Vector2(_ctx.JumpForceH, _ctx.JumpForceV);
     }
     public override void UpdateState() {
         CheckSwitchStates();
@@ -25,22 +25,24 @@ public class PlayerJumpState : PlayerBaseState
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {
-            //_ctx.Animator.SetBool("Idle", false);
             _ctx.Animator.SetBool("Jump", false);
             SwitchState(_factory.Grab());
+        }
+
+        // Passage en state FALL
+        if (_ctx.Rb.velocity.y < 0)
+        {
+            _ctx.Animator.SetBool("Jump", false);
+            SwitchState(_factory.Fall());
         }
     }
     public override void OnCollision(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Floor"))
-        {
-            // Passage en state IDLE
-            _ctx.Animator.SetBool("Jump", false);
-            SwitchState(_factory.Idle());
-        }
-    }
-
-    void HandleJump() {
-        _ctx.Rb.velocity = new Vector2(_ctx.JumpForceH, _ctx.JumpForceV);
+        //if (collision.gameObject.CompareTag("Floor"))
+        //{
+        //    // Passage en state IDLE
+        //    _ctx.Animator.SetBool("Jump", false);
+        //    SwitchState(_factory.Idle());
+        //}
     }
 }

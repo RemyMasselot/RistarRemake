@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "BACK",
+                    "type": "Button",
+                    "id": "1e225a6b-2573-4803-a800-f5495d96f00a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -348,6 +357,17 @@
                     "action": "MOVEV",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "1ffde486-25ad-45f3-9860-9455ee2a3ca3",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BACK",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

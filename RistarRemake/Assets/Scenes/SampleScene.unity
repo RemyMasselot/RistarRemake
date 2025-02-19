@@ -744,11 +744,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed6ed46f9903e5448e4c11c775460e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Walk:
-    m_Name: Walk
+  MoveH:
+    m_Name: Move H
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 278fc40b-79c1-4532-9cc1-58144707b668
+    m_Id: 1af6796a-a334-4d49-94cf-6a14d26320d3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  MoveV:
+    m_Name: Move V
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 426e96b2-22cb-469b-a495-f6d320c7af7b
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []

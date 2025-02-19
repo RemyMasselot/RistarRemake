@@ -71,6 +71,15 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""BACK"",
+                    ""type"": ""Button"",
+                    ""id"": ""1e225a6b-2573-4803-a800-f5495d96f00a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -370,6 +379,17 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""action"": ""MOVEV"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ffde486-25ad-45f3-9860-9455ee2a3ca3"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BACK"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -389,6 +409,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         m_LAND_JUMP = m_LAND.FindAction("JUMP", throwIfNotFound: true);
         m_LAND_GRAB = m_LAND.FindAction("GRAB", throwIfNotFound: true);
         m_LAND_AIM = m_LAND.FindAction("AIM", throwIfNotFound: true);
+        m_LAND_BACK = m_LAND.FindAction("BACK", throwIfNotFound: true);
         // WALL
         m_WALL = asset.FindActionMap("WALL", throwIfNotFound: true);
     }
@@ -457,6 +478,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     private readonly InputAction m_LAND_JUMP;
     private readonly InputAction m_LAND_GRAB;
     private readonly InputAction m_LAND_AIM;
+    private readonly InputAction m_LAND_BACK;
     public struct LANDActions
     {
         private @Controller m_Wrapper;
@@ -466,6 +488,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         public InputAction @JUMP => m_Wrapper.m_LAND_JUMP;
         public InputAction @GRAB => m_Wrapper.m_LAND_GRAB;
         public InputAction @AIM => m_Wrapper.m_LAND_AIM;
+        public InputAction @BACK => m_Wrapper.m_LAND_BACK;
         public InputActionMap Get() { return m_Wrapper.m_LAND; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -490,6 +513,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @AIM.started += instance.OnAIM;
             @AIM.performed += instance.OnAIM;
             @AIM.canceled += instance.OnAIM;
+            @BACK.started += instance.OnBACK;
+            @BACK.performed += instance.OnBACK;
+            @BACK.canceled += instance.OnBACK;
         }
 
         private void UnregisterCallbacks(ILANDActions instance)
@@ -509,6 +535,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @AIM.started -= instance.OnAIM;
             @AIM.performed -= instance.OnAIM;
             @AIM.canceled -= instance.OnAIM;
+            @BACK.started -= instance.OnBACK;
+            @BACK.performed -= instance.OnBACK;
+            @BACK.canceled -= instance.OnBACK;
         }
 
         public void RemoveCallbacks(ILANDActions instance)
@@ -571,6 +600,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         void OnJUMP(InputAction.CallbackContext context);
         void OnGRAB(InputAction.CallbackContext context);
         void OnAIM(InputAction.CallbackContext context);
+        void OnBACK(InputAction.CallbackContext context);
     }
     public interface IWALLActions
     {

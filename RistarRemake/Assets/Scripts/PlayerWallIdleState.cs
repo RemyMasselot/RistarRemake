@@ -40,6 +40,13 @@ public class PlayerWallIdleState : PlayerBaseState
             }
         }
 
+        // Passage en state FALL
+        if (_ctx.Back.WasPerformedThisFrame())
+        {
+            _ctx.Animator.SetBool("WallIdle", false);
+            SwitchState(_factory.Fall());
+        }
+
         // Passage en state JUMP
         //if (_ctx.Jump.WasPerformedThisFrame())
         //{

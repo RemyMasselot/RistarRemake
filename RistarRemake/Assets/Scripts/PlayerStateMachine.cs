@@ -20,6 +20,7 @@ public class PlayerStateMachine : MonoBehaviour
     public InputAction Jump;
     public InputAction Grab;
     public InputAction Aim;
+    public InputAction Back;
 
     // ANIM
     public Animator Animator;
@@ -62,6 +63,7 @@ public class PlayerStateMachine : MonoBehaviour
         Jump = controls.LAND.JUMP;
         Grab = controls.LAND.GRAB;
         Aim = controls.LAND.AIM;
+        Back = controls.LAND.BACK;
     }
 
     ///////////////////////////////////////////////////////       UPDATE       ///////////////////////////////////////////////////////
