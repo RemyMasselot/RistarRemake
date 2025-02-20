@@ -12,10 +12,11 @@ public class PlayerFallState : PlayerBaseState
         _ctx.Animator.SetBool("Fall", true);
         _ctx.Rb.gravityScale = 1.0f;
     }
-    public override void UpdateState() {
-        CheckSwitchStates();
-    }
+    public override void UpdateState() { }
     public override void FixedUpdateState() {
+        CheckSwitchStates();
+        
+        // Air Control
         float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValue, _ctx.Rb.velocity.y);
     }
@@ -25,26 +26,27 @@ public class PlayerFallState : PlayerBaseState
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {
-            //_ctx.Animator.SetBool("Idle", false);
             _ctx.Animator.SetBool("Fall", false);
             SwitchState(_factory.Grab());
         }
-    }
-    public override void OnCollision(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Floor"))
-        {
-            // Passage en state IDLE
-            _ctx.Animator.SetBool("Fall", false);
-            SwitchState(_factory.Idle());
 
-            // Passage en state WALK
+        // Vérification d'un sol ou non
+        if (_ctx.LayerDetection.IsLayerDectected == true)
+        {
             float moveValue = _ctx.MoveH.ReadValue<float>();
-            if (Mathf.Abs(moveValue) > 0)
+            if (moveValue != 0)
             {
+                // Passage en state WALK
                 _ctx.Animator.SetBool("Fall", false);
                 SwitchState(_factory.Walk());
             }
+            else
+            {
+                // Passage en state IDLE
+                _ctx.Animator.SetBool("Fall", false);
+                SwitchState(_factory.Idle());
+            }
         }
     }
+    public override void OnCollision(Collision2D collision) { }
 }

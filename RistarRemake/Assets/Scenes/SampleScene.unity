@@ -246,8 +246,8 @@ Transform:
   m_GameObject: {fileID: 339164816}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.4084, y: -2.085, z: 0}
-  m_LocalScale: {x: 2.2673948, y: 3.669483, z: 1}
+  m_LocalPosition: {x: -6.4084, y: -2.4754, z: 0}
+  m_LocalScale: {x: 2.2673948, y: 2.8886168, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -578,8 +578,8 @@ GameObject:
   - component: {fileID: 839849179}
   - component: {fileID: 839849178}
   - component: {fileID: 839849177}
-  m_Layer: 0
-  m_Name: Square (1)
+  m_Layer: 3
+  m_Name: Floor
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -729,6 +729,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1697156903}
   - {fileID: 1925251391}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -789,6 +790,15 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  Back:
+    m_Name: Back
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 10417804-562a-4aa1-a197-4581df9d0ba5
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   Animator: {fileID: 1925251393}
   Transform: {fileID: 947795820}
   WalkSpeed: 200
@@ -839,7 +849,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.1229184}
+  m_Size: {x: 0.75, y: 1.1229184}
   m_EdgeRadius: 0
 --- !u!50 &947795823
 Rigidbody2D:
@@ -879,8 +889,8 @@ GameObject:
   - component: {fileID: 1162534832}
   - component: {fileID: 1162534831}
   - component: {fileID: 1162534830}
-  m_Layer: 0
-  m_Name: Square (3)
+  m_Layer: 3
+  m_Name: Floor
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -992,7 +1002,7 @@ Transform:
   m_GameObject: {fileID: 1162534829}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.027, y: -0.1408, z: 0}
+  m_LocalPosition: {x: -7.027, y: -0.9, z: 0}
   m_LocalScale: {x: 3.480605, y: 0.2050579, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1009,8 +1019,8 @@ GameObject:
   - component: {fileID: 1224850337}
   - component: {fileID: 1224850336}
   - component: {fileID: 1224850335}
-  m_Layer: 0
-  m_Name: Square
+  m_Layer: 3
+  m_Name: Floor
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1252,8 +1262,8 @@ Transform:
   m_GameObject: {fileID: 1324448906}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.2954, y: 2.95, z: 0}
-  m_LocalScale: {x: 12.572699, y: 1.2218535, z: 1}
+  m_LocalPosition: {x: -2.1932, y: 2.01, z: 0}
+  m_LocalScale: {x: 10.777055, y: 1.2218535, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1342,6 +1352,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1697156902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1697156903}
+  - component: {fileID: 1697156904}
+  m_Layer: 0
+  m_Name: GroundDetection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1697156903
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697156902}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.62, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 947795820}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1697156904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697156902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bab0c8a194911d84da064edf46df4c73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CapsuleSize: {x: 0.75, y: 0.1}
+  LayerToCheck:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &1889904824
 GameObject:
   m_ObjectHideFlags: 0
@@ -1353,8 +1411,8 @@ GameObject:
   - component: {fileID: 1889904827}
   - component: {fileID: 1889904826}
   - component: {fileID: 1889904825}
-  m_Layer: 0
-  m_Name: Square (2)
+  m_Layer: 3
+  m_Name: Floor
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

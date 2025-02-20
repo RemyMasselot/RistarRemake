@@ -17,17 +17,15 @@ public class PlayerGrabState : PlayerBaseState
         float angle = Mathf.Atan2(_dir.x, _dir.y) * Mathf.Rad2Deg;
         Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
         _ctx.Arms.transform.rotation = _dirQ;
-        //_ctx.Arms.active = true;
-        //_ctx.StartCoroutine(GrabDetectionVerif());
     }
     public override void UpdateState()
     {
-        //CheckSwitchStates();
         if (_ctx.ArmDetection.EndAnim == true && _ctx.ArmDetection.ObjectDetected == 0)
         {
             _ctx.Animator.SetBool("Grab", false);
             SwitchState(_factory.Idle());
         }
+
         // Parce que je n'arrive pas à référencer ce script dans le script ArmDetection, ici je vérifie à chaque frame ce que les bras ont touché,
         // plutôt que de lancer la bonne fonction au moment où les bras entre en collision avec un élément dans le script ArmDetection.
         // Un raycast envoyé dans ce script et qui influe sur l'avancé des mains pourrait être une bonne solution
@@ -103,13 +101,4 @@ public class PlayerGrabState : PlayerBaseState
         //Déplacer le perso jusqu'au point de contact des mains
         //Passage du perso en state IDLECLIMB
     }
-
-    //public void SwitchState()
-    //{
-    //    //yield return new WaitForSeconds(1);
-    //    //Debug.Log("END ANIM");
-    //    //_ctx.ArmDetection.ObjectDetected = 0;
-    //    //_ctx.Arms.active = false;
-    //    SwitchState(_factory.Idle());
-    //}
 }

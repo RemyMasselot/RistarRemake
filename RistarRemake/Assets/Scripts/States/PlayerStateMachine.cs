@@ -10,6 +10,7 @@ public class PlayerStateMachine : MonoBehaviour
     // STATES
     PlayerBaseState _currentState;
     PlayerStateFactory _states;
+    public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
 
     // INPUT ACTIONS
     [Space(10)]
@@ -37,9 +38,9 @@ public class PlayerStateMachine : MonoBehaviour
     public GameObject Arms;
     [field: SerializeField] public ArmDetection ArmDetection { get; set; }
 
-    // getters and setters
-    public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
+    // PHYSICS
     public Rigidbody2D Rb { get { return GetComponent<Rigidbody2D>(); } }
+    public LayerDetection LayerDetection { get { return GetComponentInChildren<LayerDetection>(); } }
 
 
     private void Awake()

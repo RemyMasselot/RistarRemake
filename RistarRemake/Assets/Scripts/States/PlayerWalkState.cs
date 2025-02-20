@@ -10,13 +10,21 @@ public class PlayerWalkState : PlayerBaseState
         //Debug.Log("ENTER WALK");
         _ctx.Animator.SetBool("Walk", true);
     }
-    public override void UpdateState() {
+    public override void UpdateState() { 
         CheckSwitchStates();
     }
     public override void FixedUpdateState() {
         // Déplacements du personnage
         float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2(moveValue * _ctx.WalkSpeed * Time.deltaTime, 0);
+
+        // Vérification d'un sol ou non
+        if (_ctx.LayerDetection.IsLayerDectected == false)
+        {
+            _ctx.Animator.SetBool("Walk", false);
+            SwitchState(_factory.Fall());
+        }
+        //Debug.Log(_ctx.LayerDetection.IsLayerDectected);
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
@@ -32,7 +40,7 @@ public class PlayerWalkState : PlayerBaseState
         // Passage en state JUMP
         if (_ctx.Jump.WasPerformedThisFrame())
         {
-        _ctx.Animator.SetBool("Walk", false);
+            _ctx.Animator.SetBool("Walk", false);
             SwitchState(_factory.Jump());
         }
 
@@ -45,5 +53,4 @@ public class PlayerWalkState : PlayerBaseState
     }
 
     public override void OnCollision(Collision2D collision) { }
-
 }
