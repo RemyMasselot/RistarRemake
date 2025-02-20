@@ -9,7 +9,7 @@ public class PlayerWallIdleState : PlayerBaseState
     
     public override void EnterState(){
         //Debug.Log("ENTER WALL IDLE");
-        _ctx.Animator.SetBool("WallIdle", true);
+        _ctx.UpdateAnim("WallIdle");
         _ctx.Rb.velocity = Vector2.zero;
         _ctx.Rb.gravityScale = 0;
     }
@@ -26,7 +26,6 @@ public class PlayerWallIdleState : PlayerBaseState
             float moveValueV = _ctx.MoveV.ReadValue<float>();
             if (Mathf.Abs(moveValueV) > 0)
             {
-                _ctx.Animator.SetBool("WallIdle", false);
                 SwitchState(_factory.WallClimb());
             }
         }
@@ -35,7 +34,6 @@ public class PlayerWallIdleState : PlayerBaseState
             float moveValueH = _ctx.MoveH.ReadValue<float>();
             if (Mathf.Abs(moveValueH) > 0)
             {
-                _ctx.Animator.SetBool("WallIdle", false);
                 SwitchState(_factory.WallClimb());
             }
         }
@@ -43,23 +41,8 @@ public class PlayerWallIdleState : PlayerBaseState
         // Passage en state FALL
         if (_ctx.Back.WasPerformedThisFrame())
         {
-            _ctx.Animator.SetBool("WallIdle", false);
             SwitchState(_factory.Fall());
         }
-
-        // Passage en state JUMP
-        //if (_ctx.Jump.WasPerformedThisFrame())
-        //{
-        //    _ctx.Animator.SetBool("WallIdle", false);
-        //    SwitchState(_factory.Jump());
-        //}
-
-        // Passage en state GRAB
-        //if (_ctx.Grab.WasPerformedThisFrame())
-        //{
-        //   _ctx.Animator.SetBool("WallIdle", false);
-        //   SwitchState(_factory.Grab());
-        //}
     }
 
     public override void OnCollision(Collision2D collision) { }

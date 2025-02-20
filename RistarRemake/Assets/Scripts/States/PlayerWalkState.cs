@@ -8,7 +8,7 @@ public class PlayerWalkState : PlayerBaseState
     : base(currentContext, playerStateFactory) { }
     public override void EnterState() {
         //Debug.Log("ENTER WALK");
-        _ctx.Animator.SetBool("Walk", true);
+        _ctx.UpdateAnim("Walk");
     }
     public override void UpdateState() { 
         CheckSwitchStates();
@@ -21,7 +21,6 @@ public class PlayerWalkState : PlayerBaseState
         // Vérification d'un sol ou non
         if (_ctx.GroundDetection.IsLayerDectected == false)
         {
-            _ctx.Animator.SetBool("Walk", false);
             SwitchState(_factory.Fall());
         }
         //Debug.Log(_ctx.LayerDetection.IsLayerDectected);
@@ -33,21 +32,18 @@ public class PlayerWalkState : PlayerBaseState
         float moveValue = _ctx.MoveH.ReadValue<float>();
         if (moveValue == 0)
         {
-            _ctx.Animator.SetBool("Walk", false);
             SwitchState(_factory.Idle());
         }
 
         // Passage en state JUMP
         if (_ctx.Jump.WasPerformedThisFrame())
         {
-            _ctx.Animator.SetBool("Walk", false);
             SwitchState(_factory.Jump());
         }
 
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {
-            _ctx.Animator.SetBool("Walk", false);
             SwitchState(_factory.Grab());
         }
     }

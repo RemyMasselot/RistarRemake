@@ -9,7 +9,7 @@ public class PlayerIdleState : PlayerBaseState
     
     public override void EnterState(){
         //Debug.Log("ENTER IDLE");
-        _ctx.Animator.SetBool("Idle", true);
+        _ctx.UpdateAnim("Idle");
         _ctx.Rb.velocity = Vector2.zero;
     }
     public override void UpdateState(){
@@ -25,21 +25,18 @@ public class PlayerIdleState : PlayerBaseState
         float moveValue = _ctx.MoveH.ReadValue<float>();
         if (Mathf.Abs(moveValue) > 0)
         {
-            _ctx.Animator.SetBool("Idle", false);
             SwitchState(_factory.Walk());
         }
 
         // Passage en state JUMP
         if (_ctx.Jump.WasPerformedThisFrame())
         {
-            _ctx.Animator.SetBool("Idle", false);
             SwitchState(_factory.Jump());
         }
 
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {
-           _ctx.Animator.SetBool("Idle", false);
            SwitchState(_factory.Grab());
         }
     }

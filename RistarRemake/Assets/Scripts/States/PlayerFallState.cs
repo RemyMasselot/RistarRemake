@@ -9,7 +9,7 @@ public class PlayerFallState : PlayerBaseState
     
     public override void EnterState() {
         //Debug.Log("ENTER FALL");
-        _ctx.Animator.SetBool("Fall", true);
+        _ctx.UpdateAnim("Fall");
         _ctx.Rb.gravityScale = 1.0f;
     }
     public override void UpdateState() { }
@@ -26,7 +26,6 @@ public class PlayerFallState : PlayerBaseState
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {
-            _ctx.Animator.SetBool("Fall", false);
             SwitchState(_factory.Grab());
         }
 
@@ -37,13 +36,11 @@ public class PlayerFallState : PlayerBaseState
             if (moveValue != 0)
             {
                 // Passage en state WALK
-                _ctx.Animator.SetBool("Fall", false);
                 SwitchState(_factory.Walk());
             }
             else
             {
                 // Passage en state IDLE
-                _ctx.Animator.SetBool("Fall", false);
                 SwitchState(_factory.Idle());
             }
         }

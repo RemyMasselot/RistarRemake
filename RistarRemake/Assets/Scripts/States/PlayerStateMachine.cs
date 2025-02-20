@@ -86,4 +86,16 @@ public class PlayerStateMachine : MonoBehaviour
     {
         CurrentState.OnCollision(collision);
     }
+
+    public void UpdateAnim(string animName)
+    {
+        foreach (var param in Animator.parameters)
+        {
+            if (param.type == AnimatorControllerParameterType.Bool)
+            {
+                Animator.SetBool(param.name, false);
+            }
+        }
+        Animator.SetBool(animName, true);
+    }
 }

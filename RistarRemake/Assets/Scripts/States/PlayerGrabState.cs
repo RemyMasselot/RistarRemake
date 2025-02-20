@@ -12,7 +12,7 @@ public class PlayerGrabState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER GRAB");
-        _ctx.Animator.SetBool("Grab", true);
+        _ctx.UpdateAnim("Grab");
         _dir = _ctx.Aim.ReadValue<Vector2>();
         float angle = Mathf.Atan2(_dir.x, _dir.y) * Mathf.Rad2Deg;
         Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
@@ -22,8 +22,15 @@ public class PlayerGrabState : PlayerBaseState
     {
         if (_ctx.ArmDetection.EndAnim == true && _ctx.ArmDetection.ObjectDetected == 0)
         {
-            _ctx.Animator.SetBool("Grab", false);
-            SwitchState(_factory.Idle());
+            // Vérification d'un sol ou non
+            if (_ctx.GroundDetection.IsLayerDectected == false)
+            {
+                SwitchState(_factory.Fall());
+            }
+            else
+            {
+                SwitchState(_factory.Idle());
+            }
         }
 
         // Parce que je n'arrive pas à référencer ce script dans le script ArmDetection, ici je vérifie à chaque frame ce que les bras ont touché,
@@ -38,22 +45,16 @@ public class PlayerGrabState : PlayerBaseState
     public override void OnCollision(Collision2D collision) {
         if (collision.gameObject.CompareTag("LadderV"))
         {
-            //_ctx.ArmDetection.ObjectDetected = 0;
-            _ctx.Animator.SetBool("Grab", false);
             _ctx.Animator.SetFloat("WallVH", 0);
             SwitchState(_factory.WallIdle());
         }
         if (collision.gameObject.CompareTag("LadderH"))
         {
-            //_ctx.ArmDetection.ObjectDetected = 0;
-            _ctx.Animator.SetBool("Grab", false);
             _ctx.Animator.SetFloat("WallVH", 1);
             SwitchState(_factory.WallIdle());
         }
         else if (collision.gameObject.CompareTag("Enemy"))
         {
-            //_ctx.ArmDetection.ObjectDetected = 0;
-            _ctx.Animator.SetBool("Grab", false);
             SwitchState(_factory.Idle());
         }
     }
@@ -78,9 +79,7 @@ public class PlayerGrabState : PlayerBaseState
     private void GrabOther()
     {
         Debug.Log("Other Detected");
-        _ctx.Animator.SetBool("Grab", false);
         _ctx.ArmDetection.ObjectDetected = 0;
-        SwitchState(_factory.Idle());
     }
     private void GrabEnemy()
     {
@@ -96,7 +95,6 @@ public class PlayerGrabState : PlayerBaseState
         Debug.Log("LadderV Detected");
         _ctx.Rb.velocity = _dir.normalized * 50;
         _ctx.ArmDetection.ObjectDetected = 0;
-        //SwitchState(_factory.Idle());
         //Enlever le contrôle du joueur
         //Déplacer le perso jusqu'au point de contact des mains
         //Passage du perso en state IDLECLIMB

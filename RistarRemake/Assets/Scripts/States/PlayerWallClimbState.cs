@@ -9,9 +9,7 @@ public class PlayerWallClimbState : PlayerBaseState
     
     public override void EnterState(){
         //Debug.Log("ENTER WALL CLIMB");
-        _ctx.Animator.SetBool("WallClimb", true);
-        //_ctx.Rb.velocity = Vector2.zero;
-        //_ctx.Rb.gravityScale = 0;
+        _ctx.UpdateAnim("WallClimb");
     }
     public override void UpdateState(){
         CheckSwitchStates();
@@ -25,7 +23,6 @@ public class PlayerWallClimbState : PlayerBaseState
             // Vérification d'un Ladder ou non
             if (_ctx.LadderVDetection.IsLayerDectected == false)
             {
-                //_ctx.Animator.SetBool("Walk", false);
                 SwitchState(_factory.Fall());
             }
         }
@@ -36,7 +33,6 @@ public class PlayerWallClimbState : PlayerBaseState
             // Vérification d'un Ladder ou non
             if (_ctx.LadderHDetection.IsLayerDectected == false)
             {
-                //_ctx.Animator.SetBool("Walk", false);
                 SwitchState(_factory.Fall());
             }
         }     
@@ -50,7 +46,6 @@ public class PlayerWallClimbState : PlayerBaseState
             float moveValueV = _ctx.MoveV.ReadValue<float>();
             if (Mathf.Abs(moveValueV) == 0)
             {
-                _ctx.Animator.SetBool("WallClimb", false);
                 SwitchState(_factory.WallIdle());
             }
         }
@@ -59,7 +54,6 @@ public class PlayerWallClimbState : PlayerBaseState
             float moveValueH = _ctx.MoveH.ReadValue<float>();
             if (Mathf.Abs(moveValueH) == 0)
             {
-                _ctx.Animator.SetBool("WallClimb", false);
                 SwitchState(_factory.WallIdle());
             }
         }
@@ -67,23 +61,8 @@ public class PlayerWallClimbState : PlayerBaseState
         // Passage en state FALL
         if (_ctx.Back.WasPerformedThisFrame())
         {
-            _ctx.Animator.SetBool("WallClimb", false);
             SwitchState(_factory.Fall());
         }
-
-        //// Passage en state JUMP
-        //if (_ctx.Jump.WasPerformedThisFrame())
-        //{
-        //    _ctx.Animator.SetBool("WallIdle", false);
-        //    SwitchState(_factory.Jump());
-        //}
-
-        //// Passage en state GRAB
-        //if (_ctx.Grab.WasPerformedThisFrame())
-        //{
-        //   _ctx.Animator.SetBool("WallIdle", false);
-        //   SwitchState(_factory.Grab());
-        //}
     }
 
     public override void OnCollision(Collision2D collision) { }
