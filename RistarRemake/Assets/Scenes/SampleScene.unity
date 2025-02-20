@@ -778,8 +778,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1697156903}
-  - {fileID: 1142811646}
   - {fileID: 804935178}
+  - {fileID: 1142811646}
   - {fileID: 1925251391}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -856,6 +856,9 @@ MonoBehaviour:
   <JumpForceH>k__BackingField: 4
   Arms: {fileID: 614085620}
   <ArmDetection>k__BackingField: {fileID: 614085623}
+  <GroundDetection>k__BackingField: {fileID: 1697156904}
+  <LadderVDetection>k__BackingField: {fileID: 804935179}
+  <LadderHDetection>k__BackingField: {fileID: 1142811647}
 --- !u!61 &947795822
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -975,7 +978,7 @@ MonoBehaviour:
   CapsuleSize: {x: 0.25, y: 0.1}
   LayerToCheck:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
 --- !u!1 &1162534829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,7 +1250,7 @@ GameObject:
   - component: {fileID: 1324448909}
   - component: {fileID: 1324448908}
   - component: {fileID: 1324448907}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: LadderH
   m_TagString: LadderH
   m_Icon: {fileID: 0}
