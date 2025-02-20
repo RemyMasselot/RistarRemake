@@ -31,7 +31,7 @@ public class PlayerFallState : PlayerBaseState
         }
 
         // Vérification d'un sol ou non
-        if (_ctx.LayerDetection.IsLayerDectected == true)
+        if (_ctx.GroundDetection.IsLayerDectected == true)
         {
             float moveValue = _ctx.MoveH.ReadValue<float>();
             if (moveValue != 0)

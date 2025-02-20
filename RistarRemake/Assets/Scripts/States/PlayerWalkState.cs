@@ -19,7 +19,7 @@ public class PlayerWalkState : PlayerBaseState
         _ctx.Rb.velocity = new Vector2(moveValue * _ctx.WalkSpeed * Time.deltaTime, 0);
 
         // Vérification d'un sol ou non
-        if (_ctx.LayerDetection.IsLayerDectected == false)
+        if (_ctx.GroundDetection.IsLayerDectected == false)
         {
             _ctx.Animator.SetBool("Walk", false);
             SwitchState(_factory.Fall());

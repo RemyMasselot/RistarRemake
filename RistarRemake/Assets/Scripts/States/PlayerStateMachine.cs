@@ -40,7 +40,9 @@ public class PlayerStateMachine : MonoBehaviour
 
     // PHYSICS
     public Rigidbody2D Rb { get { return GetComponent<Rigidbody2D>(); } }
-    public LayerDetection LayerDetection { get { return GetComponentInChildren<LayerDetection>(); } }
+    [field: SerializeField] public LayerDetection GroundDetection { get; private set; }
+    [field: SerializeField] public LayerDetection LadderVDetection { get; private set; }
+    [field: SerializeField] public LayerDetection LadderHDetection { get; private set; }
 
 
     private void Awake()

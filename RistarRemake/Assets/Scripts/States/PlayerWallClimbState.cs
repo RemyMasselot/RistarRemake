@@ -22,13 +22,24 @@ public class PlayerWallClimbState : PlayerBaseState
         {
             float moveValueV = _ctx.MoveV.ReadValue<float>();
             _ctx.Rb.velocity = new Vector2(0, moveValueV * _ctx.WalkSpeed * Time.deltaTime);
+            // Vérification d'un Ladder ou non
+            if (_ctx.LadderVDetection.IsLayerDectected == false)
+            {
+                //_ctx.Animator.SetBool("Walk", false);
+                SwitchState(_factory.Fall());
+            }
         }
         else
         {
             float moveValueH = _ctx.MoveH.ReadValue<float>();
             _ctx.Rb.velocity = new Vector2(moveValueH * _ctx.WalkSpeed * Time.deltaTime, 0);
-        }
-        
+            // Vérification d'un Ladder ou non
+            if (_ctx.LadderHDetection.IsLayerDectected == false)
+            {
+                //_ctx.Animator.SetBool("Walk", false);
+                SwitchState(_factory.Fall());
+            }
+        }     
     }
     public override void ExitState(){}
     public override void InitializeSubState(){}
