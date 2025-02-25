@@ -7,7 +7,8 @@ public abstract class PlayerBaseState
     protected bool _isRootState = false;
     protected PlayerStateMachine _ctx;
     protected PlayerStateFactory _factory;
-    public PlayerBaseState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) { 
+    public PlayerBaseState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) 
+    { 
         _ctx = currentContext;
         _factory = playerStateFactory;
     }
@@ -18,7 +19,8 @@ public abstract class PlayerBaseState
     public abstract void ExitState();
     public abstract void CheckSwitchStates();
     public abstract void InitializeSubState();
-    protected void SwitchState(PlayerBaseState newState) { 
+    protected void SwitchState(PlayerBaseState newState)
+    {
         // current state exits state
         ExitState();
 

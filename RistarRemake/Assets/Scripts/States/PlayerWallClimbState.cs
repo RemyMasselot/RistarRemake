@@ -7,14 +7,17 @@ public class PlayerWallClimbState : PlayerBaseState
     public PlayerWallClimbState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
     
-    public override void EnterState(){
+    public override void EnterState()
+    {
         //Debug.Log("ENTER WALL CLIMB");
         _ctx.UpdateAnim("WallClimb");
     }
-    public override void UpdateState(){
+    public override void UpdateState()
+    {
         CheckSwitchStates();
     }
-    public override void FixedUpdateState(){
+    public override void FixedUpdateState()
+    {
         // Déplacements du personnage
         if (_ctx.Animator.GetFloat("WallVH") == 0)
         {
@@ -39,7 +42,8 @@ public class PlayerWallClimbState : PlayerBaseState
     }
     public override void ExitState(){}
     public override void InitializeSubState(){}
-    public override void CheckSwitchStates(){
+    public override void CheckSwitchStates()
+    {
         // Passage en state WALL IDLE
         if (_ctx.Animator.GetFloat("WallVH") == 0)
         {

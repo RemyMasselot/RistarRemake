@@ -7,20 +7,24 @@ public class PlayerIdleState : PlayerBaseState
     public PlayerIdleState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
     
-    public override void EnterState(){
+    public override void EnterState()
+    {
         //Debug.Log("ENTER IDLE");
         _ctx.UpdateAnim("Idle");
         _ctx.Rb.velocity = Vector2.zero;
     }
-    public override void UpdateState(){
+    public override void UpdateState()
+    {
         CheckSwitchStates();
     }
-    public override void FixedUpdateState(){
+    public override void FixedUpdateState()
+    {
         
     }
     public override void ExitState(){}
     public override void InitializeSubState(){}
-    public override void CheckSwitchStates(){
+    public override void CheckSwitchStates()
+    {
         // Passage en state WALK
         float moveValue = _ctx.MoveH.ReadValue<float>();
         if (Mathf.Abs(moveValue) > 0)

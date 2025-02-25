@@ -7,13 +7,15 @@ public class PlayerFallState : PlayerBaseState
     public PlayerFallState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
     
-    public override void EnterState() {
+    public override void EnterState() 
+    {
         //Debug.Log("ENTER FALL");
         _ctx.UpdateAnim("Fall");
         _ctx.Rb.gravityScale = 1.0f;
     }
     public override void UpdateState() { }
-    public override void FixedUpdateState() {
+    public override void FixedUpdateState() 
+    {
         CheckSwitchStates();
         
         // Air Control
@@ -22,7 +24,8 @@ public class PlayerFallState : PlayerBaseState
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
-    public override void CheckSwitchStates() {
+    public override void CheckSwitchStates() 
+    {
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {

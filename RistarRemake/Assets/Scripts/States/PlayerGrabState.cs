@@ -42,7 +42,8 @@ public class PlayerGrabState : PlayerBaseState
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
-    public override void OnCollision(Collision2D collision) {
+    public override void OnCollision(Collision2D collision) 
+    {
         if (collision.gameObject.CompareTag("LadderV"))
         {
             _ctx.Animator.SetFloat("WallVH", 0);
@@ -84,7 +85,7 @@ public class PlayerGrabState : PlayerBaseState
     private void GrabEnemy()
     {
         Debug.Log("Enemy Detected");
-        _ctx.Rb.velocity = _dir.normalized * 50;
+        _ctx.Rb.velocity = _dir.normalized * 10;
         _ctx.ArmDetection.ObjectDetected = 0;
         //Enlever le contrôle du joueur
         //Déplacer le perso jusqu'au point de contact des mains
@@ -93,7 +94,7 @@ public class PlayerGrabState : PlayerBaseState
     private void GrabLadder()
     {
         Debug.Log("LadderV Detected");
-        _ctx.Rb.velocity = _dir.normalized * 50;
+        _ctx.Rb.velocity = _dir.normalized * 10;
         _ctx.ArmDetection.ObjectDetected = 0;
         //Enlever le contrôle du joueur
         //Déplacer le perso jusqu'au point de contact des mains
