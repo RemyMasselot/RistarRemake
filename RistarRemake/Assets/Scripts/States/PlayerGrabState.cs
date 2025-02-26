@@ -14,6 +14,10 @@ public class PlayerGrabState : PlayerBaseState
         //Debug.Log("ENTER GRAB");
         _ctx.UpdateAnim("Grab");
         _dir = _ctx.Aim.ReadValue<Vector2>();
+        if (_dir == new Vector2(0,0))
+        {
+            _dir = new Vector2(1,0);
+        }
         float angle = Mathf.Atan2(_dir.x, _dir.y) * Mathf.Rad2Deg;
         Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
         _ctx.Arms.transform.rotation = _dirQ;
