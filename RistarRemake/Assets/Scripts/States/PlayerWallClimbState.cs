@@ -28,6 +28,11 @@ public class PlayerWallClimbState : PlayerBaseState
             {
                 SwitchState(_factory.Fall());
             }
+            // Vérification d'un Ladder ou non
+            if (_ctx.LadderVDetectionR.IsLayerDectected == false)
+            {
+                SwitchState(_factory.Fall());
+            }
         }
         else
         {

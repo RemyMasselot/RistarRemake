@@ -42,6 +42,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Rigidbody2D Rb { get { return GetComponent<Rigidbody2D>(); } }
     [field: SerializeField] public LayerDetection GroundDetection { get; private set; }
     [field: SerializeField] public LayerDetection LadderVDetection { get; private set; }
+    [field: SerializeField] public LayerDetection LadderVDetectionR { get; private set; }
     [field: SerializeField] public LayerDetection LadderHDetection { get; private set; }
 
 
