@@ -10,6 +10,8 @@ public class PlayerJumpState : PlayerBaseState
     public override void EnterState() {
         //Debug.Log("JUMP ENTER");
         _ctx.UpdateAnim("Jump");
+        _ctx.Leap = false;
+        _ctx.Rb.gravityScale = 1;
         _ctx.Rb.velocity = new Vector2(_ctx.JumpForceH, _ctx.JumpForceV);
     }
     public override void UpdateState() {
@@ -34,5 +36,17 @@ public class PlayerJumpState : PlayerBaseState
             SwitchState(_factory.Fall());
         }
     }
-    public override void OnCollision(Collision2D collision) { }
+    public override void OnCollision(Collision2D collision) 
+    {
+        if (collision.gameObject.CompareTag("LadderV"))
+        {
+            _ctx.Animator.SetFloat("WallVH", 0);
+            SwitchState(_factory.WallClimb());
+        }
+        if (collision.gameObject.CompareTag("LadderH"))
+        {
+            _ctx.Animator.SetFloat("WallVH", 1);
+            SwitchState(_factory.WallClimb());
+        }
+    }
 }

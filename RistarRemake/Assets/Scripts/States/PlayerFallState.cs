@@ -11,6 +11,7 @@ public class PlayerFallState : PlayerBaseState
     {
         //Debug.Log("ENTER FALL");
         _ctx.UpdateAnim("Fall");
+        _ctx.Fall = false;
         _ctx.Rb.gravityScale = 1.0f;
     }
     public override void UpdateState() { }
@@ -48,5 +49,17 @@ public class PlayerFallState : PlayerBaseState
             }
         }
     }
-    public override void OnCollision(Collision2D collision) { }
+    public override void OnCollision(Collision2D collision) 
+    {
+        if (collision.gameObject.CompareTag("LadderV"))
+        {
+            _ctx.Animator.SetFloat("WallVH", 0);
+            SwitchState(_factory.WallClimb());
+        }
+        if (collision.gameObject.CompareTag("LadderH"))
+        {
+            _ctx.Animator.SetFloat("WallVH", 1);
+            SwitchState(_factory.WallClimb());
+        }
+    }
 }

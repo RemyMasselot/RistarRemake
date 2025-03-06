@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class LayerDetection : MonoBehaviour
+public class GroundDetection : MonoBehaviour
 {
+    public bool IsLayerDectected { get; private set; }
+    
     public Vector2 CapsuleSize;
     public LayerMask LayerToCheck; // Couches à reconnaître
 
-    public bool IsLayerDectected { get; private set; }
 
-    void Update()
+    void FixedUpdate()
     {
         IsLayerDectected = Physics2D.OverlapCapsule(transform.position, CapsuleSize, CapsuleDirection2D.Horizontal, 0f, LayerToCheck);
-        //Debug.Log(IsGrounded);
     }
 
     void OnDrawGizmos()

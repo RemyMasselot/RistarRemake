@@ -11,6 +11,7 @@ public class PlayerWallClimbState : PlayerBaseState
     {
         //Debug.Log("ENTER WALL CLIMB");
         _ctx.UpdateAnim("WallClimb");
+        _ctx.Rb.gravityScale = 0;
     }
     public override void UpdateState()
     {
@@ -23,55 +24,71 @@ public class PlayerWallClimbState : PlayerBaseState
         {
             float moveValueV = _ctx.MoveV.ReadValue<float>();
             _ctx.Rb.velocity = new Vector2(0, moveValueV * _ctx.WalkSpeed * Time.deltaTime);
-            // Vérification d'un Ladder ou non
-            if (_ctx.LadderVDetection.IsLayerDectected == false)
-            {
-                SwitchState(_factory.Fall());
-            }
-            // Vérification d'un Ladder ou non
-            if (_ctx.LadderVDetectionR.IsLayerDectected == false)
-            {
-                SwitchState(_factory.Fall());
-            }
         }
         else
         {
             float moveValueH = _ctx.MoveH.ReadValue<float>();
             _ctx.Rb.velocity = new Vector2(moveValueH * _ctx.WalkSpeed * Time.deltaTime, 0);
-            // Vérification d'un Ladder ou non
-            if (_ctx.LadderHDetection.IsLayerDectected == false)
-            {
-                SwitchState(_factory.Fall());
-            }
         }     
     }
     public override void ExitState(){}
     public override void InitializeSubState(){}
     public override void CheckSwitchStates()
     {
-        // Passage en state WALL IDLE
-        if (_ctx.Animator.GetFloat("WallVH") == 0)
+        // Vertical or Horizontal
+        if (_ctx.Animator.GetFloat("WallVH") == 0) // VERTICAL
         {
+            // Passage en state WALL IDLE
             float moveValueV = _ctx.MoveV.ReadValue<float>();
-            if (Mathf.Abs(moveValueV) == 0)
+            if (moveValueV == 0)
             {
                 SwitchState(_factory.WallIdle());
             }
+            if (moveValueV > 0)
+            {
+                // Passage en state JUMP
+                if (_ctx.Jump.WasPerformedThisFrame())
+                {
+                    SwitchState(_factory.Jump());
+                }
+            }
+            if (moveValueV < 0)
+            {
+                // Passage en state FALL
+                if (_ctx.Jump.WasPerformedThisFrame())
+                {
+                    SwitchState(_factory.Fall());
+                }
+            }
         }
-        else
+        else // HORIZONTAL
         {
+            // Passage en state WALL IDLE
             float moveValueH = _ctx.MoveH.ReadValue<float>();
             if (Mathf.Abs(moveValueH) == 0)
             {
                 SwitchState(_factory.WallIdle());
             }
+
+            // Passage en state FALL
+            if (_ctx.Jump.WasPerformedThisFrame())
+            {
+                SwitchState(_factory.Fall());
+            }
         }
 
         // Passage en state FALL
-        if (_ctx.Back.WasPerformedThisFrame())
+        if (_ctx.Fall == true)
         {
             SwitchState(_factory.Fall());
         }
+        
+        // Passage en state LEAP
+        if (_ctx.Leap == true)
+        {
+            SwitchState(_factory.Leap());
+        }
+
     }
 
     public override void OnCollision(Collision2D collision) { }

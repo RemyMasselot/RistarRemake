@@ -9,7 +9,7 @@ public class PlayerStateMachine : MonoBehaviour
     ///////////////////////////////////////////////////////       VARIABLES       ///////////////////////////////////////////////////////
     // STATES
     PlayerBaseState _currentState;
-    PlayerStateFactory _states;
+    public PlayerStateFactory _states;
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
 
     // INPUT ACTIONS
@@ -25,6 +25,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     // ANIM
     public Animator Animator;
+    public SpriteRenderer SpriteRenderer;
 
     // MOVE
     public Transform Transform;
@@ -34,16 +35,22 @@ public class PlayerStateMachine : MonoBehaviour
     [field:SerializeField] public float JumpForceV { get; private set; } = 7f;
     [field:SerializeField] public float JumpForceH { get; private set; } = 3f;
 
+    // JUMP
+    [field: SerializeField] public float LeapForceV { get; private set; } = 7f;
+    [field: SerializeField] public float LeapForceH { get; private set; } = 3f;
+
+    // CLIMB
+    [field: SerializeField] public bool Leap { get; set; } = false;
+    [field: SerializeField] public bool Fall { get; set; } = false;
+
+
     // GRAB
     public GameObject Arms;
     [field: SerializeField] public ArmDetection ArmDetection { get; set; }
 
     // PHYSICS
     public Rigidbody2D Rb { get { return GetComponent<Rigidbody2D>(); } }
-    [field: SerializeField] public LayerDetection GroundDetection { get; private set; }
-    [field: SerializeField] public LayerDetection LadderVDetection { get; private set; }
-    [field: SerializeField] public LayerDetection LadderVDetectionR { get; private set; }
-    [field: SerializeField] public LayerDetection LadderHDetection { get; private set; }
+    [field: SerializeField] public GroundDetection GroundDetection { get; private set; }
 
 
     private void Awake()
@@ -76,7 +83,7 @@ public class PlayerStateMachine : MonoBehaviour
         _currentState.UpdateState();
     }
 
-    ///////////////////////////////////////////////////////       UPDATE       ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////       FIXED UPDATE       ///////////////////////////////////////////////////////
     void FixedUpdate()
     {
         _currentState.FixedUpdateState();

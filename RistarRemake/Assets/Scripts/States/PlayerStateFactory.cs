@@ -43,4 +43,8 @@ public class PlayerStateFactory
     {
         return new PlayerWallClimbState(_context, this);
     }
+    public PlayerBaseState Leap()
+    {
+        return new PlayerLeapState(_context, this);
+    }
 }

@@ -18,6 +18,15 @@ public class PlayerWalkState : PlayerBaseState
         float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2(moveValue * _ctx.WalkSpeed * Time.deltaTime, 0);
 
+        if (_ctx.Rb.velocity.x > 0)
+        {
+            _ctx.SpriteRenderer.flipX = false;
+        }
+        if (_ctx.Rb.velocity.x < 0)
+        {
+            _ctx.SpriteRenderer.flipX = true;
+        }
+
         // Vérification d'un sol ou non
         if (_ctx.GroundDetection.IsLayerDectected == false)
         {
