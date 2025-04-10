@@ -22,6 +22,16 @@ public class PlayerFallState : PlayerBaseState
         // Air Control
         float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValue, _ctx.Rb.velocity.y);
+
+        // Rotation visuelle
+        if (_ctx.Rb.velocity.x > 0)
+        {
+            _ctx.SpriteRenderer.flipX = false;
+        }
+        if (_ctx.Rb.velocity.x < 0)
+        {
+            _ctx.SpriteRenderer.flipX = true;
+        }
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }

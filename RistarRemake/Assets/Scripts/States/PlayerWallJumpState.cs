@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerJumpState : PlayerBaseState
+public class PlayerWallJumpState : PlayerBaseState
 {
-    public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
+    public PlayerWallJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
     
     public override void EnterState() {
@@ -20,16 +20,6 @@ public class PlayerJumpState : PlayerBaseState
     public override void FixedUpdateState() {
         float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValue, _ctx.Rb.velocity.y);
-
-        // Rotation visuelle
-        if (_ctx.Rb.velocity.x > 0)
-        {
-            _ctx.SpriteRenderer.flipX = false;
-        }
-        if (_ctx.Rb.velocity.x < 0)
-        {
-            _ctx.SpriteRenderer.flipX = true;
-        }
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }

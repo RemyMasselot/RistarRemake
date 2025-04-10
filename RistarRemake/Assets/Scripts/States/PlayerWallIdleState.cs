@@ -23,28 +23,34 @@ public class PlayerWallIdleState : PlayerBaseState
     public override void InitializeSubState(){}
     public override void CheckSwitchStates()
     {
-        // Passage en state WALL CLIMB
-        if (_ctx.Animator.GetFloat("WallVH") == 0)
+        float moveValueV = _ctx.MoveV.ReadValue<float>();
+        if (_ctx.Jump.WasPerformedThisFrame())
         {
-            float moveValueV = _ctx.MoveV.ReadValue<float>();
+            if (Mathf.Abs(moveValueV) > 0) // Passage en state WALL JUMP
+            {
+                SwitchState(_factory.WallJump());
+            }
+            else // Passage en state FALL
+            {
+                SwitchState(_factory.Fall());
+            }
+        }
+
+        // Passage en state WALL CLIMB
+        if (_ctx.Animator.GetFloat("WallVH") == 0) //Echelle Vertical
+        {
             if (Mathf.Abs(moveValueV) > 0)
             {
                 SwitchState(_factory.WallClimb());
             }
         }
-        else
+        else //Echelle Horizontal
         {
             float moveValueH = _ctx.MoveH.ReadValue<float>();
             if (Mathf.Abs(moveValueH) > 0)
             {
                 SwitchState(_factory.WallClimb());
             }
-        }
-
-        // Passage en state FALL
-        if (_ctx.Back.WasPerformedThisFrame())
-        {
-            SwitchState(_factory.Fall());
         }
     }
 

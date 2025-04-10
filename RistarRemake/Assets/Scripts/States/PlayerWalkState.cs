@@ -18,6 +18,7 @@ public class PlayerWalkState : PlayerBaseState
         float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2(moveValue * _ctx.WalkSpeed * Time.deltaTime, 0);
 
+        // Rotation visuelle
         if (_ctx.Rb.velocity.x > 0)
         {
             _ctx.SpriteRenderer.flipX = false;
