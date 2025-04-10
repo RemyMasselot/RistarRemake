@@ -396,19 +396,19 @@ AnimatorStateMachine:
     m_Position: {x: 540, y: -180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7013139238743739199}
-    m_Position: {x: 950, y: 110, z: 0}
+    m_Position: {x: 900, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5005586726964637088}
     m_Position: {x: 550, y: 370, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1509574002914181161}
-    m_Position: {x: 1300, y: 370, z: 0}
+    m_Position: {x: 1200, y: 370, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3402749415922208921}
-    m_Position: {x: 1300, y: 110, z: 0}
+    m_Position: {x: 1490, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4253200359576108586}
-    m_Position: {x: 950, y: -180, z: 0}
+    m_Position: {x: 900, y: -180, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -748,7 +748,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Grab
-  m_Speed: 1
+  m_Speed: 0.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -6912559280966967815}

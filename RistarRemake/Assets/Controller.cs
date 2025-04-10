@@ -154,7 +154,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""id"": ""10c0434b-2924-4577-9fc9-bc3acae04d2d"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone(min=0.3)"",
                     ""groups"": """",
                     ""action"": ""MOVEH"",
                     ""isComposite"": true,

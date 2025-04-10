@@ -26,8 +26,7 @@ public class PlayerIdleState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         // Passage en state WALK
-        float moveValue = _ctx.MoveH.ReadValue<float>();
-        if (Mathf.Abs(moveValue) > 0)
+        if (_ctx.MoveH.WasPerformedThisFrame())
         {
             SwitchState(_factory.Walk());
         }

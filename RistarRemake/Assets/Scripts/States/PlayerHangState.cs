@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGrabState : PlayerBaseState
+public class PlayerHangState : PlayerBaseState
 {
-    public PlayerGrabState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
+    public PlayerHangState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
     private Vector2 _dir;
 
     public override void EnterState()
     {
-        //Debug.Log("ENTER GRAB");
+        //Debug.Log("ENTER HANG");
         _ctx.UpdateAnim("Grab");
         _dir = _ctx.Aim.ReadValue<Vector2>();
         if (_dir == new Vector2(0,0))
