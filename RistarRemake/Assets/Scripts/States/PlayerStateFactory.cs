@@ -37,7 +37,15 @@ public class PlayerStateFactory
     }
     public PlayerBaseState Hang()
     {
-        return new PlayerGrabState(_context, this);
+        return new PlayerHangState(_context, this);
+    }
+    public PlayerBaseState Headbutt()
+    {
+        return new PlayerHeadbuttState(_context, this);
+    }
+    public PlayerBaseState Spin()
+    {
+        return new PlayerSpinState(_context, this);
     }
     public PlayerBaseState WallIdle()
     {

@@ -47,6 +47,7 @@ public class PlayerStateMachine : MonoBehaviour
     // GRAB
     public GameObject Arms;
     [field: SerializeField] public ArmDetection ArmDetection { get; set; }
+    public Vector2 AimDir;
 
     // PHYSICS
     public Rigidbody2D Rb { get { return GetComponent<Rigidbody2D>(); } }

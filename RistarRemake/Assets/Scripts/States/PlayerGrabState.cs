@@ -7,25 +7,36 @@ public class PlayerGrabState : PlayerBaseState
     public PlayerGrabState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
-    private Vector2 _dir;
+    //private Vector2 _dir;
 
     public override void EnterState()
     {
         //Debug.Log("ENTER GRAB");
         _ctx.UpdateAnim("Grab");
-        _dir = _ctx.Aim.ReadValue<Vector2>();
-        if (_dir == new Vector2(0,0))
+        _ctx.AimDir = _ctx.Aim.ReadValue<Vector2>();
+        if (_ctx.AimDir == new Vector2(0,0))
         {
             if (_ctx.SpriteRenderer.flipX == false)
             {
-                _dir = new Vector2(1,0);
+                _ctx.AimDir = new Vector2(1,0);
             }
             else
             {
-                _dir = new Vector2(-1, 0);
+                _ctx.AimDir = new Vector2(-1, 0);
             }
         }
-        float angle = Mathf.Atan2(_dir.x, _dir.y) * Mathf.Rad2Deg;
+        else
+        {
+            if (_ctx.AimDir.x > 0)
+            {
+                _ctx.SpriteRenderer.flipX = false;
+            }
+            else if (_ctx.AimDir.x < 0)
+            {
+                _ctx.SpriteRenderer.flipX = true;
+            }
+        }
+        float angle = Mathf.Atan2(_ctx.AimDir.x, _ctx.AimDir.y) * Mathf.Rad2Deg;
         Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
         _ctx.Arms.transform.rotation = _dirQ;
     }
@@ -74,10 +85,10 @@ public class PlayerGrabState : PlayerBaseState
             _ctx.Animator.SetFloat("WallVH", 1);
             SwitchState(_factory.WallIdle());
         }
-        else if (collision.gameObject.CompareTag("Enemy"))
-        {
-            SwitchState(_factory.Idle());
-        }
+        //else if (collision.gameObject.CompareTag("Enemy"))
+        //{
+        //    SwitchState(_factory.Idle());
+        //}
     }
 
     public void GrabDetectionVerif()
@@ -105,8 +116,9 @@ public class PlayerGrabState : PlayerBaseState
     private void GrabEnemy()
     {
         Debug.Log("Enemy Detected");
-        _ctx.Rb.velocity = _dir.normalized * 10;
-        _ctx.ArmDetection.ObjectDetected = 0;
+        SwitchState(_factory.Hang());
+        //_ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
+        //_ctx.ArmDetection.ObjectDetected = 0;
         //Enlever le contrôle du joueur
         //Déplacer le perso jusqu'au point de contact des mains
         //Tuer l'ennemi
@@ -114,7 +126,7 @@ public class PlayerGrabState : PlayerBaseState
     private void GrabLadder()
     {
         Debug.Log("LadderV Detected");
-        _ctx.Rb.velocity = _dir.normalized * 10;
+        _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
         _ctx.ArmDetection.ObjectDetected = 0;
         //Enlever le contrôle du joueur
         //Déplacer le perso jusqu'au point de contact des mains

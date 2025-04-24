@@ -2,23 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHangState : PlayerBaseState
+public class PlayerSpinState : PlayerBaseState
 {
-    public PlayerHangState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
+    public PlayerSpinState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
 
     public override void EnterState()
     {
-        Debug.Log("ENTER HANG");
+        Debug.Log("ENTER SPIN");
         //_ctx.UpdateAnim("Grab");
+        _ctx.Rb.gravityScale = 1;
+        if (_ctx.AimDir.magnitude > 0)
+        {
+            _ctx.Rb.velocity = new Vector2(1, 1) * 5;
+        }
+        else
+        {
+            _ctx.Rb.velocity = new Vector2(-1, 1) * 5;
+        }
     }
     public override void UpdateState()
     {
-        if (_ctx.Grab.WasReleasedThisFrame() && _ctx.ArmDetection.ObjectDetected == 2)
+        // Passage en state FALL
+        if (_ctx.Rb.velocity.y < 0)
         {
-            SwitchState(_factory.Headbutt());
-            //Debug.Log("ENTER HEADBUTT");
+            SwitchState(_factory.Fall());
         }
     }
     public override void FixedUpdateState() { }
