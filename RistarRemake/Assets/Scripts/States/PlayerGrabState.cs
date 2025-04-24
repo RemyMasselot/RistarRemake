@@ -40,7 +40,16 @@ public class PlayerGrabState : PlayerBaseState
             }
             else
             {
-                SwitchState(_factory.Idle());
+                // Passage en WALK ou IDLE
+                float moveValue = _ctx.MoveH.ReadValue<float>();
+                if (moveValue != 0)
+                {
+                    SwitchState(_factory.Walk());
+                }
+                else
+                {
+                    SwitchState(_factory.Idle());
+                }
             }
         }
 
