@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - LadderV
   - LadderH
+  - StarHandle
   layers:
   - Default
   - TransparentFX

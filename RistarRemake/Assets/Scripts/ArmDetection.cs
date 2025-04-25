@@ -14,7 +14,12 @@ public class ArmDetection : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("LadderV") || collision.gameObject.CompareTag("LadderH"))
+        if (collision.gameObject.CompareTag("StarHandle"))
+        {
+            ObjectDetected = 4;
+            //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
+        }
+        else if (collision.gameObject.CompareTag("LadderV") || collision.gameObject.CompareTag("LadderH"))
         {
             ObjectDetected = 3;
             //PlayerGrabState.GrabDetectionVerif(ObjectDetected);

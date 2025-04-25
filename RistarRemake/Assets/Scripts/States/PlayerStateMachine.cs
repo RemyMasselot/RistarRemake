@@ -49,6 +49,9 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField] public ArmDetection ArmDetection { get; set; }
     public Vector2 AimDir;
 
+    // STAR HANDLE
+    public int StarHandleTargetValue = 200;
+
     // PHYSICS
     public Rigidbody2D Rb { get { return GetComponent<Rigidbody2D>(); } }
     [field: SerializeField] public GroundDetection GroundDetection { get; private set; }

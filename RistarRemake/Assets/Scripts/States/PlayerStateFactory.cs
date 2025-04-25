@@ -39,6 +39,10 @@ public class PlayerStateFactory
     {
         return new PlayerHangState(_context, this);
     }
+    public PlayerBaseState MeteorStrike()
+    {
+        return new PlayerMeteorStrikeState(_context, this);
+    }
     public PlayerBaseState Headbutt()
     {
         return new PlayerHeadbuttState(_context, this);

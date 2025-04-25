@@ -104,6 +104,9 @@ public class PlayerGrabState : PlayerBaseState
             case 3:
                 GrabLadder();
                 break;
+            case 4:
+                GrabStarHandle();
+                break;
         }
         //Debug.Log(_ctx.ArmDetection.ObjectDetected);
     }
@@ -131,5 +134,10 @@ public class PlayerGrabState : PlayerBaseState
         //Enlever le contrôle du joueur
         //Déplacer le perso jusqu'au point de contact des mains
         //Passage du perso en state IDLECLIMB
+    }
+    private void GrabStarHandle()
+    {
+        Debug.Log("Star Handle Detected");
+        SwitchState(_factory.Hang());
     }
 }
