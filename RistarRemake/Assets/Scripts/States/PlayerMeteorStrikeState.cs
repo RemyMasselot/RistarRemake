@@ -11,7 +11,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER METEOR STRIKE");
-        //_ctx.UpdateAnim("Grab");
+        _ctx.UpdateAnim("MeyeorStrike");
     }
     public override void UpdateState()
     {

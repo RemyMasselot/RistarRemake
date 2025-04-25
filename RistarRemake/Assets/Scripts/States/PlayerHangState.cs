@@ -12,7 +12,7 @@ public class PlayerHangState : PlayerBaseState
     {
         Debug.Log("ENTER HANG");
         _starHandleCurrentValue = 0;
-        //_ctx.UpdateAnim("Grab");
+        _ctx.UpdateAnim("Hang");
     }
     public override void UpdateState()
     {
