@@ -1,6 +1,6 @@
 {
 "skeleton": {
-	"hash": "ZNMiXiE/zTE",
+	"hash": "IvRQ4KHEKwE",
 	"spine": "4.2.40",
 	"x": -305.57,
 	"y": -2.87,
@@ -462,6 +462,47 @@
 	}
 ],
 "animations": {
-	"animation": {}
+	"animation": {
+		"bones": {
+			"head": {
+				"translate": [
+					{ "y": 33.57 }
+				],
+				"scale": [
+					{ "x": 1.235, "y": 1.235 }
+				]
+			},
+			"right-leg-target": {
+				"translate": [
+					{ "x": -31.92, "y": 0.22 }
+				]
+			},
+			"right-arm-ik-target": {
+				"translate": [
+					{ "x": -32.59, "y": 2.85 }
+				]
+			},
+			"left-arm-ik-target": {
+				"translate": [
+					{ "x": 64.06, "y": 21.44 }
+				]
+			},
+			"left-leg-ik-target": {
+				"translate": [
+					{ "x": 47.86, "y": 0.35 }
+				]
+			},
+			"right-leg-ik1": {
+				"translate": [
+					{ "x": -22.35, "y": 10.64 }
+				]
+			},
+			"left-leg-ik1": {
+				"translate": [
+					{ "y": 2.12 }
+				]
+			}
+		}
+	}
 }
 }
