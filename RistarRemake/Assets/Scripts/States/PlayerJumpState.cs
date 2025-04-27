@@ -21,14 +21,22 @@ public class PlayerJumpState : PlayerBaseState
         float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValue, _ctx.Rb.velocity.y);
 
-        // Rotation visuelle
+        // Rotation visuelle -- SANS SPINE
+        //if (_ctx.Rb.velocity.x > 0)
+        //{
+        //    _ctx.SpriteRenderer.flipX = false;
+        //}
+        //if (_ctx.Rb.velocity.x < 0)
+        //{
+        //    _ctx.SpriteRenderer.flipX = true;
+        //}
         if (_ctx.Rb.velocity.x > 0)
         {
-            _ctx.SpriteRenderer.flipX = false;
+            _ctx.SkeletonAnimation.skeleton.FlipX = false;
         }
         if (_ctx.Rb.velocity.x < 0)
         {
-            _ctx.SpriteRenderer.flipX = true;
+            _ctx.SkeletonAnimation.skeleton.FlipX = true;
         }
     }
     public override void ExitState() { }

@@ -122,6 +122,60 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &110668588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 110668589}
+  - component: {fileID: 110668590}
+  m_Layer: 0
+  m_Name: ArmDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &110668589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110668588}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.086, y: 0.336, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2018636611}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &110668590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110668588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c806cea2d116c9f418fe9a70c89ce1b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectDetected: 0
+  EndAnim: 0
+  rayCount: 12
+  rayDistance: 0.6
+  angleRange: 90
+  rotationOffset: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 207
+  gizmoColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &219329602
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,7 +330,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 240460923}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -359,6 +413,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -0.48999986
       objectReference: {fileID: 0}
+    - target: {fileID: 5439013994436097392, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7041524083400109034, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
       propertyPath: playerStateMachine
       value: 
@@ -414,6 +472,14 @@ PrefabInstance:
     - target: {fileID: 8961581264526010390, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
       propertyPath: m_Name
       value: LadderV (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961581264526010390, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034474502571625934, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -690,7 +756,7 @@ GameObject:
   m_Component:
   - component: {fileID: 572607503}
   - component: {fileID: 572607504}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ExitDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -724,7 +790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ed1d2f932e79f4581260a3d61b0fb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStateMachine: {fileID: 947795821}
+  playerStateMachine: {fileID: 1997363576}
   CapsuleSize: {x: 0.2, y: 0.5}
   LayerToCheck:
     serializedVersion: 2
@@ -1262,6 +1328,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1425506175291992957, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4109636749077481010, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: m_Name
       value: Player Spine
@@ -1302,6 +1372,18 @@ PrefabInstance:
       propertyPath: DefaultPosRight
       value: 
       objectReference: {fileID: 1333680907}
+    - target: {fileID: 5515318888682947659, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: SkeletonAnimation
+      value: 
+      objectReference: {fileID: 2018636608}
+    - target: {fileID: 5515318888682947659, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: <ArmDetection>k__BackingField
+      value: 
+      objectReference: {fileID: 110668590}
+    - target: {fileID: 7403496159897214482, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7504886456808841985, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.67
@@ -1350,17 +1432,6 @@ PrefabInstance:
       addedObject: {fileID: 2018636611}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
---- !u!114 &947795821 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-  m_PrefabInstance: {fileID: 4924099577031079842}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fed6ed46f9903e5448e4c11c775460e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1006158291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,7 +1963,7 @@ GameObject:
   - component: {fileID: 1324448909}
   - component: {fileID: 1324448908}
   - component: {fileID: 1324448907}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LadderH
   m_TagString: LadderH
   m_Icon: {fileID: 0}
@@ -2064,6 +2135,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -0.48999986
       objectReference: {fileID: 0}
+    - target: {fileID: 5439013994436097392, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7041524083400109034, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
       propertyPath: playerStateMachine
       value: 
@@ -2119,6 +2194,14 @@ PrefabInstance:
     - target: {fileID: 8961581264526010390, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
       propertyPath: m_Name
       value: LadderV (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961581264526010390, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034474502571625934, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2219,7 +2302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1893203748}
   - component: {fileID: 1893203749}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ExitDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2253,7 +2336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ed1d2f932e79f4581260a3d61b0fb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStateMachine: {fileID: 947795821}
+  playerStateMachine: {fileID: 1997363576}
   CapsuleSize: {x: 0.2, y: 0.5}
   LayerToCheck:
     serializedVersion: 2
@@ -2437,6 +2520,7 @@ Transform:
   - {fileID: 1776918709}
   - {fileID: 1333680907}
   - {fileID: 1931051885}
+  - {fileID: 110668589}
   m_Father: {fileID: 1997363579}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2018636612
@@ -2616,6 +2700,10 @@ PrefabInstance:
       propertyPath: playerStateMachine
       value: 
       objectReference: {fileID: 1997363576}
+    - target: {fileID: 5439013994436097392, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7041524083400109034, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
       propertyPath: playerStateMachine
       value: 
@@ -2663,6 +2751,14 @@ PrefabInstance:
     - target: {fileID: 8961581264526010390, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
       propertyPath: m_Name
       value: LadderV
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961581264526010390, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034474502571625934, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

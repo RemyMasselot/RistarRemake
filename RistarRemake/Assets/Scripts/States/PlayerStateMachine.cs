@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ public class PlayerStateMachine : MonoBehaviour
     // ANIM
     public Animator Animator;
     public SpriteRenderer SpriteRenderer;
+    public SkeletonAnimation SkeletonAnimation;
 
     // MOVE
     public Transform Transform;

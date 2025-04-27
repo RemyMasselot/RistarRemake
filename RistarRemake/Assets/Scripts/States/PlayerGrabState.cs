@@ -14,11 +14,39 @@ public class PlayerGrabState : PlayerBaseState
         //Debug.Log("ENTER GRAB");
         _ctx.UpdateAnim("Grab");
         _ctx.AimDir = _ctx.Aim.ReadValue<Vector2>();
-        if (_ctx.AimDir == new Vector2(0,0))
+
+        //Sans Spine
+        //if (_ctx.AimDir == new Vector2(0,0))
+        //{
+        //    if (_ctx.SpriteRenderer.flipX == false)
+        //    {
+        //        _ctx.AimDir = new Vector2(1,0);
+        //    }
+        //    else
+        //    {
+        //        _ctx.AimDir = new Vector2(-1, 0);
+        //    }
+        //}
+        //else
+        //{
+        //    if (_ctx.AimDir.x > 0)
+        //    {
+        //        _ctx.SpriteRenderer.flipX = false;
+        //    }
+        //    else if (_ctx.AimDir.x < 0)
+        //    {
+        //        _ctx.SpriteRenderer.flipX = true;
+        //    }
+        //}
+        //float angle = Mathf.Atan2(_ctx.AimDir.x, _ctx.AimDir.y) * Mathf.Rad2Deg;
+        //Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
+        //_ctx.Arms.transform.rotation = _dirQ;
+
+        if (_ctx.AimDir == new Vector2(0, 0))
         {
-            if (_ctx.SpriteRenderer.flipX == false)
+            if (_ctx.SkeletonAnimation.skeleton.FlipX == false)
             {
-                _ctx.AimDir = new Vector2(1,0);
+                _ctx.AimDir = new Vector2(1, 0);
             }
             else
             {
@@ -29,21 +57,28 @@ public class PlayerGrabState : PlayerBaseState
         {
             if (_ctx.AimDir.x > 0)
             {
-                _ctx.SpriteRenderer.flipX = false;
+                _ctx.SkeletonAnimation.skeleton.FlipX = false;
             }
             else if (_ctx.AimDir.x < 0)
             {
-                _ctx.SpriteRenderer.flipX = true;
+                _ctx.SkeletonAnimation.skeleton.FlipX = true;
             }
         }
-        //float angle = Mathf.Atan2(_ctx.AimDir.x, _ctx.AimDir.y) * Mathf.Rad2Deg;
-        //Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
-        //_ctx.Arms.transform.rotation = _dirQ;
         ExtendArms();
     }
     private void ExtendArms()
     {
+        _ctx.ArmDetection.gameObject.SetActive(true);
+
         Vector2 grabDirection = (_ctx.AimDir.normalized * _ctx.DistanceGrab);
+        if (_ctx.SkeletonAnimation.skeleton.FlipX == false)
+        {
+            grabDirection.x *= 1;
+        }
+        else
+        {
+            grabDirection.x *= -1;
+        }
         // Move Left Arm
         Vector2 PointDestinationArmLeft = new Vector2(_ctx.ShoulderLeft.localPosition.x + grabDirection.x, _ctx.ShoulderLeft.localPosition.y + grabDirection.y);
         _ctx.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _ctx.DurationGrab);
@@ -75,6 +110,11 @@ public class PlayerGrabState : PlayerBaseState
         //    }
         //}
 
+        //Déplacement de Arm Detection pour suivre les mains
+        _ctx.ArmDetection.GetComponent<Transform>().position = (_ctx.IkArmLeft.position + _ctx.IkArmRight.position) / 2;
+        float angle = Mathf.Atan2(_ctx.AimDir.y, _ctx.AimDir.x) * Mathf.Rad2Deg;
+        _ctx.ArmDetection.rotationOffset = angle;
+
         if (_ctx.Grab.WasReleasedThisFrame())
         {
             ShortenArms();
@@ -87,6 +127,8 @@ public class PlayerGrabState : PlayerBaseState
     }
     private void ShortenArms()
     {
+        _ctx.ArmDetection.gameObject.SetActive(false);
+
         // Move Left Arm
         _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
         // Move Right Arm
