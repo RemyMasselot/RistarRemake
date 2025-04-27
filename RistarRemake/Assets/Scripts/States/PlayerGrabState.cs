@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerGrabState : PlayerBaseState
 {
     public PlayerGrabState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
-    //private Vector2 _dir;
 
     public override void EnterState()
     {
@@ -36,32 +36,48 @@ public class PlayerGrabState : PlayerBaseState
                 _ctx.SpriteRenderer.flipX = true;
             }
         }
-        float angle = Mathf.Atan2(_ctx.AimDir.x, _ctx.AimDir.y) * Mathf.Rad2Deg;
-        Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
-        _ctx.Arms.transform.rotation = _dirQ;
+        //float angle = Mathf.Atan2(_ctx.AimDir.x, _ctx.AimDir.y) * Mathf.Rad2Deg;
+        //Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
+        //_ctx.Arms.transform.rotation = _dirQ;
+        ExtendArms();
+    }
+    private void ExtendArms()
+    {
+        Vector2 grabDirection = (_ctx.AimDir.normalized * _ctx.DistanceGrab);
+        // Move Left Arm
+        Vector2 PointDestinationArmLeft = new Vector2(_ctx.ShoulderLeft.localPosition.x + grabDirection.x, _ctx.ShoulderLeft.localPosition.y + grabDirection.y);
+        _ctx.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _ctx.DurationGrab);
+        // Move Right Arm
+        Vector2 PointDestinationArmRight = new Vector2(_ctx.ShoulderRight.localPosition.x + grabDirection.x, _ctx.ShoulderRight.localPosition.y + grabDirection.y);
+        _ctx.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _ctx.DurationGrab);
     }
     public override void UpdateState()
     {
-        if (_ctx.ArmDetection.EndAnim == true && _ctx.ArmDetection.ObjectDetected == 0)
+        //if (_ctx.ArmDetection.EndAnim == true && _ctx.ArmDetection.ObjectDetected == 0)
+        //{
+        //    // Vérification d'un sol ou non
+        //    if (_ctx.GroundDetection.IsLayerDectected == false)
+        //    {
+        //        SwitchState(_factory.Fall());
+        //    }
+        //    else
+        //    {
+        //        // Passage en WALK ou IDLE
+        //        float moveValue = _ctx.MoveH.ReadValue<float>();
+        //        if (moveValue != 0)
+        //        {
+        //            SwitchState(_factory.Walk());
+        //        }
+        //        else
+        //        {
+        //            SwitchState(_factory.Idle());
+        //        }
+        //    }
+        //}
+
+        if (_ctx.Grab.WasReleasedThisFrame())
         {
-            // Vérification d'un sol ou non
-            if (_ctx.GroundDetection.IsLayerDectected == false)
-            {
-                SwitchState(_factory.Fall());
-            }
-            else
-            {
-                // Passage en WALK ou IDLE
-                float moveValue = _ctx.MoveH.ReadValue<float>();
-                if (moveValue != 0)
-                {
-                    SwitchState(_factory.Walk());
-                }
-                else
-                {
-                    SwitchState(_factory.Idle());
-                }
-            }
+            ShortenArms();
         }
 
         // Parce que je n'arrive pas à référencer ce script dans le script ArmDetection, ici je vérifie à chaque frame ce que les bras ont touché,
@@ -69,6 +85,37 @@ public class PlayerGrabState : PlayerBaseState
         // Un raycast envoyé dans ce script et qui influe sur l'avancé des mains pourrait être une bonne solution
         GrabDetectionVerif();
     }
+    private void ShortenArms()
+    {
+        // Move Left Arm
+        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
+        // Move Right Arm
+        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationGrab).OnComplete(() =>
+        {
+            if (_ctx.ArmDetection.ObjectDetected == 0)
+            {
+                // Vérification d'un sol ou non
+                if (_ctx.GroundDetection.IsLayerDectected == false)
+                {
+                    SwitchState(_factory.Fall());
+                }
+                else
+                {
+                    // Passage en WALK ou IDLE
+                    float moveValue = _ctx.MoveH.ReadValue<float>();
+                    if (moveValue != 0)
+                    {
+                        SwitchState(_factory.Walk());
+                    }
+                    else
+                    {
+                        SwitchState(_factory.Idle());
+                    }
+                }
+            }
+        });
+    }
+
     public override void FixedUpdateState() { }
     public override void ExitState() { }
     public override void InitializeSubState() { }

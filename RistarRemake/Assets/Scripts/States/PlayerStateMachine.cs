@@ -47,7 +47,15 @@ public class PlayerStateMachine : MonoBehaviour
     // GRAB
     public GameObject Arms;
     [field: SerializeField] public ArmDetection ArmDetection { get; set; }
-    public Vector2 AimDir;
+    [HideInInspector] public Vector2 AimDir;
+    public float DistanceGrab;
+    public float DurationGrab;
+    public Transform IkArmRight;
+    public Transform ShoulderRight;
+    public Transform DefaultPosRight;
+    public Transform IkArmLeft;
+    public Transform ShoulderLeft;
+    public Transform DefaultPosLeft;
 
     // STAR HANDLE
     public int StarHandleTargetValue = 200;
