@@ -9,7 +9,7 @@ public class PlayerWallIdleState : PlayerBaseState
     
     public override void EnterState()
     {
-        //Debug.Log("ENTER WALL IDLE");
+        Debug.Log("ENTER WALL IDLE");
         _ctx.UpdateAnim("WallIdle");
         _ctx.Rb.velocity = Vector2.zero;
         _ctx.Rb.gravityScale = 0;

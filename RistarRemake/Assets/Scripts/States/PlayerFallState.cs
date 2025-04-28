@@ -9,7 +9,7 @@ public class PlayerFallState : PlayerBaseState
     
     public override void EnterState() 
     {
-        //Debug.Log("ENTER FALL");
+        Debug.Log("ENTER FALL");
         _ctx.UpdateAnim("Fall");
         _ctx.Fall = false;
         _ctx.Rb.gravityScale = 1.0f;
