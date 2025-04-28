@@ -10,6 +10,7 @@ public class ArmDetection : MonoBehaviour
     public int ObjectDetected = 0;
     public PlayerGrabState PlayerGrabState;
     public bool EndAnim = false;
+    public Vector2 SnapPosHand;
 
     public int rayCount = 8;              // Nombre de rayons
     public float rayDistance = 5f;         // Longueur des rayons
@@ -33,6 +34,7 @@ public class ArmDetection : MonoBehaviour
             {
                 if (hit.collider.CompareTag("StarHandle"))
                 {
+                    SnapPosHand = hit.collider.gameObject.transform.position;
                     ObjectDetected = 4;
                     //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
                 }
@@ -43,6 +45,7 @@ public class ArmDetection : MonoBehaviour
                 }
                 else if (hit.collider.CompareTag("Enemy"))
                 {
+                    SnapPosHand = hit.collider.gameObject.transform.position;
                     ObjectDetected = 2;
                     //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
                 }

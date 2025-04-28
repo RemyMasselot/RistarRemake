@@ -125,7 +125,7 @@ public class PlayerGrabState : PlayerBaseState
         // Un raycast envoyé dans ce script et qui influe sur l'avancé des mains pourrait être une bonne solution
         GrabDetectionVerif();
     }
-    private void ShortenArms()
+    public void ShortenArms()
     {
         _ctx.ArmDetection.gameObject.SetActive(false);
 
@@ -204,6 +204,14 @@ public class PlayerGrabState : PlayerBaseState
     {
         Debug.Log("Other Detected");
         _ctx.ArmDetection.ObjectDetected = 0;
+        _ctx.ArmDetection.gameObject.SetActive(false);
+
+        // Move Left Arm
+        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
+        // Move Right Arm
+        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationGrab);
+        _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
+        _ctx.ArmDetection.ObjectDetected = 0;
     }
     private void GrabEnemy()
     {
@@ -217,7 +225,13 @@ public class PlayerGrabState : PlayerBaseState
     }
     private void GrabLadder()
     {
-        Debug.Log("LadderV Detected");
+        Debug.Log("Ladder Detected");
+        _ctx.ArmDetection.gameObject.SetActive(false);
+
+        // Move Left Arm
+        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
+        // Move Right Arm
+        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationGrab);
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
         _ctx.ArmDetection.ObjectDetected = 0;
         //Enlever le contrôle du joueur

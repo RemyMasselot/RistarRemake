@@ -9,7 +9,7 @@ public class PlayerIdleState : PlayerBaseState
     
     public override void EnterState()
     {
-        //Debug.Log("ENTER IDLE");
+        Debug.Log("ENTER IDLE");
         _ctx.UpdateAnim("Idle");
         _ctx.Rb.velocity = Vector2.zero;
     }
