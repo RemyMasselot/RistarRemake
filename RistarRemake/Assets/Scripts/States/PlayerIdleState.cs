@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerIdleState : PlayerBaseState
 {
@@ -40,7 +42,20 @@ public class PlayerIdleState : PlayerBaseState
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {
-           SwitchState(_factory.Grab());
+            _ctx.Grab.performed += ctx =>
+            {
+                var device = ctx.control.device;
+
+                if (device is Mouse)
+                {
+                    _ctx.GamepadUsed = false;
+                }
+                else
+                {
+                    _ctx.GamepadUsed = true;
+                }
+            };
+            SwitchState(_factory.Grab());
         }
     }
 

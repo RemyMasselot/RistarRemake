@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.InputSystem;
 
 public class PlayerGrabState : PlayerBaseState
 {
@@ -14,6 +15,12 @@ public class PlayerGrabState : PlayerBaseState
         //Debug.Log("ENTER GRAB");
         _ctx.UpdateAnim("Grab");
         _ctx.AimDir = _ctx.Aim.ReadValue<Vector2>();
+        //if (_ctx.GamepadUsed == false)
+        //{
+        //    //Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        //    _ctx.AimDir = new Vector2 (_ctx.AimDir.x - _ctx.transform.position.x, _ctx.AimDir.y - _ctx.transform.position.y);
+        //    Debug.Log(_ctx.gameObject.name);
+        //}
 
         //Sans Spine
         //if (_ctx.AimDir == new Vector2(0,0))

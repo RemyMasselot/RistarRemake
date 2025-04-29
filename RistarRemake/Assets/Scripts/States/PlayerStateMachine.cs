@@ -47,6 +47,7 @@ public class PlayerStateMachine : MonoBehaviour
 
 
     // GRAB
+    public bool GamepadUsed;
     public GameObject Arms;
     [field: SerializeField] public ArmDetection ArmDetection { get; set; }
     [HideInInspector] public Vector2 AimDir;
