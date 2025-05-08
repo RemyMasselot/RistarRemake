@@ -25,6 +25,7 @@ public class PlayerStateMachine : MonoBehaviour
     public InputAction Back;
 
     // ANIM
+    public bool UseSpine = false;
     public Animator Animator;
     public SpriteRenderer SpriteRenderer;
     public SkeletonAnimation SkeletonAnimation;

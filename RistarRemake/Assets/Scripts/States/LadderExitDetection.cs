@@ -18,6 +18,20 @@ public class LadderExitDetection : MonoBehaviour
     [SerializeField] private TriggerState triggerState;
 
 
+    private void Start()
+    {
+        PlayerStateMachine[] scripts = FindObjectsOfType<PlayerStateMachine>();
+
+        foreach (PlayerStateMachine script in scripts)
+        {
+            if (script.gameObject.active == true)
+            {
+                playerStateMachine = script;
+                break;
+            }
+        }
+    }
+
     void FixedUpdate()
     {
         IsLayerDectected = Physics2D.OverlapCapsule(transform.position, CapsuleSize, CapsuleDirection2D.Horizontal, 0f, LayerToCheck);

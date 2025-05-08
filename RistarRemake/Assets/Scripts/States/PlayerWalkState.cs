@@ -18,22 +18,29 @@ public class PlayerWalkState : PlayerBaseState
         float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2(moveValue * _ctx.WalkSpeed * Time.deltaTime, 0);
 
-        // Rotation visuelle -- SANS SPINE
-        //if (_ctx.Rb.velocity.x > 0)
-        //{
-        //    _ctx.SpriteRenderer.flipX = false;
-        //}
-        //if (_ctx.Rb.velocity.x < 0)
-        //{
-        //    _ctx.SpriteRenderer.flipX = true;
-        //}
-        if (_ctx.Rb.velocity.x > 0)
+        if (_ctx.UseSpine == false)
         {
-            _ctx.SkeletonAnimation.skeleton.FlipX = false;
+            // Rotation visuelle -- SANS SPINE
+            if (_ctx.Rb.velocity.x > 0)
+            {
+                _ctx.SpriteRenderer.flipX = false;
+            }
+            if (_ctx.Rb.velocity.x < 0)
+            {
+                _ctx.SpriteRenderer.flipX = true;
+            }
         }
-        if (_ctx.Rb.velocity.x < 0)
+        else
         {
-            _ctx.SkeletonAnimation.skeleton.FlipX = true;
+            //Rotation visuelle -- AVEC SPINE
+            if (_ctx.Rb.velocity.x > 0)
+            {
+                _ctx.SkeletonAnimation.skeleton.FlipX = false;
+            }
+            if (_ctx.Rb.velocity.x < 0)
+            {
+                _ctx.SkeletonAnimation.skeleton.FlipX = true;
+            }
         }
 
         // Vérification d'un sol ou non

@@ -15,6 +15,10 @@ public class PlayerHangState : PlayerBaseState
     {
         Debug.Log("ENTER HANG");
         SnapHands = true;
+        if (_ctx.UseSpine == false)
+        {
+            _ctx.Arms.gameObject.SetActive(false);
+        }
         _ctx.ArmDetection.gameObject.SetActive(false);
         _starHandleCurrentValue = 0;
         _ctx.Rb.velocity = Vector2.zero;

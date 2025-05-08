@@ -15,65 +15,70 @@ public class PlayerGrabState : PlayerBaseState
         //Debug.Log("ENTER GRAB");
         _ctx.UpdateAnim("Grab");
         _ctx.AimDir = _ctx.Aim.ReadValue<Vector2>();
-        //if (_ctx.GamepadUsed == false)
-        //{
-        //    //Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        //    _ctx.AimDir = new Vector2 (_ctx.AimDir.x - _ctx.transform.position.x, _ctx.AimDir.y - _ctx.transform.position.y);
-        //    Debug.Log(_ctx.gameObject.name);
-        //}
-
-        //Sans Spine
-        //if (_ctx.AimDir == new Vector2(0,0))
-        //{
-        //    if (_ctx.SpriteRenderer.flipX == false)
-        //    {
-        //        _ctx.AimDir = new Vector2(1,0);
-        //    }
-        //    else
-        //    {
-        //        _ctx.AimDir = new Vector2(-1, 0);
-        //    }
-        //}
-        //else
-        //{
-        //    if (_ctx.AimDir.x > 0)
-        //    {
-        //        _ctx.SpriteRenderer.flipX = false;
-        //    }
-        //    else if (_ctx.AimDir.x < 0)
-        //    {
-        //        _ctx.SpriteRenderer.flipX = true;
-        //    }
-        //}
-        //float angle = Mathf.Atan2(_ctx.AimDir.x, _ctx.AimDir.y) * Mathf.Rad2Deg;
-        //Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
-        //_ctx.Arms.transform.rotation = _dirQ;
-
-        if (_ctx.AimDir == new Vector2(0, 0))
+        if (_ctx.GamepadUsed == false)
         {
-            if (_ctx.SkeletonAnimation.skeleton.FlipX == false)
+            //Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            _ctx.AimDir = new Vector2(_ctx.AimDir.x - _ctx.transform.position.x, _ctx.AimDir.y - _ctx.transform.position.y);
+            Debug.Log(_ctx.gameObject.name);
+        }
+
+        if (_ctx.UseSpine == false)
+        {
+            //SANS SPINE
+            if (_ctx.AimDir == new Vector2(0, 0))
             {
-                _ctx.AimDir = new Vector2(1, 0);
+                if (_ctx.SpriteRenderer.flipX == false)
+                {
+                    _ctx.AimDir = new Vector2(1, 0);
+                }
+                else
+                {
+                    _ctx.AimDir = new Vector2(-1, 0);
+                }
             }
             else
             {
-                _ctx.AimDir = new Vector2(-1, 0);
+                if (_ctx.AimDir.x > 0)
+                {
+                    _ctx.SpriteRenderer.flipX = false;
+                }
+                else if (_ctx.AimDir.x < 0)
+                {
+                    _ctx.SpriteRenderer.flipX = true;
+                }
             }
+            ExtendArmsWithoutSpine();
         }
         else
         {
-            if (_ctx.AimDir.x > 0)
+            // AVEC SPINE
+            if (_ctx.AimDir == new Vector2(0, 0))
             {
-                _ctx.SkeletonAnimation.skeleton.FlipX = false;
+                if (_ctx.SkeletonAnimation.skeleton.FlipX == false)
+                {
+                    _ctx.AimDir = new Vector2(1, 0);
+                }
+                else
+                {
+                    _ctx.AimDir = new Vector2(-1, 0);
+                }
             }
-            else if (_ctx.AimDir.x < 0)
+            else
             {
-                _ctx.SkeletonAnimation.skeleton.FlipX = true;
+                if (_ctx.AimDir.x > 0)
+                {
+                    _ctx.SkeletonAnimation.skeleton.FlipX = false;
+                }
+                else if (_ctx.AimDir.x < 0)
+                {
+                    _ctx.SkeletonAnimation.skeleton.FlipX = true;
+                }
             }
+            ExtendArmsWithSpine();
         }
-        ExtendArms();
+
     }
-    private void ExtendArms()
+    private void ExtendArmsWithSpine()
     {
         _ctx.ArmDetection.gameObject.SetActive(true);
 
@@ -86,6 +91,25 @@ public class PlayerGrabState : PlayerBaseState
         {
             grabDirection.x *= -1;
         }
+        // Move Left Arm
+        Vector2 PointDestinationArmLeft = new Vector2(_ctx.ShoulderLeft.localPosition.x + grabDirection.x, _ctx.ShoulderLeft.localPosition.y + grabDirection.y);
+        _ctx.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _ctx.DurationGrab);
+        // Move Right Arm
+        Vector2 PointDestinationArmRight = new Vector2(_ctx.ShoulderRight.localPosition.x + grabDirection.x, _ctx.ShoulderRight.localPosition.y + grabDirection.y);
+        _ctx.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _ctx.DurationGrab);
+    }
+    private void ExtendArmsWithoutSpine()
+    {
+        _ctx.Arms.gameObject.SetActive(true);
+        _ctx.ArmDetection.gameObject.SetActive(true);
+
+        // Hands rotation
+        float angle = Mathf.Atan2(_ctx.AimDir.x, _ctx.AimDir.y) * Mathf.Rad2Deg;
+        Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
+        _ctx.IkArmRight.transform.rotation = _dirQ;
+        _ctx.IkArmLeft.transform.rotation = _dirQ;
+
+        Vector2 grabDirection = (_ctx.AimDir.normalized * _ctx.DistanceGrab);
         // Move Left Arm
         Vector2 PointDestinationArmLeft = new Vector2(_ctx.ShoulderLeft.localPosition.x + grabDirection.x, _ctx.ShoulderLeft.localPosition.y + grabDirection.y);
         _ctx.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _ctx.DurationGrab);
@@ -134,6 +158,10 @@ public class PlayerGrabState : PlayerBaseState
     }
     public void ShortenArms()
     {
+        if (_ctx.UseSpine == false)
+        {
+            _ctx.Arms.gameObject.SetActive(false);
+        }
         _ctx.ArmDetection.gameObject.SetActive(false);
 
         // Move Left Arm
@@ -211,6 +239,10 @@ public class PlayerGrabState : PlayerBaseState
     {
         Debug.Log("Other Detected");
         _ctx.ArmDetection.ObjectDetected = 0;
+        if (_ctx.UseSpine == false)
+        {
+            _ctx.Arms.gameObject.SetActive(false);
+        }
         _ctx.ArmDetection.gameObject.SetActive(false);
 
         // Move Left Arm
@@ -233,6 +265,10 @@ public class PlayerGrabState : PlayerBaseState
     private void GrabLadder()
     {
         Debug.Log("Ladder Detected");
+        if (_ctx.UseSpine == false)
+        {
+            _ctx.Arms.gameObject.SetActive(false);
+        }
         _ctx.ArmDetection.gameObject.SetActive(false);
 
         // Move Left Arm
