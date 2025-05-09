@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,10 +12,21 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER HEADBUTT");
-        //_ctx.UpdateAnim("Grab");
+        _ctx.UpdateAnim("Headbutt");
+        // Move Left Arm
+        _ctx.IkArmLeft.transform.DOPause();
+        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
+        // Move Right Arm
+        _ctx.IkArmRight.transform.DOPause();
+        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationGrab);
     }
     public override void UpdateState()
     {
+        // Move Left Arm
+        _ctx.IkArmLeft.transform.position = _ctx.ArmDetection.SnapPosHand;
+        // Move Right Arm
+        _ctx.IkArmRight.transform.position = _ctx.ArmDetection.SnapPosHand;
+
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
         _ctx.ArmDetection.ObjectDetected = 0;
     }

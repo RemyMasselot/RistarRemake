@@ -15,10 +15,6 @@ public class PlayerHangState : PlayerBaseState
     {
         Debug.Log("ENTER HANG");
         SnapHands = true;
-        if (_ctx.UseSpine == false)
-        {
-            _ctx.Arms.gameObject.SetActive(false);
-        }
         _ctx.ArmDetection.gameObject.SetActive(false);
         _starHandleCurrentValue = 0;
         _ctx.Rb.velocity = Vector2.zero;
@@ -42,9 +38,8 @@ public class PlayerHangState : PlayerBaseState
 
         if (_ctx.Grab.WasReleasedThisFrame() && _ctx.ArmDetection.ObjectDetected == 2)
         {
-            ShortenArms();
-            //SwitchState(_factory.Headbutt());
-            //Debug.Log("ENTER HEADBUTT");
+            //ShortenArms();
+            SwitchState(_factory.Headbutt());
         }
 
         if (_ctx.Grab.WasReleasedThisFrame() && _ctx.ArmDetection.ObjectDetected == 4)
@@ -65,6 +60,8 @@ public class PlayerHangState : PlayerBaseState
     public void ShortenArms()
     {
         SnapHands = false;
+        _ctx.UpdateAnim("Headbutt");
+        _ctx.Animator.speed = 0;
         // Move Left Arm
         _ctx.IkArmLeft.transform.DOPause();
         _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
@@ -72,6 +69,10 @@ public class PlayerHangState : PlayerBaseState
         _ctx.IkArmRight.transform.DOPause();
         _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationGrab).OnComplete(() =>
         {
+            if (_ctx.UseSpine == false)
+            {
+                _ctx.Arms.gameObject.SetActive(false);
+            }
             SwitchState(_factory.Headbutt());
         });
     }
@@ -122,6 +123,10 @@ public class PlayerHangState : PlayerBaseState
 
             if (_ctx.Grab.WasReleasedThisFrame() && _starHandleCurrentValue >= _ctx.StarHandleTargetValue)
             {
+                if (_ctx.UseSpine == false)
+                {
+                    _ctx.Arms.gameObject.SetActive(false);
+                }
                 SwitchState(_factory.MeteorStrike());
             }
         }

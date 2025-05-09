@@ -11,7 +11,11 @@ public class PlayerSpinState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER SPIN");
-        //_ctx.UpdateAnim("Grab");
+        _ctx.UpdateAnim("Spin");
+        if (_ctx.UseSpine == false)
+        {
+            _ctx.Arms.gameObject.SetActive(false);
+        }
         _ctx.Rb.gravityScale = 1;
         if (_ctx.AimDir.magnitude > 0)
         {
