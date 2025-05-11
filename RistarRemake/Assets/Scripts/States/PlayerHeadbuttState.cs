@@ -15,10 +15,10 @@ public class PlayerHeadbuttState : PlayerBaseState
         _ctx.UpdateAnim("Headbutt");
         // Move Left Arm
         _ctx.IkArmLeft.transform.DOPause();
-        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
+        //_ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
         // Move Right Arm
         _ctx.IkArmRight.transform.DOPause();
-        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationGrab);
+        //_ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
     }
     public override void UpdateState()
     {
@@ -26,6 +26,15 @@ public class PlayerHeadbuttState : PlayerBaseState
         _ctx.IkArmLeft.transform.position = _ctx.ArmDetection.SnapPosHand;
         // Move Right Arm
         _ctx.IkArmRight.transform.position = _ctx.ArmDetection.SnapPosHand;
+
+        if (_ctx.UseSpine == false)
+        {
+            // Draw Line Arm
+            _ctx.LineArmLeft.SetPosition(0, _ctx.ShoulderLeft.position);
+            _ctx.LineArmLeft.SetPosition(1, _ctx.IkArmLeft.position);
+            _ctx.LineArmRight.SetPosition(0, _ctx.ShoulderRight.position);
+            _ctx.LineArmRight.SetPosition(1, _ctx.IkArmRight.position);
+        }
 
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
         _ctx.ArmDetection.ObjectDetected = 0;

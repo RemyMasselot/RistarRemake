@@ -14,12 +14,12 @@ public class PlayerGrabState : PlayerBaseState
         //Debug.Log("ENTER GRAB");
         _ctx.UpdateAnim("Grab");
         _ctx.AimDir = _ctx.Aim.ReadValue<Vector2>();
-        if (_ctx.GamepadUsed == false)
-        {
-            //Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
-            _ctx.AimDir = new Vector2(_ctx.AimDir.x - _ctx.transform.position.x, _ctx.AimDir.y - _ctx.transform.position.y);
-            Debug.Log(_ctx.gameObject.name);
-        }
+        //if (_ctx.GamepadUsed == false)
+        //{
+        //    //Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        //    _ctx.AimDir = new Vector2(_ctx.AimDir.x - _ctx.transform.position.x, _ctx.AimDir.y - _ctx.transform.position.y);
+        //    Debug.Log(_ctx.gameObject.name);
+        //}
 
         if (_ctx.UseSpine == false)
         {
@@ -29,10 +29,14 @@ public class PlayerGrabState : PlayerBaseState
                 if (_ctx.SpriteRenderer.flipX == false)
                 {
                     _ctx.AimDir = new Vector2(1, 0);
+                    _ctx.LineArmLeft.sortingOrder = -1;
+                    _ctx.LineArmRight.sortingOrder = 0;
                 }
                 else
                 {
                     _ctx.AimDir = new Vector2(-1, 0);
+                    _ctx.LineArmLeft.sortingOrder = 0;
+                    _ctx.LineArmRight.sortingOrder = -1;
                 }
             }
             else
@@ -40,13 +44,18 @@ public class PlayerGrabState : PlayerBaseState
                 if (_ctx.AimDir.x > 0)
                 {
                     _ctx.SpriteRenderer.flipX = false;
+                    _ctx.LineArmLeft.sortingOrder = -1;
+                    _ctx.LineArmRight.sortingOrder = 0;
                 }
                 else if (_ctx.AimDir.x < 0)
                 {
                     _ctx.SpriteRenderer.flipX = true;
+                    _ctx.LineArmLeft.sortingOrder = 0;
+                    _ctx.LineArmRight.sortingOrder = -1;
                 }
             }
             ExtendArmsWithoutSpine();
+            StartTimer();
         }
         else
         {
@@ -92,10 +101,10 @@ public class PlayerGrabState : PlayerBaseState
         }
         // Move Left Arm
         Vector2 PointDestinationArmLeft = new Vector2(_ctx.ShoulderLeft.localPosition.x + grabDirection.x, _ctx.ShoulderLeft.localPosition.y + grabDirection.y);
-        _ctx.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _ctx.DurationGrab);
+        _ctx.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _ctx.DurationExtendGrab);
         // Move Right Arm
         Vector2 PointDestinationArmRight = new Vector2(_ctx.ShoulderRight.localPosition.x + grabDirection.x, _ctx.ShoulderRight.localPosition.y + grabDirection.y);
-        _ctx.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _ctx.DurationGrab);
+        _ctx.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _ctx.DurationExtendGrab);
     }
     private void ExtendArmsWithoutSpine()
     {
@@ -111,10 +120,16 @@ public class PlayerGrabState : PlayerBaseState
         Vector2 grabDirection = (_ctx.AimDir.normalized * _ctx.DistanceGrab);
         // Move Left Arm
         Vector2 PointDestinationArmLeft = new Vector2(_ctx.ShoulderLeft.localPosition.x + grabDirection.x, _ctx.ShoulderLeft.localPosition.y + grabDirection.y);
-        _ctx.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _ctx.DurationGrab);
+        _ctx.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _ctx.DurationExtendGrab);
         // Move Right Arm
         Vector2 PointDestinationArmRight = new Vector2(_ctx.ShoulderRight.localPosition.x + grabDirection.x, _ctx.ShoulderRight.localPosition.y + grabDirection.y);
-        _ctx.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _ctx.DurationGrab);
+        _ctx.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _ctx.DurationExtendGrab);
+    }
+
+    void StartTimer()
+    {
+        _ctx.CurrentTimerValue = _ctx.MaxTimeGrab;
+        _ctx.IsTimerRunning = true;
     }
     public override void UpdateState()
     {
@@ -139,14 +154,33 @@ public class PlayerGrabState : PlayerBaseState
         //        }
         //    }
         //}
+        if (_ctx.UseSpine == false)
+        {
+            // Draw Line Arm
+            _ctx.LineArmLeft.SetPosition(0, _ctx.ShoulderLeft.position);
+            _ctx.LineArmLeft.SetPosition(1, _ctx.IkArmLeft.position);
+            _ctx.LineArmRight.SetPosition(0, _ctx.ShoulderRight.position);
+            _ctx.LineArmRight.SetPosition(1, _ctx.IkArmRight.position);
+        }
 
-        //Déplacement de Arm Detection pour suivre les mains
+        if (_ctx.IsTimerRunning == true)
+        {
+            _ctx.CurrentTimerValue -= Time.deltaTime;
+            if (_ctx.CurrentTimerValue <= 0f)
+            {
+                _ctx.IsTimerRunning = false;
+                ShortenArms();
+            }
+        }
+
+        // Déplacement de Arm Detection pour suivre les mains
         _ctx.ArmDetection.GetComponent<Transform>().position = (_ctx.IkArmLeft.position + _ctx.IkArmRight.position) / 2;
         float angle = Mathf.Atan2(_ctx.AimDir.y, _ctx.AimDir.x) * Mathf.Rad2Deg;
         _ctx.ArmDetection.rotationOffset = angle;
 
         if (_ctx.Grab.WasReleasedThisFrame())
         {
+            _ctx.IsTimerRunning = false;
             ShortenArms();
         }
 
@@ -154,20 +188,26 @@ public class PlayerGrabState : PlayerBaseState
         // plutôt que de lancer la bonne fonction au moment où les bras entre en collision avec un élément dans le script ArmDetection.
         // Un raycast envoyé dans ce script et qui influe sur l'avancé des mains pourrait être une bonne solution
         GrabDetectionVerif();
+
+        if (_ctx.ArmDetection.ObjectDetected == 3)
+        {
+            _ctx.IkArmLeft.position = _ctx.ArmDetection.SnapPosHandL;
+            _ctx.IkArmRight.position = _ctx.ArmDetection.SnapPosHandR;
+        }
     }
     public void ShortenArms()
     {
-        if (_ctx.UseSpine == false)
-        {
-            _ctx.Arms.gameObject.SetActive(false);
-        }
         _ctx.ArmDetection.gameObject.SetActive(false);
 
         // Move Left Arm
-        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
+        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
         // Move Right Arm
-        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationGrab).OnComplete(() =>
+        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab).OnComplete(() =>
         {
+            if (_ctx.UseSpine == false)
+            {
+                _ctx.Arms.gameObject.SetActive(false);
+            }
             if (_ctx.ArmDetection.ObjectDetected == 0)
             {
                 // Vérification d'un sol ou non
@@ -201,17 +241,21 @@ public class PlayerGrabState : PlayerBaseState
         if (collision.gameObject.CompareTag("LadderV"))
         {
             _ctx.Animator.SetFloat("WallVH", 0);
+            if (_ctx.UseSpine == false)
+            {
+                _ctx.Arms.gameObject.SetActive(false);
+            }
             SwitchState(_factory.WallIdle());
         }
         if (collision.gameObject.CompareTag("LadderH"))
         {
             _ctx.Animator.SetFloat("WallVH", 1);
+            if (_ctx.UseSpine == false)
+            {
+                _ctx.Arms.gameObject.SetActive(false);
+            }
             SwitchState(_factory.WallIdle());
         }
-        //else if (collision.gameObject.CompareTag("Enemy"))
-        //{
-        //    SwitchState(_factory.Idle());
-        //}
     }
 
     public void GrabDetectionVerif()
@@ -245,9 +289,9 @@ public class PlayerGrabState : PlayerBaseState
         _ctx.ArmDetection.gameObject.SetActive(false);
 
         // Move Left Arm
-        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
+        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
         // Move Right Arm
-        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationGrab);
+        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
         _ctx.ArmDetection.ObjectDetected = 0;
     }
@@ -264,16 +308,12 @@ public class PlayerGrabState : PlayerBaseState
     private void GrabLadder()
     {
         Debug.Log("Ladder Detected");
-        if (_ctx.UseSpine == false)
-        {
-            _ctx.Arms.gameObject.SetActive(false);
-        }
         _ctx.ArmDetection.gameObject.SetActive(false);
 
         // Move Left Arm
-        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
+        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
         // Move Right Arm
-        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationGrab);
+        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
         _ctx.ArmDetection.ObjectDetected = 0;
         //Enlever le contrôle du joueur

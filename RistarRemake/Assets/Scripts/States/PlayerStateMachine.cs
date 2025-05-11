@@ -52,13 +52,19 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField] public ArmDetection ArmDetection { get; set; }
     [HideInInspector] public Vector2 AimDir;
     public float DistanceGrab;
-    public float DurationGrab;
+    public float DurationExtendGrab;
+    public float MaxTimeGrab;
+    public float CurrentTimerValue;
+    public bool IsTimerRunning = false;
     public Transform IkArmRight;
+    public LineRenderer LineArmRight;
     public Transform ShoulderRight;
     public Transform DefaultPosRight;
     public Transform IkArmLeft;
+    public LineRenderer LineArmLeft;
     public Transform ShoulderLeft;
     public Transform DefaultPosLeft;
+
 
     // STAR HANDLE
     public int StarHandleTargetValue = 200;

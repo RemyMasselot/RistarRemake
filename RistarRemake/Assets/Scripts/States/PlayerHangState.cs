@@ -2,6 +2,9 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerHangState : PlayerBaseState
 {
@@ -9,13 +12,13 @@ public class PlayerHangState : PlayerBaseState
     : base(currentContext, playerStateFactory) { }
 
     private int _starHandleCurrentValue = 0;
-    private bool SnapHands = true;
+    private bool SnapHands = false;
 
     public override void EnterState()
     {
         Debug.Log("ENTER HANG");
-        SnapHands = true;
         _ctx.ArmDetection.gameObject.SetActive(false);
+        SnapHands = false;
         _starHandleCurrentValue = 0;
         _ctx.Rb.velocity = Vector2.zero;
         _ctx.UpdateAnim("Hang");
@@ -23,7 +26,10 @@ public class PlayerHangState : PlayerBaseState
         // Move Left Arm
         _ctx.IkArmLeft.transform.DOMove(_ctx.ArmDetection.SnapPosHand, 0.4f);
         // Move Right Arm
-        _ctx.IkArmRight.transform.DOMove(_ctx.ArmDetection.SnapPosHand, 0.4f);
+        _ctx.IkArmRight.transform.DOMove(_ctx.ArmDetection.SnapPosHand, 0.4f).OnComplete(()=>
+        {
+            SnapHands = true;
+        });
     }
     public override void UpdateState()
     {
@@ -32,13 +38,31 @@ public class PlayerHangState : PlayerBaseState
         {
             // Move Left Arm
             _ctx.IkArmLeft.transform.position = _ctx.ArmDetection.SnapPosHand;
+            // Hands rotation
+            Vector2 directionL = (Vector2)(_ctx.IkArmLeft.position - _ctx.ShoulderLeft.position);
+            float angleL = Mathf.Atan2(directionL.y, directionL.x) * Mathf.Rad2Deg;
+            _ctx.IkArmLeft.rotation = Quaternion.Euler(0, 0, angleL);
+            
             // Move Right Arm
             _ctx.IkArmRight.transform.position = _ctx.ArmDetection.SnapPosHand;
+            // Hands rotation
+            Vector2 directionR = (Vector2)(_ctx.IkArmRight.position - _ctx.ShoulderRight.position);
+            float angleR = Mathf.Atan2(directionR.y, directionR.x) * Mathf.Rad2Deg;
+            _ctx.IkArmRight.rotation = Quaternion.Euler(0, 0, angleR);
+
+        }
+
+        if (_ctx.UseSpine == false)
+        {
+            // Draw Line Arm
+            _ctx.LineArmLeft.SetPosition(0, _ctx.ShoulderLeft.position);
+            _ctx.LineArmLeft.SetPosition(1, _ctx.IkArmLeft.position);
+            _ctx.LineArmRight.SetPosition(0, _ctx.ShoulderRight.position);
+            _ctx.LineArmRight.SetPosition(1, _ctx.IkArmRight.position);
         }
 
         if (_ctx.Grab.WasReleasedThisFrame() && _ctx.ArmDetection.ObjectDetected == 2)
         {
-            //ShortenArms();
             SwitchState(_factory.Headbutt());
         }
 
@@ -57,25 +81,7 @@ public class PlayerHangState : PlayerBaseState
             }
         }
     }
-    public void ShortenArms()
-    {
-        SnapHands = false;
-        _ctx.UpdateAnim("Headbutt");
-        _ctx.Animator.speed = 0;
-        // Move Left Arm
-        _ctx.IkArmLeft.transform.DOPause();
-        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationGrab);
-        // Move Right Arm
-        _ctx.IkArmRight.transform.DOPause();
-        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationGrab).OnComplete(() =>
-        {
-            if (_ctx.UseSpine == false)
-            {
-                _ctx.Arms.gameObject.SetActive(false);
-            }
-            SwitchState(_factory.Headbutt());
-        });
-    }
+
     public override void FixedUpdateState() 
     {
         ChargingMeteorStrike();

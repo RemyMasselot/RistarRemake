@@ -10,7 +10,11 @@ public class ArmDetection : MonoBehaviour
     public int ObjectDetected = 0;
     public PlayerGrabState PlayerGrabState;
     public bool EndAnim = false;
-    public Vector2 SnapPosHand;
+    [HideInInspector] public Vector2 SnapPosHand;
+    [HideInInspector] public Vector2 SnapPosHandL;
+    [HideInInspector] public Vector2 SnapPosHandR;
+    [SerializeField] private Transform HandL;
+    [SerializeField] private Transform HandR;
 
     public int rayCount = 8;              // Nombre de rayons
     public float rayDistance = 5f;         // Longueur des rayons
@@ -40,6 +44,8 @@ public class ArmDetection : MonoBehaviour
                 }
                 else if (hit.collider.CompareTag("LadderV") || hit.collider.CompareTag("LadderH"))
                 {
+                    SnapPosHandL = HandL.position;
+                    SnapPosHandR = HandR.position;
                     ObjectDetected = 3;
                     //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
                 }
