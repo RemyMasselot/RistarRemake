@@ -13,6 +13,7 @@ public class PlayerFallState : PlayerBaseState
         _ctx.UpdateAnim("Fall");
         _ctx.Fall = false;
         _ctx.Rb.gravityScale = 1.0f;
+        _ctx.PreviousState = _ctx.CurrentState;
     }
     public override void UpdateState() { }
     public override void FixedUpdateState() 

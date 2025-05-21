@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using static UnityEngine.UI.Image;
+using UnityEngine.U2D;
 
 public class PlayerGrabState : PlayerBaseState
 {
@@ -12,8 +14,8 @@ public class PlayerGrabState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER GRAB");
-        _ctx.UpdateAnim("Grab");
         _ctx.AimDir = _ctx.Aim.ReadValue<Vector2>();
+        //Debug.Log(_ctx.AimDir);
         //if (_ctx.GamepadUsed == false)
         //{
         //    //Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
@@ -21,6 +23,10 @@ public class PlayerGrabState : PlayerBaseState
         //    Debug.Log(_ctx.gameObject.name);
         //}
 
+        ChoiceGrabAnim();
+
+        _ctx.UpdateAnim("Grab");
+        
         if (_ctx.UseSpine == false)
         {
             //SANS SPINE
@@ -86,6 +92,42 @@ public class PlayerGrabState : PlayerBaseState
         }
 
     }
+
+    private void ChoiceGrabAnim()
+    {
+        // Vérification d'un sol ou non
+        RaycastHit2D hit = Physics2D.Raycast(_ctx.transform.position, _ctx.AimDir.normalized * _ctx.DistanceGrab); // 10f = distance max
+        
+        if (hit.collider.name == "Ground")
+        {
+            if (_ctx.AimDir.y <= 0.6f)
+            {
+                _ctx.Animator.SetFloat("GrabAnimId", 1);
+                if (_ctx.AimDir.y <= 0)
+                    _ctx.AimDir.y = 0;
+            }
+            else
+            {
+                _ctx.Animator.SetFloat("GrabAnimId", 2);
+            }
+        }
+        else
+        {
+            if (_ctx.AimDir.y <= -0.2f)
+            {
+                _ctx.Animator.SetFloat("GrabAnimId", 5);
+            }
+            else if (_ctx.AimDir.y >= 0.2f)
+            {
+                _ctx.Animator.SetFloat("GrabAnimId", 4);
+            }
+            else
+            {
+                _ctx.Animator.SetFloat("GrabAnimId", 3);
+            }
+        }
+    }
+
     private void ExtendArmsWithSpine()
     {
         _ctx.ArmDetection.gameObject.SetActive(true);
@@ -118,12 +160,14 @@ public class PlayerGrabState : PlayerBaseState
         _ctx.IkArmLeft.transform.rotation = _dirQ;
 
         Vector2 grabDirection = (_ctx.AimDir.normalized * _ctx.DistanceGrab);
+
         // Move Left Arm
         Vector2 PointDestinationArmLeft = new Vector2(_ctx.ShoulderLeft.localPosition.x + grabDirection.x, _ctx.ShoulderLeft.localPosition.y + grabDirection.y);
         _ctx.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _ctx.DurationExtendGrab);
         // Move Right Arm
         Vector2 PointDestinationArmRight = new Vector2(_ctx.ShoulderRight.localPosition.x + grabDirection.x, _ctx.ShoulderRight.localPosition.y + grabDirection.y);
         _ctx.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _ctx.DurationExtendGrab);
+        //Debug.Log(PointDestinationArmLeft);
     }
 
     void StartTimer()
@@ -133,27 +177,8 @@ public class PlayerGrabState : PlayerBaseState
     }
     public override void UpdateState()
     {
-        //if (_ctx.ArmDetection.EndAnim == true && _ctx.ArmDetection.ObjectDetected == 0)
-        //{
-        //    // Vérification d'un sol ou non
-        //    if (_ctx.GroundDetection.IsLayerDectected == false)
-        //    {
-        //        SwitchState(_factory.Fall());
-        //    }
-        //    else
-        //    {
-        //        // Passage en WALK ou IDLE
-        //        float moveValue = _ctx.MoveH.ReadValue<float>();
-        //        if (moveValue != 0)
-        //        {
-        //            SwitchState(_factory.Walk());
-        //        }
-        //        else
-        //        {
-        //            SwitchState(_factory.Idle());
-        //        }
-        //    }
-        //}
+        ChoiceGrabAnim();
+
         if (_ctx.UseSpine == false)
         {
             // Draw Line Arm

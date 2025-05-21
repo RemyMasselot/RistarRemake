@@ -206,6 +206,17 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""10373dd0-781a-4d91-9369-d246aa96a1c4"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""JUMP"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""b2ccc430-e03d-42a2-8859-106d048df1ed"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
@@ -219,6 +230,17 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""4e4fe697-b48c-4ac5-b902-12c2b8e26f99"",
                     ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GRAB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""70c14c81-3052-470a-904a-ea24ca537ea6"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

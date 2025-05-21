@@ -10,7 +10,9 @@ public class PlayerStateMachine : MonoBehaviour
     // STATES
     PlayerBaseState _currentState;
     public PlayerStateFactory _states;
+
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
+    public PlayerBaseState PreviousState;
 
     // INPUT ACTIONS
     [Space(10)]

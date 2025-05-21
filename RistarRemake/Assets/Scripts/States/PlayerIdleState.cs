@@ -14,6 +14,7 @@ public class PlayerIdleState : PlayerBaseState
         //Debug.Log("ENTER IDLE");
         _ctx.UpdateAnim("Idle");
         _ctx.Rb.velocity = Vector2.zero;
+        _ctx.PreviousState = _ctx.CurrentState;
     }
     public override void UpdateState()
     {
