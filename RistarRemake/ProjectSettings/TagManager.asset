@@ -9,6 +9,7 @@ TagManager:
   - LadderV
   - LadderH
   - StarHandle
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - LadderV
   - LadderH
   - Player
-  - 
+  - Wall
   - 
   - 
   - 

@@ -36,7 +36,19 @@ public class ArmDetection : MonoBehaviour
 
             if (hit.collider != null)
             {
-                if (hit.collider.CompareTag("StarHandle"))
+                if (hit.collider.CompareTag("Floor"))
+                {
+                    SnapPosHand = hit.collider.gameObject.transform.position;
+                    ObjectDetected = 6;
+                    //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
+                }
+                else if (hit.collider.CompareTag("Wall"))
+                {
+                    SnapPosHand = hit.collider.gameObject.transform.position;
+                    ObjectDetected = 5;
+                    //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
+                }
+                else if (hit.collider.CompareTag("StarHandle"))
                 {
                     SnapPosHand = hit.collider.gameObject.transform.position;
                     ObjectDetected = 4;

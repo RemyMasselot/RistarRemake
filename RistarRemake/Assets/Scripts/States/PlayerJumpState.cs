@@ -7,17 +7,42 @@ public class PlayerJumpState : PlayerBaseState
     public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
     
-    public override void EnterState() {
+    public override void EnterState() 
+    {
         //Debug.Log("JUMP ENTER");
         _ctx.UpdateAnim("Jump");
         _ctx.Leap = false;
         _ctx.Rb.gravityScale = 1;
         _ctx.Rb.velocity = new Vector2(_ctx.JumpForceH, _ctx.JumpForceV);
+        StartTimer();
     }
-    public override void UpdateState() {
+    void StartTimer()
+    {
+        _ctx.CurrentTimerValueJump = _ctx.MaxTimeJump;
+        _ctx.IsTimerRunningJump = true;
+    }
+    public override void UpdateState() 
+    {
+        if (_ctx.IsTimerRunningJump == true)
+        {
+            _ctx.CurrentTimerValueJump -= Time.deltaTime;
+            if (_ctx.CurrentTimerValueJump <= 0f)
+            {
+                _ctx.IsTimerRunningJump = false;
+            }
+        }
+
         CheckSwitchStates();
     }
-    public override void FixedUpdateState() {
+    public override void FixedUpdateState() 
+    {
+        Debug.Log(_ctx.Rb.velocity.y);
+        // Si on est a l'apex et que la touche est maintenu, on reste à l'apex
+        if (_ctx.Rb.velocity.y < 0)
+        {
+            _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, 0);
+        }
+
         float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValue, _ctx.Rb.velocity.y);
 
@@ -48,7 +73,8 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
-    public override void CheckSwitchStates() {
+    public override void CheckSwitchStates() 
+    {
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {
@@ -56,8 +82,13 @@ public class PlayerJumpState : PlayerBaseState
         }
 
         // Passage en state FALL
-        if (_ctx.Rb.velocity.y < 0)
+        if (_ctx.IsTimerRunningJump == false)
         {
+            SwitchState(_factory.Fall());
+        }
+        if (_ctx.Jump.WasReleasedThisFrame())
+        {
+            _ctx.IsTimerRunningJump = false;
             SwitchState(_factory.Fall());
         }
     }

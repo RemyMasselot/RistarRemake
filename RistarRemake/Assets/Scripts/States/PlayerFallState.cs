@@ -12,7 +12,8 @@ public class PlayerFallState : PlayerBaseState
         Debug.Log("ENTER FALL");
         _ctx.UpdateAnim("Fall");
         _ctx.Fall = false;
-        _ctx.Rb.gravityScale = 1.0f;
+        _ctx.Rb.velocity = _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, 0);
+        _ctx.Rb.gravityScale = 1;
         _ctx.PreviousState = _ctx.CurrentState;
     }
     public override void UpdateState() { }
@@ -21,8 +22,9 @@ public class PlayerFallState : PlayerBaseState
         CheckSwitchStates();
         
         // Air Control
-        float moveValue = _ctx.MoveH.ReadValue<float>();
-        _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValue, _ctx.Rb.velocity.y);
+        float moveValueH = _ctx.MoveH.ReadValue<float>();
+        float moveValueV = Mathf.Clamp(_ctx.MoveV.ReadValue<float>(), _ctx.MoveDownFallValue, 0);
+        _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValueH, _ctx.Rb.velocity.y + moveValueV);
 
         if (_ctx.UseSpine == false)
         {

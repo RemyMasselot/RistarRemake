@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using static UnityEngine.UI.Image;
-using UnityEngine.U2D;
 
 public class PlayerGrabState : PlayerBaseState
 {
@@ -22,7 +20,7 @@ public class PlayerGrabState : PlayerBaseState
         //    _ctx.AimDir = new Vector2(_ctx.AimDir.x - _ctx.transform.position.x, _ctx.AimDir.y - _ctx.transform.position.y);
         //    Debug.Log(_ctx.gameObject.name);
         //}
-
+        CorrectionAimGround();
         ChoiceGrabAnim();
 
         _ctx.UpdateAnim("Grab");
@@ -92,19 +90,66 @@ public class PlayerGrabState : PlayerBaseState
         }
 
     }
+    private void CorrectionAimGround()
+    {
+        // Vérification d'un sol ou non
+        if (_ctx.GroundDetection.IsLayerDectected == true)
+        {
+            //RaycastHit2D hit = Physics2D.Raycast(_ctx.ShoulderLeft.position, _ctx.AimDir.normalized, _ctx.DistanceGrab, 1 << 3);
+            //if (hit.collider != null)
+            //{
+            //    Debug.Log("hit raycast");
+            //    if (_ctx.AimDir.y <= 0)
+            //    {
+            //        _ctx.AimDir.y = 0;
+            //    }
+            //}
+            if (_ctx.AimDir.y <= 0)
+            {
+                _ctx.AimDir.y = 0;
+            }
+        }
+    }
 
     private void ChoiceGrabAnim()
     {
         // Vérification d'un sol ou non
-        RaycastHit2D hit = Physics2D.Raycast(_ctx.transform.position, _ctx.AimDir.normalized * _ctx.DistanceGrab); // 10f = distance max
-        
-        if (hit.collider.name == "Ground")
+        if (_ctx.GroundDetection.IsLayerDectected == true)
         {
             if (_ctx.AimDir.y <= 0.6f)
             {
                 _ctx.Animator.SetFloat("GrabAnimId", 1);
-                if (_ctx.AimDir.y <= 0)
-                    _ctx.AimDir.y = 0;
+                //Debug.Log(_ctx.AimDir.y);
+
+                //RaycastHit2D hit = Physics2D.Raycast(_ctx.ShoulderLeft.position, _ctx.AimDir.normalized, _ctx.DistanceGrab/3, 1<<3);
+                //if (hit.collider != null)
+                //{
+                //    Debug.Log("hit raycast");
+                //    if (_ctx.AimDir.y <= 0)
+                //    {
+                //        _ctx.AimDir.y = 0;
+                //    }
+                //}
+                //_ctx.ArmDetection.gameObject.SetActive(true);
+                //Vector2 grabDirection = (_ctx.AimDir.normalized * _ctx.DistanceGrab);
+
+                //// Move Left Arm
+                //Vector2 PointDestinationArmLeft = new Vector2(_ctx.ShoulderLeft.localPosition.x + grabDirection.x, _ctx.ShoulderLeft.localPosition.y + grabDirection.y);
+                //// Move Right Arm
+                //Vector2 PointDestinationArmRight = new Vector2(_ctx.ShoulderRight.localPosition.x + grabDirection.x, _ctx.ShoulderRight.localPosition.y + grabDirection.y);
+                //// Déplacement de Arm Detection pour suivre les mains
+                //_ctx.ArmDetection.GetComponent<Transform>().position = (PointDestinationArmLeft + PointDestinationArmRight) / 2;
+                //float angle = Mathf.Atan2(_ctx.AimDir.y, _ctx.AimDir.x) * Mathf.Rad2Deg;
+                //_ctx.ArmDetection.rotationOffset = angle;
+
+                //if (_ctx.ArmDetection.ObjectDetected == 6)
+                //{
+                //    Debug.Log("geg");
+                //    if (_ctx.AimDir.y <= 0)
+                //    {
+                //        _ctx.AimDir.y = 0;
+                //    }
+                //}
             }
             else
             {
@@ -299,6 +344,12 @@ public class PlayerGrabState : PlayerBaseState
             case 4:
                 GrabStarHandle();
                 break;
+            case 5:
+                GrabWall();
+                break;
+            case 6:
+                GrabFloor();
+                break;
         }
         //Debug.Log(_ctx.ArmDetection.ObjectDetected);
     }
@@ -306,6 +357,12 @@ public class PlayerGrabState : PlayerBaseState
     private void GrabOther()
     {
         Debug.Log("Other Detected");
+        _ctx.IsTimerRunning = false;
+        ShortenArms();
+    }
+    private void GrabWall()
+    {
+        Debug.Log("Wall Detected");
         _ctx.ArmDetection.ObjectDetected = 0;
         if (_ctx.UseSpine == false)
         {
@@ -319,6 +376,27 @@ public class PlayerGrabState : PlayerBaseState
         _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
         _ctx.ArmDetection.ObjectDetected = 0;
+    }
+    private void GrabFloor()
+    {
+        // Vérification d'un sol ou non
+        if (_ctx.GroundDetection.IsLayerDectected == false)
+        {
+            Debug.Log("Floor Detected");
+            _ctx.ArmDetection.ObjectDetected = 0;
+            if (_ctx.UseSpine == false)
+            {
+                _ctx.Arms.gameObject.SetActive(false);
+            }
+            _ctx.ArmDetection.gameObject.SetActive(false);
+
+            // Move Left Arm
+            _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
+            // Move Right Arm
+            _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
+            _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
+            _ctx.ArmDetection.ObjectDetected = 0;
+        }
     }
     private void GrabEnemy()
     {

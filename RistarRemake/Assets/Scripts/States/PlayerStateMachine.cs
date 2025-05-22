@@ -38,8 +38,12 @@ public class PlayerStateMachine : MonoBehaviour
     // JUMP
     [field:SerializeField] public float JumpForceV { get; private set; } = 7f;
     [field:SerializeField] public float JumpForceH { get; private set; } = 3f;
+    public float MaxTimeJump;
+    public float CurrentTimerValueJump;
+    public bool IsTimerRunningJump = false;
+    public float MoveDownFallValue = -0.2f;
 
-    // JUMP
+    // LEAP
     [field: SerializeField] public float LeapForceV { get; private set; } = 7f;
     [field: SerializeField] public float LeapForceH { get; private set; } = 3f;
 
