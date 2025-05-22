@@ -19,11 +19,9 @@ public class PlayerFallState : PlayerBaseState
     public override void UpdateState() { }
     public override void FixedUpdateState() 
     {
-        CheckSwitchStates();
-        
         // Air Control
         float moveValueH = _ctx.MoveH.ReadValue<float>();
-        float moveValueV = Mathf.Clamp(_ctx.MoveV.ReadValue<float>(), _ctx.MoveDownFallValue, 0);
+        float moveValueV = Mathf.Clamp(_ctx.MoveV.ReadValue<float>(), _ctx.MoveDownFallValue, _ctx.MoveDownFallValueMax);
         _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValueH, _ctx.Rb.velocity.y + moveValueV);
 
         if (_ctx.UseSpine == false)
@@ -50,17 +48,13 @@ public class PlayerFallState : PlayerBaseState
                 _ctx.SkeletonAnimation.skeleton.FlipX = true;
             }
         }
+        
+        CheckSwitchStates();
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() 
     {
-        // Passage en state GRAB
-        if (_ctx.Grab.WasPerformedThisFrame())
-        {
-            SwitchState(_factory.Grab());
-        }
-
         // Vérification d'un sol ou non
         if (_ctx.GroundDetection.IsLayerDectected == true)
         {
@@ -75,6 +69,12 @@ public class PlayerFallState : PlayerBaseState
                 // Passage en state IDLE
                 SwitchState(_factory.Idle());
             }
+        }
+
+        // Passage en state GRAB
+        if (_ctx.Grab.WasPerformedThisFrame())
+        {
+            SwitchState(_factory.Grab());
         }
     }
     public override void OnCollision(Collision2D collision) 

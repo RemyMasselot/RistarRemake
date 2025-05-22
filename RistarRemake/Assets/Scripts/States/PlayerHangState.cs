@@ -1,7 +1,10 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerHangState : PlayerBaseState
 {
@@ -10,6 +13,7 @@ public class PlayerHangState : PlayerBaseState
 
     private int _starHandleCurrentValue = 0;
     private bool SnapHands = false;
+    private float _SHangle = 0;
 
     public override void EnterState()
     {
@@ -18,6 +22,16 @@ public class PlayerHangState : PlayerBaseState
         SnapHands = false;
         _starHandleCurrentValue = 0;
         _ctx.Rb.velocity = Vector2.zero;
+        _SHangle = 0;
+        if (_ctx.ArmDetection.ObjectDetected == 4)
+        {
+            _ctx.Animator.SetFloat("HangValue", 2);
+        }
+        else
+        {
+            _ctx.Animator.SetFloat("HangValue", 1);
+        }
+
         _ctx.UpdateAnim("Hang");
 
         // Move Left Arm
@@ -27,9 +41,11 @@ public class PlayerHangState : PlayerBaseState
         {
             SnapHands = true;
         });
+        _ctx.ShCentre = _ctx.ArmDetection.SnapPosHand;
     }
     public override void UpdateState()
     {
+
         // Position des mains
         if (SnapHands == true)
         {
@@ -46,7 +62,6 @@ public class PlayerHangState : PlayerBaseState
             Vector2 directionR = (Vector2)(_ctx.IkArmRight.position - _ctx.ShoulderRight.position);
             float angleR = Mathf.Atan2(directionR.y, directionR.x) * Mathf.Rad2Deg;
             _ctx.IkArmRight.rotation = Quaternion.Euler(0, 0, angleR);
-
         }
 
         if (_ctx.UseSpine == false)
@@ -58,30 +73,37 @@ public class PlayerHangState : PlayerBaseState
             _ctx.LineArmRight.SetPosition(1, _ctx.IkArmRight.position);
         }
 
-        if (_ctx.Grab.WasReleasedThisFrame() && _ctx.ArmDetection.ObjectDetected == 2)
-        {
-            SwitchState(_factory.Headbutt());
-        }
-
-        if (_ctx.Grab.WasReleasedThisFrame() && _ctx.ArmDetection.ObjectDetected == 4)
-        {
-            if (_starHandleCurrentValue < _ctx.StarHandleTargetValue)
-            {
-                if (_ctx.Rb.velocity.y <= 0)
-                {
-                    SwitchState(_factory.Fall());
-                }
-                else
-                {
-                    SwitchState(_factory.Jump());
-                }
-            }
-        }
     }
 
     public override void FixedUpdateState() 
     {
-        ChargingMeteorStrike();
+        if (_ctx.ArmDetection.ObjectDetected == 2)
+        {
+            if (_ctx.Grab.WasReleasedThisFrame())
+            {
+                _ctx.ArmDetection.ObjectDetected = 0;
+                SwitchState(_factory.Headbutt());
+            }
+        }
+
+        if (_ctx.ArmDetection.ObjectDetected == 4)
+        {
+            //Tourner autour du Star Handle
+            _ctx.ShSpeed = Mathf.Clamp(_starHandleCurrentValue / 10, _ctx.ShMinSpeed, _ctx.StarHandleTargetValue);
+            if (_ctx.SpriteRenderer.flipX == true)
+            {
+                _SHangle += -_ctx.ShSpeed * Time.deltaTime;
+            }
+            else
+            {
+                _SHangle += _ctx.ShSpeed * Time.deltaTime;
+            }
+            float x = _ctx.ShCentre.x + Mathf.Cos(_SHangle) * _ctx.ShRayon;
+            float y = _ctx.ShCentre.y + Mathf.Sin(_SHangle) * _ctx.ShRayon;
+            _ctx.transform.position = new Vector2(x, y);
+
+            ChargingMeteorStrike();
+        }
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
@@ -90,47 +112,78 @@ public class PlayerHangState : PlayerBaseState
 
     private void ChargingMeteorStrike()
     {
-        if (_ctx.ArmDetection.ObjectDetected == 4)
+        if (_ctx.SpriteRenderer.flipX == true)
         {
-            if (_ctx.SpriteRenderer.flipX == true)
+            // Body Rotation
+            Vector2 bodyPos = new Vector2(_ctx.transform.position.x, _ctx.transform.position.y);
+            Vector2 direction = bodyPos - _ctx.ArmDetection.SnapPosHand;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            _ctx.transform.rotation = Quaternion.Euler(0, 0, angle);
+            if (_ctx.MoveH.ReadValue<float>() < 0)
             {
-                if (_ctx.MoveH.ReadValue<float>() < 0)
-                {
-                    _starHandleCurrentValue++;
-                    //Debug.Log(_chargingMeteorStrike);
-                }
-                if (_ctx.MoveH.ReadValue<float>() > 0)
-                {
-                    _starHandleCurrentValue--;
-                    //Debug.Log(_chargingMeteorStrike);
-                }
+                _starHandleCurrentValue++;
+                //Debug.Log(_starHandleCurrentValue);
+            }
+            if (_ctx.MoveH.ReadValue<float>() > 0)
+            {
+                _starHandleCurrentValue--;
+                //Debug.Log(_starHandleCurrentValue);
+            }
+        }
+        else
+        {
+            // Body Rotation
+            Vector2 bodyPos = new Vector2(_ctx.transform.position.x, _ctx.transform.position.y);
+            Vector2 direction = _ctx.ArmDetection.SnapPosHand - bodyPos;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            _ctx.transform.rotation = Quaternion.Euler(0, 0, angle);
+            if (_ctx.MoveH.ReadValue<float>() > 0)
+            {
+                _starHandleCurrentValue++;
+                //Debug.Log(_starHandleCurrentValue);
+            }
+            if (_ctx.MoveH.ReadValue<float>() < 0)
+            {
+                _starHandleCurrentValue--;
+                //Debug.Log(_starHandleCurrentValue);
+            }
+        }
+
+        if (_starHandleCurrentValue <= 0)
+        {
+            _starHandleCurrentValue = 0;
+        }
+        if (_starHandleCurrentValue >= _ctx.StarHandleTargetValue)
+        {
+            _starHandleCurrentValue = _ctx.StarHandleTargetValue;
+        }
+
+        if (_ctx.Grab.WasReleasedThisFrame())
+        {
+            if (_ctx.UseSpine == false)
+            {
+                _ctx.Arms.gameObject.SetActive(false);
+                // Move Left Arm
+                _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
+                // Move Right Arm
+                _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
+                _ctx.ArmDetection.ObjectDetected = 0;
+            }
+            if (_starHandleCurrentValue >= _ctx.StarHandleTargetValue)
+            {
+                SwitchState(_factory.MeteorStrike());
             }
             else
             {
-                if (_ctx.MoveH.ReadValue<float>() > 0)
+                _ctx.transform.rotation = Quaternion.Euler(0, 0, 0);
+                if (_ctx.Rb.velocity.y <= 0)
                 {
-                    _starHandleCurrentValue++;
-                    //Debug.Log(_chargingMeteorStrike);
+                    SwitchState(_factory.Fall());
                 }
-                if (_ctx.MoveH.ReadValue<float>() < 0)
+                else
                 {
-                    _starHandleCurrentValue--;
-                    //Debug.Log(_chargingMeteorStrike);
+                    SwitchState(_factory.Jump());
                 }
-            }
-
-            if (_starHandleCurrentValue <= 0)
-            {
-                _starHandleCurrentValue = 0;
-            }
-
-            if (_ctx.Grab.WasReleasedThisFrame() && _starHandleCurrentValue >= _ctx.StarHandleTargetValue)
-            {
-                if (_ctx.UseSpine == false)
-                {
-                    _ctx.Arms.gameObject.SetActive(false);
-                }
-                SwitchState(_factory.MeteorStrike());
             }
         }
     }

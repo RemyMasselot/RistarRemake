@@ -13,18 +13,22 @@ public class PlayerGrabState : PlayerBaseState
     {
         //Debug.Log("ENTER GRAB");
         _ctx.AimDir = _ctx.Aim.ReadValue<Vector2>();
-        //Debug.Log(_ctx.AimDir);
-        //if (_ctx.GamepadUsed == false)
-        //{
-        //    //Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        //    _ctx.AimDir = new Vector2(_ctx.AimDir.x - _ctx.transform.position.x, _ctx.AimDir.y - _ctx.transform.position.y);
-        //    Debug.Log(_ctx.gameObject.name);
-        //}
         CorrectionAimGround();
         ChoiceGrabAnim();
-
         _ctx.UpdateAnim("Grab");
-        
+
+        if (_ctx.UseSpine == false)
+        {
+            // Move Left Arm
+            _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
+            // Move Right Arm
+            _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
+            // Déplacement de Arm Detection pour suivre les mains
+            _ctx.ArmDetection.GetComponent<Transform>().position = (_ctx.IkArmLeft.position + _ctx.IkArmRight.position) / 2;
+            float angle = Mathf.Atan2(_ctx.AimDir.y, _ctx.AimDir.x) * Mathf.Rad2Deg;
+            _ctx.ArmDetection.rotationOffset = angle;
+        }
+
         if (_ctx.UseSpine == false)
         {
             //SANS SPINE
@@ -119,37 +123,6 @@ public class PlayerGrabState : PlayerBaseState
             if (_ctx.AimDir.y <= 0.6f)
             {
                 _ctx.Animator.SetFloat("GrabAnimId", 1);
-                //Debug.Log(_ctx.AimDir.y);
-
-                //RaycastHit2D hit = Physics2D.Raycast(_ctx.ShoulderLeft.position, _ctx.AimDir.normalized, _ctx.DistanceGrab/3, 1<<3);
-                //if (hit.collider != null)
-                //{
-                //    Debug.Log("hit raycast");
-                //    if (_ctx.AimDir.y <= 0)
-                //    {
-                //        _ctx.AimDir.y = 0;
-                //    }
-                //}
-                //_ctx.ArmDetection.gameObject.SetActive(true);
-                //Vector2 grabDirection = (_ctx.AimDir.normalized * _ctx.DistanceGrab);
-
-                //// Move Left Arm
-                //Vector2 PointDestinationArmLeft = new Vector2(_ctx.ShoulderLeft.localPosition.x + grabDirection.x, _ctx.ShoulderLeft.localPosition.y + grabDirection.y);
-                //// Move Right Arm
-                //Vector2 PointDestinationArmRight = new Vector2(_ctx.ShoulderRight.localPosition.x + grabDirection.x, _ctx.ShoulderRight.localPosition.y + grabDirection.y);
-                //// Déplacement de Arm Detection pour suivre les mains
-                //_ctx.ArmDetection.GetComponent<Transform>().position = (PointDestinationArmLeft + PointDestinationArmRight) / 2;
-                //float angle = Mathf.Atan2(_ctx.AimDir.y, _ctx.AimDir.x) * Mathf.Rad2Deg;
-                //_ctx.ArmDetection.rotationOffset = angle;
-
-                //if (_ctx.ArmDetection.ObjectDetected == 6)
-                //{
-                //    Debug.Log("geg");
-                //    if (_ctx.AimDir.y <= 0)
-                //    {
-                //        _ctx.AimDir.y = 0;
-                //    }
-                //}
             }
             else
             {
@@ -233,26 +206,12 @@ public class PlayerGrabState : PlayerBaseState
             _ctx.LineArmRight.SetPosition(1, _ctx.IkArmRight.position);
         }
 
-        if (_ctx.IsTimerRunning == true)
-        {
-            _ctx.CurrentTimerValue -= Time.deltaTime;
-            if (_ctx.CurrentTimerValue <= 0f)
-            {
-                _ctx.IsTimerRunning = false;
-                ShortenArms();
-            }
-        }
 
         // Déplacement de Arm Detection pour suivre les mains
         _ctx.ArmDetection.GetComponent<Transform>().position = (_ctx.IkArmLeft.position + _ctx.IkArmRight.position) / 2;
         float angle = Mathf.Atan2(_ctx.AimDir.y, _ctx.AimDir.x) * Mathf.Rad2Deg;
         _ctx.ArmDetection.rotationOffset = angle;
 
-        if (_ctx.Grab.WasReleasedThisFrame())
-        {
-            _ctx.IsTimerRunning = false;
-            ShortenArms();
-        }
 
         // Parce que je n'arrive pas à référencer ce script dans le script ArmDetection, ici je vérifie à chaque frame ce que les bras ont touché,
         // plutôt que de lancer la bonne fonction au moment où les bras entre en collision avec un élément dans le script ArmDetection.
@@ -263,6 +222,24 @@ public class PlayerGrabState : PlayerBaseState
         {
             _ctx.IkArmLeft.position = _ctx.ArmDetection.SnapPosHandL;
             _ctx.IkArmRight.position = _ctx.ArmDetection.SnapPosHandR;
+        }
+        else
+        {
+            if (_ctx.IsTimerRunning == true)
+            {
+                _ctx.CurrentTimerValue -= Time.deltaTime;
+                if (_ctx.CurrentTimerValue <= 0f)
+                {
+                    _ctx.IsTimerRunning = false;
+                    ShortenArms();
+                }
+            }
+
+            if (_ctx.Grab.WasReleasedThisFrame())
+            {
+                _ctx.IsTimerRunning = false;
+                ShortenArms();
+            }
         }
     }
     public void ShortenArms()
@@ -308,6 +285,7 @@ public class PlayerGrabState : PlayerBaseState
     public override void CheckSwitchStates() { }
     public override void OnCollision(Collision2D collision) 
     {
+        _ctx.ArmDetection.ObjectDetected = 0;
         if (collision.gameObject.CompareTag("LadderV"))
         {
             _ctx.Animator.SetFloat("WallVH", 0);
@@ -317,6 +295,7 @@ public class PlayerGrabState : PlayerBaseState
             }
             SwitchState(_factory.WallIdle());
         }
+        _ctx.ArmDetection.ObjectDetected = 0;
         if (collision.gameObject.CompareTag("LadderH"))
         {
             _ctx.Animator.SetFloat("WallVH", 1);
@@ -379,24 +358,38 @@ public class PlayerGrabState : PlayerBaseState
     }
     private void GrabFloor()
     {
-        // Vérification d'un sol ou non
-        if (_ctx.GroundDetection.IsLayerDectected == false)
+        Debug.Log("Floor Detected");
+        _ctx.ArmDetection.gameObject.SetActive(false);
+
+        // Move Left Arm
+        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
+        // Move Right Arm
+        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab).OnComplete(() =>
         {
-            Debug.Log("Floor Detected");
-            _ctx.ArmDetection.ObjectDetected = 0;
             if (_ctx.UseSpine == false)
             {
                 _ctx.Arms.gameObject.SetActive(false);
             }
-            _ctx.ArmDetection.gameObject.SetActive(false);
-
-            // Move Left Arm
-            _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
-            // Move Right Arm
-            _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
-            _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
-            _ctx.ArmDetection.ObjectDetected = 0;
-        }
+            // Vérification d'un sol ou non
+            if (_ctx.GroundDetection.IsLayerDectected == false)
+            {
+                SwitchState(_factory.Fall());
+            }
+            else
+            {
+                // Passage en WALK ou IDLE
+                float moveValue = _ctx.MoveH.ReadValue<float>();
+                if (moveValue != 0)
+                {
+                    SwitchState(_factory.Walk());
+                }
+                else
+                {
+                    SwitchState(_factory.Idle());
+                }
+            }
+        });
+        _ctx.ArmDetection.ObjectDetected = 0;
     }
     private void GrabEnemy()
     {
@@ -418,14 +411,13 @@ public class PlayerGrabState : PlayerBaseState
         // Move Right Arm
         _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
-        _ctx.ArmDetection.ObjectDetected = 0;
         //Enlever le contrôle du joueur
         //Déplacer le perso jusqu'au point de contact des mains
         //Passage du perso en state IDLECLIMB
     }
     private void GrabStarHandle()
     {
-        Debug.Log("Star Handle Detected");
+        //Debug.Log("Star Handle Detected");
         SwitchState(_factory.Hang());
     }
 }

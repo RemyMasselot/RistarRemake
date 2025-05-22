@@ -37,7 +37,6 @@ public class PlayerHeadbuttState : PlayerBaseState
         }
 
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
-        _ctx.ArmDetection.ObjectDetected = 0;
     }
     public override void FixedUpdateState() { }
     public override void ExitState() { }

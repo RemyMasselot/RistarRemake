@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MeteorStrike
+  m_Name: HangStarHandle
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,11 +21,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: c76bf225d6580b340a22b1f4f70238fb, type: 3}
-    - time: 0.083333336
-      value: {fileID: 21300000, guid: b0efc763aa7be654c9837773e972886d, type: 3}
-    - time: 0.2
-      value: {fileID: 21300000, guid: 3af91d91fe903144fa085b1f393c6df6, type: 3}
+      value: {fileID: 21300000, guid: ed2dd5d204b18f649bbf290b6e71eed7, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -48,15 +44,13 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: c76bf225d6580b340a22b1f4f70238fb, type: 3}
-    - {fileID: 21300000, guid: b0efc763aa7be654c9837773e972886d, type: 3}
-    - {fileID: 21300000, guid: 3af91d91fe903144fa085b1f393c6df6, type: 3}
+    - {fileID: 21300000, guid: ed2dd5d204b18f649bbf290b6e71eed7, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.21666667
+    m_StopTime: 0.016666668
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

@@ -41,7 +41,10 @@ public class PlayerStateMachine : MonoBehaviour
     public float MaxTimeJump;
     public float CurrentTimerValueJump;
     public bool IsTimerRunningJump = false;
+
+    // FALL
     public float MoveDownFallValue = -0.2f;
+    public float MoveDownFallValueMax = 1f;
 
     // LEAP
     [field: SerializeField] public float LeapForceV { get; private set; } = 7f;
@@ -74,6 +77,16 @@ public class PlayerStateMachine : MonoBehaviour
 
     // STAR HANDLE
     public int StarHandleTargetValue = 200;
+    public Vector2 ShCentre;
+    public float ShRayon = 2.5f;
+    public float ShSpeed = 1;
+    public float ShMinSpeed = 1;
+
+    // METEOR STRIKE
+    public float MeteorSpeed = 10;
+    public bool IsTimerRunningMeteor = true;
+    public float MaxTimeMeteor = 10;
+    public float CurrentTimerValueMeteor = 0;
 
     // PHYSICS
     public Rigidbody2D Rb { get { return GetComponent<Rigidbody2D>(); } }
