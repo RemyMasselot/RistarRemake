@@ -1,10 +1,5 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerHangState : PlayerBaseState
 {
