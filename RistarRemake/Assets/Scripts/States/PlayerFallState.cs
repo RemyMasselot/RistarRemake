@@ -9,11 +9,11 @@ public class PlayerFallState : PlayerBaseState
     
     public override void EnterState() 
     {
-        Debug.Log("ENTER FALL");
+        //Debug.Log("ENTER FALL");
         _ctx.UpdateAnim("Fall");
         _ctx.Fall = false;
         _ctx.Rb.velocity = _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, 0);
-        _ctx.Rb.gravityScale = 1;
+        _ctx.Rb.gravityScale = 2;
         _ctx.PreviousState = _ctx.CurrentState;
     }
     public override void UpdateState() { }

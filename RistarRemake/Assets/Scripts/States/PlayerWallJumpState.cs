@@ -14,7 +14,17 @@ public class PlayerWallJumpState : PlayerBaseState
         _ctx.Rb.gravityScale = 1;
         _ctx.Rb.velocity = new Vector2(_ctx.JumpForceH, _ctx.JumpForceV);
     }
-    public override void UpdateState() {
+    public override void UpdateState() 
+    {
+        // Rotation visuelle
+        if (_ctx.Rb.velocity.x > 0)
+        {
+            _ctx.SpriteRenderer.flipX = false;
+        }
+        if (_ctx.Rb.velocity.x < 0)
+        {
+            _ctx.SpriteRenderer.flipX = true;
+        }
         CheckSwitchStates();
     }
     public override void FixedUpdateState() {

@@ -7,13 +7,18 @@ public class PlayerLeapState : PlayerBaseState
     public PlayerLeapState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
+    private float PosY;
+    private bool newOrientation;
+
     public override void EnterState()
     {
         //Debug.Log("JUMP ENTER");
         _ctx.UpdateAnim("Jump");
         _ctx.Leap = false;
         _ctx.Rb.gravityScale = 1;
-        _ctx.Rb.velocity = new Vector2(_ctx.LeapForceH, _ctx.LeapForceV);
+        PosY = _ctx.transform.position.y;
+        newOrientation = false;
+        _ctx.Rb.velocity = new Vector2(0, _ctx.LeapForceV);
     }
     public override void UpdateState()
     {
@@ -21,8 +26,27 @@ public class PlayerLeapState : PlayerBaseState
     }
     public override void FixedUpdateState()
     {
-        float moveValue = _ctx.MoveH.ReadValue<float>();
-        _ctx.Rb.velocity = new Vector2(_ctx.LeapForceH * moveValue, _ctx.Rb.velocity.y);
+        if (newOrientation == true)
+        {
+            //float moveValue = _ctx.MoveH.ReadValue<float>();
+            //_ctx.Rb.velocity = new Vector2(_ctx.LeapForceH * moveValue, _ctx.Rb.velocity.y);
+        }
+        else
+        {
+            if (_ctx.transform.position.y >= PosY + 1.5f)
+            {
+                Debug.Log("efz");
+                newOrientation = true;
+                if (_ctx.SpriteRenderer.flipX == false)
+                {
+                    _ctx.Rb.velocity = new Vector2(_ctx.LeapForceH, _ctx.LeapForceV/2);
+                }
+                else
+                { 
+                    _ctx.Rb.velocity = new Vector2(-_ctx.LeapForceH, _ctx.LeapForceV/2);
+                }
+            }
+        }
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }

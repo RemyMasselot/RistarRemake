@@ -23,12 +23,26 @@ public class PlayerWallClimbState : PlayerBaseState
         if (_ctx.Animator.GetFloat("WallVH") == 0)
         {
             float moveValueV = _ctx.MoveV.ReadValue<float>();
-            _ctx.Rb.velocity = new Vector2(0, moveValueV * _ctx.WalkSpeed * Time.deltaTime);
+            if (moveValueV > 0)
+            {
+                _ctx.Rb.velocity = new Vector2(0, _ctx.WalkSpeed * Time.deltaTime);
+            }
+            if (moveValueV < 0)
+            {
+                _ctx.Rb.velocity = new Vector2(0, -_ctx.WalkSpeed * Time.deltaTime);
+            }
         }
         else
         {
             float moveValueH = _ctx.MoveH.ReadValue<float>();
-            _ctx.Rb.velocity = new Vector2(moveValueH * _ctx.WalkSpeed * Time.deltaTime, 0);
+            if (moveValueH > 0)
+            {
+                _ctx.Rb.velocity = new Vector2(_ctx.WalkSpeed * Time.deltaTime, 0);
+            }
+            if (moveValueH < 0)
+            {
+                _ctx.Rb.velocity = new Vector2(-_ctx.WalkSpeed * Time.deltaTime, 0);
+            }
         }     
     }
     public override void ExitState(){}
@@ -49,7 +63,7 @@ public class PlayerWallClimbState : PlayerBaseState
                 // Passage en state JUMP
                 if (_ctx.Jump.WasPerformedThisFrame())
                 {
-                    SwitchState(_factory.Jump());
+                    SwitchState(_factory.WallJump());
                 }
             }
             if (moveValueV < 0)
