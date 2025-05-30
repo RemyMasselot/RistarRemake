@@ -97,7 +97,7 @@ public class PlayerGrabState : PlayerBaseState
     private void CorrectionAimGround()
     {
         // Vérification d'un sol ou non
-        if (_ctx.GroundDetection.IsLayerDectected == true)
+        if (_ctx.GroundDetection.IsGroundDectected == true)
         {
             //RaycastHit2D hit = Physics2D.Raycast(_ctx.ShoulderLeft.position, _ctx.AimDir.normalized, _ctx.DistanceGrab, 1 << 3);
             //if (hit.collider != null)
@@ -118,7 +118,7 @@ public class PlayerGrabState : PlayerBaseState
     private void ChoiceGrabAnim()
     {
         // Vérification d'un sol ou non
-        if (_ctx.GroundDetection.IsLayerDectected == true)
+        if (_ctx.GroundDetection.IsGroundDectected == true)
         {
             if (_ctx.AimDir.y <= 0.6f)
             {
@@ -258,7 +258,7 @@ public class PlayerGrabState : PlayerBaseState
             if (_ctx.ArmDetection.ObjectDetected == 0)
             {
                 // Vérification d'un sol ou non
-                if (_ctx.GroundDetection.IsLayerDectected == false)
+                if (_ctx.GroundDetection.IsGroundDectected == false)
                 {
                     SwitchState(_factory.Fall());
                 }
@@ -371,7 +371,7 @@ public class PlayerGrabState : PlayerBaseState
                 _ctx.Arms.gameObject.SetActive(false);
             }
             // Vérification d'un sol ou non
-            if (_ctx.GroundDetection.IsLayerDectected == false)
+            if (_ctx.GroundDetection.IsGroundDectected == false)
             {
                 SwitchState(_factory.Fall());
             }

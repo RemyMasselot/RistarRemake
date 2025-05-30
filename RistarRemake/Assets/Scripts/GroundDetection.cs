@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GroundDetection : MonoBehaviour
 {
-    public bool IsLayerDectected { get; private set; }
+    public bool IsGroundDectected { get; private set; }
     
     public Vector2 CapsuleSize;
     public LayerMask LayerToCheck; // Couches à reconnaître
@@ -10,7 +10,7 @@ public class GroundDetection : MonoBehaviour
 
     void FixedUpdate()
     {
-        IsLayerDectected = Physics2D.OverlapCapsule(transform.position, CapsuleSize, CapsuleDirection2D.Horizontal, 0f, LayerToCheck);
+        IsGroundDectected = Physics2D.OverlapCapsule(transform.position, CapsuleSize, CapsuleDirection2D.Horizontal, 0f, LayerToCheck);
     }
 
     void OnDrawGizmos()

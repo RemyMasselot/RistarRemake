@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 2243659184133708067}
   - component: {fileID: 8473505714469478213}
   - component: {fileID: 483997651964529848}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LadderH
   m_TagString: LadderH
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 8367488538968056010}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4297f2e7e338191418815b793a4a3431, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

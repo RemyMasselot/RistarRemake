@@ -91,18 +91,36 @@ public class PlayerJumpState : PlayerBaseState
         {
             SwitchState(_factory.Grab());
         }
+
+        //// Passage en state CLIMB
+        //if (_ctx.LadderVDetectionL.IsLadderVDectectedL == true || _ctx.LadderVDetectionR.IsLadderVDectectedR == true)
+        //{
+        //    _ctx.Animator.SetFloat("WallVH", 0);
+        //    SwitchState(_factory.WallClimb());
+        //}
+        //if (_ctx.LadderHDetection.IsLadderHDectected == true)
+        //{
+        //    _ctx.Animator.SetFloat("WallVH", 1);
+        //    SwitchState(_factory.WallClimb());
+        //}
     }
     public override void OnCollision(Collision2D collision) 
     {
         if (collision.gameObject.CompareTag("LadderV"))
         {
-            _ctx.Animator.SetFloat("WallVH", 0);
-            SwitchState(_factory.WallClimb());
+            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == true || _ctx.LadderVDetectionR.IsLadderVDectectedR == true)
+            {
+                _ctx.Animator.SetFloat("WallVH", 0);
+                SwitchState(_factory.WallClimb());
+            }
         }
         if (collision.gameObject.CompareTag("LadderH"))
         {
-            _ctx.Animator.SetFloat("WallVH", 1);
-            SwitchState(_factory.WallClimb());
+            if (_ctx.LadderHDetection.IsLadderHDectected == true)
+            {
+                _ctx.Animator.SetFloat("WallVH", 1);
+                SwitchState(_factory.WallClimb());
+            }
         }
     }
 }

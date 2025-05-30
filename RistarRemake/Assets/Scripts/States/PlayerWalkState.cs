@@ -44,7 +44,7 @@ public class PlayerWalkState : PlayerBaseState
         }
 
         // Vérification d'un sol ou non
-        if (_ctx.GroundDetection.IsLayerDectected == false)
+        if (_ctx.GroundDetection.IsGroundDectected == false)
         {
             SwitchState(_factory.Fall());
         }

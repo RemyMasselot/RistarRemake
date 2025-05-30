@@ -45,7 +45,9 @@ public class LadderExitDetection : MonoBehaviour
             if (playerStateMachine.CurrentState.GetType() == playerStateMachine._states.WallClimb().GetType())
             {
                 Debug.Log("WALL CLIMB");
-                if (playerStateMachine.gameObject.GetComponent<Rigidbody2D>().velocity.y > 0f)
+                float moveValueV = playerStateMachine.MoveV.ReadValue<float>();
+                float moveValueH = playerStateMachine.MoveH.ReadValue<float>();
+                if (moveValueV > 0f)
                 {
                     if (triggerState == TriggerState.TriggerUp)
                     {
@@ -54,7 +56,7 @@ public class LadderExitDetection : MonoBehaviour
                         //Leap();
                     }
                 }
-                if (playerStateMachine.gameObject.GetComponent<Rigidbody2D>().velocity.y < 0f)
+                if (moveValueV < 0f)
                 {
                     if (triggerState == TriggerState.TriggerDown)
                     {
@@ -63,7 +65,7 @@ public class LadderExitDetection : MonoBehaviour
                         //Fall();
                     }
                 }
-                if (playerStateMachine.gameObject.GetComponent<Rigidbody2D>().velocity.x > 0f)
+                if (moveValueH > 0f)
                 {
                     if (triggerState == TriggerState.TriggerRight)
                     {
@@ -72,7 +74,7 @@ public class LadderExitDetection : MonoBehaviour
                         //Leap();
                     }
                 }
-                if (playerStateMachine.gameObject.GetComponent<Rigidbody2D>().velocity.x < 0f)
+                if (moveValueH < 0f)
                 {
                     if (triggerState == TriggerState.TriggerLeft)
                     {

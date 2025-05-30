@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 633357309090855091}
   - component: {fileID: 7041524083400109034}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ExitUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 8961581264526010390}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4297f2e7e338191418815b793a4a3431, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -192,7 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2819472246268972196}
   - component: {fileID: 2792351508311535757}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ExitDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
