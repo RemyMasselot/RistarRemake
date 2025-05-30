@@ -21,13 +21,22 @@ public class PlayerSpinState : PlayerBaseState
             _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
         }
         _ctx.Rb.gravityScale = 1;
-        if (_ctx.AimDir.magnitude > 0)
+
+        if (_ctx.ArmDetection.ObjectDetected == 5)
         {
-            _ctx.Rb.velocity = new Vector2(1, 1) * 5;
+            if (_ctx.AimDir.magnitude > 0)
+            {
+                _ctx.Rb.velocity = new Vector2(1, 1) * 4;
+            }
+            else
+            {
+                _ctx.Rb.velocity = new Vector2(-1, 1) * 4;
+            }
         }
-        else
+
+        if (_ctx.ArmDetection.ObjectDetected == 2)
         {
-            _ctx.Rb.velocity = new Vector2(-1, 1) * 5;
+            _ctx.Rb.velocity = new Vector2(0, 1) * 10;
         }
     }
     public override void UpdateState()

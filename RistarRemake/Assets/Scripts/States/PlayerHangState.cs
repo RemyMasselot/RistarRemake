@@ -76,7 +76,7 @@ public class PlayerHangState : PlayerBaseState
         {
             if (_ctx.Grab.WasReleasedThisFrame())
             {
-                _ctx.ArmDetection.ObjectDetected = 0;
+                //_ctx.ArmDetection.ObjectDetected = 0;
                 SwitchState(_factory.Headbutt());
             }
         }
@@ -103,7 +103,13 @@ public class PlayerHangState : PlayerBaseState
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
-    public override void OnCollision(Collision2D collision) { }
+    public override void OnCollision(Collision2D collision) 
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            SwitchState(_factory.Headbutt());
+        }
+    }
 
     private void ChargingMeteorStrike()
     {
@@ -162,7 +168,7 @@ public class PlayerHangState : PlayerBaseState
                 _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
                 // Move Right Arm
                 _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
-                _ctx.ArmDetection.ObjectDetected = 0;
+                //_ctx.ArmDetection.ObjectDetected = 0;
             }
             if (_starHandleCurrentValue >= _ctx.StarHandleTargetValue)
             {

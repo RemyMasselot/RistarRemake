@@ -16,6 +16,7 @@ public class PlayerGrabState : PlayerBaseState
         CorrectionAimGround();
         ChoiceGrabAnim();
         _ctx.UpdateAnim("Grab");
+        _ctx.ArmDetection.ObjectDetected = 0;
 
         if (_ctx.UseSpine == false)
         {
@@ -285,7 +286,7 @@ public class PlayerGrabState : PlayerBaseState
     public override void CheckSwitchStates() { }
     public override void OnCollision(Collision2D collision) 
     {
-        _ctx.ArmDetection.ObjectDetected = 0;
+        //_ctx.ArmDetection.ObjectDetected = 0;
         if (collision.gameObject.CompareTag("LadderV"))
         {
             _ctx.Animator.SetFloat("WallVH", 0);
@@ -295,7 +296,7 @@ public class PlayerGrabState : PlayerBaseState
             }
             SwitchState(_factory.WallIdle());
         }
-        _ctx.ArmDetection.ObjectDetected = 0;
+        //_ctx.ArmDetection.ObjectDetected = 0;
         if (collision.gameObject.CompareTag("LadderH"))
         {
             _ctx.Animator.SetFloat("WallVH", 1);
@@ -305,6 +306,12 @@ public class PlayerGrabState : PlayerBaseState
             }
             SwitchState(_factory.WallIdle());
         }
+
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            SwitchState(_factory.Spin());
+        }
+
     }
 
     public void GrabDetectionVerif()
@@ -342,11 +349,6 @@ public class PlayerGrabState : PlayerBaseState
     private void GrabWall()
     {
         Debug.Log("Wall Detected");
-        _ctx.ArmDetection.ObjectDetected = 0;
-        if (_ctx.UseSpine == false)
-        {
-            _ctx.Arms.gameObject.SetActive(false);
-        }
         _ctx.ArmDetection.gameObject.SetActive(false);
 
         // Move Left Arm
@@ -354,7 +356,6 @@ public class PlayerGrabState : PlayerBaseState
         // Move Right Arm
         _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
-        _ctx.ArmDetection.ObjectDetected = 0;
     }
     private void GrabFloor()
     {
