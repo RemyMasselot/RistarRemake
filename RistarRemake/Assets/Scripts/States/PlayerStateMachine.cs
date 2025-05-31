@@ -84,6 +84,8 @@ public class PlayerStateMachine : MonoBehaviour
     public float ShMinSpeed = 6;
     public float ShSpeed = 6;
     public float ShMaxSpeed = 12;
+    public float ShSpeedSlowMotion = 8;
+    public GameObject TriggerGoToMeteorStrike;
 
     // METEOR STRIKE
     public float MeteorSpeed = 10;

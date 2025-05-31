@@ -16,6 +16,12 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         _ctx.UpdateAnim("MeteorStrike");
         _ctx.Rb.gravityScale = 0;
         _rot = _ctx.transform.rotation.eulerAngles;
+        _ctx.Arms.gameObject.SetActive(false);
+        _ctx.TriggerGoToMeteorStrike.SetActive(false);
+        // Move Left Arm
+        _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
+        // Move Right Arm
+        _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
         _ctx.transform.rotation = Quaternion.Euler(0, 0, 0);
         _ctx.SpriteRenderer.flipX = false;
         StartTimer();

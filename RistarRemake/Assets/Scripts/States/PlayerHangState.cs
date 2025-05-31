@@ -9,6 +9,7 @@ public class PlayerHangState : PlayerBaseState
     private float _starHandleCurrentValue = 0;
     private bool SnapHands = false;
     private float _SHangle = 0;
+    private bool _goMeteorStrike = false;
 
     public override void EnterState()
     {
@@ -16,6 +17,7 @@ public class PlayerHangState : PlayerBaseState
         _ctx.ArmDetection.gameObject.SetActive(false);
         _ctx.Rb.velocity = Vector2.zero;
         SnapHands = false;
+        _goMeteorStrike = false;
         _starHandleCurrentValue = 0;
         _SHangle = -1.5f;
         _ctx.ShRayon = _ctx.ShRayonMin;
@@ -116,6 +118,11 @@ public class PlayerHangState : PlayerBaseState
         {
             SwitchState(_factory.Spin());
         }
+
+        if (collision.gameObject == _ctx.TriggerGoToMeteorStrike)
+        {
+            SwitchState(_factory.MeteorStrike());
+        }
     }
 
     private void ChargingMeteorStrike()
@@ -166,38 +173,56 @@ public class PlayerHangState : PlayerBaseState
             _starHandleCurrentValue = _ctx.StarHandleTargetValue;
         }
 
-        float percent = (_starHandleCurrentValue - 0) / (_ctx.StarHandleTargetValue - 0) * 100f;
-
-        _ctx.ShRayon = _ctx.ShRayonMin + (_ctx.ShRayonMax - _ctx.ShRayonMin) * (percent / 100f);
-
-        _ctx.ShSpeed = _ctx.ShMinSpeed + (_ctx.ShMaxSpeed - _ctx.ShMinSpeed) * (percent / 100f);
-
         if (_ctx.Grab.WasReleasedThisFrame())
         {
             if (_ctx.UseSpine == false)
             {
-                _ctx.Arms.gameObject.SetActive(false);
-                // Move Left Arm
-                _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
-                // Move Right Arm
-                _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
-                //_ctx.ArmDetection.ObjectDetected = 0;
-            }
-            if (_starHandleCurrentValue >= _ctx.StarHandleTargetValue)
-            {
-                SwitchState(_factory.MeteorStrike());
-            }
-            else
-            {
-                _ctx.transform.rotation = Quaternion.Euler(0, 0, 0);
-                if (_ctx.Rb.velocity.y <= 0)
+                if (_starHandleCurrentValue >= _ctx.StarHandleTargetValue)
                 {
-                    SwitchState(_factory.Fall());
+                    _goMeteorStrike = true;
                 }
                 else
                 {
-                    SwitchState(_factory.Jump());
+                    _ctx.Arms.gameObject.SetActive(false);
+                    // Move Left Arm
+                    _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
+                    // Move Right Arm
+                    _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
+                    //_ctx.ArmDetection.ObjectDetected = 0;
+                    _ctx.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    if (_ctx.Rb.velocity.y <= 0)
+                    {
+                        SwitchState(_factory.Fall());
+                    }
+                    else
+                    {
+                        SwitchState(_factory.Jump());
+                    }
                 }
+            }
+        }
+
+        float percent = (_starHandleCurrentValue - 0) / (_ctx.StarHandleTargetValue - 0) * 100f;
+        _ctx.ShRayon = _ctx.ShRayonMin + (_ctx.ShRayonMax - _ctx.ShRayonMin) * (percent / 100f);
+        if (_goMeteorStrike == false)
+        {
+             _ctx.ShSpeed = _ctx.ShMinSpeed + (_ctx.ShMaxSpeed - _ctx.ShMinSpeed) * (percent / 100f);
+        }
+        else if (_ctx.ShSpeed != _ctx.ShSpeedSlowMotion)
+        {
+            _ctx.ShSpeed = _ctx.ShSpeedSlowMotion;
+            _ctx.TriggerGoToMeteorStrike.transform.position = _ctx.transform.position;
+            DOVirtual.DelayedCall(0.5f, () =>
+            {
+                _ctx.TriggerGoToMeteorStrike.SetActive(true);
+            });
+        }
+
+        if (_ctx.Jump.WasReleasedThisFrame())
+        {
+            if (_goMeteorStrike == true)
+            {
+                SwitchState(_factory.MeteorStrike());
             }
         }
     }
