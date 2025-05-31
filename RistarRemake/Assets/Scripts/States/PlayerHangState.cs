@@ -6,7 +6,7 @@ public class PlayerHangState : PlayerBaseState
     public PlayerHangState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
-    private int _starHandleCurrentValue = 0;
+    private float _starHandleCurrentValue = 0;
     private bool SnapHands = false;
     private float _SHangle = 0;
 
@@ -14,20 +14,11 @@ public class PlayerHangState : PlayerBaseState
     {
         Debug.Log("ENTER HANG");
         _ctx.ArmDetection.gameObject.SetActive(false);
+        _ctx.Rb.velocity = Vector2.zero;
         SnapHands = false;
         _starHandleCurrentValue = 0;
-        _ctx.Rb.velocity = Vector2.zero;
-        _SHangle = 0;
-        if (_ctx.ArmDetection.ObjectDetected == 4)
-        {
-            _ctx.Animator.SetFloat("HangValue", 2);
-        }
-        else
-        {
-            _ctx.Animator.SetFloat("HangValue", 1);
-        }
-
-        _ctx.UpdateAnim("Hang");
+        _SHangle = -1.5f;
+        _ctx.ShRayon = _ctx.ShRayonMin;
 
         // Move Left Arm
         _ctx.IkArmLeft.transform.DOMove(_ctx.ArmDetection.SnapPosHand, 0.4f);
@@ -36,7 +27,21 @@ public class PlayerHangState : PlayerBaseState
         {
             SnapHands = true;
         });
-        _ctx.ShCentre = _ctx.ArmDetection.SnapPosHand;
+
+        if (_ctx.ArmDetection.ObjectDetected == 4)
+        {
+            _ctx.Animator.SetFloat("HangValue", 2);
+            _ctx.ShCentre = _ctx.ArmDetection.SnapPosHand;
+            float x = _ctx.ShCentre.x + Mathf.Cos(_SHangle) * _ctx.ShRayon;
+            float y = _ctx.ShCentre.y + Mathf.Sin(_SHangle) * _ctx.ShRayon;
+            _ctx.transform.DOMove(new Vector2(x, y), 0.3f);
+        }
+        else
+        {
+            _ctx.Animator.SetFloat("HangValue", 1);
+        }
+
+        _ctx.UpdateAnim("Hang");
     }
     public override void UpdateState()
     {
@@ -81,23 +86,25 @@ public class PlayerHangState : PlayerBaseState
             }
         }
 
-        if (_ctx.ArmDetection.ObjectDetected == 4)
+        if (SnapHands == true)
         {
-            //Tourner autour du Star Handle
-            _ctx.ShSpeed = Mathf.Clamp(_starHandleCurrentValue / 10, _ctx.ShMinSpeed, _ctx.StarHandleTargetValue);
-            if (_ctx.SpriteRenderer.flipX == true)
+            if (_ctx.ArmDetection.ObjectDetected == 4)
             {
-                _SHangle += -_ctx.ShSpeed * Time.deltaTime;
-            }
-            else
-            {
-                _SHangle += _ctx.ShSpeed * Time.deltaTime;
-            }
-            float x = _ctx.ShCentre.x + Mathf.Cos(_SHangle) * _ctx.ShRayon;
-            float y = _ctx.ShCentre.y + Mathf.Sin(_SHangle) * _ctx.ShRayon;
-            _ctx.transform.position = new Vector2(x, y);
+                //Tourner autour du Star Handle
+                if (_ctx.SpriteRenderer.flipX == true)
+                {
+                    _SHangle += -_ctx.ShSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    _SHangle += _ctx.ShSpeed * Time.deltaTime;
+                }
+                float x = _ctx.ShCentre.x + Mathf.Cos(_SHangle) * _ctx.ShRayon;
+                float y = _ctx.ShCentre.y + Mathf.Sin(_SHangle) * _ctx.ShRayon;
+                _ctx.transform.position = new Vector2(x, y);
 
-            ChargingMeteorStrike();
+                ChargingMeteorStrike();
+            }
         }
     }
     public override void ExitState() { }
@@ -158,6 +165,12 @@ public class PlayerHangState : PlayerBaseState
         {
             _starHandleCurrentValue = _ctx.StarHandleTargetValue;
         }
+
+        float percent = (_starHandleCurrentValue - 0) / (_ctx.StarHandleTargetValue - 0) * 100f;
+
+        _ctx.ShRayon = _ctx.ShRayonMin + (_ctx.ShRayonMax - _ctx.ShRayonMin) * (percent / 100f);
+
+        _ctx.ShSpeed = _ctx.ShMinSpeed + (_ctx.ShMaxSpeed - _ctx.ShMinSpeed) * (percent / 100f);
 
         if (_ctx.Grab.WasReleasedThisFrame())
         {

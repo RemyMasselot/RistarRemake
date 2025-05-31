@@ -76,11 +76,14 @@ public class PlayerStateMachine : MonoBehaviour
 
 
     // STAR HANDLE
-    public int StarHandleTargetValue = 200;
+    public float StarHandleTargetValue = 200;
     public Vector2 ShCentre;
-    public float ShRayon = 2.5f;
-    public float ShSpeed = 1;
-    public float ShMinSpeed = 1;
+    public float ShRayonMin = 1.5f;
+    public float ShRayon = 1.5f;
+    public float ShRayonMax = 2.5f;
+    public float ShMinSpeed = 6;
+    public float ShSpeed = 6;
+    public float ShMaxSpeed = 12;
 
     // METEOR STRIKE
     public float MeteorSpeed = 10;
