@@ -77,7 +77,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     // STAR HANDLE
     public float StarHandleTargetValue = 200;
-    public Vector2 ShCentre;
+    public Vector3 ShCentre;
     public float ShRayonMin = 1.5f;
     public float ShRayon = 1.5f;
     public float ShRayonMax = 2.5f;
@@ -140,7 +140,12 @@ public class PlayerStateMachine : MonoBehaviour
     ///////////////////////////////////////////////////////       COLLISION       ///////////////////////////////////////////////////////
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        CurrentState.OnCollision(collision);
+        CurrentState.OnCollisionEnter2D(collision);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        CurrentState.OnCollisionStay2D(collision);
     }
 
     public void UpdateAnim(string animName)

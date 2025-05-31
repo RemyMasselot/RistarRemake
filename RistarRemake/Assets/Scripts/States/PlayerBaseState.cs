@@ -30,7 +30,8 @@ public abstract class PlayerBaseState
         // switch current state of context
         _ctx.CurrentState = newState;
     }
-    public abstract void OnCollision(Collision2D collision);
+    public abstract void OnCollisionEnter2D(Collision2D collision);
+    public abstract void OnCollisionStay2D(Collision2D collision);
     protected void SetSuperState() { }
     protected void SetSubState() { }
 }

@@ -112,7 +112,7 @@ public class PlayerHangState : PlayerBaseState
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
-    public override void OnCollision(Collision2D collision) 
+    public override void OnCollisionEnter2D(Collision2D collision) 
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -226,4 +226,6 @@ public class PlayerHangState : PlayerBaseState
             }
         }
     }
+    public override void OnCollisionStay2D(Collision2D collision) { }
+
 }

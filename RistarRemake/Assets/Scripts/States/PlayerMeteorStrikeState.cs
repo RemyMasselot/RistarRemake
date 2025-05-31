@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerMeteorStrikeState : PlayerBaseState
 {
@@ -9,13 +10,23 @@ public class PlayerMeteorStrikeState : PlayerBaseState
 
     private Vector2 _rot;
     private Vector2 _dirPlayer;
+    private bool CanControl;
 
     public override void EnterState()
     {
         Debug.Log("ENTER METEOR STRIKE");
         _ctx.UpdateAnim("MeteorStrike");
+        CanControl = false;
+        DOVirtual.DelayedCall(0.3f, () =>
+        {
+            CanControl = true;
+        });
         _ctx.Rb.gravityScale = 0;
-        _rot = _ctx.transform.rotation.eulerAngles;
+        _rot = _ctx.transform.position - _ctx.ShCentre;
+        _ctx.GroundDetection.gameObject.SetActive(false);
+        _ctx.LadderHDetection.gameObject.SetActive(false);
+        _ctx.LadderVDetectionL.gameObject.SetActive(false);
+        _ctx.LadderVDetectionR.gameObject.SetActive(false);
         _ctx.Arms.gameObject.SetActive(false);
         _ctx.TriggerGoToMeteorStrike.SetActive(false);
         // Move Left Arm
@@ -43,6 +54,10 @@ public class PlayerMeteorStrikeState : PlayerBaseState
                 _ctx.IsTimerRunningMeteor = false;
                 _ctx.SpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
                 _ctx.SpriteRenderer.flipY = false;
+                _ctx.GroundDetection.gameObject.SetActive(true);
+                _ctx.LadderHDetection.gameObject.SetActive(true);
+                _ctx.LadderVDetectionL.gameObject.SetActive(true);
+                _ctx.LadderVDetectionR.gameObject.SetActive(true);
                 if (_rot.y <= 0)
                 {
                     SwitchState(_factory.Fall());
@@ -57,11 +72,14 @@ public class PlayerMeteorStrikeState : PlayerBaseState
     public override void FixedUpdateState() 
     {
         // Air Control
-        float moveValueH = _ctx.MoveH.ReadValue<float>();
-        float moveValueV = _ctx.MoveV.ReadValue<float>();
-        _dirPlayer = new Vector2(moveValueH, moveValueV);
-        _rot = (_rot + _dirPlayer).normalized;
-        _ctx.transform.Translate(_rot * _ctx.MeteorSpeed);
+        if (CanControl == true)
+        {
+            float moveValueH = _ctx.MoveH.ReadValue<float>();
+            float moveValueV = _ctx.MoveV.ReadValue<float>();
+            _dirPlayer = new Vector2(moveValueH, moveValueV);
+            _rot = (_rot + _dirPlayer).normalized;
+        }
+        _ctx.transform.Translate(_rot.normalized * _ctx.MeteorSpeed);
 
         // Body Rotation
         float angle = Mathf.Atan2(_rot.y, _rot.x) * Mathf.Rad2Deg;
@@ -79,5 +97,28 @@ public class PlayerMeteorStrikeState : PlayerBaseState
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
-    public override void OnCollision(Collision2D collision) { }
+    public override void OnCollisionEnter2D(Collision2D collision) 
+    {
+    }
+    public override void OnCollisionStay2D(Collision2D collision) 
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            Debug.Log("WALL");
+            if (CanControl == true)
+            {
+                CanControl = false;
+                _ctx.MeteorSpeed -= 0.1f;
+                DOVirtual.DelayedCall(0.2f, () =>
+                {
+                    CanControl = true;
+                    _ctx.MeteorSpeed += 0.1f;
+                });
+            }
+
+            Vector2 normale = collision.GetContact(0).normal;
+            _rot = Vector2.Reflect(_rot, normale);
+        }
+    }
+
 }

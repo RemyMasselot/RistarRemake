@@ -12,7 +12,15 @@ public class PlayerFallState : PlayerBaseState
         //Debug.Log("ENTER FALL");
         _ctx.UpdateAnim("Fall");
         _ctx.Fall = false;
-        _ctx.Rb.velocity = _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, 0);
+        if (_ctx.ArmDetection.ObjectDetected == 4)
+        {
+            Vector2 dir = (_ctx.transform.position - _ctx.ShCentre).normalized;
+            _ctx.Rb.velocity = new Vector2(dir.x, dir.y) * 10;
+        }
+        else
+        {
+            _ctx.Rb.velocity = _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, 0);
+        }
         _ctx.Rb.gravityScale = 2;
         _ctx.PreviousState = _ctx.CurrentState;
     }
@@ -89,7 +97,7 @@ public class PlayerFallState : PlayerBaseState
         //    SwitchState(_factory.WallClimb());
         //}
     }
-    public override void OnCollision(Collision2D collision) 
+    public override void OnCollisionEnter2D(Collision2D collision) 
     {
         if (collision.gameObject.CompareTag("LadderV"))
         {
@@ -108,4 +116,6 @@ public class PlayerFallState : PlayerBaseState
             }
         }
     }
+    public override void OnCollisionStay2D(Collision2D collision) { }
+
 }

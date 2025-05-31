@@ -46,7 +46,7 @@ public class PlayerWallJumpState : PlayerBaseState
             SwitchState(_factory.Fall());
         }
     }
-    public override void OnCollision(Collision2D collision) 
+    public override void OnCollisionEnter2D(Collision2D collision) 
     {
         if (collision.gameObject.CompareTag("LadderV"))
         {
@@ -59,4 +59,6 @@ public class PlayerWallJumpState : PlayerBaseState
             SwitchState(_factory.WallClimb());
         }
     }
+    public override void OnCollisionStay2D(Collision2D collision) { }
+
 }

@@ -42,11 +42,12 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
-    public override void OnCollision(Collision2D collision) 
+    public override void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
             SwitchState(_factory.Spin());
         }
     }
+    public override void OnCollisionStay2D(Collision2D collision) { }
 }

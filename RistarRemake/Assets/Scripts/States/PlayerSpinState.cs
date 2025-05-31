@@ -24,7 +24,7 @@ public class PlayerSpinState : PlayerBaseState
 
         if (_ctx.ArmDetection.ObjectDetected == 5)
         {
-            if (_ctx.AimDir.magnitude > 0)
+            if (_ctx.SpriteRenderer.flipX == true)
             {
                 _ctx.Rb.velocity = new Vector2(1, 1) * 4;
             }
@@ -51,5 +51,7 @@ public class PlayerSpinState : PlayerBaseState
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
-    public override void OnCollision(Collision2D collision) { }
+    public override void OnCollisionEnter2D(Collision2D collision) { }
+    public override void OnCollisionStay2D(Collision2D collision) { }
+
 }

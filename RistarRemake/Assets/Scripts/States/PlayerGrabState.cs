@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class PlayerGrabState : PlayerBaseState
 {
@@ -284,7 +285,7 @@ public class PlayerGrabState : PlayerBaseState
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
-    public override void OnCollision(Collision2D collision) 
+    public override void OnCollisionEnter2D(Collision2D collision) 
     {
         //_ctx.ArmDetection.ObjectDetected = 0;
         if (collision.gameObject.CompareTag("LadderV"))
@@ -307,12 +308,16 @@ public class PlayerGrabState : PlayerBaseState
             SwitchState(_factory.WallIdle());
         }
 
+    }
+
+    public override void OnCollisionStay2D(Collision2D collision) 
+    {
         if (collision.gameObject.CompareTag("Wall"))
         {
             SwitchState(_factory.Spin());
         }
-
     }
+
 
     public void GrabDetectionVerif()
     {
