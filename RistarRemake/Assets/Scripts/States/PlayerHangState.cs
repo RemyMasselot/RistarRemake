@@ -107,7 +107,7 @@ public class PlayerHangState : PlayerBaseState
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            SwitchState(_factory.Headbutt());
+            SwitchState(_factory.Spin());
         }
     }
 
