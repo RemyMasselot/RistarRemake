@@ -15,13 +15,20 @@ public class PlayerJumpState : PlayerBaseState
         _ctx.Rb.gravityScale = 1;
         if (_ctx.ArmDetection.ObjectDetected == 4)
         {
-            Vector2 dir = (_ctx.transform.position - _ctx.ShCentre).normalized;
-            _ctx.Rb.velocity = new Vector2(dir.x, dir.y) * 10;
+            Debug.Log("JUMP from star handle");
+            Vector2 dir = _ctx.transform.position - _ctx.ShCentre;
+            
+            float percent = (_ctx._starHandleCurrentValue - 0) / (_ctx.StarHandleTargetValue - 0) * 100f;
+            _ctx.ShImpulseCurrent = _ctx.ShImpulseMin + (_ctx.ShImpulseMax - _ctx.ShImpulseMin) * (percent / 100f);
+            
+            _ctx.Rb.velocity = dir.normalized * _ctx.ShImpulseCurrent;
+            Debug.Log("Dir : " + dir + " velo : " + _ctx.Rb.velocity);
         }
         else
         {
-            _ctx.Rb.velocity = new Vector2(_ctx.JumpForceH, _ctx.JumpForceV);
+            _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.JumpForceV);
         }
+        _ctx.ArmDetection.ObjectDetected = 0;
         StartTimer();
     }
     void StartTimer()
@@ -44,15 +51,22 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void FixedUpdateState() 
     {
+        float moveValue = _ctx.MoveH.ReadValue<float>();
+        if (moveValue != 0)
+        {
+            _ctx.Rb.velocity = new Vector2(moveValue * _ctx.JumpForceH, _ctx.Rb.velocity.y);
+        }
+        else
+        {
+            _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.Rb.velocity.y);
+        }
+
         //Debug.Log(_ctx.Rb.velocity.y);
         // Si on est a l'apex et que la touche est maintenu, on reste à l'apex
         if (_ctx.Rb.velocity.y < 0)
         {
             _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, 0);
         }
-
-        float moveValue = _ctx.MoveH.ReadValue<float>();
-        _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValue, _ctx.Rb.velocity.y);
 
         if (_ctx.UseSpine == false)
         {

@@ -14,13 +14,19 @@ public class PlayerFallState : PlayerBaseState
         _ctx.Fall = false;
         if (_ctx.ArmDetection.ObjectDetected == 4)
         {
+            Debug.Log("FALL from star handle");
             Vector2 dir = (_ctx.transform.position - _ctx.ShCentre).normalized;
-            _ctx.Rb.velocity = new Vector2(dir.x, dir.y) * 10;
+
+            float percent = (_ctx._starHandleCurrentValue - 0) / (_ctx.StarHandleTargetValue - 0) * 100f;
+            _ctx.ShImpulseCurrent = _ctx.ShImpulseMin + (_ctx.ShImpulseMax - _ctx.ShImpulseMin) * (percent / 100f);
+
+            _ctx.Rb.velocity = dir * _ctx.ShImpulseCurrent;
         }
         else
         {
-            _ctx.Rb.velocity = _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, 0);
+            _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, 0);
         }
+        _ctx.ArmDetection.ObjectDetected = 0;
         _ctx.Rb.gravityScale = 2;
         _ctx.PreviousState = _ctx.CurrentState;
     }
@@ -30,7 +36,14 @@ public class PlayerFallState : PlayerBaseState
         // Air Control
         float moveValueH = _ctx.MoveH.ReadValue<float>();
         float moveValueV = Mathf.Clamp(_ctx.MoveV.ReadValue<float>(), _ctx.MoveDownFallValue, _ctx.MoveDownFallValueMax);
-        _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValueH, _ctx.Rb.velocity.y + moveValueV);
+        if (moveValueH != 0)
+        {
+            _ctx.Rb.velocity = new Vector2(moveValueH * _ctx.JumpForceH, _ctx.Rb.velocity.y + moveValueV);
+        }
+        if (moveValueH < 0)
+        {
+            _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.Rb.velocity.y + moveValueV);
+        }
 
         if (_ctx.UseSpine == false)
         {

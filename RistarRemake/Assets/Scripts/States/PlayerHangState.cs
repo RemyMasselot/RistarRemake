@@ -6,7 +6,6 @@ public class PlayerHangState : PlayerBaseState
     public PlayerHangState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
-    private float _starHandleCurrentValue = 0;
     private bool SnapHands = false;
     private float _SHangle = 0;
     private bool _goMeteorStrike = false;
@@ -18,7 +17,7 @@ public class PlayerHangState : PlayerBaseState
         _ctx.Rb.velocity = Vector2.zero;
         SnapHands = false;
         _goMeteorStrike = false;
-        _starHandleCurrentValue = 0;
+        _ctx._starHandleCurrentValue = 0;
         _SHangle = -1.5f;
         _ctx.ShRayon = _ctx.ShRayonMin;
 
@@ -136,12 +135,12 @@ public class PlayerHangState : PlayerBaseState
             _ctx.transform.rotation = Quaternion.Euler(0, 0, angle);
             if (_ctx.MoveH.ReadValue<float>() < 0)
             {
-                _starHandleCurrentValue++;
+                _ctx._starHandleCurrentValue++;
                 //Debug.Log(_starHandleCurrentValue);
             }
             if (_ctx.MoveH.ReadValue<float>() > 0)
             {
-                _starHandleCurrentValue--;
+                _ctx._starHandleCurrentValue--;
                 //Debug.Log(_starHandleCurrentValue);
             }
         }
@@ -154,30 +153,30 @@ public class PlayerHangState : PlayerBaseState
             _ctx.transform.rotation = Quaternion.Euler(0, 0, angle);
             if (_ctx.MoveH.ReadValue<float>() > 0)
             {
-                _starHandleCurrentValue++;
+                _ctx._starHandleCurrentValue++;
                 //Debug.Log(_starHandleCurrentValue);
             }
             if (_ctx.MoveH.ReadValue<float>() < 0)
             {
-                _starHandleCurrentValue--;
+                _ctx._starHandleCurrentValue--;
                 //Debug.Log(_starHandleCurrentValue);
             }
         }
 
-        if (_starHandleCurrentValue <= 0)
+        if (_ctx._starHandleCurrentValue <= 0)
         {
-            _starHandleCurrentValue = 0;
+            _ctx._starHandleCurrentValue = 0;
         }
-        if (_starHandleCurrentValue >= _ctx.StarHandleTargetValue)
+        if (_ctx._starHandleCurrentValue >= _ctx.StarHandleTargetValue)
         {
-            _starHandleCurrentValue = _ctx.StarHandleTargetValue;
+            _ctx._starHandleCurrentValue = _ctx.StarHandleTargetValue;
         }
 
         if (_ctx.Grab.WasReleasedThisFrame())
         {
             if (_ctx.UseSpine == false)
             {
-                if (_starHandleCurrentValue >= _ctx.StarHandleTargetValue)
+                if (_ctx._starHandleCurrentValue >= _ctx.StarHandleTargetValue)
                 {
                     _goMeteorStrike = true;
                 }
@@ -190,7 +189,7 @@ public class PlayerHangState : PlayerBaseState
                     _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
                     //_ctx.ArmDetection.ObjectDetected = 0;
                     _ctx.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    if (_ctx.Rb.velocity.y <= 0)
+                    if (_ctx.transform.position.y <= _ctx.ShCentre.y)
                     {
                         SwitchState(_factory.Fall());
                     }
@@ -202,7 +201,7 @@ public class PlayerHangState : PlayerBaseState
             }
         }
 
-        float percent = (_starHandleCurrentValue - 0) / (_ctx.StarHandleTargetValue - 0) * 100f;
+        float percent = (_ctx._starHandleCurrentValue - 0) / (_ctx.StarHandleTargetValue - 0) * 100f;
         _ctx.ShRayon = _ctx.ShRayonMin + (_ctx.ShRayonMax - _ctx.ShRayonMin) * (percent / 100f);
         if (_goMeteorStrike == false)
         {

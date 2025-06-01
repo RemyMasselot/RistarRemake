@@ -21,6 +21,11 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         {
             CanControl = true;
         });
+
+        Vector2 dir = _ctx.transform.position - _ctx.ShCentre;
+        _ctx.Rb.velocity = dir.normalized * 10;
+
+        _ctx.ArmDetection.ObjectDetected = 0;
         _ctx.Rb.gravityScale = 0;
         _rot = _ctx.transform.position - _ctx.ShCentre;
         _ctx.GroundDetection.gameObject.SetActive(false);
