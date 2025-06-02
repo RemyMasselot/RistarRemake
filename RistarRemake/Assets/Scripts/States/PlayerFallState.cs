@@ -22,13 +22,16 @@ public class PlayerFallState : PlayerBaseState
 
             _ctx.Rb.velocity = dir * _ctx.ShImpulseCurrent;
         }
-        else
+        if (_ctx.LadderVDetectionL.IsLadderVDectectedL == true)
         {
-            //_ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, 0);
+            _ctx.Rb.velocity = new Vector2(_ctx.JumpForceH / 2, -_ctx.JumpForceV / 2);
+        }
+        if (_ctx.LadderVDetectionR.IsLadderVDectectedR == true)
+        {
+            _ctx.Rb.velocity = new Vector2(-_ctx.JumpForceH / 2, -_ctx.JumpForceV / 2);
         }
         _ctx.ArmDetection.ObjectDetected = 0;
         _ctx.Rb.gravityScale = 2;
-        _ctx.PreviousState = _ctx.CurrentState;
     }
     public override void UpdateState() { }
     public override void FixedUpdateState() 
@@ -40,10 +43,11 @@ public class PlayerFallState : PlayerBaseState
         {
             _ctx.Rb.velocity = new Vector2(moveValueH * _ctx.JumpForceH, _ctx.Rb.velocity.y + moveValueV);
         }
-        if (moveValueH < 0)
+        else
         {
             _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.Rb.velocity.y + moveValueV);
         }
+
 
         if (_ctx.UseSpine == false)
         {
@@ -110,8 +114,7 @@ public class PlayerFallState : PlayerBaseState
         //    SwitchState(_factory.WallClimb());
         //}
     }
-    public override void OnCollisionEnter2D(Collision2D collision) { }
-    public override void OnCollisionStay2D(Collision2D collision) 
+    public override void OnCollisionEnter2D(Collision2D collision) 
     {
         if (collision.gameObject.CompareTag("LadderV"))
         {
@@ -129,6 +132,9 @@ public class PlayerFallState : PlayerBaseState
                 SwitchState(_factory.WallClimb());
             }
         }
+    }
+    public override void OnCollisionStay2D(Collision2D collision) 
+    {
     }
 
 }

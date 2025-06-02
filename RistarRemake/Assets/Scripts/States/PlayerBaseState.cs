@@ -21,6 +21,8 @@ public abstract class PlayerBaseState
     public abstract void InitializeSubState();
     protected void SwitchState(PlayerBaseState newState)
     {
+        _ctx.PreviousState = _ctx.CurrentState;
+
         // current state exits state
         ExitState();
 
