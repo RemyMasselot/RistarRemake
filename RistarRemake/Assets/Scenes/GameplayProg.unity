@@ -2193,7 +2193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b253e22660396bc40b000e6ebd659294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CapsuleSize: {x: 0.1, y: 0.8}
+  CapsuleSize: {x: 0.1, y: 0.4}
   LayerToCheck:
     serializedVersion: 2
     m_Bits: 64
@@ -2242,7 +2242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <IsLadderVDectectedL>k__BackingField: 0
-  CapsuleSize: {x: 0.1, y: 0.8}
+  CapsuleSize: {x: 0.1, y: 0.4}
   LayerToCheck:
     serializedVersion: 2
     m_Bits: 64

@@ -13,6 +13,17 @@ public class PlayerWallIdleState : PlayerBaseState
         _ctx.UpdateAnim("WallIdle");
         _ctx.Rb.velocity = Vector2.zero;
         _ctx.Rb.gravityScale = 0;
+        if (_ctx.Animator.GetFloat("WallVH") == 0)
+        {
+            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == true)
+            {
+                _ctx.SpriteRenderer.flipX = true;
+            }
+            if (_ctx.LadderVDetectionR.IsLadderVDectectedR == true)
+            {
+                _ctx.SpriteRenderer.flipX = false;
+            }
+        }
     }
     public override void UpdateState()
     {
