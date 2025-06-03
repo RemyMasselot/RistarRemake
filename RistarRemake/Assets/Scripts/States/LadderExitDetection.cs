@@ -44,7 +44,7 @@ public class LadderExitDetection : MonoBehaviour
             //Debug.Log("Resultat : " + (playerStateMachine.CurrentState.GetType() == playerStateMachine._states.WallClimb().GetType()));
             if (playerStateMachine.CurrentState.GetType() == playerStateMachine._states.WallClimb().GetType())
             {
-                Debug.Log("WALL CLIMB");
+                //Debug.Log("WALL CLIMB");
                 float moveValueV = playerStateMachine.MoveV.ReadValue<float>();
                 float moveValueH = playerStateMachine.MoveH.ReadValue<float>();
                 if (moveValueV > 0f)
@@ -52,7 +52,7 @@ public class LadderExitDetection : MonoBehaviour
                     if (triggerState == TriggerState.TriggerUp)
                     {
                         playerStateMachine.Leap = true;
-                        Debug.Log("Leap");
+                        //Debug.Log("Leap");
                         //Leap();
                     }
                 }
@@ -61,7 +61,7 @@ public class LadderExitDetection : MonoBehaviour
                     if (triggerState == TriggerState.TriggerDown)
                     {
                         playerStateMachine.Fall = true;
-                        Debug.Log("Fall");
+                        //Debug.Log("Fall");
                         //Fall();
                     }
                 }
@@ -70,7 +70,7 @@ public class LadderExitDetection : MonoBehaviour
                     if (triggerState == TriggerState.TriggerRight)
                     {
                         playerStateMachine.Fall = true;
-                        Debug.Log("Fall");
+                        //Debug.Log("Fall");
                         //Leap();
                     }
                 }
@@ -79,7 +79,7 @@ public class LadderExitDetection : MonoBehaviour
                     if (triggerState == TriggerState.TriggerLeft)
                     {
                         playerStateMachine.Fall = true;
-                        Debug.Log("Fall");
+                        //Debug.Log("Fall");
                         //Fall();
                     }
                 }

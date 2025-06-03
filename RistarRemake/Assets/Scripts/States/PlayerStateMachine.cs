@@ -104,7 +104,6 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField] public LadderVDetectionR LadderVDetectionR { get; private set; }
     [field: SerializeField] public LadderHDetection LadderHDetection { get; private set; }
 
-
     private void Awake()
     {
         // setup state

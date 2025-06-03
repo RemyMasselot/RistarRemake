@@ -1018,7 +1018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7069899007089779016, guid: 33c7e0e868d4f7c47bb9fdc948849d8e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5.6996856
+      value: 9.248309
       objectReference: {fileID: 0}
     - target: {fileID: 7069899007089779016, guid: 33c7e0e868d4f7c47bb9fdc948849d8e, type: 3}
       propertyPath: m_LocalScale.y
@@ -1026,11 +1026,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7069899007089779016, guid: 33c7e0e868d4f7c47bb9fdc948849d8e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.8423
+      value: 13.65
       objectReference: {fileID: 0}
     - target: {fileID: 7069899007089779016, guid: 33c7e0e868d4f7c47bb9fdc948849d8e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.24
+      value: 7.22
       objectReference: {fileID: 0}
     - target: {fileID: 7069899007089779016, guid: 33c7e0e868d4f7c47bb9fdc948849d8e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1181,7 +1181,7 @@ MonoBehaviour:
   CapsuleSize: {x: 0.5, y: 0.1}
   LayerToCheck:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
 --- !u!1 &1006158291
 GameObject:
   m_ObjectHideFlags: 0
@@ -2196,7 +2196,7 @@ MonoBehaviour:
   CapsuleSize: {x: 0.1, y: 0.4}
   LayerToCheck:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
 --- !u!1 &2015407781
 GameObject:
   m_ObjectHideFlags: 0
@@ -2245,7 +2245,7 @@ MonoBehaviour:
   CapsuleSize: {x: 0.1, y: 0.4}
   LayerToCheck:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
 --- !u!1001 &2106628966
 PrefabInstance:
   m_ObjectHideFlags: 0

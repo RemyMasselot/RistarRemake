@@ -315,6 +315,18 @@ public class PlayerGrabState : PlayerBaseState
 
         if (collision.gameObject.CompareTag("Wall"))
         {
+            //if (collision.transform.position.x < _ctx.transform.position.x)
+            //{
+            //    _ctx.WallDetectedPosition = 1;
+            //}
+            //if (collision.transform.position.x > _ctx.transform.position.x)
+            //{
+            //    _ctx.WallDetectedPosition = 2;
+            //}
+            //if (collision.transform.position.y > _ctx.transform.position.y)
+            //{
+            //    _ctx.WallDetectedPosition = 3;
+            //}
             SwitchState(_factory.Spin());
         }
     }

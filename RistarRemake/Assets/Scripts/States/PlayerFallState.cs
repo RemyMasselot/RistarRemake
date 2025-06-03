@@ -135,6 +135,7 @@ public class PlayerFallState : PlayerBaseState
     }
     public override void OnCollisionStay2D(Collision2D collision) 
     {
+
     }
 
 }

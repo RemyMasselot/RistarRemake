@@ -107,6 +107,30 @@ public class PlayerHangState : PlayerBaseState
                 ChargingMeteorStrike();
             }
         }
+        else
+        {
+            if (_ctx.Grab.WasReleasedThisFrame())
+            {
+                if (_ctx.UseSpine == false)
+                {
+                    _ctx.Arms.gameObject.SetActive(false);
+                    // Move Left Arm
+                    _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
+                    // Move Right Arm
+                    _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
+                    //_ctx.ArmDetection.ObjectDetected = 0;
+                    _ctx.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    if (_ctx.transform.position.y <= _ctx.ShCentre.y)
+                    {
+                        SwitchState(_factory.Fall());
+                    }
+                    else
+                    {
+                        SwitchState(_factory.Jump());
+                    }
+                }
+            }
+        }
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
