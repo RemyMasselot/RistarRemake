@@ -2638,6 +2638,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2008930667}
     - target: {fileID: 6234253148292796384, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: rayDistance
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6234253148292796384, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: layerMask.m_Bits
       value: 713
       objectReference: {fileID: 0}

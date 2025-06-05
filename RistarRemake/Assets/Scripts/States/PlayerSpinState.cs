@@ -18,6 +18,7 @@ public class PlayerSpinState : PlayerBaseState
         if (_ctx.UseSpine == false)
         {
             _ctx.Arms.gameObject.SetActive(false);
+            _ctx.ArmDetection.gameObject.SetActive(false);
             // Move Left Arm
             _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
             // Move Right Arm
