@@ -30,6 +30,10 @@ public class PlayerStateMachine : MonoBehaviour
     public Animator Animator;
     public SpriteRenderer SpriteRenderer;
     public SkeletonAnimation SkeletonAnimation;
+    public SpriteRenderer HandRight;
+    public SpriteRenderer HandLeft;
+    public Sprite HandOpen;
+    public Sprite HandClose;
 
     // MOVE
     public Transform Transform;

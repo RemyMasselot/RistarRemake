@@ -16,6 +16,8 @@ public class PlayerGrabState : PlayerBaseState
         CorrectionAimGround();
         ChoiceGrabAnim();
         _ctx.UpdateAnim("Grab");
+        _ctx.HandRight.sprite = _ctx.HandOpen;
+        _ctx.HandLeft.sprite = _ctx.HandOpen;
         _ctx.ArmDetection.ObjectDetected = 0;
 
         if (_ctx.UseSpine == false)
@@ -198,6 +200,21 @@ public class PlayerGrabState : PlayerBaseState
     {
         ChoiceGrabAnim();
 
+        // Vérification d'un sol ou non
+        if (_ctx.GroundDetection.IsGroundDectected == false)
+        {
+            // Air Control
+            float moveValueH = _ctx.MoveH.ReadValue<float>();
+            if (moveValueH != 0)
+            {
+                _ctx.Rb.velocity = new Vector2(moveValueH * _ctx.JumpForceH, _ctx.Rb.velocity.y);
+            }
+            else
+            {
+                _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.Rb.velocity.y);
+            }
+        }
+
         if (_ctx.UseSpine == false)
         {
             // Draw Line Arm
@@ -354,6 +371,11 @@ public class PlayerGrabState : PlayerBaseState
             case 6:
                 GrabFloor();
                 break;
+        }
+        if (_ctx.ArmDetection.ObjectDetected != 0)
+        {
+            _ctx.HandRight.sprite = _ctx.HandClose;
+            _ctx.HandLeft.sprite = _ctx.HandClose;
         }
         //Debug.Log(_ctx.ArmDetection.ObjectDetected);
     }

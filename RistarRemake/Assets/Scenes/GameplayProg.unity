@@ -1442,6 +1442,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1150200598 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3279288406607587484, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+  m_PrefabInstance: {fileID: 4924099577031079842}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1224850334
 GameObject:
   m_ObjectHideFlags: 0
@@ -1572,6 +1577,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1282116647 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6929825119123361343, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+  m_PrefabInstance: {fileID: 4924099577031079842}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1297651640
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2553,6 +2563,22 @@ PrefabInstance:
       propertyPath: SHrayon
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: HandLeft
+      value: 
+      objectReference: {fileID: 1150200598}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: HandOpen
+      value: 
+      objectReference: {fileID: 21300000, guid: aeecc0584a829444284730c8a2eb5799, type: 3}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: HandClose
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d368954b106b8e419b6b4d70ead7a5b, type: 3}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: HandRight
+      value: 
+      objectReference: {fileID: 1282116647}
     - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: WalkSpeed
       value: 180
