@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerFallState : PlayerBaseState
@@ -24,18 +22,21 @@ public class PlayerFallState : PlayerBaseState
 
             _ctx.Rb.velocity = dir * _ctx.ShImpulseCurrent;
         }
-        if (_ctx.LadderVDetectionL.IsLadderVDectectedL == true)
+        if (_ctx.LadderVDetectionL.IsLadderVDectectedL == 1)
         {
             _ctx.Rb.velocity = new Vector2(_ctx.JumpForceH / 2, -_ctx.JumpForceV / 2);
         }
-        if (_ctx.LadderVDetectionR.IsLadderVDectectedR == true)
+        if (_ctx.LadderVDetectionR.IsLadderVDectectedR == 1)
         {
             _ctx.Rb.velocity = new Vector2(-_ctx.JumpForceH / 2, -_ctx.JumpForceV / 2);
         }
         _ctx.ArmDetection.ObjectDetected = 0;
         _ctx.Rb.gravityScale = 2;
     }
-    public override void UpdateState() { }
+    public override void UpdateState() 
+    {
+        CheckSwitchStates();
+    }
     public override void FixedUpdateState() 
     {
         // Air Control
@@ -75,16 +76,35 @@ public class PlayerFallState : PlayerBaseState
                 _ctx.SkeletonAnimation.skeleton.FlipX = true;
             }
         }
-        
-        CheckSwitchStates();
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() 
     {
+       // Passage en state JUMP
+       // Jump buffering : on mémorise l’entrée
+       if (_ctx.Jump.WasPerformedThisFrame())
+       {
+           _ctx.JumpBufferCounter = _ctx.JumpBufferTime;
+       }
+       else
+       {
+           _ctx.JumpBufferCounter -= Time.deltaTime;
+       }
+       
+       // Exécution du saut
+       if (_ctx.JumpBufferCounter > 0 && _ctx.CoyoteCounter > 0)
+       {
+           _ctx.JumpBufferCounter = 0f;
+           SwitchState(_factory.Jump());
+       }
+
         // Vérification d'un sol ou non
         if (_ctx.GroundDetection.IsGroundDectected == true)
         {
+            // Mise à jour du coyote time
+            _ctx.CoyoteCounter = _ctx.CoyoteTime;
+
             float moveValue = _ctx.MoveH.ReadValue<float>();
             if (moveValue != 0)
             {
@@ -96,6 +116,10 @@ public class PlayerFallState : PlayerBaseState
                 // Passage en state IDLE
                 SwitchState(_factory.Idle());
             }
+        }
+        else
+        {
+            _ctx.CoyoteCounter -= Time.deltaTime;
         }
 
         // Passage en state GRAB
@@ -120,7 +144,7 @@ public class PlayerFallState : PlayerBaseState
     {
         if (collision.gameObject.CompareTag("LadderV"))
         {
-            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == true || _ctx.LadderVDetectionR.IsLadderVDectectedR == true)
+            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV") || _ctx.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
             {
                 _ctx.Animator.SetFloat("WallVH", 0);
                 SwitchState(_factory.WallClimb());

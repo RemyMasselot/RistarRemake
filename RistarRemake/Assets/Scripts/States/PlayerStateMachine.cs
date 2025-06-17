@@ -45,6 +45,11 @@ public class PlayerStateMachine : MonoBehaviour
     public float MaxTimeJump;
     public float CurrentTimerValueJump;
     public bool IsTimerRunningJump = false;
+    public CornerCorrection CornerCorrection;
+    public float JumpBufferTime = 0.1f;
+    public float CoyoteTime = 0.1f;
+    public float JumpBufferCounter;
+    public float CoyoteCounter;
 
     // FALL
     public float MoveDownFallValue = -0.2f;
@@ -77,6 +82,7 @@ public class PlayerStateMachine : MonoBehaviour
     public LineRenderer LineArmLeft;
     public Transform ShoulderLeft;
     public Transform DefaultPosLeft;
+    public Vector2 GrabDirection;
 
 
     // STAR HANDLE

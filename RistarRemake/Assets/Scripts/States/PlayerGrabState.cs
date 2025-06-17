@@ -181,7 +181,7 @@ public class PlayerGrabState : PlayerBaseState
         _ctx.IkArmLeft.transform.rotation = _dirQ;
 
         Vector2 grabDirection = (_ctx.AimDir.normalized * _ctx.DistanceGrab);
-
+        _ctx.GrabDirection = grabDirection;
         // Move Left Arm
         Vector2 PointDestinationArmLeft = new Vector2(_ctx.ShoulderLeft.localPosition.x + grabDirection.x, _ctx.ShoulderLeft.localPosition.y + grabDirection.y);
         _ctx.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _ctx.DurationExtendGrab);
@@ -307,7 +307,7 @@ public class PlayerGrabState : PlayerBaseState
     {
         if (collision.gameObject.CompareTag("LadderV"))
         {
-            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == true || _ctx.LadderVDetectionR.IsLadderVDectectedR == true)
+            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV") || _ctx.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
             {
                 _ctx.Animator.SetFloat("WallVH", 0);
                 if (_ctx.UseSpine == false)

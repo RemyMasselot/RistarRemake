@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
-using static UnityEngine.UI.Image;
 
 public class PlayerJumpState : PlayerBaseState
 {
     public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
+    
+    //private bool DoCornerCorrection = false;
+    //private bool CorrectionLeft = true;
+    //private float VelocityUp;
     
     public override void EnterState() 
     {
@@ -16,7 +17,8 @@ public class PlayerJumpState : PlayerBaseState
         _ctx.UpdateAnim("Jump");
         _ctx.Leap = false;
         _ctx.Rb.gravityScale = 1;
-        DoCornerCorrection = false;
+        //DoCornerCorrection = false;
+        _ctx.CornerCorrection.enabled = true;
         if (_ctx.ArmDetection.ObjectDetected == 4)
         {
             Debug.Log("JUMP from star handle");
@@ -56,6 +58,20 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void FixedUpdateState() 
     {
+        //if (DoCornerCorrection == true)
+        //{
+        //    if (CorrectionLeft == true)
+        //    {
+        //        _ctx.transform.Translate(Vector3.left * 0.05f);
+        //        _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, VelocityUp);
+        //    }
+        //    else
+        //    {
+        //        _ctx.transform.Translate(Vector3.right * 0.05f);
+        //        _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, VelocityUp);
+        //    }
+        //}
+        
         float moveValue = _ctx.MoveH.ReadValue<float>();
         if (moveValue != 0)
         {
@@ -105,62 +121,62 @@ public class PlayerJumpState : PlayerBaseState
         // Passage en state FALL
         if (_ctx.IsTimerRunningJump == false)
         {
+            _ctx.CornerCorrection.enabled = false;
             SwitchState(_factory.Fall());
         }
         if (_ctx.Jump.WasReleasedThisFrame())
         {
             _ctx.IsTimerRunningJump = false;
+            _ctx.CornerCorrection.enabled = false;
             SwitchState(_factory.Fall());
         }
 
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {
+            _ctx.CornerCorrection.enabled = false;
             SwitchState(_factory.Grab());
         }
     }
-    private bool DoCornerCorrection = false;
-    private bool CorrectionLeft = true;
-    private float VelocityUp;
     public override void OnCollisionEnter2D(Collision2D collision) 
     {
-        if (collision.collider != null)
-        {
-            Vector2 origin = _ctx.transform.position;
-            Vector2 direction = Vector2.up;
-            float distance = 0.08f;
-            int layerToIgnore = LayerMask.NameToLayer("Player");
-            int mask = ~(1 << layerToIgnore);
-            VelocityUp = _ctx.Rb.velocity.y;
-
-            Debug.Log("Touché : " + collision.collider.name);
-            if (collision.collider.gameObject.layer == 9)
-            {
-                Vector2 endPoint = origin + direction.normalized * 0.6f;
-                Vector2 newDir;
-                if (_ctx.transform.position.x < collision.collider.gameObject.transform.position.x)
-                {
-                    newDir = Vector2.left;
-                    CorrectionLeft = true;
-                }
-                else
-                {
-                    newDir = Vector2.right;
-                    CorrectionLeft = false;
-                }
-                Vector2 newOrigin = endPoint + newDir * distance;
-                Collider2D collider = Physics2D.OverlapPoint(newOrigin);
-                if (collider != null)
-                {
-                    Debug.Log("Un objet est présent au point : " + newOrigin + " : " + collider.name);
-                }
-                else
-                {
-                    Debug.Log("Lancer Corner Correction");
-                    DoCornerCorrection = true;
-                }
-            }
-        }
+        //if (collision.collider != null)
+        //{
+        //    Vector2 origin = _ctx.transform.position;
+        //    Vector2 direction = Vector2.up;
+        //    float distance = 0.08f;
+        //    int layerToIgnore = LayerMask.NameToLayer("Player");
+        //    int mask = ~(1 << layerToIgnore);
+        //    VelocityUp = _ctx.Rb.velocity.y;
+        //
+        //    Debug.Log("Touché : " + collision.collider.name);
+        //    if (collision.collider.gameObject.layer == 9)
+        //    {
+        //        Vector2 endPoint = origin + direction.normalized * 0.6f;
+        //        Vector2 newDir;
+        //        if (_ctx.transform.position.x < collision.collider.gameObject.transform.position.x)
+        //        {
+        //            newDir = Vector2.left;
+        //            CorrectionLeft = true;
+        //        }
+        //        else
+        //        {
+        //            newDir = Vector2.right;
+        //            CorrectionLeft = false;
+        //        }
+        //        Vector2 newOrigin = endPoint + newDir * distance;
+        //        Collider2D collider = Physics2D.OverlapPoint(newOrigin);
+        //        if (collider != null)
+        //        {
+        //            Debug.Log("Un objet est présent au point : " + newOrigin + " : " + collider.name);
+        //        }
+        //        else
+        //        {
+        //            Debug.Log("Lancer Corner Correction");
+        //            DoCornerCorrection = true;
+        //        }
+        //    }
+        //}
     }
 
     public override void OnCollisionStay2D(Collision2D collision) 
@@ -169,25 +185,13 @@ public class PlayerJumpState : PlayerBaseState
         // Si oui, je lance un raycast a partir du point de fin de mon premier raycast
         // Si au point de fin de mon 2eme raycast ce trouve du vide alors je décale mon perso
 
-        if (DoCornerCorrection == true)
-        {
-            if (CorrectionLeft == true)
-            {
-                _ctx.transform.Translate(Vector3.left * 0.05f);
-                _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, VelocityUp);
-            }
-            else
-            {
-                _ctx.transform.Translate(Vector3.right * 0.05f);
-                _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, VelocityUp);
-            }
-        }
 
         if (collision.gameObject.CompareTag("LadderV"))
         {
-            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == true || _ctx.LadderVDetectionR.IsLadderVDectectedR == true)
+            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV") || _ctx.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
             {
                 _ctx.Animator.SetFloat("WallVH", 0);
+                _ctx.CornerCorrection.enabled = false;
                 SwitchState(_factory.WallClimb());
             }
         }
@@ -196,6 +200,7 @@ public class PlayerJumpState : PlayerBaseState
             if (_ctx.LadderHDetection.IsLadderHDectected == true)
             {
                 _ctx.Animator.SetFloat("WallVH", 1);
+                _ctx.CornerCorrection.enabled = false;
                 SwitchState(_factory.WallClimb());
             }
         }

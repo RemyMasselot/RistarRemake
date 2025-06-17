@@ -28,11 +28,11 @@ public class PlayerSpinState : PlayerBaseState
 
         if (_ctx.ArmDetection.ObjectDetected == 5)
         {
-            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == true)
+            if (_ctx.GrabDirection.x < 0)
             {
                 _ctx.Rb.velocity = new Vector2(1, 1) * 4;
             }
-            if (_ctx.LadderVDetectionR.IsLadderVDectectedR == true)
+            if (_ctx.GrabDirection.x > 0)
             {
                 _ctx.Rb.velocity = new Vector2(-1, 1) * 4;
             }
