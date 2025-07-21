@@ -9,6 +9,8 @@ public class PlayerWalkState : PlayerBaseState
     public override void EnterState() {
         //Debug.Log("ENTER WALK");
         _ctx.UpdateAnim("Walk");
+        // Mise à jour du coyote time
+        _ctx.CoyoteCounter = _ctx.CoyoteTime;
     }
     public override void UpdateState() { 
         CheckSwitchStates();
@@ -61,7 +63,7 @@ public class PlayerWalkState : PlayerBaseState
         }
 
         // Passage en state JUMP
-        if (_ctx.Jump.WasPerformedThisFrame())
+        if (_ctx.Jump.WasPerformedThisFrame() || _ctx.JumpReady == true)
         {
             SwitchState(_factory.Jump());
         }

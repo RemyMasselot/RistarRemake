@@ -12,6 +12,7 @@ public class PlayerFallState : PlayerBaseState
         //Debug.Log("ENTER FALL");
         _ctx.UpdateAnim("Fall");
         _ctx.Fall = false;
+        _ctx.JumpReady = false;
         if (_ctx.ArmDetection.ObjectDetected == 4)
         {
             Debug.Log("FALL from star handle");
@@ -81,30 +82,39 @@ public class PlayerFallState : PlayerBaseState
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() 
     {
-       // Passage en state JUMP
-       // Jump buffering : on mémorise l’entrée
-       if (_ctx.Jump.WasPerformedThisFrame())
-       {
-           _ctx.JumpBufferCounter = _ctx.JumpBufferTime;
-       }
-       else
-       {
-           _ctx.JumpBufferCounter -= Time.deltaTime;
-       }
-       
-       // Exécution du saut
-       if (_ctx.JumpBufferCounter > 0 && _ctx.CoyoteCounter > 0)
-       {
-           _ctx.JumpBufferCounter = 0f;
-           SwitchState(_factory.Jump());
-       }
+        // Passage en state JUMP
+        // Jump buffering : on mémorise l’entrée
+        //if (_ctx.Jump.WasPerformedThisFrame())
+        //{
+        //    _ctx.JumpBufferCounter = _ctx.JumpBufferTime;
+        //}
+        //else
+        //{
+        //    _ctx.JumpBufferCounter -= Time.deltaTime;
+        //}
+        
+        // Exécution du saut
+        if (_ctx.Jump.WasPerformedThisFrame())
+        {
+            // Coyote Time 
+            if (_ctx.CoyoteCounter > 0)
+            {
+                SwitchState(_factory.Jump());
+            }
+
+            // Jump Buffering
+            if (_ctx.JumpBufferingDetection.IsGroundDectected == true)
+            {
+                if (_ctx.Rb.velocity.y <= 0)
+                {
+                    _ctx.JumpReady = true;
+                }
+            }
+        }
 
         // Vérification d'un sol ou non
         if (_ctx.GroundDetection.IsGroundDectected == true)
         {
-            // Mise à jour du coyote time
-            _ctx.CoyoteCounter = _ctx.CoyoteTime;
-
             float moveValue = _ctx.MoveH.ReadValue<float>();
             if (moveValue != 0)
             {

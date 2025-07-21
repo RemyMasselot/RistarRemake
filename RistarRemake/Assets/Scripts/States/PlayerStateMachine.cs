@@ -50,6 +50,7 @@ public class PlayerStateMachine : MonoBehaviour
     public float CoyoteTime = 0.1f;
     public float JumpBufferCounter;
     public float CoyoteCounter;
+    public bool JumpReady = false;
 
     // FALL
     public float MoveDownFallValue = -0.2f;
@@ -110,6 +111,7 @@ public class PlayerStateMachine : MonoBehaviour
     // PHYSICS
     public Rigidbody2D Rb { get { return GetComponent<Rigidbody2D>(); } }
     [field: SerializeField] public GroundDetection GroundDetection { get; private set; }
+    [field: SerializeField] public GroundDetection JumpBufferingDetection { get; private set; }
     [field: SerializeField] public LadderVDetectionL LadderVDetectionL { get; private set; }
     [field: SerializeField] public LadderVDetectionR LadderVDetectionR { get; private set; }
     [field: SerializeField] public LadderHDetection LadderHDetection { get; private set; }

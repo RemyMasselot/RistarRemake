@@ -13,10 +13,11 @@ public class PlayerJumpState : PlayerBaseState
     
     public override void EnterState() 
     {
-        //Debug.Log("JUMP ENTER");
+        Debug.Log("JUMP ENTER");
         _ctx.UpdateAnim("Jump");
         _ctx.Leap = false;
         _ctx.Rb.gravityScale = 1;
+        _ctx.CoyoteCounter = 0;
         //DoCornerCorrection = false;
         _ctx.CornerCorrection.enabled = true;
         if (_ctx.ArmDetection.ObjectDetected == 4)
@@ -58,20 +59,6 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void FixedUpdateState() 
     {
-        //if (DoCornerCorrection == true)
-        //{
-        //    if (CorrectionLeft == true)
-        //    {
-        //        _ctx.transform.Translate(Vector3.left * 0.05f);
-        //        _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, VelocityUp);
-        //    }
-        //    else
-        //    {
-        //        _ctx.transform.Translate(Vector3.right * 0.05f);
-        //        _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, VelocityUp);
-        //    }
-        //}
-        
         float moveValue = _ctx.MoveH.ReadValue<float>();
         if (moveValue != 0)
         {

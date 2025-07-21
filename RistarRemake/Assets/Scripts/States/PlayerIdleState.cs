@@ -15,6 +15,8 @@ public class PlayerIdleState : PlayerBaseState
         _ctx.UpdateAnim("Idle");
         _ctx.Rb.velocity = Vector2.zero;
         _ctx.PreviousState = _ctx.CurrentState;
+        // Mise à jour du coyote time
+        _ctx.CoyoteCounter = _ctx.CoyoteTime;
     }
     public override void UpdateState()
     {
@@ -35,7 +37,7 @@ public class PlayerIdleState : PlayerBaseState
         }
 
         // Passage en state JUMP
-        if (_ctx.Jump.WasPerformedThisFrame())
+        if (_ctx.Jump.WasPerformedThisFrame() || _ctx.JumpReady == true)
         {
             SwitchState(_factory.Jump());
         }
