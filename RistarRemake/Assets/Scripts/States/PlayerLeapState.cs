@@ -52,6 +52,12 @@ public class PlayerLeapState : PlayerBaseState
     public override void InitializeSubState() { }
     public override void CheckSwitchStates()
     {
+        // Enter DAMAGE STATE
+        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        {
+            SwitchState(_factory.Damage());
+        }
+
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {

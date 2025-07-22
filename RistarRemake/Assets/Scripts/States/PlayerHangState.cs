@@ -22,9 +22,9 @@ public class PlayerHangState : PlayerBaseState
         _ctx.ShRayon = _ctx.ShRayonMin;
 
         // Move Left Arm
-        _ctx.IkArmLeft.transform.DOMove(_ctx.ArmDetection.SnapPosHand, 0.4f);
+        _ctx.IkArmLeft.transform.DOMove(_ctx.ArmDetection.SnapPosHand, 0.2f);
         // Move Right Arm
-        _ctx.IkArmRight.transform.DOMove(_ctx.ArmDetection.SnapPosHand, 0.4f).OnComplete(()=>
+        _ctx.IkArmRight.transform.DOMove(_ctx.ArmDetection.SnapPosHand, 0.2f).OnComplete(()=>
         {
             SnapHands = true;
         });
@@ -46,6 +46,14 @@ public class PlayerHangState : PlayerBaseState
     }
     public override void UpdateState()
     {
+        // Enter DAMAGE STATE
+        if (_ctx.ArmDetection.ObjectDetected == 4)
+        {
+            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            {
+                SwitchState(_factory.Damage());
+            }
+        }
 
         // Position des mains
         if (SnapHands == true)
@@ -82,7 +90,11 @@ public class PlayerHangState : PlayerBaseState
         {
             if (_ctx.Grab.WasReleasedThisFrame())
             {
-                //_ctx.ArmDetection.ObjectDetected = 0;
+                // Move Left Arm
+                _ctx.IkArmLeft.transform.position = _ctx.ArmDetection.SnapPosHand;
+                // Move Right Arm
+                _ctx.IkArmRight.transform.position = _ctx.ArmDetection.SnapPosHand;
+                SnapHands = true;
                 SwitchState(_factory.Headbutt());
             }
         }

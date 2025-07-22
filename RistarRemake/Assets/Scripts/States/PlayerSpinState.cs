@@ -49,6 +49,12 @@ public class PlayerSpinState : PlayerBaseState
     }
     public override void UpdateState()
     {
+        // Enter DAMAGE STATE
+        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        {
+            SwitchState(_factory.Damage());
+        }
+
         AnimatorStateInfo stateInfo = _ctx.Animator.GetCurrentAnimatorStateInfo(0);
 
         if (stateInfo.IsName("Spin") && stateInfo.normalizedTime >= 1f && !hasEnded)

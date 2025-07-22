@@ -60,6 +60,12 @@ public class PlayerWallClimbState : PlayerBaseState
     public override void InitializeSubState(){}
     public override void CheckSwitchStates()
     {
+        // Enter DAMAGE STATE
+        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        {
+            SwitchState(_factory.Damage());
+        }
+
         // Vertical or Horizontal
         if (_ctx.Animator.GetFloat("WallVH") == 0) // VERTICAL
         {

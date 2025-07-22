@@ -17,6 +17,12 @@ public class PlayerGroundedState : PlayerBaseState
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() {
+        // Enter DAMAGE STATE
+        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        {
+            SwitchState(_factory.Damage());
+        }
+
         // Passage en state JUMP
         if (_ctx.Jump.WasPerformedThisFrame())
         {

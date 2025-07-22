@@ -34,6 +34,11 @@ public class PlayerWallIdleState : PlayerBaseState
     public override void InitializeSubState(){}
     public override void CheckSwitchStates()
     {
+        // Enter DAMAGE STATE
+        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        {
+            SwitchState(_factory.Damage());
+        }
 
         // Passage en state WALL CLIMB
         if (_ctx.Animator.GetFloat("WallVH") == 0) //Echelle Vertical

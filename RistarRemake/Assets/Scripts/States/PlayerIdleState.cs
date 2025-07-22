@@ -30,6 +30,12 @@ public class PlayerIdleState : PlayerBaseState
     public override void InitializeSubState(){}
     public override void CheckSwitchStates()
     {
+        // Enter DAMAGE STATE
+        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        {
+            SwitchState(_factory.Damage());
+        }
+
         // Passage en state WALK
         if (_ctx.MoveH.WasPerformedThisFrame())
         {

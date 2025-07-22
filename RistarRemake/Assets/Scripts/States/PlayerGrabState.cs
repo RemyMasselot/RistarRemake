@@ -351,6 +351,12 @@ public class PlayerGrabState : PlayerBaseState
 
     public void GrabDetectionVerif()
     {
+        // Enter DAMAGE STATE
+        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        {
+            SwitchState(_factory.Damage());
+        }
+
         switch (_ctx.ArmDetection.ObjectDetected)
         {
             case 1:

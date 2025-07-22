@@ -105,6 +105,12 @@ public class PlayerJumpState : PlayerBaseState
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() 
     {
+        // Enter DAMAGE STATE
+        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        {
+            SwitchState(_factory.Damage());
+        }
+
         // Passage en state FALL
         if (_ctx.IsTimerRunningJump == false)
         {

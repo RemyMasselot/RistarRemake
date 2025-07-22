@@ -67,4 +67,8 @@ public class PlayerStateFactory
     {
         return new PlayerLeapState(_context, this);
     }
+    public PlayerBaseState Damage()
+    {
+        return new PlayerDamageState(_context, this);
+    }
 }

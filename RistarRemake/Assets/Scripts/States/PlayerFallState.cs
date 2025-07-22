@@ -82,17 +82,12 @@ public class PlayerFallState : PlayerBaseState
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() 
     {
-        // Passage en state JUMP
-        // Jump buffering : on mémorise l’entrée
-        //if (_ctx.Jump.WasPerformedThisFrame())
-        //{
-        //    _ctx.JumpBufferCounter = _ctx.JumpBufferTime;
-        //}
-        //else
-        //{
-        //    _ctx.JumpBufferCounter -= Time.deltaTime;
-        //}
-        
+        // Enter DAMAGE STATE
+        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        {
+            SwitchState(_factory.Damage());
+        }
+
         // Exécution du saut
         if (_ctx.Jump.WasPerformedThisFrame())
         {
