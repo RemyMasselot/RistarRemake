@@ -15,11 +15,11 @@ public class PlayerWallIdleState : PlayerBaseState
         _ctx.Rb.gravityScale = 0;
         if (_ctx.Animator.GetFloat("WallVH") == 0)
         {
-            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV"))
+            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == 1)
             {
                 _ctx.SpriteRenderer.flipX = true;
             }
-            if (_ctx.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
+            if (_ctx.LadderVDetectionR.IsLadderVDectectedR == 1)
             {
                 _ctx.SpriteRenderer.flipX = false;
             }

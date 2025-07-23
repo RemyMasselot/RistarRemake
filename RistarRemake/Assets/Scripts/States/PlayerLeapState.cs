@@ -47,6 +47,26 @@ public class PlayerLeapState : PlayerBaseState
                 }
             }
         }
+        // Air Control
+        float moveValueH = _ctx.MoveH.ReadValue<float>();
+        float moveValueV = Mathf.Clamp(_ctx.MoveV.ReadValue<float>(), _ctx.MoveDownFallValue, _ctx.MoveDownFallValueMax);
+        if (moveValueH != 0)
+        {
+            _ctx.Rb.velocity = new Vector2(moveValueH * _ctx.JumpForceH, _ctx.Rb.velocity.y + moveValueV);
+        }
+        else
+        {
+            _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.Rb.velocity.y + moveValueV);
+        }
+        // Rotation visuelle -- SANS SPINE
+        if (_ctx.Rb.velocity.x > 0)
+        {
+            _ctx.SpriteRenderer.flipX = false;
+        }
+        if (_ctx.Rb.velocity.x < 0)
+        {
+            _ctx.SpriteRenderer.flipX = true;
+        }
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }

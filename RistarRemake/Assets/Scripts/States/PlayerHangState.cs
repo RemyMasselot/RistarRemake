@@ -46,17 +46,17 @@ public class PlayerHangState : PlayerBaseState
     }
     public override void UpdateState()
     {
-        // Enter DAMAGE STATE
-        if (_ctx.ArmDetection.ObjectDetected == 4)
-        {
-            if (_ctx.Invincinbility.IsInvincible == false)
-            {
-                if (_ctx.EnemyDetection.IsGroundDectected == true)
-                {
-                    SwitchState(_factory.Damage());
-                }
-            }
-        }
+        //// Enter DAMAGE STATE
+        //if (_ctx.ArmDetection.ObjectDetected == 4)
+        //{
+        //    if (_ctx.Invincinbility.IsInvincible == false)
+        //    {
+        //        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        //        {
+        //            SwitchState(_factory.Damage());
+        //        }
+        //    }
+        //}
 
         // Position des mains
         if (SnapHands == true)

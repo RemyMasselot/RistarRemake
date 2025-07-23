@@ -12,7 +12,7 @@ public class PlayerSpinState : PlayerBaseState
 
     public override void EnterState()
     {
-        //Debug.Log("ENTER SPIN");
+        Debug.Log("ENTER SPIN");
         _ctx.UpdateAnim("Spin");
         hasEnded = false;
         if (_ctx.UseSpine == false)
@@ -44,6 +44,7 @@ public class PlayerSpinState : PlayerBaseState
 
         if (_ctx.ArmDetection.ObjectDetected == 2)
         {
+            Debug.Log("greg");
             _ctx.Rb.velocity = new Vector2(0, 1) * 10;
         }
     }
@@ -61,7 +62,6 @@ public class PlayerSpinState : PlayerBaseState
     void OnAnimationEnd()
     {
         //Debug.Log("Animation terminée !");
-        _ctx.EnemyDetection.gameObject.SetActive(true);
         SwitchState(_factory.Fall());
     }
     public override void FixedUpdateState() { }

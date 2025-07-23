@@ -13,13 +13,14 @@ public class PlayerHeadbuttState : PlayerBaseState
     {
         Debug.Log("ENTER HEADBUTT");
         _ctx.UpdateAnim("Headbutt");
-        _ctx.EnemyDetection.gameObject.SetActive(false);
         // Move Left Arm
         _ctx.IkArmLeft.transform.DOPause();
         //_ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
         // Move Right Arm
         _ctx.IkArmRight.transform.DOPause();
         //_ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
+        Vector2 dir = (new Vector3 (_ctx.ArmDetection.SnapPosHand.x, _ctx.ArmDetection.SnapPosHand.y, 0)) - _ctx.Transform.position;
+        _ctx.Rb.velocity = dir.normalized * 10;
     }
     public override void UpdateState()
     {
@@ -36,19 +37,18 @@ public class PlayerHeadbuttState : PlayerBaseState
             _ctx.LineArmRight.SetPosition(0, _ctx.ShoulderRight.position);
             _ctx.LineArmRight.SetPosition(1, _ctx.IkArmRight.position);
         }
-
-        _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
     }
-    public override void FixedUpdateState() { }
+    public override void FixedUpdateState() {
+    
+        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        {
+            SwitchState(_factory.Spin());
+        }
+    
+    }
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
     public override void OnCollisionEnter2D(Collision2D collision) { }
-    public override void OnCollisionStay2D(Collision2D collision) 
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            SwitchState(_factory.Spin());
-        }
-    }
+    public override void OnCollisionStay2D(Collision2D collision) { }
 }
