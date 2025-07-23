@@ -31,9 +31,12 @@ public class PlayerIdleState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         // Enter DAMAGE STATE
-        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        if (_ctx.Invincinbility.IsInvincible == false)
         {
-            SwitchState(_factory.Damage());
+            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            {
+                SwitchState(_factory.Damage());
+            }
         }
 
         // Passage en state WALK

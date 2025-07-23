@@ -352,9 +352,12 @@ public class PlayerGrabState : PlayerBaseState
     public void GrabDetectionVerif()
     {
         // Enter DAMAGE STATE
-        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        if (_ctx.Invincinbility.IsInvincible == false)
         {
-            SwitchState(_factory.Damage());
+            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            {
+                SwitchState(_factory.Damage());
+            }
         }
 
         switch (_ctx.ArmDetection.ObjectDetected)

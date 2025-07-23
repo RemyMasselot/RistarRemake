@@ -49,9 +49,12 @@ public class PlayerHangState : PlayerBaseState
         // Enter DAMAGE STATE
         if (_ctx.ArmDetection.ObjectDetected == 4)
         {
-            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            if (_ctx.Invincinbility.IsInvincible == false)
             {
-                SwitchState(_factory.Damage());
+                if (_ctx.EnemyDetection.IsGroundDectected == true)
+                {
+                    SwitchState(_factory.Damage());
+                }
             }
         }
 

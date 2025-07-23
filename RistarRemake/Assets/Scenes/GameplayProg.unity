@@ -620,7 +620,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -5
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.754717, g: 0.11747954, b: 0.11747954, a: 1}
   m_FlipX: 0
@@ -1098,7 +1098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffebf82b6a4ca34eb2bf13a3131f9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CapsuleSize: {x: 0.53, y: 0.97}
+  CapsuleSize: {x: 0.53, y: 1.12}
   LayerToCheck:
     serializedVersion: 2
     m_Bits: 2048
@@ -1111,7 +1111,7 @@ Transform:
   m_GameObject: {fileID: 714488738}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.03, z: 0}
+  m_LocalPosition: {x: 0, y: -0.129, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2205,7 +2205,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -2261,6 +2261,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
   m_PrefabInstance: {fileID: 4924099577031079842}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1542548394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542548381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63ae6558603b2134ea3474ad7d346cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsInvincible: 0
+  InvincibilityTime: 2
+  InvincibilityCounter: 0
 --- !u!1001 &1552374533
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3101,9 +3116,17 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: Invincinbility
+      value: 
+      objectReference: {fileID: 1542548394}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: CornerCorrection
       value: 
       objectReference: {fileID: 1542548388}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: VulnerabilityTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: TriggerGoToMeteorStrike
       value: 
@@ -3120,6 +3143,10 @@ PrefabInstance:
       propertyPath: "<J\xFBmpBufferingDetection>k__BackingField"
       value: 
       objectReference: {fileID: 2125246773}
+    - target: {fileID: 6234253148292796384, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: layerMask.m_Bits
+      value: 2761
+      objectReference: {fileID: 0}
     - target: {fileID: 7566184316883252106, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -3180,6 +3207,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2836248471208439212, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1542548388}
+    - targetCorrespondingSourceObject: {fileID: 2836248471208439212, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1542548394}
   m_SourcePrefab: {fileID: 100100000, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
 --- !u!1001 &5304057185105538359
 PrefabInstance:

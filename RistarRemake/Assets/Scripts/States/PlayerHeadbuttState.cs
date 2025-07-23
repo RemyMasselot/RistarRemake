@@ -13,6 +13,7 @@ public class PlayerHeadbuttState : PlayerBaseState
     {
         Debug.Log("ENTER HEADBUTT");
         _ctx.UpdateAnim("Headbutt");
+        _ctx.EnemyDetection.gameObject.SetActive(false);
         // Move Left Arm
         _ctx.IkArmLeft.transform.DOPause();
         //_ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
