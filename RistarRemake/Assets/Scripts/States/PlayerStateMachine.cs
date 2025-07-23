@@ -35,6 +35,9 @@ public class PlayerStateMachine : MonoBehaviour
     public Sprite HandOpen;
     public Sprite HandClose;
 
+    // General Setting
+    public int LifeNumber = 4;
+
     // MOVE
     public Transform Transform;
     public float WalkSpeed = 10;

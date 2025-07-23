@@ -71,4 +71,8 @@ public class PlayerStateFactory
     {
         return new PlayerDamageState(_context, this);
     }
+    public PlayerBaseState Death()
+    {
+        return new PlayerDeathState(_context, this);
+    }
 }
