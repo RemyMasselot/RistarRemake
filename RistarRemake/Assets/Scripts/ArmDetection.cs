@@ -10,9 +10,9 @@ public class ArmDetection : MonoBehaviour
     public int ObjectDetected = 0;
     public PlayerGrabState PlayerGrabState;
     public bool EndAnim = false;
-    [HideInInspector] public Vector2 SnapPosHand;
-    [HideInInspector] public Vector2 SnapPosHandL;
-    [HideInInspector] public Vector2 SnapPosHandR;
+    public Vector2 SnapPosHand;
+    public Vector2 SnapPosHandL;
+    public Vector2 SnapPosHandR;
     [SerializeField] private Transform HandL;
     [SerializeField] private Transform HandR;
 
@@ -44,7 +44,9 @@ public class ArmDetection : MonoBehaviour
                 }
                 else if (hit.collider.CompareTag("Wall"))
                 {
-                    SnapPosHand = hit.collider.gameObject.transform.position;
+                    //SnapPosHand = hit.collider.gameObject.transform.position;
+                    SnapPosHandL = HandL.position;
+                    SnapPosHandR = HandR.position;
                     ObjectDetected = 5;
                     //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
                 }
@@ -59,6 +61,7 @@ public class ArmDetection : MonoBehaviour
                     SnapPosHandL = HandL.position;
                     SnapPosHandR = HandR.position;
                     ObjectDetected = 3;
+                    Debug.Log("reg");
                     //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
                 }
                 else if (hit.collider.CompareTag("Enemy"))

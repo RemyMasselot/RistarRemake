@@ -215,31 +215,13 @@ public class PlayerGrabState : PlayerBaseState
             }
         }
 
-        if (_ctx.UseSpine == false)
+        if (_ctx.ArmDetection.ObjectDetected == 3 || _ctx.ArmDetection.ObjectDetected == 5)
         {
-            // Draw Line Arm
-            _ctx.LineArmLeft.SetPosition(0, _ctx.ShoulderLeft.position);
-            _ctx.LineArmLeft.SetPosition(1, _ctx.IkArmLeft.position);
-            _ctx.LineArmRight.SetPosition(0, _ctx.ShoulderRight.position);
-            _ctx.LineArmRight.SetPosition(1, _ctx.IkArmRight.position);
-        }
-
-
-        // Déplacement de Arm Detection pour suivre les mains
-        _ctx.ArmDetection.GetComponent<Transform>().position = (_ctx.IkArmLeft.position + _ctx.IkArmRight.position) / 2;
-        float angle = Mathf.Atan2(_ctx.AimDir.y, _ctx.AimDir.x) * Mathf.Rad2Deg;
-        _ctx.ArmDetection.rotationOffset = angle;
-
-
-        // Parce que je n'arrive pas à référencer ce script dans le script ArmDetection, ici je vérifie à chaque frame ce que les bras ont touché,
-        // plutôt que de lancer la bonne fonction au moment où les bras entre en collision avec un élément dans le script ArmDetection.
-        // Un raycast envoyé dans ce script et qui influe sur l'avancé des mains pourrait être une bonne solution
-        GrabDetectionVerif();
-
-        if (_ctx.ArmDetection.ObjectDetected == 3)
-        {
+            DOTween.Kill(_ctx.IkArmLeft);
+            DOTween.Kill(_ctx.IkArmRight);
             _ctx.IkArmLeft.position = _ctx.ArmDetection.SnapPosHandL;
             _ctx.IkArmRight.position = _ctx.ArmDetection.SnapPosHandR;
+            Debug.Log("dfef");
         }
         else
         {
@@ -259,6 +241,26 @@ public class PlayerGrabState : PlayerBaseState
                 ShortenArms();
             }
         }
+        
+        if (_ctx.UseSpine == false)
+        {
+            // Draw Line Arm
+            _ctx.LineArmLeft.SetPosition(0, _ctx.ShoulderLeft.position);
+            _ctx.LineArmLeft.SetPosition(1, _ctx.IkArmLeft.position);
+            _ctx.LineArmRight.SetPosition(0, _ctx.ShoulderRight.position);
+            _ctx.LineArmRight.SetPosition(1, _ctx.IkArmRight.position);
+        }
+        
+        // Déplacement de Arm Detection pour suivre les mains
+        _ctx.ArmDetection.GetComponent<Transform>().position = (_ctx.IkArmLeft.position + _ctx.IkArmRight.position) / 2;
+        float angle = Mathf.Atan2(_ctx.AimDir.y, _ctx.AimDir.x) * Mathf.Rad2Deg;
+        _ctx.ArmDetection.rotationOffset = angle;
+
+
+        // Parce que je n'arrive pas à référencer ce script dans le script ArmDetection, ici je vérifie à chaque frame ce que les bras ont touché,
+        // plutôt que de lancer la bonne fonction au moment où les bras entre en collision avec un élément dans le script ArmDetection.
+        // Un raycast envoyé dans ce script et qui influe sur l'avancé des mains pourrait être une bonne solution
+        GrabDetectionVerif();
     }
     public void ShortenArms()
     {
@@ -359,6 +361,12 @@ public class PlayerGrabState : PlayerBaseState
                 SwitchState(_factory.Damage());
             }
         }
+        
+        if (_ctx.ArmDetection.ObjectDetected != 0)
+        {
+            _ctx.HandRight.sprite = _ctx.HandClose;
+            _ctx.HandLeft.sprite = _ctx.HandClose;
+        }
 
         switch (_ctx.ArmDetection.ObjectDetected)
         {
@@ -381,11 +389,6 @@ public class PlayerGrabState : PlayerBaseState
                 GrabFloor();
                 break;
         }
-        if (_ctx.ArmDetection.ObjectDetected != 0)
-        {
-            _ctx.HandRight.sprite = _ctx.HandClose;
-            _ctx.HandLeft.sprite = _ctx.HandClose;
-        }
         //Debug.Log(_ctx.ArmDetection.ObjectDetected);
     }
 
@@ -400,10 +403,10 @@ public class PlayerGrabState : PlayerBaseState
         Debug.Log("Wall Detected");
         _ctx.ArmDetection.gameObject.SetActive(false);
 
-        // Move Left Arm
-        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
-        // Move Right Arm
-        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
+        //// Move Left Arm
+        //_ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
+        //// Move Right Arm
+        //_ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
     }
     private void GrabFloor()
@@ -456,10 +459,10 @@ public class PlayerGrabState : PlayerBaseState
         Debug.Log("Ladder Detected");
         _ctx.ArmDetection.gameObject.SetActive(false);
 
-        // Move Left Arm
-        _ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
-        // Move Right Arm
-        _ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
+        //// Move Left Arm
+        //_ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
+        //// Move Right Arm
+        //_ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
         _ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
         //Enlever le contrôle du joueur
         //Déplacer le perso jusqu'au point de contact des mains
