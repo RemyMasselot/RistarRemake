@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,6 +38,9 @@ public class PlayerJumpState : PlayerBaseState
         }
         _ctx.ArmDetection.ObjectDetected = 0;
         StartTimer();
+        
+        // CAMERA BEHAVIOR
+        _ctx.Camera.DOOrthoSize(_ctx.MainCameraBehavior.SizeJump, 0.2f);
     }
     void StartTimer()
     {

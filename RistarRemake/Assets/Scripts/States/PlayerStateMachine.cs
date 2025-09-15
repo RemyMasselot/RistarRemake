@@ -38,6 +38,10 @@ public class PlayerStateMachine : MonoBehaviour
     // General Setting
     public int LifeNumber = 4;
 
+    // CAMERA
+    public Camera Camera;
+    public MainCameraBehavior MainCameraBehavior;
+
     // MOVE
     public Transform Transform;
     public float WalkSpeed = 10;

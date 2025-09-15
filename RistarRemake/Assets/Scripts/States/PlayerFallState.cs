@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,6 +34,9 @@ public class PlayerFallState : PlayerBaseState
         }
         _ctx.ArmDetection.ObjectDetected = 0;
         _ctx.Rb.gravityScale = 2;
+
+        // CAMERA BEHAVIOR
+        _ctx.Camera.DOOrthoSize(_ctx.MainCameraBehavior.SizeDefault, 0.8f);
     }
     public override void UpdateState() 
     {
