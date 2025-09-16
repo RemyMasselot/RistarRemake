@@ -36,7 +36,8 @@ public class PlayerFallState : PlayerBaseState
         _ctx.Rb.gravityScale = 2;
 
         // CAMERA BEHAVIOR
-        _ctx.Camera.DOOrthoSize(_ctx.MainCameraBehavior.SizeDefault, 0.8f);
+        //_ctx.Camera.DOOrthoSize(_ctx.MainCameraBehavior.SizeDefault, 0.8f);
+        //DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.y, x => _ctx.MainCameraBehavior.CameraPositionFallOff.y = x, _ctx.MainCameraBehavior.PosFallY, 0.8f);
     }
     public override void UpdateState() 
     {

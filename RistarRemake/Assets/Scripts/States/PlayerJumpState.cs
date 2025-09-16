@@ -38,9 +38,9 @@ public class PlayerJumpState : PlayerBaseState
         }
         _ctx.ArmDetection.ObjectDetected = 0;
         StartTimer();
-        
+
         // CAMERA BEHAVIOR
-        _ctx.Camera.DOOrthoSize(_ctx.MainCameraBehavior.SizeJump, 0.2f);
+        _ctx.MainCameraBehavior.CamJumpEnter();
     }
     void StartTimer()
     {

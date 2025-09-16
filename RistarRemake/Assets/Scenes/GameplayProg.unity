@@ -434,10 +434,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  player: {fileID: 1542548381}
-  CameraPositionFallOff: {x: 0, y: 3, z: 0}
+  playerStateMachine: {fileID: 309670447}
+  Camera: {fileID: 0}
+  CameraPositionDefault: {x: 0, y: 2.5, z: -10}
+  CameraPositionFallOff: {x: 1, y: 0, z: 0}
   SizeDefault: 5
+  AimMultiplier: 10
+  PosWalkX: 1
   SizeJump: 5.1
+  PosJumpY: 0.5
+  PosFallY: -2
 --- !u!1001 &383118815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1909,8 +1915,8 @@ Transform:
   m_GameObject: {fileID: 1224850334}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.509, y: -4.52, z: 0}
-  m_LocalScale: {x: 38.533512, y: 1, z: 1}
+  m_LocalPosition: {x: 8.509, y: -6.2461, z: 0}
+  m_LocalScale: {x: 38.533512, y: 4.4522, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

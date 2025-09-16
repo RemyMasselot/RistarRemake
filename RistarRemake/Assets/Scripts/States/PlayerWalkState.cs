@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class PlayerWalkState : PlayerBaseState
         _ctx.UpdateAnim("Walk");
         // Mise à jour du coyote time
         _ctx.CoyoteCounter = _ctx.CoyoteTime;
+
     }
     public override void UpdateState() { 
         CheckSwitchStates();
@@ -19,6 +21,16 @@ public class PlayerWalkState : PlayerBaseState
         // Déplacements du personnage
         float moveValue = _ctx.MoveH.ReadValue<float>();
         _ctx.Rb.velocity = new Vector2(moveValue * _ctx.WalkSpeed * Time.deltaTime, 0);
+
+        //CAMERA BEHAVIOR
+        if (moveValue > 0)
+        {
+            DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, _ctx.MainCameraBehavior.PosWalkX, 1f);
+        }
+        else if (moveValue < 0)
+        {
+            DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, - _ctx.MainCameraBehavior.PosWalkX, 1f);
+        }
 
         if (_ctx.UseSpine == false)
         {

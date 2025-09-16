@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -11,12 +12,15 @@ public class PlayerIdleState : PlayerBaseState
     
     public override void EnterState()
     {
-        //Debug.Log("ENTER IDLE");
+        Debug.Log("ENTER IDLE");
         _ctx.UpdateAnim("Idle");
         _ctx.Rb.velocity = Vector2.zero;
         _ctx.PreviousState = _ctx.CurrentState;
         // Mise à jour du coyote time
         _ctx.CoyoteCounter = _ctx.CoyoteTime;
+        _ctx.MainCameraBehavior.CamIdleEnter();
+        //DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.y, x => _ctx.MainCameraBehavior.CameraPositionFallOff.y = x, 0, 0.8f);
+        //_ctx.Camera.DOOrthoSize(_ctx.MainCameraBehavior.SizeDefault, 0.8f);
     }
     public override void UpdateState()
     {
