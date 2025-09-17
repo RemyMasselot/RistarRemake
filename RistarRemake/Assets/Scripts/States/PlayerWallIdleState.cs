@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class PlayerWallIdleState : PlayerBaseState
     
     public override void EnterState()
     {
-        Debug.Log("ENTER WALL IDLE");
+        //Debug.Log("ENTER WALL IDLE");
         _ctx.UpdateAnim("WallIdle");
         _ctx.Rb.velocity = Vector2.zero;
         _ctx.Rb.gravityScale = 0;
@@ -28,6 +29,23 @@ public class PlayerWallIdleState : PlayerBaseState
     public override void UpdateState()
     {
         CheckSwitchStates();
+
+        //CAMERA BEHAVIOR
+        Vector2 aimValue = _ctx.Aim.ReadValue<Vector2>();
+        if (_ctx.Animator.GetFloat("WallVH") == 1) //Echelle Horizontale
+        {
+            // Rotation visuelle
+            if (aimValue.x > 0)
+            {
+                _ctx.SpriteRenderer.flipX = false;
+                DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, _ctx.MainCameraBehavior.PosWalkX, 2f);
+            }
+            if (aimValue.x < 0)
+            {
+                _ctx.SpriteRenderer.flipX = true;
+                DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, -_ctx.MainCameraBehavior.PosWalkX, 2f);
+            }
+        }
     }
     public override void FixedUpdateState(){ }
     public override void ExitState(){}

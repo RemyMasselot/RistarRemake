@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,19 +11,31 @@ public class PlayerIdleState : PlayerBaseState
     
     public override void EnterState()
     {
-        Debug.Log("ENTER IDLE");
+        //Debug.Log("ENTER IDLE");
         _ctx.UpdateAnim("Idle");
         _ctx.Rb.velocity = Vector2.zero;
         _ctx.PreviousState = _ctx.CurrentState;
         // Mise à jour du coyote time
         _ctx.CoyoteCounter = _ctx.CoyoteTime;
-        _ctx.MainCameraBehavior.CamIdleEnter();
-        //DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.y, x => _ctx.MainCameraBehavior.CameraPositionFallOff.y = x, 0, 0.8f);
-        //_ctx.Camera.DOOrthoSize(_ctx.MainCameraBehavior.SizeDefault, 0.8f);
+        _ctx.MainCameraBehavior.PlayerTouchGround();
     }
     public override void UpdateState()
     {
         CheckSwitchStates();
+
+        // CAMERA BEHAVIOR
+        Vector2 aimValue = _ctx.Aim.ReadValue<Vector2>();
+        // Rotation visuelle
+        if (aimValue.x > 0)
+        {
+            _ctx.SpriteRenderer.flipX = false;
+            DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, _ctx.MainCameraBehavior.PosWalkX, 2f);
+        }
+        if (aimValue.x < 0)
+        {
+            _ctx.SpriteRenderer.flipX = true;
+            DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, - _ctx.MainCameraBehavior.PosWalkX, 2f);
+        }
     }
     public override void FixedUpdateState()
     {

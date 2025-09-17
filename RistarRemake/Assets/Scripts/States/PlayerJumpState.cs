@@ -14,7 +14,7 @@ public class PlayerJumpState : PlayerBaseState
     
     public override void EnterState() 
     {
-        Debug.Log("JUMP ENTER");
+        //Debug.Log("JUMP ENTER");
         _ctx.UpdateAnim("Jump");
         _ctx.Leap = false;
         _ctx.Rb.gravityScale = 1;

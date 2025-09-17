@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,10 +49,12 @@ public class PlayerWallClimbState : PlayerBaseState
             float moveValueH = _ctx.MoveH.ReadValue<float>();
             if (moveValueH > 0)
             {
+                _ctx.SpriteRenderer.flipX = false;
                 _ctx.Rb.velocity = new Vector2(_ctx.WalkSpeed * Time.deltaTime, 0);
             }
             if (moveValueH < 0)
             {
+                _ctx.SpriteRenderer.flipX = true;
                 _ctx.Rb.velocity = new Vector2(-_ctx.WalkSpeed * Time.deltaTime, 0);
             }
         }     

@@ -36,6 +36,7 @@ public class PlayerHangState : PlayerBaseState
             float x = _ctx.ShCentre.x + Mathf.Cos(_SHangle) * _ctx.ShRayon;
             float y = _ctx.ShCentre.y + Mathf.Sin(_SHangle) * _ctx.ShRayon;
             _ctx.transform.DOMove(new Vector2(x, y), 0.3f);
+            //_ctx.MainCameraBehavior.target = _ctx.ShCentre;
         }
         else
         {

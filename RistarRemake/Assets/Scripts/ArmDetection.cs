@@ -61,7 +61,7 @@ public class ArmDetection : MonoBehaviour
                     SnapPosHandL = HandL.position;
                     SnapPosHandR = HandR.position;
                     ObjectDetected = 3;
-                    Debug.Log("reg");
+                    //Debug.Log("reg");
                     //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
                 }
                 else if (hit.collider.CompareTag("Enemy"))

@@ -221,7 +221,7 @@ public class PlayerGrabState : PlayerBaseState
             DOTween.Kill(_ctx.IkArmRight);
             _ctx.IkArmLeft.position = _ctx.ArmDetection.SnapPosHandL;
             _ctx.IkArmRight.position = _ctx.ArmDetection.SnapPosHandR;
-            Debug.Log("dfef");
+            //Debug.Log("dfef");
         }
         else
         {
@@ -446,7 +446,7 @@ public class PlayerGrabState : PlayerBaseState
     }
     private void GrabEnemy()
     {
-        Debug.Log("Enemy Detected");
+        //Debug.Log("Enemy Detected");
         SwitchState(_factory.Hang());
         //_ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
         //_ctx.ArmDetection.ObjectDetected = 0;
@@ -456,7 +456,7 @@ public class PlayerGrabState : PlayerBaseState
     }
     private void GrabLadder()
     {
-        Debug.Log("Ladder Detected");
+        //Debug.Log("Ladder Detected");
         _ctx.ArmDetection.gameObject.SetActive(false);
 
         //// Move Left Arm

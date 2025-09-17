@@ -435,15 +435,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   playerStateMachine: {fileID: 309670447}
-  Camera: {fileID: 0}
+  Camera: {fileID: 318104676}
   CameraPositionDefault: {x: 0, y: 2.5, z: -10}
   CameraPositionFallOff: {x: 1, y: 0, z: 0}
   SizeDefault: 5
   AimMultiplier: 10
-  PosWalkX: 1
+  PosDirectionX: 1
+  PosWalkX: 1.5
   SizeJump: 5.1
   PosJumpY: 0.5
   PosFallY: -2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  rayLength: 20
+  PosWallUpY: 0
+  PosWallDownY: -3
 --- !u!1001 &383118815
 PrefabInstance:
   m_ObjectHideFlags: 0

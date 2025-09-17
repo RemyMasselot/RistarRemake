@@ -36,6 +36,7 @@ public class PlayerFallState : PlayerBaseState
         _ctx.Rb.gravityScale = 2;
 
         // CAMERA BEHAVIOR
+        //_ctx.MainCameraBehavior.CorrectPosY();
         //_ctx.Camera.DOOrthoSize(_ctx.MainCameraBehavior.SizeDefault, 0.8f);
         //DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.y, x => _ctx.MainCameraBehavior.CameraPositionFallOff.y = x, _ctx.MainCameraBehavior.PosFallY, 0.8f);
     }
@@ -45,6 +46,10 @@ public class PlayerFallState : PlayerBaseState
     }
     public override void FixedUpdateState() 
     {
+        // CAMERA BEHAVIOR
+        _ctx.MainCameraBehavior.CorrectPosY();
+        DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.y, x => _ctx.MainCameraBehavior.CameraPositionFallOff.y = x, _ctx.MainCameraBehavior.newYDown, 2f);
+
         // Air Control
         float moveValueH = _ctx.MoveH.ReadValue<float>();
         float moveValueV = Mathf.Clamp(_ctx.MoveV.ReadValue<float>(), _ctx.MoveDownFallValue, _ctx.MoveDownFallValueMax);
@@ -56,7 +61,6 @@ public class PlayerFallState : PlayerBaseState
         {
             _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.Rb.velocity.y + moveValueV);
         }
-
 
         if (_ctx.UseSpine == false)
         {
