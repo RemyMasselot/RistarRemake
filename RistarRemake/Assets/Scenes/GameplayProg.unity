@@ -442,13 +442,14 @@ MonoBehaviour:
   AimMultiplier: 10
   PosDirectionX: 1
   PosWalkX: 1.5
-  SizeJump: 5.1
-  PosJumpY: 0.5
+  SizeJump: 5
+  PosJumpY: 0.2
   PosFallY: -2
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
   rayLength: 20
+  newYDown: 0
   PosWallUpY: 0
   PosWallDownY: -3
 --- !u!1001 &383118815
