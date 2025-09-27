@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Spine;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ public class PlayerSpinState : PlayerBaseState
     {
         Debug.Log("ENTER SPIN");
         _ctx.UpdateAnim("Spin");
+
         hasEnded = false;
         if (_ctx.UseSpine == false)
         {
@@ -44,7 +46,14 @@ public class PlayerSpinState : PlayerBaseState
 
         if (_ctx.ArmDetection.ObjectDetected == 2)
         {
-            Debug.Log("greg");
+            //Debug.Log("greg");
+            // CAMERA BEHAVIOR
+            _ctx.MainCameraBehavior.CameraImpacted = true;
+            _ctx.MainCameraBehavior.CameraInde = true;
+            _ctx.MainCameraBehavior.Camera.DOShakePosition(0.2f, _ctx.MainCameraBehavior.CamShakeHeabbutt, 5).OnComplete(()=>
+                {
+                    _ctx.MainCameraBehavior.CameraImpacted = false;
+                });
             _ctx.Rb.velocity = new Vector2(0, 1) * 10;
         }
     }

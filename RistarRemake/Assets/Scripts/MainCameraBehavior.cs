@@ -9,9 +9,12 @@ public class MainCameraBehavior : MonoBehaviour
     public GameObject target;
     [SerializeField] private PlayerStateMachine playerStateMachine;
     private Rigidbody2D rbPlayer;
-    [SerializeField] private Camera Camera;
+    public Camera Camera;
     public Vector3 CameraPositionDefault;
     public Vector3 CameraPositionFallOff;
+    [HideInInspector] public bool CameraInde;
+    [HideInInspector] public bool CameraImpacted;
+    [HideInInspector] public Vector3 NewTarget;
 
 
     //// VARIABLE DATA
@@ -42,9 +45,15 @@ public class MainCameraBehavior : MonoBehaviour
     public float PosWallUpY;
     public float PosWallDownY;
 
+    [Header("HEADBUTT")]
+    public Vector3 CamShakeHeabbutt;
+
+
     private void Start()
     {
         target = playerStateMachine.gameObject;
+        CameraImpacted = false;
+        CameraInde = true;
         rbPlayer = playerStateMachine.GetComponent<Rigidbody2D>();
     }
 
@@ -93,7 +102,18 @@ public class MainCameraBehavior : MonoBehaviour
         //}
 
         // NEW POSITION
-        transform.position = target.transform.position + CameraPositionDefault + CameraPositionFallOff + aimV3;
+        if (CameraImpacted == false)
+        {
+            if (CameraInde == true)
+            {
+                NewTarget = target.transform.position + CameraPositionDefault + CameraPositionFallOff + aimV3;
+                transform.DOMove(new Vector3(NewTarget.x, NewTarget.y, -1), 0.5f);
+            }
+            else
+            {
+                transform.DOMove(new Vector3(NewTarget.x, NewTarget.y, -1), 0.5f);
+            }
+        }
     }
 
     public void PlayerTouchGround()
@@ -108,6 +128,29 @@ public class MainCameraBehavior : MonoBehaviour
         DOTween.KillAll();
         Camera.DOOrthoSize(SizeJump, 0.2f);
         DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, PosJumpY, 0.2f);
+    }
+
+    public void CorrectPosY(Vector2 PosToVerif)
+    {
+        Vector2 origin = playerStateMachine.gameObject.transform.position;
+        Vector2 direction = Vector2.down;
+
+        RaycastHit2D hitPlayer = Physics2D.Raycast(origin, direction, rayLength, groundLayer);
+        RaycastHit2D hitCam = Physics2D.Raycast(PosToVerif, direction, rayLength, groundLayer);
+
+        if (hitPlayer.collider == hitCam.collider)
+        {
+            Debug.DrawRay(origin, direction * hitPlayer.distance, Color.green); // Vert si collision
+            float distance = Mathf.Abs(Vector2.Distance(new Vector2(0, hitPlayer.point.y), new Vector2(0, transform.position.y)));
+            if (distance < 4.2f)
+            {
+                newYDown = 0;
+            }
+            else
+            {
+                newYDown = PosWallDownY;
+            }
+        }
     }
 
     public void CorrectPosY()
