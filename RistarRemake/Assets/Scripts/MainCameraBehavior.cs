@@ -107,13 +107,18 @@ public class MainCameraBehavior : MonoBehaviour
             if (CameraInde == true)
             {
                 NewTarget = target.transform.position + CameraPositionDefault + CameraPositionFallOff + aimV3;
-                transform.DOMove(new Vector3(NewTarget.x, NewTarget.y, -1), 0.5f);
+            }
+            if (NewTarget.y <= -1)
+            {
+                transform.DOMove(new Vector3(NewTarget.x, -1, -1), 0.5f);
             }
             else
             {
                 transform.DOMove(new Vector3(NewTarget.x, NewTarget.y, -1), 0.5f);
             }
         }
+
+        
     }
 
     public void PlayerTouchGround()
