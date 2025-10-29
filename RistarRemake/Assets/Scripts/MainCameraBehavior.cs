@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MainCameraBehavior : MonoBehaviour
@@ -15,6 +16,7 @@ public class MainCameraBehavior : MonoBehaviour
     [HideInInspector] public bool CameraInde;
     [HideInInspector] public bool CameraImpacted;
     [HideInInspector] public Vector3 NewTarget;
+    [HideInInspector] public string CurrentState;
 
 
     //// VARIABLE DATA
@@ -36,9 +38,9 @@ public class MainCameraBehavior : MonoBehaviour
     public float PosJumpY;
 
     [Header ("FALL")]
-    public float PosFallY;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float rayLength = 10f;
+    public float PosFallY;
     public float newYDown;
 
     [Header ("WALL")]
@@ -88,33 +90,66 @@ public class MainCameraBehavior : MonoBehaviour
         
         aimV3 = new Vector3(aimX, aimY, 0);
 
-        // MOVE DOWN
-        //CorrectPosY();
-        //DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, newYDown, 1f);
-        //if (rbPlayer.velocity.y < 0)
-        //{
-        //    //DOTween.KillAll();
-        //    //If proche du sol, on limite la nouvelle pos Y
-        //}
-        //else if (rbPlayer.velocity.y > 0)
-        //{
-        //    DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, PosWallUpY, 1f);
-        //}
+        //CLIMB
+        if (CurrentState == "CLIMB")
+        {
+            if (GroundVerif() > 2)
+            {
+                float climbValue = playerStateMachine.MoveV.ReadValue<float>();
+                if (climbValue > 0)
+                {
+                    DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, PosWallUpY, 0.5f);
+                    //Debug.Log("CLIMB UP");
+                }
+                else if (climbValue < 0)
+                {
+                    DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, PosWallDownY, 0.5f);
+                    //Debug.Log("CLIMB DOWN");
+                }
+            }
+            else
+            {
+                DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, 0, 0.5f);
+            }
+        }
+
+        // FALL
+        if (CurrentState == "FALL")
+        {
+            if (GroundVerif() > 2)
+            {
+                float inputValue = playerStateMachine.MoveV.ReadValue<float>();
+                if (inputValue < 0)
+                {
+                    float fallValue = PosFallY + inputValue * newYDown;
+                    DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, fallValue, 0.8f);
+                }
+                else
+                {
+                    DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, PosFallY, 0.8f);
+                }
+            }
+            else
+            {
+                DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, 0, 0.8f);
+            }
+        }
 
         // NEW POSITION
         if (CameraImpacted == false)
         {
             if (CameraInde == true)
             {
-                NewTarget = target.transform.position + CameraPositionDefault + CameraPositionFallOff + aimV3;
+                NewTarget = target.transform.position + CameraPositionDefault + CameraPositionFallOff;
             }
-            if (NewTarget.y <= -1)
+            
+            if (GroundVerif() <= 1)
             {
-                transform.DOMove(new Vector3(NewTarget.x, -1, -1), 0.5f);
+                transform.DOMove(new Vector3(NewTarget.x, transform.position.y, -1) + aimV3, 0.5f);
             }
             else
             {
-                transform.DOMove(new Vector3(NewTarget.x, NewTarget.y, -1), 0.5f);
+                transform.DOMove(new Vector3(NewTarget.x, NewTarget.y, -1) + aimV3, 0.5f);
             }
         }
 
@@ -135,30 +170,30 @@ public class MainCameraBehavior : MonoBehaviour
         DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, PosJumpY, 0.2f);
     }
 
-    public void CorrectPosY(Vector2 PosToVerif)
-    {
-        Vector2 origin = playerStateMachine.gameObject.transform.position;
-        Vector2 direction = Vector2.down;
+    //public void CorrectPosY(Vector2 PosToVerif)
+    //{
+    //    Vector2 origin = playerStateMachine.gameObject.transform.position;
+    //    Vector2 direction = Vector2.down;
 
-        RaycastHit2D hitPlayer = Physics2D.Raycast(origin, direction, rayLength, groundLayer);
-        RaycastHit2D hitCam = Physics2D.Raycast(PosToVerif, direction, rayLength, groundLayer);
+    //    RaycastHit2D hitPlayer = Physics2D.Raycast(origin, direction, rayLength, groundLayer);
+    //    RaycastHit2D hitCam = Physics2D.Raycast(PosToVerif, direction, rayLength, groundLayer);
 
-        if (hitPlayer.collider == hitCam.collider)
-        {
-            Debug.DrawRay(origin, direction * hitPlayer.distance, Color.green); // Vert si collision
-            float distance = Mathf.Abs(Vector2.Distance(new Vector2(0, hitPlayer.point.y), new Vector2(0, transform.position.y)));
-            if (distance < 4.2f)
-            {
-                newYDown = 0;
-            }
-            else
-            {
-                newYDown = PosWallDownY;
-            }
-        }
-    }
+    //    if (hitPlayer.collider == hitCam.collider)
+    //    {
+    //        Debug.DrawRay(origin, direction * hitPlayer.distance, Color.green); // Vert si collision
+    //        float distance = Mathf.Abs(Vector2.Distance(new Vector2(0, hitPlayer.point.y), new Vector2(0, transform.position.y)));
+    //        if (distance < 4.2f)
+    //        {
+    //            newYDown = 0;
+    //        }
+    //        else
+    //        {
+    //            newYDown = PosWallDownY;
+    //        }
+    //    }
+    //}
 
-    public void CorrectPosY()
+    public float GroundVerif()
     {
         Vector2 origin = playerStateMachine.gameObject.transform.position;
         Vector2 direction = Vector2.down;
@@ -167,35 +202,15 @@ public class MainCameraBehavior : MonoBehaviour
 
         if (hit.collider != null)
         {
-            Debug.DrawRay(origin, direction * hit.distance, Color.green); // Vert si collision
-            float distance = Mathf.Abs(Vector2.Distance(new Vector2(0, hit.point.y), new Vector2(0, transform.position.y)));
-            //Debug.Log(distance);
-            if (distance < 4.2f)
-            {
-                newYDown = 0;
-            }
-            else
-            {
-                newYDown = PosWallDownY;
-            }
-            //if (transform.position.y <= hit.point.y + 3.2f)
-            //{
-            //    //transform.position = new Vector3(transform.position.x, hit.point.y + 2.2f, transform.position.z);
-            //    newYDown = 0;
-            //    Debug.Log("correction Y");
-            //    return;
-            //}
-            //else
-            //{
-            //    //newYDown = PosWallDownY;
-            //    return;
-            //}
+            float distance = hit.distance;
+            Debug.DrawRay(origin, direction * hit.distance, Color.green);
+            Debug.Log("Distance sol : " + distance);
+            return distance;
         }
         else
         {
-            Debug.DrawRay(origin, direction * rayLength, Color.red); // Rouge si rien
-            //newYDown = PosWallDownY;
-            //return; // Rien détecté -> retourne 0
+            Debug.DrawRay(origin, direction * rayLength, Color.red);
+            return rayLength;
         }
     }
 }

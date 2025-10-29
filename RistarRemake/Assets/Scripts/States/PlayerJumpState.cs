@@ -40,7 +40,7 @@ public class PlayerJumpState : PlayerBaseState
         StartTimer();
 
         // CAMERA BEHAVIOR
-        _ctx.MainCameraBehavior.CamJumpEnter();
+        //_ctx.MainCameraBehavior.CamJumpEnter();
     }
     void StartTimer()
     {
