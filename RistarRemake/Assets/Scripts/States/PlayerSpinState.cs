@@ -48,11 +48,11 @@ public class PlayerSpinState : PlayerBaseState
         {
             //Debug.Log("greg");
             // CAMERA BEHAVIOR
-            _ctx.MainCameraBehavior.CameraImpacted = true;
-            _ctx.MainCameraBehavior.CameraInde = true;
-            _ctx.MainCameraBehavior.Camera.DOShakePosition(0.2f, _ctx.MainCameraBehavior.CamShakeHeabbutt, 5).OnComplete(()=>
+            _ctx.CameraImpacted = true;
+            _ctx.CameraInde = true;
+            _ctx.Camera.DOShakePosition(0.2f, _ctx.MainCameraBehavior.CamShakeHeabbutt, 5).OnComplete(() =>
                 {
-                    _ctx.MainCameraBehavior.CameraImpacted = false;
+                    _ctx.CameraImpacted = false;
                 });
             _ctx.Rb.velocity = new Vector2(0, 1) * 10;
         }

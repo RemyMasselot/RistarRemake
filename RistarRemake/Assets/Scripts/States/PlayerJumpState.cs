@@ -97,11 +97,11 @@ public class PlayerJumpState : PlayerBaseState
             // Rotation visuelle -- AVEC SPINE
             if (_ctx.Rb.velocity.x > 0)
             {
-                _ctx.SkeletonAnimation.skeleton.FlipX = false;
+                _ctx.SkeletonAnimation.skeleton.ScaleX = 1;
             }
             if (_ctx.Rb.velocity.x < 0)
             {
-                _ctx.SkeletonAnimation.skeleton.FlipX = true;
+                _ctx.SkeletonAnimation.skeleton.ScaleX = -1;
             }
         }
     }

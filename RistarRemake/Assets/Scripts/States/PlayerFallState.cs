@@ -36,7 +36,7 @@ public class PlayerFallState : PlayerBaseState
         _ctx.Rb.gravityScale = 2;
 
         // CAMERA BEHAVIOR
-        _ctx.MainCameraBehavior.CurrentState = "FALL";
+        //_ctx.MainCameraBehavior.CurrentState = "FALL";
         //_ctx.MainCameraBehavior.CorrectPosY();
         //_ctx.Camera.DOOrthoSize(_ctx.MainCameraBehavior.SizeDefault, 0.8f);
         //DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.y, x => _ctx.MainCameraBehavior.CameraPositionFallOff.y = x, _ctx.MainCameraBehavior.PosFallY, 0.8f);
@@ -80,11 +80,11 @@ public class PlayerFallState : PlayerBaseState
             // Rotation visuelle -- AVEC SPINE
             if (_ctx.Rb.velocity.x > 0)
             {
-                _ctx.SkeletonAnimation.skeleton.FlipX = false;
+                _ctx.SkeletonAnimation.skeleton.ScaleX = 1;
             }
             if (_ctx.Rb.velocity.x < 0)
             {
-                _ctx.SkeletonAnimation.skeleton.FlipX = true;
+                _ctx.SkeletonAnimation.skeleton.ScaleX = -1;
             }
         }
     }
@@ -97,7 +97,7 @@ public class PlayerFallState : PlayerBaseState
         {
             if (_ctx.EnemyDetection.IsGroundDectected == true)
             {
-            _ctx.MainCameraBehavior.CurrentState = "OTHER";
+                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.Damage());
             }
         }
@@ -108,7 +108,7 @@ public class PlayerFallState : PlayerBaseState
             // Coyote Time 
             if (_ctx.CoyoteCounter > 0)
             {
-                _ctx.MainCameraBehavior.CurrentState = "OTHER";
+                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.Jump());
             }
 
@@ -129,13 +129,13 @@ public class PlayerFallState : PlayerBaseState
             if (moveValue != 0)
             {
                 // Passage en state WALK
-                _ctx.MainCameraBehavior.CurrentState = "OTHER";
+                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.Walk());
             }
             else
             {
                 // Passage en state IDLE
-                _ctx.MainCameraBehavior.CurrentState = "OTHER";
+                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.Idle());
             }
         }
@@ -147,7 +147,7 @@ public class PlayerFallState : PlayerBaseState
         // Passage en state GRAB
         if (_ctx.Grab.WasPerformedThisFrame())
         {
-            _ctx.MainCameraBehavior.CurrentState = "OTHER";
+            //_ctx.MainCameraBehavior.CurrentState = "OTHER";
             SwitchState(_factory.Grab());
         }
 
@@ -170,7 +170,7 @@ public class PlayerFallState : PlayerBaseState
             if (_ctx.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV") || _ctx.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
             {
                 _ctx.Animator.SetFloat("WallVH", 0);
-                _ctx.MainCameraBehavior.CurrentState = "OTHER";
+                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.WallClimb());
             }
         }
@@ -179,7 +179,7 @@ public class PlayerFallState : PlayerBaseState
             if (_ctx.LadderHDetection.IsLadderHDectected == true)
             {
                 _ctx.Animator.SetFloat("WallVH", 1);
-                _ctx.MainCameraBehavior.CurrentState = "OTHER";
+                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.WallClimb());
             }
         }

@@ -24,7 +24,7 @@ public class LadderExitDetection : MonoBehaviour
 
         foreach (PlayerStateMachine script in scripts)
         {
-            if (script.gameObject.active == true)
+            if (script.gameObject.activeSelf == true)
             {
                 playerStateMachine = script;
                 break;

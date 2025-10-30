@@ -6,7 +6,7 @@ public abstract class PlayerBaseState
 {
     protected bool _isRootState = false;
     protected PlayerStateMachine _ctx;
-    protected PlayerStateFactory _factory;
+    public PlayerStateFactory _factory;
     public PlayerBaseState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) 
     { 
         _ctx = currentContext;

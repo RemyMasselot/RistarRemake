@@ -15,8 +15,9 @@ public class PlayerHangState : PlayerBaseState
         Debug.Log("ENTER HANG");
         _ctx.ArmDetection.gameObject.SetActive(false);
         // CAMERA BEHAVIOR
-        _ctx.MainCameraBehavior.CameraInde = false;
-        _ctx.MainCameraBehavior.NewTarget = _ctx.ArmDetection.SnapPosHand;
+        _ctx.CameraInde = false;
+        _ctx.NewTarget = _ctx.ArmDetection.SnapPosHand;
+
         _ctx.Rb.velocity = Vector2.zero;
         SnapHands = false;
         _goMeteorStrike = false;
@@ -130,7 +131,7 @@ public class PlayerHangState : PlayerBaseState
             if (_ctx.Grab.WasReleasedThisFrame())
             {
                 // CAMERA BEHAVIOR
-                _ctx.MainCameraBehavior.CameraInde = true;
+                _ctx.CameraInde = true;
 
                 if (_ctx.UseSpine == false)
                 {

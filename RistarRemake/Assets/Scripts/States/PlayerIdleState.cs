@@ -17,25 +17,26 @@ public class PlayerIdleState : PlayerBaseState
         _ctx.PreviousState = _ctx.CurrentState;
         // Mise à jour du coyote time
         _ctx.CoyoteCounter = _ctx.CoyoteTime;
-        _ctx.MainCameraBehavior.PlayerTouchGround();
+        //_ctx.MainCameraBehavior.PlayerTouchGround();
     }
     public override void UpdateState()
     {
         CheckSwitchStates();
 
-        // CAMERA BEHAVIOR
-        Vector2 aimValue = _ctx.Aim.ReadValue<Vector2>();
-        // Rotation visuelle
-        if (aimValue.x > 0)
-        {
-            _ctx.SpriteRenderer.flipX = false;
-            DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, _ctx.MainCameraBehavior.PosWalkX, 2f);
-        }
-        if (aimValue.x < 0)
-        {
-            _ctx.SpriteRenderer.flipX = true;
-            DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, - _ctx.MainCameraBehavior.PosWalkX, 2f);
-        }
+        //// CAMERA BEHAVIOR
+        //Vector2 aimValue = _ctx.Aim.ReadValue<Vector2>();
+
+        //// Rotation visuelle
+        //if (aimValue.x > 0)
+        //{
+        //    _ctx.SpriteRenderer.flipX = false;
+        //    DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, _ctx.MainCameraBehavior.PosWalkX, 2f);
+        //}
+        //if (aimValue.x < 0)
+        //{
+        //    _ctx.SpriteRenderer.flipX = true;
+        //    DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, - _ctx.MainCameraBehavior.PosWalkX, 2f);
+        //}
     }
     public override void FixedUpdateState()
     {

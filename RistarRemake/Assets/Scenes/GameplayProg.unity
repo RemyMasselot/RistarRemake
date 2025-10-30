@@ -613,7 +613,7 @@ Transform:
   m_GameObject: {fileID: 318104674}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.77, y: 14.51, z: -1}
+  m_LocalPosition: {x: 4.8, y: -0.45, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -636,8 +636,6 @@ MonoBehaviour:
   Camera: {fileID: 318104676}
   CameraPositionDefault: {x: 0, y: 2.5, z: -1}
   CameraPositionFallOff: {x: 1, y: 0, z: 0}
-  CameraInde: 0
-  CameraImpacted: 0
   NewTarget: {x: 0, y: 0, z: 0}
   CurrentState: 
   SizeDefault: 5
@@ -4472,11 +4470,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.74
+      value: 4.48
       objectReference: {fileID: 0}
     - target: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.968
+      value: 0.39
       objectReference: {fileID: 0}
     - target: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.z

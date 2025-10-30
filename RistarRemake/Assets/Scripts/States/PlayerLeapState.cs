@@ -35,7 +35,7 @@ public class PlayerLeapState : PlayerBaseState
         {
             if (_ctx.transform.position.y >= PosY + 1.5f)
             {
-                Debug.Log("efz");
+                //Debug.Log("efz");
                 newOrientation = true;
                 if (_ctx.SpriteRenderer.flipX == false)
                 {

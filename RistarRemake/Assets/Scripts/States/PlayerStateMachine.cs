@@ -1,6 +1,7 @@
 using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
     public PlayerBaseState PreviousState;
+    //public string StateName { get { return _currentState.GetType().Name; } }
 
     // INPUT ACTIONS
     [Space(10)]
@@ -41,6 +43,9 @@ public class PlayerStateMachine : MonoBehaviour
     // CAMERA
     public Camera Camera;
     public MainCameraBehavior MainCameraBehavior;
+    [HideInInspector] public bool CameraImpacted;
+    [HideInInspector] public bool CameraInde;
+    [HideInInspector] public Vector3 NewTarget;
 
     // MOVE
     public Transform Transform;

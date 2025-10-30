@@ -17,7 +17,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         Debug.Log("ENTER METEOR STRIKE");
         _ctx.UpdateAnim("MeteorStrike");
         // CAMERA BEHAVIOR
-        _ctx.MainCameraBehavior.CameraInde = true;
+        _ctx.CameraInde = true;
         CanControl = false;
         DOVirtual.DelayedCall(0.3f, () =>
         {

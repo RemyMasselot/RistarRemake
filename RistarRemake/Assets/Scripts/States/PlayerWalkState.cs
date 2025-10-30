@@ -12,7 +12,7 @@ public class PlayerWalkState : PlayerBaseState
         _ctx.UpdateAnim("Walk");
         // Mise à jour du coyote time
         _ctx.CoyoteCounter = _ctx.CoyoteTime;
-        _ctx.MainCameraBehavior.PlayerTouchGround();
+        //_ctx.MainCameraBehavior.PlayerTouchGround();
     }
     public override void UpdateState() { 
         CheckSwitchStates();
@@ -39,11 +39,11 @@ public class PlayerWalkState : PlayerBaseState
             //Rotation visuelle -- AVEC SPINE
             if (_ctx.Rb.velocity.x > 0)
             {
-                _ctx.SkeletonAnimation.skeleton.FlipX = false;
+                _ctx.SkeletonAnimation.skeleton.ScaleX = 1;
             }
             if (_ctx.Rb.velocity.x < 0)
             {
-                _ctx.SkeletonAnimation.skeleton.FlipX = true;
+                _ctx.SkeletonAnimation.skeleton.ScaleX = -1;
             }
         }
 

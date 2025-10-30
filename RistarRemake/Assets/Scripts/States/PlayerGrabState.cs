@@ -73,7 +73,7 @@ public class PlayerGrabState : PlayerBaseState
             // AVEC SPINE
             if (_ctx.AimDir == new Vector2(0, 0))
             {
-                if (_ctx.SkeletonAnimation.skeleton.FlipX == false)
+                if (_ctx.SkeletonAnimation.skeleton.ScaleX == 1)
                 {
                     _ctx.AimDir = new Vector2(1, 0);
                 }
@@ -86,11 +86,11 @@ public class PlayerGrabState : PlayerBaseState
             {
                 if (_ctx.AimDir.x > 0)
                 {
-                    _ctx.SkeletonAnimation.skeleton.FlipX = false;
+                    _ctx.SkeletonAnimation.skeleton.ScaleX = 1;
                 }
                 else if (_ctx.AimDir.x < 0)
                 {
-                    _ctx.SkeletonAnimation.skeleton.FlipX = true;
+                    _ctx.SkeletonAnimation.skeleton.ScaleX = -1;
                 }
             }
             ExtendArmsWithSpine();
@@ -154,7 +154,7 @@ public class PlayerGrabState : PlayerBaseState
         _ctx.ArmDetection.gameObject.SetActive(true);
 
         Vector2 grabDirection = (_ctx.AimDir.normalized * _ctx.DistanceGrab);
-        if (_ctx.SkeletonAnimation.skeleton.FlipX == false)
+        if (_ctx.SkeletonAnimation.skeleton.ScaleX == 1)
         {
             grabDirection.x *= 1;
         }
