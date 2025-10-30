@@ -14,14 +14,15 @@ public class PlayerGrabState : PlayerBaseState
         //Debug.Log("ENTER GRAB");
         _player.AimDir = _player.Aim.ReadValue<Vector2>();
         CorrectionAimGround();
-        ChoiceGrabAnim();
         _player.UpdateAnim("Grab");
-        _player.HandRight.sprite = _player.HandOpen;
-        _player.HandLeft.sprite = _player.HandOpen;
         _player.ArmDetection.ObjectDetected = 0;
 
         if (_player.UseSpine == false)
         {
+            //SANS SPINE
+            ChoiceGrabAnim();
+            _player.HandRight.sprite = _player.HandOpen;
+            _player.HandLeft.sprite = _player.HandOpen;
             // Move Left Arm
             _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
             // Move Right Arm
@@ -30,11 +31,7 @@ public class PlayerGrabState : PlayerBaseState
             _player.ArmDetection.GetComponent<Transform>().position = (_player.IkArmLeft.position + _player.IkArmRight.position) / 2;
             float angle = Mathf.Atan2(_player.AimDir.y, _player.AimDir.x) * Mathf.Rad2Deg;
             _player.ArmDetection.rotationOffset = angle;
-        }
-
-        if (_player.UseSpine == false)
-        {
-            //SANS SPINE
+            
             if (_player.AimDir == new Vector2(0, 0))
             {
                 if (_player.SpriteRenderer.flipX == false)
@@ -198,7 +195,10 @@ public class PlayerGrabState : PlayerBaseState
     }
     public override void UpdateState()
     {
-        ChoiceGrabAnim();
+        if (_player.UseSpine == false)
+        {
+            ChoiceGrabAnim();
+        }
 
         // Vérification d'un sol ou non
         if (_player.GroundDetection.IsGroundDectected == false)
@@ -311,9 +311,9 @@ public class PlayerGrabState : PlayerBaseState
         {
             if (_player.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV") || _player.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
             {
-                _player.Animator.SetFloat("WallVH", 0);
                 if (_player.UseSpine == false)
                 {
+                    _player.Animator.SetFloat("WallVH", 0);
                     _player.Arms.gameObject.SetActive(false);
                 }
                 SwitchState(_factory.WallIdle());
@@ -323,9 +323,9 @@ public class PlayerGrabState : PlayerBaseState
         {
             if (_player.LadderHDetection.IsLadderHDectected == true)
             {
-                _player.Animator.SetFloat("WallVH", 1);
                 if (_player.UseSpine == false)
                 {
+                    _player.Animator.SetFloat("WallVH", 1);
                     _player.Arms.gameObject.SetActive(false);
                 }
                 SwitchState(_factory.WallIdle());
@@ -364,8 +364,11 @@ public class PlayerGrabState : PlayerBaseState
         
         if (_player.ArmDetection.ObjectDetected != 0)
         {
-            _player.HandRight.sprite = _player.HandClose;
-            _player.HandLeft.sprite = _player.HandClose;
+            if (_player.UseSpine == false)
+            {
+                _player.HandRight.sprite = _player.HandClose;
+                _player.HandLeft.sprite = _player.HandClose;
+            }
         }
 
         switch (_player.ArmDetection.ObjectDetected)

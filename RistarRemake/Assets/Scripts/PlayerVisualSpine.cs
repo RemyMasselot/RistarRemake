@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerVisual : MonoBehaviour
+public class PlayerVisualSpine : MonoBehaviour
 {
     [SerializeField] private PlayerStateMachine playerStateMachine;
 

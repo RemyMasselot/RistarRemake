@@ -5,8 +5,8 @@ using UnityEngine.UIElements;
 public class MainCameraBehavior : MonoBehaviour
 {
     [Header ("SETTINGS")]
-    public GameObject target;
     [SerializeField] private PlayerStateMachine playerStateMachine;
+    public GameObject target;
     private Rigidbody2D rbPlayer;
     public Camera Camera;
     public Vector3 CameraPositionDefault;

@@ -181,13 +181,16 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void UpdateAnim(string animName)
     {
-        foreach (var param in Animator.parameters)
+        if (UseSpine == false)
         {
-            if (param.type == AnimatorControllerParameterType.Bool)
+            foreach (var param in Animator.parameters)
             {
-                Animator.SetBool(param.name, false);
+                if (param.type == AnimatorControllerParameterType.Bool)
+                {
+                    Animator.SetBool(param.name, false);
+                }
             }
+            Animator.SetBool(animName, true);
         }
-        Animator.SetBool(animName, true);
     }
 }
