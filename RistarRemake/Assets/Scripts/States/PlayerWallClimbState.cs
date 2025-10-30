@@ -11,17 +11,17 @@ public class PlayerWallClimbState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER WALL CLIMB");
-        _ctx.UpdateAnim("WallClimb");
-        _ctx.Rb.gravityScale = 0;
-        if (_ctx.Animator.GetFloat("WallVH") == 0)
+        _player.UpdateAnim("WallClimb");
+        _player.Rb.gravityScale = 0;
+        if (_player.Animator.GetFloat("WallVH") == 0)
         {
-            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == 1)
+            if (_player.LadderVDetectionL.IsLadderVDectectedL == 1)
             {
-                _ctx.SpriteRenderer.flipX = true;
+                _player.SpriteRenderer.flipX = true;
             }
-            if (_ctx.LadderVDetectionR.IsLadderVDectectedR == 1)
+            if (_player.LadderVDetectionR.IsLadderVDectectedR == 1)
             {
-                _ctx.SpriteRenderer.flipX = false;
+                _player.SpriteRenderer.flipX = false;
             }
         }
         // CAMERA BEHAVIOR
@@ -34,41 +34,40 @@ public class PlayerWallClimbState : PlayerBaseState
     public override void FixedUpdateState()
     {
         // Déplacements du personnage
-        if (_ctx.Animator.GetFloat("WallVH") == 0)
+        if (_player.Animator.GetFloat("WallVH") == 0)
         {
-            float moveValueV = _ctx.MoveV.ReadValue<float>();
+            float moveValueV = _player.MoveV.ReadValue<float>();
             if (moveValueV > 0)
             {
-                _ctx.Rb.velocity = new Vector2(0, _ctx.WalkSpeed * Time.deltaTime);
+                _player.Rb.velocity = new Vector2(0, _player.WalkSpeed * Time.deltaTime);
             }
             if (moveValueV < 0)
             {
-                _ctx.Rb.velocity = new Vector2(0, -_ctx.WalkSpeed * Time.deltaTime);
+                _player.Rb.velocity = new Vector2(0, -_player.WalkSpeed * Time.deltaTime);
             }
         }
         else
         {
-            float moveValueH = _ctx.MoveH.ReadValue<float>();
+            float moveValueH = _player.MoveH.ReadValue<float>();
             if (moveValueH > 0)
             {
-                _ctx.SpriteRenderer.flipX = false;
-                _ctx.Rb.velocity = new Vector2(_ctx.WalkSpeed * Time.deltaTime, 0);
+                _player.SpriteRenderer.flipX = false;
+                _player.Rb.velocity = new Vector2(_player.WalkSpeed * Time.deltaTime, 0);
             }
             if (moveValueH < 0)
             {
-                _ctx.SpriteRenderer.flipX = true;
-                _ctx.Rb.velocity = new Vector2(-_ctx.WalkSpeed * Time.deltaTime, 0);
+                _player.SpriteRenderer.flipX = true;
+                _player.Rb.velocity = new Vector2(-_player.WalkSpeed * Time.deltaTime, 0);
             }
         }     
     }
     public override void ExitState(){}
-    public override void InitializeSubState(){}
     public override void CheckSwitchStates()
     {
         // Enter DAMAGE STATE
-        if (_ctx.Invincinbility.IsInvincible == false)
+        if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsGroundDectected == true)
             {
                 //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.Damage());
@@ -76,10 +75,10 @@ public class PlayerWallClimbState : PlayerBaseState
         }
 
         // Vertical or Horizontal
-        if (_ctx.Animator.GetFloat("WallVH") == 0) // VERTICAL
+        if (_player.Animator.GetFloat("WallVH") == 0) // VERTICAL
         {
             // Passage en state WALL IDLE
-            float moveValueV = _ctx.MoveV.ReadValue<float>();
+            float moveValueV = _player.MoveV.ReadValue<float>();
             if (moveValueV == 0)
             {
                 //_ctx.MainCameraBehavior.CurrentState = "OTHER";
@@ -88,7 +87,7 @@ public class PlayerWallClimbState : PlayerBaseState
             if (moveValueV > 0)
             {
                 // Passage en state JUMP
-                if (_ctx.Jump.WasPerformedThisFrame())
+                if (_player.Jump.WasPerformedThisFrame())
                 {
                     //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                     SwitchState(_factory.WallJump());
@@ -97,7 +96,7 @@ public class PlayerWallClimbState : PlayerBaseState
             if (moveValueV < 0)
             {
                 // Passage en state FALL
-                if (_ctx.Jump.WasPerformedThisFrame())
+                if (_player.Jump.WasPerformedThisFrame())
                 {
                     //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                     SwitchState(_factory.Fall());
@@ -107,7 +106,7 @@ public class PlayerWallClimbState : PlayerBaseState
         else // HORIZONTAL
         {
             // Passage en state WALL IDLE
-            float moveValueH = _ctx.MoveH.ReadValue<float>();
+            float moveValueH = _player.MoveH.ReadValue<float>();
             if (Mathf.Abs(moveValueH) == 0)
             {
                 //_ctx.MainCameraBehavior.CurrentState = "OTHER";
@@ -115,7 +114,7 @@ public class PlayerWallClimbState : PlayerBaseState
             }
 
             // Passage en state FALL
-            if (_ctx.Jump.WasPerformedThisFrame())
+            if (_player.Jump.WasPerformedThisFrame())
             {
                 //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.Fall());
@@ -123,22 +122,18 @@ public class PlayerWallClimbState : PlayerBaseState
         }
 
         // Passage en state FALL
-        if (_ctx.Fall == true)
+        if (_player.Fall == true)
         {
             //_ctx.MainCameraBehavior.CurrentState = "OTHER";
             SwitchState(_factory.Fall());
         }
         
         // Passage en state LEAP
-        if (_ctx.Leap == true)
+        if (_player.Leap == true)
         {
             //_ctx.MainCameraBehavior.CurrentState = "OTHER";
             SwitchState(_factory.Leap());
         }
 
     }
-
-    public override void OnCollisionEnter2D(Collision2D collision) { }
-    public override void OnCollisionStay2D(Collision2D collision) { }
-
 }

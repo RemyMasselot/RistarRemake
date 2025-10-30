@@ -10,13 +10,13 @@ public class PlayerDeathState : PlayerBaseState
     public override void EnterState() 
     {
         //Debug.Log("ENTER DEATH");
-        if (_ctx.SpriteRenderer.flipX == false)
+        if (_player.SpriteRenderer.flipX == false)
         {
-            _ctx.UpdateAnim("DeathL");
+            _player.UpdateAnim("DeathL");
         }
         else
         {
-            _ctx.UpdateAnim("DeathR");
+            _player.UpdateAnim("DeathR");
         }
     }
     public override void UpdateState() 

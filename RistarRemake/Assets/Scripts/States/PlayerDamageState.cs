@@ -10,14 +10,14 @@ public class PlayerDamageState : PlayerBaseState
     public override void EnterState() 
     {
         //Debug.Log("ENTER DAMAGE");
-        _ctx.UpdateAnim("Damage");
-        _ctx.LifeNumber--;
-        if (_ctx.LifeNumber > 0)
+        _player.UpdateAnim("Damage");
+        _player.LifeNumber--;
+        if (_player.LifeNumber > 0)
         {
-            _ctx.Rb.gravityScale = 1;
-            _ctx.Rb.velocity = new Vector2(0, _ctx.LeapForceV/1.5f);
-            _ctx.Invincinbility.InvincibilityCounter = _ctx.Invincinbility.InvincibilityTime;
-            _ctx.Invincinbility.IsInvincible = true;
+            _player.Rb.gravityScale = 1;
+            _player.Rb.velocity = new Vector2(0, _player.LeapForceV/1.5f);
+            _player.Invincinbility.InvincibilityCounter = _player.Invincinbility.InvincibilityTime;
+            _player.Invincinbility.IsInvincible = true;
         }
     }
     public override void UpdateState() 
@@ -26,24 +26,24 @@ public class PlayerDamageState : PlayerBaseState
     }
     public override void FixedUpdateState() 
     {
-        float moveValue = _ctx.MoveH.ReadValue<float>();
+        float moveValue = _player.MoveH.ReadValue<float>();
         if (moveValue != 0)
         {
-            _ctx.Rb.velocity = new Vector2(moveValue * _ctx.JumpForceH, _ctx.Rb.velocity.y);
+            _player.Rb.velocity = new Vector2(moveValue * _player.JumpForceH, _player.Rb.velocity.y);
         }
         else
         {
-            _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.Rb.velocity.y);
+            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Rb.velocity.y);
         }
 
         // Rotation visuelle -- SANS SPINE
-        if (_ctx.Rb.velocity.x > 0)
+        if (_player.Rb.velocity.x > 0)
         {
-            _ctx.SpriteRenderer.flipX = false;
+            _player.SpriteRenderer.flipX = false;
         }
-        if (_ctx.Rb.velocity.x < 0)
+        if (_player.Rb.velocity.x < 0)
         {
-            _ctx.SpriteRenderer.flipX = true;
+            _player.SpriteRenderer.flipX = true;
         }
     }
     public override void ExitState() { }
@@ -51,19 +51,19 @@ public class PlayerDamageState : PlayerBaseState
     public override void CheckSwitchStates() 
     {
         // Passage en state DEATH
-        if (_ctx.LifeNumber <= 0)
+        if (_player.LifeNumber <= 0)
         {
             SwitchState(_factory.Death());
         }
         
         // Passage en state FALL
-        if (_ctx.Rb.velocity.y < 0)
+        if (_player.Rb.velocity.y < 0)
         {
             SwitchState(_factory.Fall());
         }
 
         // Passage en state GRAB
-        if (_ctx.Grab.WasPerformedThisFrame())
+        if (_player.Grab.WasPerformedThisFrame())
         {
             SwitchState(_factory.Grab());
         }

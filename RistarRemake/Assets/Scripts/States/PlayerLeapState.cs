@@ -13,12 +13,12 @@ public class PlayerLeapState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("JUMP ENTER");
-        _ctx.UpdateAnim("Jump");
-        _ctx.Leap = false;
-        _ctx.Rb.gravityScale = 1;
-        PosY = _ctx.transform.position.y;
+        _player.UpdateAnim("Jump");
+        _player.Leap = false;
+        _player.Rb.gravityScale = 1;
+        PosY = _player.transform.position.y;
         newOrientation = false;
-        _ctx.Rb.velocity = new Vector2(0, _ctx.LeapForceV);
+        _player.Rb.velocity = new Vector2(0, _player.LeapForceV);
     }
     public override void UpdateState()
     {
@@ -33,39 +33,39 @@ public class PlayerLeapState : PlayerBaseState
         }
         else
         {
-            if (_ctx.transform.position.y >= PosY + 1.5f)
+            if (_player.transform.position.y >= PosY + 1.5f)
             {
                 //Debug.Log("efz");
                 newOrientation = true;
-                if (_ctx.SpriteRenderer.flipX == false)
+                if (_player.SpriteRenderer.flipX == false)
                 {
-                    _ctx.Rb.velocity = new Vector2(_ctx.LeapForceH, _ctx.LeapForceV/2);
+                    _player.Rb.velocity = new Vector2(_player.LeapForceH, _player.LeapForceV/2);
                 }
                 else
                 { 
-                    _ctx.Rb.velocity = new Vector2(-_ctx.LeapForceH, _ctx.LeapForceV/2);
+                    _player.Rb.velocity = new Vector2(-_player.LeapForceH, _player.LeapForceV/2);
                 }
                 // Air Control
-                float moveValueH = _ctx.MoveH.ReadValue<float>();
-                float moveValueV = Mathf.Clamp(_ctx.MoveV.ReadValue<float>(), _ctx.MoveDownFallValue, _ctx.MoveDownFallValueMax);
+                float moveValueH = _player.MoveH.ReadValue<float>();
+                float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValue, _player.MoveDownFallValueMax);
                 if (moveValueH != 0)
                 {
-                    _ctx.Rb.velocity = new Vector2(moveValueH * _ctx.JumpForceH, _ctx.Rb.velocity.y + moveValueV);
+                    _player.Rb.velocity = new Vector2(moveValueH * _player.JumpForceH, _player.Rb.velocity.y + moveValueV);
                 }
                 else
                 {
-                    _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.Rb.velocity.y + moveValueV);
+                    _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Rb.velocity.y + moveValueV);
                 }
             }
         }
         // Rotation visuelle -- SANS SPINE
-        if (_ctx.Rb.velocity.x > 0)
+        if (_player.Rb.velocity.x > 0)
         {
-            _ctx.SpriteRenderer.flipX = false;
+            _player.SpriteRenderer.flipX = false;
         }
-        if (_ctx.Rb.velocity.x < 0)
+        if (_player.Rb.velocity.x < 0)
         {
-            _ctx.SpriteRenderer.flipX = true;
+            _player.SpriteRenderer.flipX = true;
         }
     }
     public override void ExitState() { }
@@ -73,22 +73,22 @@ public class PlayerLeapState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         // Enter DAMAGE STATE
-        if (_ctx.Invincinbility.IsInvincible == false)
+        if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsGroundDectected == true)
             {
                 SwitchState(_factory.Damage());
             }
         }
 
         // Passage en state GRAB
-        if (_ctx.Grab.WasPerformedThisFrame())
+        if (_player.Grab.WasPerformedThisFrame())
         {
             SwitchState(_factory.Grab());
         }
 
         // Passage en state FALL
-        if (_ctx.Rb.velocity.y < 0)
+        if (_player.Rb.velocity.y < 0)
         {
             SwitchState(_factory.Fall());
         }

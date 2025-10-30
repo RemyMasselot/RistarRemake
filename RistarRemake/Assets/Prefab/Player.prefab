@@ -746,6 +746,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b253e22660396bc40b000e6ebd659294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <IsLadderVDectectedR>k__BackingField: 0
   CapsuleSize: {x: 0.1, y: 0.4}
   LayerToCheck:
     serializedVersion: 2
@@ -926,6 +927,12 @@ MonoBehaviour:
   HandLeft: {fileID: 3279288406607587484}
   HandOpen: {fileID: 21300000, guid: aeecc0584a829444284730c8a2eb5799, type: 3}
   HandClose: {fileID: 21300000, guid: 3d368954b106b8e419b6b4d70ead7a5b, type: 3}
+  LifeNumber: 4
+  Camera: {fileID: 0}
+  MainCameraBehavior: {fileID: 0}
+  CameraImpacted: 0
+  CameraInde: 0
+  CameraTargetOverride: {x: 0, y: 0, z: 0}
   Transform: {fileID: 8535036337940793503}
   WalkSpeed: 180
   <JumpForceV>k__BackingField: 6
@@ -933,12 +940,19 @@ MonoBehaviour:
   MaxTimeJump: 0.6
   CurrentTimerValueJump: 0
   IsTimerRunningJump: 0
+  CornerCorrection: {fileID: 0}
+  JumpBufferTime: 0.1
+  CoyoteTime: 0.1
+  JumpBufferCounter: 0
+  CoyoteCounter: 0
+  JumpReady: 0
   MoveDownFallValue: -0.23
   MoveDownFallValueMax: 0.1
   <LeapForceV>k__BackingField: 8
   <LeapForceH>k__BackingField: 4
   <Leap>k__BackingField: 0
   <Fall>k__BackingField: 0
+  IsCurrentLadderHorizontal: 0
   GamepadUsed: 0
   Arms: {fileID: 980753910356476131}
   <ArmDetection>k__BackingField: {fileID: 6234253148292796384}
@@ -956,6 +970,7 @@ MonoBehaviour:
   LineArmLeft: {fileID: 7683459281555935350}
   ShoulderLeft: {fileID: 56796983860889730}
   DefaultPosLeft: {fileID: 656159738656065649}
+  GrabDirection: {x: 0, y: 0}
   _starHandleCurrentValue: 0
   StarHandleTargetValue: 150
   ShCentre: {x: 0, y: 0, z: 0}
@@ -974,7 +989,10 @@ MonoBehaviour:
   IsTimerRunningMeteor: 1
   MaxTimeMeteor: 5
   CurrentTimerValueMeteor: 0
+  Invincinbility: {fileID: 0}
+  <EnemyDetection>k__BackingField: {fileID: 0}
   <GroundDetection>k__BackingField: {fileID: 3719720874709478490}
+  <JumpBufferingDetection>k__BackingField: {fileID: 0}
   <LadderVDetectionL>k__BackingField: {fileID: 1149977443471627458}
   <LadderVDetectionR>k__BackingField: {fileID: 3782082570163832820}
   <LadderHDetection>k__BackingField: {fileID: 925709391015125550}

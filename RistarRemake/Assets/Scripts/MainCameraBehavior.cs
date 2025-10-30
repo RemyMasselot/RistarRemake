@@ -1,9 +1,6 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Mime;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MainCameraBehavior : MonoBehaviour
 {
@@ -51,6 +48,7 @@ public class MainCameraBehavior : MonoBehaviour
     [Header("HEADBUTT")]
     public Vector3 CamShakeHeabbutt;
 
+    private Vector3 currentPosition;
 
     private void Start()
     {
@@ -58,10 +56,53 @@ public class MainCameraBehavior : MonoBehaviour
         playerStateMachine.CameraImpacted = false;
         playerStateMachine.CameraInde = true;
         rbPlayer = playerStateMachine.GetComponent<Rigidbody2D>();
+
+        currentPosition = playerStateMachine.transform.position;
     }
 
-    void Update()
+    private void LateUpdate()
     {
+        //// PSEUDO CODE
+        //// Prendre une position de référence
+        //Vector2 targetPosition = _player.position;
+        //targetPosition += Vector2.up * heightOffset;
+
+        //if (state == idle)
+        //{
+        //    targetPosition += aimV3;
+        //}
+        //else if (state.cameraImpacted)
+        //{
+        //}
+
+        //targetPosition += shake;
+        //position = targetPosition;
+
+
+
+        // NOUVELLE CAM
+        Vector3 targetPosition = playerStateMachine.transform.position;
+        float lerpSpeed = 5f;
+
+        if (!playerStateMachine.CameraInde)
+        {
+            targetPosition = playerStateMachine.CameraTargetOverride;
+        }
+
+        if (playerStateMachine.CurrentState is PlayerMeteorStrikeState)
+        {
+            targetPosition += (Vector3)playerStateMachine.Rb.velocity.normalized * 2f;
+            lerpSpeed = 15f;
+        }
+
+        currentPosition = Vector3.Lerp(currentPosition, targetPosition, Time.deltaTime * lerpSpeed);
+        currentPosition.z = -10f;
+        transform.position = currentPosition;
+
+        return;
+
+
+
         // AIM
         Vector2 aimValue = playerStateMachine.Aim.ReadValue<Vector2>();
 
@@ -70,17 +111,20 @@ public class MainCameraBehavior : MonoBehaviour
         
         aimV3 = new Vector3(aimX, aimY, 0);
 
-        //Debug.Log("Current State : " + playerStateMachine.CurrentState.GetType().Name);
-        if ((playerStateMachine.CurrentState.GetType().Name != "PlayerWallClimbState" && playerStateMachine.CurrentState.GetType().Name != "PlayerWallIdleState") || ((playerStateMachine.CurrentState.GetType().Name != "PlayerWallClimbState" || playerStateMachine.CurrentState.GetType().Name != "PlayerWallIdleState") && playerStateMachine.Animator.GetFloat("WallVH") == 1))
+        bool isNotClimbingVertically = (playerStateMachine.CurrentState is not PlayerWallClimbState && playerStateMachine.CurrentState is not PlayerWallIdleState)
+            || ((playerStateMachine.CurrentState is not PlayerWallClimbState || playerStateMachine.CurrentState is not PlayerWallIdleState) && playerStateMachine.IsCurrentLadderHorizontal);
+
+        if (isNotClimbingVertically)
         {
             Debug.Log("ouigo");
+         
             // DIRECTION AIM
             if (aimValue.x > 0)
             {
                 DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, PosWalkX, 2f);
                 playerStateMachine.SpriteRenderer.flipX = false;
             }
-            if (aimValue.x < 0)
+            else if (aimValue.x < 0)
             {
                 DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, -PosWalkX, 2f);
                 playerStateMachine.SpriteRenderer.flipX = true;
@@ -93,7 +137,7 @@ public class MainCameraBehavior : MonoBehaviour
                 DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, PosWalkX, 2f);
                 playerStateMachine.SpriteRenderer.flipX = false;
             }
-            else if(moveValue < 0)
+            else if (moveValue < 0)
             {
                 DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, -PosWalkX, 2f);
                 playerStateMachine.SpriteRenderer.flipX = true;
@@ -165,7 +209,7 @@ public class MainCameraBehavior : MonoBehaviour
             }
             else
             {
-                NewTarget = playerStateMachine.NewTarget;
+                NewTarget = playerStateMachine.CameraTargetOverride;
             }
 
             // MOVE CAMERA

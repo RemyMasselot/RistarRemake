@@ -12,35 +12,35 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER HEADBUTT");
-        _ctx.UpdateAnim("Headbutt");
+        _player.UpdateAnim("Headbutt");
         // Move Left Arm
-        _ctx.IkArmLeft.transform.DOPause();
+        _player.IkArmLeft.transform.DOPause();
         //_ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
         // Move Right Arm
-        _ctx.IkArmRight.transform.DOPause();
+        _player.IkArmRight.transform.DOPause();
         //_ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
-        Vector2 dir = (new Vector3 (_ctx.ArmDetection.SnapPosHand.x, _ctx.ArmDetection.SnapPosHand.y, 0)) - _ctx.Transform.position;
-        _ctx.Rb.velocity = dir.normalized * 10;
+        Vector2 dir = (new Vector3 (_player.ArmDetection.SnapPosHand.x, _player.ArmDetection.SnapPosHand.y, 0)) - _player.Transform.position;
+        _player.Rb.velocity = dir.normalized * 10;
     }
     public override void UpdateState()
     {
         // Move Left Arm
-        _ctx.IkArmLeft.transform.position = _ctx.ArmDetection.SnapPosHand;
+        _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHand;
         // Move Right Arm
-        _ctx.IkArmRight.transform.position = _ctx.ArmDetection.SnapPosHand;
+        _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHand;
 
-        if (_ctx.UseSpine == false)
+        if (_player.UseSpine == false)
         {
             // Draw Line Arm
-            _ctx.LineArmLeft.SetPosition(0, _ctx.ShoulderLeft.position);
-            _ctx.LineArmLeft.SetPosition(1, _ctx.IkArmLeft.position);
-            _ctx.LineArmRight.SetPosition(0, _ctx.ShoulderRight.position);
-            _ctx.LineArmRight.SetPosition(1, _ctx.IkArmRight.position);
+            _player.LineArmLeft.SetPosition(0, _player.ShoulderLeft.position);
+            _player.LineArmLeft.SetPosition(1, _player.IkArmLeft.position);
+            _player.LineArmRight.SetPosition(0, _player.ShoulderRight.position);
+            _player.LineArmRight.SetPosition(1, _player.IkArmRight.position);
         }
     }
     public override void FixedUpdateState() {
     
-        if (_ctx.EnemyDetection.IsGroundDectected == true)
+        if (_player.EnemyDetection.IsGroundDectected == true)
         {
             SwitchState(_factory.Spin());
         }

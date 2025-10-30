@@ -11,18 +11,18 @@ public class PlayerWallIdleState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER WALL IDLE");
-        _ctx.UpdateAnim("WallIdle");
-        _ctx.Rb.velocity = Vector2.zero;
-        _ctx.Rb.gravityScale = 0;
-        if (_ctx.Animator.GetFloat("WallVH") == 0)
+        _player.UpdateAnim("WallIdle");
+        _player.Rb.velocity = Vector2.zero;
+        _player.Rb.gravityScale = 0;
+        if (_player.Animator.GetFloat("WallVH") == 0)
         {
-            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == 1)
+            if (_player.LadderVDetectionL.IsLadderVDectectedL == 1)
             {
-                _ctx.SpriteRenderer.flipX = true;
+                _player.SpriteRenderer.flipX = true;
             }
-            if (_ctx.LadderVDetectionR.IsLadderVDectectedR == 1)
+            if (_player.LadderVDetectionR.IsLadderVDectectedR == 1)
             {
-                _ctx.SpriteRenderer.flipX = false;
+                _player.SpriteRenderer.flipX = false;
             }
         }
     }
@@ -53,23 +53,23 @@ public class PlayerWallIdleState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         // Enter DAMAGE STATE
-        if (_ctx.Invincinbility.IsInvincible == false)
+        if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsGroundDectected == true)
             {
                 SwitchState(_factory.Damage());
             }
         }
 
         // Passage en state WALL CLIMB
-        if (_ctx.Animator.GetFloat("WallVH") == 0) //Echelle Vertical
+        if (_player.Animator.GetFloat("WallVH") == 0) //Echelle Vertical
         {
-            float moveValueV = _ctx.MoveV.ReadValue<float>();
+            float moveValueV = _player.MoveV.ReadValue<float>();
             if (Mathf.Abs(moveValueV) != 0)
             {
                 SwitchState(_factory.WallClimb());
             }
-            if (_ctx.Jump.WasPerformedThisFrame())
+            if (_player.Jump.WasPerformedThisFrame())
             {
                 if (Mathf.Abs(moveValueV) > 0) // Passage en state WALL JUMP
                 {
@@ -77,27 +77,19 @@ public class PlayerWallIdleState : PlayerBaseState
                 }
                 else // Passage en state FALL
                 {
-                    if (_ctx.SpriteRenderer.flipX == true)
-                    {
-                        _ctx.SpriteRenderer.flipX = false;
-                    }
-                    if (_ctx.SpriteRenderer.flipX == false)
-                    {
-                        _ctx.SpriteRenderer.flipX = true;
-                    }
-
+                    _player.SpriteRenderer.flipX = !_player.SpriteRenderer.flipX;
                     SwitchState(_factory.Fall());
                 }
             }
         }
         else //Echelle Horizontal
         {
-            float moveValueH = _ctx.MoveH.ReadValue<float>();
+            float moveValueH = _player.MoveH.ReadValue<float>();
             if (Mathf.Abs(moveValueH) != 0)
             {
                 SwitchState(_factory.WallClimb());
             }
-            if (_ctx.Jump.WasPerformedThisFrame())
+            if (_player.Jump.WasPerformedThisFrame())
             {
                 SwitchState(_factory.Fall());
             }

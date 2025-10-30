@@ -15,28 +15,28 @@ public class PlayerJumpState : PlayerBaseState
     public override void EnterState() 
     {
         //Debug.Log("JUMP ENTER");
-        _ctx.UpdateAnim("Jump");
-        _ctx.Leap = false;
-        _ctx.Rb.gravityScale = 1;
-        _ctx.CoyoteCounter = 0;
+        _player.UpdateAnim("Jump");
+        _player.Leap = false;
+        _player.Rb.gravityScale = 1;
+        _player.CoyoteCounter = 0;
         //DoCornerCorrection = false;
-        _ctx.CornerCorrection.enabled = true;
-        if (_ctx.ArmDetection.ObjectDetected == 4)
+        _player.CornerCorrection.enabled = true;
+        if (_player.ArmDetection.ObjectDetected == 4)
         {
             Debug.Log("JUMP from star handle");
-            Vector2 dir = _ctx.transform.position - _ctx.ShCentre;
+            Vector2 dir = _player.transform.position - _player.ShCentre;
             
-            float percent = (_ctx._starHandleCurrentValue - 0) / (_ctx.StarHandleTargetValue - 0) * 100f;
-            _ctx.ShImpulseCurrent = _ctx.ShImpulseMin + (_ctx.ShImpulseMax - _ctx.ShImpulseMin) * (percent / 100f);
+            float percent = (_player._starHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
+            _player.ShImpulseCurrent = _player.ShImpulseMin + (_player.ShImpulseMax - _player.ShImpulseMin) * (percent / 100f);
             
-            _ctx.Rb.velocity = dir.normalized * _ctx.ShImpulseCurrent;
-            Debug.Log("Dir : " + dir + " velo : " + _ctx.Rb.velocity);
+            _player.Rb.velocity = dir.normalized * _player.ShImpulseCurrent;
+            Debug.Log("Dir : " + dir + " velo : " + _player.Rb.velocity);
         }
         else
         {
-            _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.JumpForceV);
+            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.JumpForceV);
         }
-        _ctx.ArmDetection.ObjectDetected = 0;
+        _player.ArmDetection.ObjectDetected = 0;
         StartTimer();
 
         // CAMERA BEHAVIOR
@@ -44,18 +44,18 @@ public class PlayerJumpState : PlayerBaseState
     }
     void StartTimer()
     {
-        _ctx.CurrentTimerValueJump = _ctx.MaxTimeJump;
-        _ctx.IsTimerRunningJump = true;
+        _player.CurrentTimerValueJump = _player.MaxTimeJump;
+        _player.IsTimerRunningJump = true;
     }
 
     public override void UpdateState() 
     {
-        if (_ctx.IsTimerRunningJump == true)
+        if (_player.IsTimerRunningJump == true)
         {
-            _ctx.CurrentTimerValueJump -= Time.deltaTime;
-            if (_ctx.CurrentTimerValueJump <= 0f)
+            _player.CurrentTimerValueJump -= Time.deltaTime;
+            if (_player.CurrentTimerValueJump <= 0f)
             {
-                _ctx.IsTimerRunningJump = false;
+                _player.IsTimerRunningJump = false;
             }
         }
 
@@ -63,45 +63,45 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void FixedUpdateState() 
     {
-        float moveValue = _ctx.MoveH.ReadValue<float>();
+        float moveValue = _player.MoveH.ReadValue<float>();
         if (moveValue != 0)
         {
-            _ctx.Rb.velocity = new Vector2(moveValue * _ctx.JumpForceH, _ctx.Rb.velocity.y);
+            _player.Rb.velocity = new Vector2(moveValue * _player.JumpForceH, _player.Rb.velocity.y);
         }
         else
         {
-            _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, _ctx.Rb.velocity.y);
+            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Rb.velocity.y);
         }
 
         //Debug.Log(_ctx.Rb.velocity.y);
         // Si on est a l'apex et que la touche est maintenu, on reste à l'apex
-        if (_ctx.Rb.velocity.y < 0)
+        if (_player.Rb.velocity.y < 0)
         {
-            _ctx.Rb.velocity = new Vector2(_ctx.Rb.velocity.x, 0);
+            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, 0);
         }
 
-        if (_ctx.UseSpine == false)
+        if (_player.UseSpine == false)
         {
             // Rotation visuelle -- SANS SPINE
-            if (_ctx.Rb.velocity.x > 0)
+            if (_player.Rb.velocity.x > 0)
             {
-                _ctx.SpriteRenderer.flipX = false;
+                _player.SpriteRenderer.flipX = false;
             }
-            if (_ctx.Rb.velocity.x < 0)
+            if (_player.Rb.velocity.x < 0)
             {
-                _ctx.SpriteRenderer.flipX = true;
+                _player.SpriteRenderer.flipX = true;
             }
         }
         else
         {
             // Rotation visuelle -- AVEC SPINE
-            if (_ctx.Rb.velocity.x > 0)
+            if (_player.Rb.velocity.x > 0)
             {
-                _ctx.SkeletonAnimation.skeleton.ScaleX = 1;
+                _player.SkeletonAnimation.skeleton.ScaleX = 1;
             }
-            if (_ctx.Rb.velocity.x < 0)
+            if (_player.Rb.velocity.x < 0)
             {
-                _ctx.SkeletonAnimation.skeleton.ScaleX = -1;
+                _player.SkeletonAnimation.skeleton.ScaleX = -1;
             }
         }
     }
@@ -110,31 +110,31 @@ public class PlayerJumpState : PlayerBaseState
     public override void CheckSwitchStates() 
     {
         // Enter DAMAGE STATE
-        if (_ctx.Invincinbility.IsInvincible == false)
+        if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsGroundDectected == true)
             {
                 SwitchState(_factory.Damage());
             }
         }
 
         // Passage en state FALL
-        if (_ctx.IsTimerRunningJump == false)
+        if (_player.IsTimerRunningJump == false)
         {
-            _ctx.CornerCorrection.enabled = false;
+            _player.CornerCorrection.enabled = false;
             SwitchState(_factory.Fall());
         }
-        if (_ctx.Jump.WasReleasedThisFrame())
+        if (_player.Jump.WasReleasedThisFrame())
         {
-            _ctx.IsTimerRunningJump = false;
-            _ctx.CornerCorrection.enabled = false;
+            _player.IsTimerRunningJump = false;
+            _player.CornerCorrection.enabled = false;
             SwitchState(_factory.Fall());
         }
 
         // Passage en state GRAB
-        if (_ctx.Grab.WasPerformedThisFrame())
+        if (_player.Grab.WasPerformedThisFrame())
         {
-            _ctx.CornerCorrection.enabled = false;
+            _player.CornerCorrection.enabled = false;
             SwitchState(_factory.Grab());
         }
     }
@@ -188,19 +188,21 @@ public class PlayerJumpState : PlayerBaseState
 
         if (collision.gameObject.CompareTag("LadderV"))
         {
-            if (_ctx.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV") || _ctx.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
+            if (_player.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV") || _player.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
             {
-                _ctx.Animator.SetFloat("WallVH", 0);
-                _ctx.CornerCorrection.enabled = false;
+                _player.IsCurrentLadderHorizontal = false;
+                _player.Animator.SetFloat("WallVH", 0);
+                _player.CornerCorrection.enabled = false;
                 SwitchState(_factory.WallClimb());
             }
         }
-        if (collision.gameObject.CompareTag("LadderH"))
+        else if (collision.gameObject.CompareTag("LadderH"))
         {
-            if (_ctx.LadderHDetection.IsLadderHDectected == true)
+            if (_player.LadderHDetection.IsLadderHDectected == true)
             {
-                _ctx.Animator.SetFloat("WallVH", 1);
-                _ctx.CornerCorrection.enabled = false;
+                _player.IsCurrentLadderHorizontal = true;
+                _player.Animator.SetFloat("WallVH", 1);
+                _player.CornerCorrection.enabled = false;
                 SwitchState(_factory.WallClimb());
             }
         }

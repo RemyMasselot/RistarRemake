@@ -13,40 +13,40 @@ public class PlayerHangState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER HANG");
-        _ctx.ArmDetection.gameObject.SetActive(false);
+        _player.ArmDetection.gameObject.SetActive(false);
         // CAMERA BEHAVIOR
-        _ctx.CameraInde = false;
-        _ctx.NewTarget = _ctx.ArmDetection.SnapPosHand;
+        _player.CameraInde = false;
+        _player.CameraTargetOverride = _player.ArmDetection.SnapPosHand;
 
-        _ctx.Rb.velocity = Vector2.zero;
+        _player.Rb.velocity = Vector2.zero;
         SnapHands = false;
         _goMeteorStrike = false;
-        _ctx._starHandleCurrentValue = 0;
+        _player._starHandleCurrentValue = 0;
         _SHangle = -1.5f;
-        _ctx.ShRayon = _ctx.ShRayonMin;
+        _player.ShRayon = _player.ShRayonMin;
 
         // Move Left Arm
-        _ctx.IkArmLeft.transform.DOMove(_ctx.ArmDetection.SnapPosHand, 0.2f);
+        _player.IkArmLeft.transform.DOMove(_player.ArmDetection.SnapPosHand, 0.2f);
         // Move Right Arm
-        _ctx.IkArmRight.transform.DOMove(_ctx.ArmDetection.SnapPosHand, 0.2f).OnComplete(()=>
+        _player.IkArmRight.transform.DOMove(_player.ArmDetection.SnapPosHand, 0.2f).OnComplete(()=>
         {
             SnapHands = true;
         });
 
-        if (_ctx.ArmDetection.ObjectDetected == 4)
+        if (_player.ArmDetection.ObjectDetected == 4)
         {
-            _ctx.Animator.SetFloat("HangValue", 2);
-            _ctx.ShCentre = _ctx.ArmDetection.SnapPosHand;
-            float x = _ctx.ShCentre.x + Mathf.Cos(_SHangle) * _ctx.ShRayon;
-            float y = _ctx.ShCentre.y + Mathf.Sin(_SHangle) * _ctx.ShRayon;
-            _ctx.transform.DOMove(new Vector2(x, y), 0.3f);
+            _player.Animator.SetFloat("HangValue", 2);
+            _player.ShCentre = _player.ArmDetection.SnapPosHand;
+            float x = _player.ShCentre.x + Mathf.Cos(_SHangle) * _player.ShRayon;
+            float y = _player.ShCentre.y + Mathf.Sin(_SHangle) * _player.ShRayon;
+            _player.transform.DOMove(new Vector2(x, y), 0.3f);
         }
         else
         {
-            _ctx.Animator.SetFloat("HangValue", 1);
+            _player.Animator.SetFloat("HangValue", 1);
         }
 
-        _ctx.UpdateAnim("Hang");
+        _player.UpdateAnim("Hang");
     }
     public override void UpdateState()
     {
@@ -66,41 +66,41 @@ public class PlayerHangState : PlayerBaseState
         if (SnapHands == true)
         {
             // Move Left Arm
-            _ctx.IkArmLeft.transform.position = _ctx.ArmDetection.SnapPosHand;
+            _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHand;
             // Hands rotation
-            Vector2 directionL = (Vector2)(_ctx.IkArmLeft.position - _ctx.ShoulderLeft.position);
+            Vector2 directionL = (Vector2)(_player.IkArmLeft.position - _player.ShoulderLeft.position);
             float angleL = Mathf.Atan2(directionL.y, directionL.x) * Mathf.Rad2Deg;
-            _ctx.IkArmLeft.rotation = Quaternion.Euler(0, 0, angleL);
+            _player.IkArmLeft.rotation = Quaternion.Euler(0, 0, angleL);
             
             // Move Right Arm
-            _ctx.IkArmRight.transform.position = _ctx.ArmDetection.SnapPosHand;
+            _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHand;
             // Hands rotation
-            Vector2 directionR = (Vector2)(_ctx.IkArmRight.position - _ctx.ShoulderRight.position);
+            Vector2 directionR = (Vector2)(_player.IkArmRight.position - _player.ShoulderRight.position);
             float angleR = Mathf.Atan2(directionR.y, directionR.x) * Mathf.Rad2Deg;
-            _ctx.IkArmRight.rotation = Quaternion.Euler(0, 0, angleR);
+            _player.IkArmRight.rotation = Quaternion.Euler(0, 0, angleR);
         }
 
-        if (_ctx.UseSpine == false)
+        if (_player.UseSpine == false)
         {
             // Draw Line Arm
-            _ctx.LineArmLeft.SetPosition(0, _ctx.ShoulderLeft.position);
-            _ctx.LineArmLeft.SetPosition(1, _ctx.IkArmLeft.position);
-            _ctx.LineArmRight.SetPosition(0, _ctx.ShoulderRight.position);
-            _ctx.LineArmRight.SetPosition(1, _ctx.IkArmRight.position);
+            _player.LineArmLeft.SetPosition(0, _player.ShoulderLeft.position);
+            _player.LineArmLeft.SetPosition(1, _player.IkArmLeft.position);
+            _player.LineArmRight.SetPosition(0, _player.ShoulderRight.position);
+            _player.LineArmRight.SetPosition(1, _player.IkArmRight.position);
         }
 
     }
 
     public override void FixedUpdateState() 
     {
-        if (_ctx.ArmDetection.ObjectDetected == 2)
+        if (_player.ArmDetection.ObjectDetected == 2)
         {
-            if (_ctx.Grab.WasReleasedThisFrame())
+            if (_player.Grab.WasReleasedThisFrame())
             {
                 // Move Left Arm
-                _ctx.IkArmLeft.transform.position = _ctx.ArmDetection.SnapPosHand;
+                _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHand;
                 // Move Right Arm
-                _ctx.IkArmRight.transform.position = _ctx.ArmDetection.SnapPosHand;
+                _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHand;
                 SnapHands = true;
                 SwitchState(_factory.Headbutt());
             }
@@ -108,41 +108,41 @@ public class PlayerHangState : PlayerBaseState
 
         if (SnapHands == true)
         {
-            if (_ctx.ArmDetection.ObjectDetected == 4)
+            if (_player.ArmDetection.ObjectDetected == 4)
             {
                 //Tourner autour du Star Handle
-                if (_ctx.SpriteRenderer.flipX == true)
+                if (_player.SpriteRenderer.flipX == true)
                 {
-                    _SHangle += -_ctx.ShSpeed * Time.deltaTime;
+                    _SHangle += -_player.ShSpeed * Time.deltaTime;
                 }
                 else
                 {
-                    _SHangle += _ctx.ShSpeed * Time.deltaTime;
+                    _SHangle += _player.ShSpeed * Time.deltaTime;
                 }
-                float x = _ctx.ShCentre.x + Mathf.Cos(_SHangle) * _ctx.ShRayon;
-                float y = _ctx.ShCentre.y + Mathf.Sin(_SHangle) * _ctx.ShRayon;
-                _ctx.transform.position = new Vector2(x, y);
+                float x = _player.ShCentre.x + Mathf.Cos(_SHangle) * _player.ShRayon;
+                float y = _player.ShCentre.y + Mathf.Sin(_SHangle) * _player.ShRayon;
+                _player.transform.position = new Vector2(x, y);
 
                 ChargingMeteorStrike();
             }
         }
         else
         {
-            if (_ctx.Grab.WasReleasedThisFrame())
+            if (_player.Grab.WasReleasedThisFrame())
             {
                 // CAMERA BEHAVIOR
-                _ctx.CameraInde = true;
+                _player.CameraInde = true;
 
-                if (_ctx.UseSpine == false)
+                if (_player.UseSpine == false)
                 {
-                    _ctx.Arms.gameObject.SetActive(false);
+                    _player.Arms.gameObject.SetActive(false);
                     // Move Left Arm
-                    _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
+                    _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
                     // Move Right Arm
-                    _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
+                    _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
                     //_ctx.ArmDetection.ObjectDetected = 0;
-                    _ctx.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    if (_ctx.transform.position.y <= _ctx.ShCentre.y)
+                    _player.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    if (_player.transform.position.y <= _player.ShCentre.y)
                     {
                         SwitchState(_factory.Fall());
                     }
@@ -164,7 +164,7 @@ public class PlayerHangState : PlayerBaseState
             SwitchState(_factory.Spin());
         }
 
-        if (collision.gameObject == _ctx.TriggerGoToMeteorStrike)
+        if (collision.gameObject == _player.TriggerGoToMeteorStrike)
         {
             SwitchState(_factory.MeteorStrike());
         }
@@ -172,70 +172,70 @@ public class PlayerHangState : PlayerBaseState
 
     private void ChargingMeteorStrike()
     {
-        if (_ctx.SpriteRenderer.flipX == true)
+        if (_player.SpriteRenderer.flipX == true)
         {
             // Body Rotation
-            Vector2 bodyPos = new Vector2(_ctx.transform.position.x, _ctx.transform.position.y);
-            Vector2 direction = bodyPos - _ctx.ArmDetection.SnapPosHand;
+            Vector2 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
+            Vector2 direction = bodyPos - _player.ArmDetection.SnapPosHand;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            _ctx.transform.rotation = Quaternion.Euler(0, 0, angle);
-            if (_ctx.MoveH.ReadValue<float>() < 0)
+            _player.transform.rotation = Quaternion.Euler(0, 0, angle);
+            if (_player.MoveH.ReadValue<float>() < 0)
             {
-                _ctx._starHandleCurrentValue++;
+                _player._starHandleCurrentValue++;
                 //Debug.Log(_starHandleCurrentValue);
             }
-            if (_ctx.MoveH.ReadValue<float>() > 0)
+            if (_player.MoveH.ReadValue<float>() > 0)
             {
-                _ctx._starHandleCurrentValue--;
+                _player._starHandleCurrentValue--;
                 //Debug.Log(_starHandleCurrentValue);
             }
         }
         else
         {
             // Body Rotation
-            Vector2 bodyPos = new Vector2(_ctx.transform.position.x, _ctx.transform.position.y);
-            Vector2 direction = _ctx.ArmDetection.SnapPosHand - bodyPos;
+            Vector2 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
+            Vector2 direction = _player.ArmDetection.SnapPosHand - bodyPos;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            _ctx.transform.rotation = Quaternion.Euler(0, 0, angle);
-            if (_ctx.MoveH.ReadValue<float>() > 0)
+            _player.transform.rotation = Quaternion.Euler(0, 0, angle);
+            if (_player.MoveH.ReadValue<float>() > 0)
             {
-                _ctx._starHandleCurrentValue++;
+                _player._starHandleCurrentValue++;
                 //Debug.Log(_starHandleCurrentValue);
             }
-            if (_ctx.MoveH.ReadValue<float>() < 0)
+            if (_player.MoveH.ReadValue<float>() < 0)
             {
-                _ctx._starHandleCurrentValue--;
+                _player._starHandleCurrentValue--;
                 //Debug.Log(_starHandleCurrentValue);
             }
         }
 
-        if (_ctx._starHandleCurrentValue <= 0)
+        if (_player._starHandleCurrentValue <= 0)
         {
-            _ctx._starHandleCurrentValue = 0;
+            _player._starHandleCurrentValue = 0;
         }
-        if (_ctx._starHandleCurrentValue >= _ctx.StarHandleTargetValue)
+        if (_player._starHandleCurrentValue >= _player.StarHandleTargetValue)
         {
-            _ctx._starHandleCurrentValue = _ctx.StarHandleTargetValue;
+            _player._starHandleCurrentValue = _player.StarHandleTargetValue;
         }
 
-        if (_ctx.Grab.WasReleasedThisFrame())
+        if (_player.Grab.WasReleasedThisFrame())
         {
-            if (_ctx.UseSpine == false)
+            if (_player.UseSpine == false)
             {
-                if (_ctx._starHandleCurrentValue >= _ctx.StarHandleTargetValue)
+                if (_player._starHandleCurrentValue >= _player.StarHandleTargetValue)
                 {
                     _goMeteorStrike = true;
                 }
                 else
                 {
-                    _ctx.Arms.gameObject.SetActive(false);
+                    _player.Arms.gameObject.SetActive(false);
                     // Move Left Arm
-                    _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
+                    _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
                     // Move Right Arm
-                    _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
+                    _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
                     //_ctx.ArmDetection.ObjectDetected = 0;
-                    _ctx.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    if (_ctx.transform.position.y <= _ctx.ShCentre.y)
+                    _player.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    if (_player.transform.position.y <= _player.ShCentre.y)
                     {
                         SwitchState(_factory.Fall());
                     }
@@ -247,23 +247,23 @@ public class PlayerHangState : PlayerBaseState
             }
         }
 
-        float percent = (_ctx._starHandleCurrentValue - 0) / (_ctx.StarHandleTargetValue - 0) * 100f;
-        _ctx.ShRayon = _ctx.ShRayonMin + (_ctx.ShRayonMax - _ctx.ShRayonMin) * (percent / 100f);
+        float percent = (_player._starHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
+        _player.ShRayon = _player.ShRayonMin + (_player.ShRayonMax - _player.ShRayonMin) * (percent / 100f);
         if (_goMeteorStrike == false)
         {
-             _ctx.ShSpeed = _ctx.ShMinSpeed + (_ctx.ShMaxSpeed - _ctx.ShMinSpeed) * (percent / 100f);
+             _player.ShSpeed = _player.ShMinSpeed + (_player.ShMaxSpeed - _player.ShMinSpeed) * (percent / 100f);
         }
-        else if (_ctx.ShSpeed != _ctx.ShSpeedSlowMotion)
+        else if (_player.ShSpeed != _player.ShSpeedSlowMotion)
         {
-            _ctx.ShSpeed = _ctx.ShSpeedSlowMotion;
-            _ctx.TriggerGoToMeteorStrike.transform.position = _ctx.transform.position;
+            _player.ShSpeed = _player.ShSpeedSlowMotion;
+            _player.TriggerGoToMeteorStrike.transform.position = _player.transform.position;
             DOVirtual.DelayedCall(0.5f, () =>
             {
-                _ctx.TriggerGoToMeteorStrike.SetActive(true);
+                _player.TriggerGoToMeteorStrike.SetActive(true);
             });
         }
 
-        if (_ctx.Jump.WasReleasedThisFrame())
+        if (_player.Jump.WasReleasedThisFrame())
         {
             if (_goMeteorStrike == true)
             {

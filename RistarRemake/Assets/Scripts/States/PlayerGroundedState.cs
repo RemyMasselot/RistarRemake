@@ -18,22 +18,22 @@ public class PlayerGroundedState : PlayerBaseState
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() {
         // Enter DAMAGE STATE
-        if (_ctx.Invincinbility.IsInvincible == false)
+        if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsGroundDectected == true)
             {
                 SwitchState(_factory.Damage());
             }
         }
 
         // Passage en state JUMP
-        if (_ctx.Jump.WasPerformedThisFrame())
+        if (_player.Jump.WasPerformedThisFrame())
         {
             SwitchState(_factory.Jump());
         }
 
         // Passage en state WALK
-        float moveValue = _ctx.MoveH.ReadValue<float>();
+        float moveValue = _player.MoveH.ReadValue<float>();
         if (Mathf.Abs(moveValue) > 0)
         {
             SwitchState(_factory.Walk());

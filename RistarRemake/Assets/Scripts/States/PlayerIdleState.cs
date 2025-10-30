@@ -12,11 +12,11 @@ public class PlayerIdleState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER IDLE");
-        _ctx.UpdateAnim("Idle");
-        _ctx.Rb.velocity = Vector2.zero;
-        _ctx.PreviousState = _ctx.CurrentState;
+        _player.UpdateAnim("Idle");
+        _player.Rb.velocity = Vector2.zero;
+        _player.PreviousState = _player.CurrentState;
         // Mise à jour du coyote time
-        _ctx.CoyoteCounter = _ctx.CoyoteTime;
+        _player.CoyoteCounter = _player.CoyoteTime;
         //_ctx.MainCameraBehavior.PlayerTouchGround();
     }
     public override void UpdateState()
@@ -47,40 +47,40 @@ public class PlayerIdleState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         // Enter DAMAGE STATE
-        if (_ctx.Invincinbility.IsInvincible == false)
+        if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsGroundDectected == true)
             {
                 SwitchState(_factory.Damage());
             }
         }
 
         // Passage en state WALK
-        if (_ctx.MoveH.WasPerformedThisFrame())
+        if (_player.MoveH.WasPerformedThisFrame())
         {
             SwitchState(_factory.Walk());
         }
 
         // Passage en state JUMP
-        if (_ctx.Jump.WasPerformedThisFrame() || _ctx.JumpReady == true)
+        if (_player.Jump.WasPerformedThisFrame() || _player.JumpReady == true)
         {
             SwitchState(_factory.Jump());
         }
 
         // Passage en state GRAB
-        if (_ctx.Grab.WasPerformedThisFrame())
+        if (_player.Grab.WasPerformedThisFrame())
         {
-            _ctx.Grab.performed += ctx =>
+            _player.Grab.performed += ctx =>
             {
                 var device = ctx.control.device;
 
                 if (device is Mouse)
                 {
-                    _ctx.GamepadUsed = false;
+                    _player.GamepadUsed = false;
                 }
                 else
                 {
-                    _ctx.GamepadUsed = true;
+                    _player.GamepadUsed = true;
                 }
             };
             SwitchState(_factory.Grab());

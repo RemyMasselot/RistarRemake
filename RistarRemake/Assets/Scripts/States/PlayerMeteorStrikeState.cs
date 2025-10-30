@@ -15,56 +15,56 @@ public class PlayerMeteorStrikeState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER METEOR STRIKE");
-        _ctx.UpdateAnim("MeteorStrike");
+        _player.UpdateAnim("MeteorStrike");
         // CAMERA BEHAVIOR
-        _ctx.CameraInde = true;
+        _player.CameraInde = true;
         CanControl = false;
         DOVirtual.DelayedCall(0.3f, () =>
         {
             CanControl = true;
         });
 
-        Vector2 dir = _ctx.transform.position - _ctx.ShCentre;
-        _ctx.Rb.velocity = dir.normalized * 10;
+        Vector2 dir = _player.transform.position - _player.ShCentre;
+        _player.Rb.velocity = dir.normalized * 10;
 
-        _ctx.ArmDetection.ObjectDetected = 0;
-        _ctx.Rb.gravityScale = 0;
-        _rot = _ctx.transform.position - _ctx.ShCentre;
-        _ctx.GroundDetection.gameObject.SetActive(false);
-        _ctx.LadderHDetection.gameObject.SetActive(false);
-        _ctx.LadderVDetectionL.gameObject.SetActive(false);
-        _ctx.LadderVDetectionR.gameObject.SetActive(false);
-        _ctx.Arms.gameObject.SetActive(false);
-        _ctx.TriggerGoToMeteorStrike.SetActive(false);
+        _player.ArmDetection.ObjectDetected = 0;
+        _player.Rb.gravityScale = 0;
+        _rot = _player.transform.position - _player.ShCentre;
+        _player.GroundDetection.gameObject.SetActive(false);
+        _player.LadderHDetection.gameObject.SetActive(false);
+        _player.LadderVDetectionL.gameObject.SetActive(false);
+        _player.LadderVDetectionR.gameObject.SetActive(false);
+        _player.Arms.gameObject.SetActive(false);
+        _player.TriggerGoToMeteorStrike.SetActive(false);
         // Move Left Arm
-        _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
+        _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
         // Move Right Arm
-        _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
-        _ctx.transform.rotation = Quaternion.Euler(0, 0, 0);
-        _ctx.SpriteRenderer.flipX = false;
+        _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
+        _player.transform.rotation = Quaternion.Euler(0, 0, 0);
+        _player.SpriteRenderer.flipX = false;
         StartTimer();
     }
 
     void StartTimer()
     {
-        _ctx.CurrentTimerValueMeteor = _ctx.MaxTimeMeteor;
-        _ctx.IsTimerRunningMeteor = true;
+        _player.CurrentTimerValueMeteor = _player.MaxTimeMeteor;
+        _player.IsTimerRunningMeteor = true;
     }
 
     public override void UpdateState()
     {
-        if (_ctx.IsTimerRunningMeteor == true)
+        if (_player.IsTimerRunningMeteor == true)
         {
-            _ctx.CurrentTimerValueMeteor -= Time.deltaTime;
-            if (_ctx.CurrentTimerValueMeteor <= 0f)
+            _player.CurrentTimerValueMeteor -= Time.deltaTime;
+            if (_player.CurrentTimerValueMeteor <= 0f)
             {
-                _ctx.IsTimerRunningMeteor = false;
-                _ctx.SpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
-                _ctx.SpriteRenderer.flipY = false;
-                _ctx.GroundDetection.gameObject.SetActive(true);
-                _ctx.LadderHDetection.gameObject.SetActive(true);
-                _ctx.LadderVDetectionL.gameObject.SetActive(true);
-                _ctx.LadderVDetectionR.gameObject.SetActive(true);
+                _player.IsTimerRunningMeteor = false;
+                _player.SpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
+                _player.SpriteRenderer.flipY = false;
+                _player.GroundDetection.gameObject.SetActive(true);
+                _player.LadderHDetection.gameObject.SetActive(true);
+                _player.LadderVDetectionL.gameObject.SetActive(true);
+                _player.LadderVDetectionR.gameObject.SetActive(true);
                 if (_rot.y <= 0)
                 {
                     SwitchState(_factory.Fall());
@@ -81,24 +81,24 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         // Air Control
         if (CanControl == true)
         {
-            float moveValueH = _ctx.MoveH.ReadValue<float>();
-            float moveValueV = _ctx.MoveV.ReadValue<float>();
+            float moveValueH = _player.MoveH.ReadValue<float>();
+            float moveValueV = _player.MoveV.ReadValue<float>();
             _dirPlayer = new Vector2(moveValueH, moveValueV);
             _rot = (_rot + _dirPlayer).normalized;
         }
-        _ctx.transform.Translate(_rot.normalized * _ctx.MeteorSpeed);
+        _player.transform.Translate(_rot.normalized * _player.MeteorSpeed);
 
         // Body Rotation
         float angle = Mathf.Atan2(_rot.y, _rot.x) * Mathf.Rad2Deg;
-        _ctx.SpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, angle);
+        _player.SpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, angle);
 
         if (_rot.x > 0)
         {
-            _ctx.SpriteRenderer.flipY = false;
+            _player.SpriteRenderer.flipY = false;
         }
         if (_rot.x < 0)
         {
-            _ctx.SpriteRenderer.flipY = true;
+            _player.SpriteRenderer.flipY = true;
         }
     }
     public override void ExitState() { }
@@ -115,11 +115,11 @@ public class PlayerMeteorStrikeState : PlayerBaseState
             if (CanControl == true)
             {
                 CanControl = false;
-                _ctx.MeteorSpeed -= 0.1f;
+                _player.MeteorSpeed -= 0.1f;
                 DOVirtual.DelayedCall(0.2f, () =>
                 {
                     CanControl = true;
-                    _ctx.MeteorSpeed += 0.1f;
+                    _player.MeteorSpeed += 0.1f;
                 });
             }
 

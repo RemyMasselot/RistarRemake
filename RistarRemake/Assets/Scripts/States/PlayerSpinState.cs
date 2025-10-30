@@ -14,52 +14,52 @@ public class PlayerSpinState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER SPIN");
-        _ctx.UpdateAnim("Spin");
+        _player.UpdateAnim("Spin");
 
         hasEnded = false;
-        if (_ctx.UseSpine == false)
+        if (_player.UseSpine == false)
         {
-            _ctx.Arms.gameObject.SetActive(false);
-            _ctx.ArmDetection.gameObject.SetActive(false);
+            _player.Arms.gameObject.SetActive(false);
+            _player.ArmDetection.gameObject.SetActive(false);
             // Move Left Arm
-            _ctx.IkArmLeft.transform.position = _ctx.DefaultPosLeft.position;
+            _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
             // Move Right Arm
-            _ctx.IkArmRight.transform.position = _ctx.DefaultPosRight.position;
+            _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
         }
-        _ctx.Rb.gravityScale = 1;
+        _player.Rb.gravityScale = 1;
 
-        if (_ctx.ArmDetection.ObjectDetected == 5)
+        if (_player.ArmDetection.ObjectDetected == 5)
         {
-            if (_ctx.GrabDirection.x < 0)
+            if (_player.GrabDirection.x < 0)
             {
-                _ctx.Rb.velocity = new Vector2(1, 1) * 4;
+                _player.Rb.velocity = new Vector2(1, 1) * 4;
             }
-            if (_ctx.GrabDirection.x > 0)
+            if (_player.GrabDirection.x > 0)
             {
-                _ctx.Rb.velocity = new Vector2(-1, 1) * 4;
+                _player.Rb.velocity = new Vector2(-1, 1) * 4;
             }
-            if (_ctx.LadderHDetection.IsLadderHDectected == true)
+            if (_player.LadderHDetection.IsLadderHDectected == true)
             {
-                _ctx.Rb.velocity = new Vector2(0, -1);
+                _player.Rb.velocity = new Vector2(0, -1);
             }
         }
 
-        if (_ctx.ArmDetection.ObjectDetected == 2)
+        if (_player.ArmDetection.ObjectDetected == 2)
         {
             //Debug.Log("greg");
             // CAMERA BEHAVIOR
-            _ctx.CameraImpacted = true;
-            _ctx.CameraInde = true;
-            _ctx.Camera.DOShakePosition(0.2f, _ctx.MainCameraBehavior.CamShakeHeabbutt, 5).OnComplete(() =>
+            _player.CameraImpacted = true;
+            _player.CameraInde = true;
+            _player.Camera.DOShakePosition(0.2f, _player.MainCameraBehavior.CamShakeHeabbutt, 5).OnComplete(() =>
                 {
-                    _ctx.CameraImpacted = false;
+                    _player.CameraImpacted = false;
                 });
-            _ctx.Rb.velocity = new Vector2(0, 1) * 10;
+            _player.Rb.velocity = new Vector2(0, 1) * 10;
         }
     }
     public override void UpdateState()
     {
-        AnimatorStateInfo stateInfo = _ctx.Animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = _player.Animator.GetCurrentAnimatorStateInfo(0);
 
         if (stateInfo.IsName("Spin") && stateInfo.normalizedTime >= 1f && !hasEnded)
         {

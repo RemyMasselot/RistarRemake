@@ -10,48 +10,53 @@ public class PlayerWallJumpState : PlayerBaseState
     
     public override void EnterState() {
         //Debug.Log("JUMP ENTER");
-        _ctx.UpdateAnim("Jump");
-        _ctx.Leap = false;
-        _ctx.Rb.gravityScale = 1;
-        _ctx.Rb.velocity = new Vector2(_ctx.JumpForceH, _ctx.JumpForceV);
+        _player.UpdateAnim("Jump");
+        _player.Leap = false;
+        _player.Rb.gravityScale = 1;
+        _player.Rb.velocity = new Vector2(_player.JumpForceH, _player.JumpForceV);
     }
     public override void UpdateState() 
     {
-        // Rotation visuelle
-        if (_ctx.Rb.velocity.x > 0)
+        if (_player.Rb.velocity.x != 0)
         {
-            _ctx.SpriteRenderer.flipX = false;
+            _player.SpriteRenderer.flipX = _player.Rb.velocity.x < 0;
         }
-        if (_ctx.Rb.velocity.x < 0)
-        {
-            _ctx.SpriteRenderer.flipX = true;
-        }
+
+        //if (_player.Rb.velocity.x > 0)
+        //{
+        //    _player.SpriteRenderer.flipX = false;
+        //}
+        //else if (_player.Rb.velocity.x < 0)
+        //{
+        //    _player.SpriteRenderer.flipX = true;
+        //}
+
         CheckSwitchStates();
     }
     public override void FixedUpdateState() {
-        float moveValue = _ctx.MoveH.ReadValue<float>();
-        _ctx.Rb.velocity = new Vector2 (_ctx.JumpForceH * moveValue, _ctx.Rb.velocity.y);
+        float moveValue = _player.MoveH.ReadValue<float>();
+        _player.Rb.velocity = new Vector2 (_player.JumpForceH * moveValue, _player.Rb.velocity.y);
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() {
         // Enter DAMAGE STATE
-        if (_ctx.Invincinbility.IsInvincible == false)
+        if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_ctx.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsGroundDectected == true)
             {
                 SwitchState(_factory.Damage());
             }
         }
 
         // Passage en state GRAB
-        if (_ctx.Grab.WasPerformedThisFrame())
+        if (_player.Grab.WasPerformedThisFrame())
         {
             SwitchState(_factory.Grab());
         }
 
         // Passage en state FALL
-        if (_ctx.Rb.velocity.y < 0)
+        if (_player.Rb.velocity.y < 0)
         {
             SwitchState(_factory.Fall());
         }
@@ -60,12 +65,12 @@ public class PlayerWallJumpState : PlayerBaseState
     {
         if (collision.gameObject.CompareTag("LadderV"))
         {
-            _ctx.Animator.SetFloat("WallVH", 0);
+            _player.Animator.SetFloat("WallVH", 0);
             SwitchState(_factory.WallClimb());
         }
         if (collision.gameObject.CompareTag("LadderH"))
         {
-            _ctx.Animator.SetFloat("WallVH", 1);
+            _player.Animator.SetFloat("WallVH", 1);
             SwitchState(_factory.WallClimb());
         }
     }

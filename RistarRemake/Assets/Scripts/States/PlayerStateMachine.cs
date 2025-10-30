@@ -45,7 +45,7 @@ public class PlayerStateMachine : MonoBehaviour
     public MainCameraBehavior MainCameraBehavior;
     [HideInInspector] public bool CameraImpacted;
     [HideInInspector] public bool CameraInde;
-    [HideInInspector] public Vector3 NewTarget;
+    [HideInInspector] public Vector3 CameraTargetOverride;
 
     // MOVE
     public Transform Transform;
@@ -76,6 +76,7 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField] public bool Leap { get; set; } = false;
     [field: SerializeField] public bool Fall { get; set; } = false;
 
+    public bool IsCurrentLadderHorizontal;
 
     // GRAB
     public bool GamepadUsed;
