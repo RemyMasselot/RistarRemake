@@ -4692,6 +4692,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9021627778252364261, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: CoyoteTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021627778252364261, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: MaxTimeGrab
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021627778252364261, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: MaxTimeJump
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021627778252364261, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: Invincinbility
       value: 
       objectReference: {fileID: 594157651}
@@ -4703,6 +4715,26 @@ PrefabInstance:
       propertyPath: CornerCorrection
       value: 
       objectReference: {fileID: 594157652}
+    - target: {fileID: 9021627778252364261, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: MoveDownFallValue
+      value: -0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021627778252364261, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: DurationExtendGrab
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021627778252364261, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: MoveDownFallValueMax
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021627778252364261, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: <LeapForceH>k__BackingField
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021627778252364261, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: <LeapForceV>k__BackingField
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 9021627778252364261, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: <EnemyDetection>k__BackingField
       value: 

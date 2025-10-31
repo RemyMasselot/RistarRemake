@@ -14,15 +14,18 @@ public class PlayerWallIdleState : PlayerBaseState
         _player.UpdateAnim("WallIdle");
         _player.Rb.velocity = Vector2.zero;
         _player.Rb.gravityScale = 0;
-        if (_player.Animator.GetFloat("WallVH") == 0)
+        if (_player.UseSpine ==false)
         {
-            if (_player.LadderVDetectionL.IsLadderVDectectedL == 1)
+            if (_player.Animator.GetFloat("WallVH") == 0)
             {
-                _player.SpriteRenderer.flipX = true;
-            }
-            if (_player.LadderVDetectionR.IsLadderVDectectedR == 1)
-            {
-                _player.SpriteRenderer.flipX = false;
+                if (_player.LadderVDetectionL.IsLadderVDectectedL == 1)
+                {
+                    _player.SpriteRenderer.flipX = true;
+                }
+                if (_player.LadderVDetectionR.IsLadderVDectectedR == 1)
+                {
+                    _player.SpriteRenderer.flipX = false;
+                }
             }
         }
     }
@@ -62,36 +65,39 @@ public class PlayerWallIdleState : PlayerBaseState
         }
 
         // Passage en state WALL CLIMB
-        if (_player.Animator.GetFloat("WallVH") == 0) //Echelle Vertical
+        if (_player.UseSpine == false)
         {
-            float moveValueV = _player.MoveV.ReadValue<float>();
-            if (Mathf.Abs(moveValueV) != 0)
+            if (_player.Animator.GetFloat("WallVH") == 0) //Echelle Vertical
             {
-                SwitchState(_factory.WallClimb());
-            }
-            if (_player.Jump.WasPerformedThisFrame())
-            {
-                if (Mathf.Abs(moveValueV) > 0) // Passage en state WALL JUMP
+                float moveValueV = _player.MoveV.ReadValue<float>();
+                if (Mathf.Abs(moveValueV) != 0)
                 {
-                    SwitchState(_factory.WallJump());
+                    SwitchState(_factory.WallClimb());
                 }
-                else // Passage en state FALL
+                if (_player.Jump.WasPerformedThisFrame())
                 {
-                    _player.SpriteRenderer.flipX = !_player.SpriteRenderer.flipX;
+                    if (Mathf.Abs(moveValueV) > 0) // Passage en state WALL JUMP
+                    {
+                        SwitchState(_factory.WallJump());
+                    }
+                    else // Passage en state FALL
+                    {
+                        _player.SpriteRenderer.flipX = !_player.SpriteRenderer.flipX;
+                        SwitchState(_factory.Fall());
+                    }
+                }
+            }
+            else //Echelle Horizontal
+            {
+                float moveValueH = _player.MoveH.ReadValue<float>();
+                if (Mathf.Abs(moveValueH) != 0)
+                {
+                    SwitchState(_factory.WallClimb());
+                }
+                if (_player.Jump.WasPerformedThisFrame())
+                {
                     SwitchState(_factory.Fall());
                 }
-            }
-        }
-        else //Echelle Horizontal
-        {
-            float moveValueH = _player.MoveH.ReadValue<float>();
-            if (Mathf.Abs(moveValueH) != 0)
-            {
-                SwitchState(_factory.WallClimb());
-            }
-            if (_player.Jump.WasPerformedThisFrame())
-            {
-                SwitchState(_factory.Fall());
             }
         }
     }

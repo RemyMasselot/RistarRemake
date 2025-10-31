@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -156,19 +157,17 @@ public class PlayerStateMachine : MonoBehaviour
         Back = controls.LAND.BACK;
     }
 
-    ///////////////////////////////////////////////////////       UPDATE       ///////////////////////////////////////////////////////
+
     void Update()
     {
         _currentState.UpdateState();
     }
 
-    ///////////////////////////////////////////////////////       FIXED UPDATE       ///////////////////////////////////////////////////////
     void FixedUpdate()
     {
         _currentState.FixedUpdateState();
     }
 
-    ///////////////////////////////////////////////////////       COLLISION       ///////////////////////////////////////////////////////
     private void OnCollisionEnter2D(Collision2D collision)
     {
         CurrentState.OnCollisionEnter2D(collision);
@@ -191,6 +190,34 @@ public class PlayerStateMachine : MonoBehaviour
                 }
             }
             Animator.SetBool(animName, true);
+        }
+    }
+
+    public enum LadderIs
+    {
+        VerticalLeft = 1,
+        VerticalRight = 2,
+        Horizontal = 3
+    }
+
+    public int IsLadder = 0;
+
+    public void LadderVerif(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("LadderV"))
+        {
+            if (LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV"))
+            {
+                IsLadder = (int)LadderIs.VerticalLeft;
+            }
+            if (LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
+            {
+                IsLadder = (int)LadderIs.VerticalRight;
+            }
+        }
+        if (collision.gameObject.CompareTag("LadderH"))
+        {
+            IsLadder = (int)LadderIs.Horizontal;
         }
     }
 }
