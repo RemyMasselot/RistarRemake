@@ -26,12 +26,7 @@ public class PlayerLeapState : PlayerBaseState
     }
     public override void FixedUpdateState()
     {
-        if (newOrientation == true)
-        {
-            //float moveValue = _ctx.MoveH.ReadValue<float>();
-            //_ctx.Rb.velocity = new Vector2(_ctx.LeapForceH * moveValue, _ctx.Rb.velocity.y);
-        }
-        else
+        if (newOrientation == false)
         {
             if (_player.transform.position.y >= PosY + 1.5f)
             {

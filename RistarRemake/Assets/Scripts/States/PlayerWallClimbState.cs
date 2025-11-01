@@ -1,7 +1,5 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static PlayerStateMachine;
 
 public class PlayerWallClimbState : PlayerBaseState
 {
@@ -24,8 +22,6 @@ public class PlayerWallClimbState : PlayerBaseState
                 _player.SpriteRenderer.flipX = false;
             }
         }
-        // CAMERA BEHAVIOR
-        //_ctx.MainCameraBehavior.CurrentState = "CLIMB";
     }
     public override void UpdateState()
     {
@@ -34,7 +30,7 @@ public class PlayerWallClimbState : PlayerBaseState
     public override void FixedUpdateState()
     {
         // Déplacements du personnage
-        if (_player.Animator.GetFloat("WallVH") == 0)
+        if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
         {
             float moveValueV = _player.MoveV.ReadValue<float>();
             if (moveValueV > 0)
@@ -46,7 +42,7 @@ public class PlayerWallClimbState : PlayerBaseState
                 _player.Rb.velocity = new Vector2(0, -_player.WalkSpeed * Time.deltaTime);
             }
         }
-        else
+        else if (_player.IsLadder == (int)LadderIs.Horizontal)
         {
             float moveValueH = _player.MoveH.ReadValue<float>();
             if (moveValueH > 0)
@@ -75,7 +71,7 @@ public class PlayerWallClimbState : PlayerBaseState
         }
 
         // Vertical or Horizontal
-        if (_player.Animator.GetFloat("WallVH") == 0) // VERTICAL
+        if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight) // VERTICAL
         {
             // Passage en state WALL IDLE
             float moveValueV = _player.MoveV.ReadValue<float>();
@@ -103,7 +99,7 @@ public class PlayerWallClimbState : PlayerBaseState
                 }
             }
         }
-        else // HORIZONTAL
+        else if (_player.IsLadder == (int)LadderIs.Horizontal) // HORIZONTAL
         {
             // Passage en state WALL IDLE
             float moveValueH = _player.MoveH.ReadValue<float>();

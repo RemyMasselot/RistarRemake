@@ -14,18 +14,6 @@ public class LadderVDetectionL : MonoBehaviour
         if (hit != null)
         {
             IsLadderVDectectedL = hit.gameObject.layer;
-            //if (hit.gameObject.layer == LayerMask.NameToLayer("LadderV"))
-            //{
-            //    IsLadderVDectectedL = 1;
-            //}
-            //if (hit.gameObject.layer == LayerMask.NameToLayer("Wall"))
-            //{
-            //    IsLadderVDectectedL = 2;
-            //}
-            //else
-            //{
-            //    IsLadderVDectectedL = 0;
-            //}
         }
     }
 

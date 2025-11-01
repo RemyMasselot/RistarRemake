@@ -1,16 +1,10 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static PlayerStateMachine;
 
 public class PlayerJumpState : PlayerBaseState
 {
     public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
-    
-    //private bool DoCornerCorrection = false;
-    //private bool CorrectionLeft = true;
-    //private float VelocityUp;
     
     public override void EnterState() 
     {
@@ -38,9 +32,6 @@ public class PlayerJumpState : PlayerBaseState
         }
         _player.ArmDetection.ObjectDetected = 0;
         StartTimer();
-
-        // CAMERA BEHAVIOR
-        //_ctx.MainCameraBehavior.CamJumpEnter();
     }
     void StartTimer()
     {
@@ -138,46 +129,7 @@ public class PlayerJumpState : PlayerBaseState
             SwitchState(_factory.Grab());
         }
     }
-    public override void OnCollisionEnter2D(Collision2D collision) 
-    {
-        //if (collision.collider != null)
-        //{
-        //    Vector2 origin = _ctx.transform.position;
-        //    Vector2 direction = Vector2.up;
-        //    float distance = 0.08f;
-        //    int layerToIgnore = LayerMask.NameToLayer("Player");
-        //    int mask = ~(1 << layerToIgnore);
-        //    VelocityUp = _ctx.Rb.velocity.y;
-        //
-        //    Debug.Log("Touché : " + collision.collider.name);
-        //    if (collision.collider.gameObject.layer == 9)
-        //    {
-        //        Vector2 endPoint = origin + direction.normalized * 0.6f;
-        //        Vector2 newDir;
-        //        if (_ctx.transform.position.x < collision.collider.gameObject.transform.position.x)
-        //        {
-        //            newDir = Vector2.left;
-        //            CorrectionLeft = true;
-        //        }
-        //        else
-        //        {
-        //            newDir = Vector2.right;
-        //            CorrectionLeft = false;
-        //        }
-        //        Vector2 newOrigin = endPoint + newDir * distance;
-        //        Collider2D collider = Physics2D.OverlapPoint(newOrigin);
-        //        if (collider != null)
-        //        {
-        //            Debug.Log("Un objet est présent au point : " + newOrigin + " : " + collider.name);
-        //        }
-        //        else
-        //        {
-        //            Debug.Log("Lancer Corner Correction");
-        //            DoCornerCorrection = true;
-        //        }
-        //    }
-        //}
-    }
+    public override void OnCollisionEnter2D(Collision2D collision) { }
 
     public override void OnCollisionStay2D(Collision2D collision) 
     {
@@ -185,20 +137,18 @@ public class PlayerJumpState : PlayerBaseState
         // Si oui, je lance un raycast a partir du point de fin de mon premier raycast
         // Si au point de fin de mon 2eme raycast ce trouve du vide alors je décale mon perso
 
+        _player.LadderVerif(collision);
 
-        if (collision.gameObject.CompareTag("LadderV"))
+        if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
         {
-            if (_player.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV") || _player.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
-            {
-                _player.IsCurrentLadderHorizontal = false;
-                _player.Animator.SetFloat("WallVH", 0);
-                _player.CornerCorrection.enabled = false;
-                SwitchState(_factory.WallClimb());
-            }
+            _player.IsCurrentLadderHorizontal = false;
+            _player.Animator.SetFloat("WallVH", 0);
+            _player.CornerCorrection.enabled = false;
+            SwitchState(_factory.WallClimb());
         }
-        else if (collision.gameObject.CompareTag("LadderH"))
+        else if (_player.IsLadder == (int)LadderIs.Horizontal)
         {
-            if (_player.LadderHDetection.IsLadderHDectected == true)
+            //if (_player.LadderHDetection.IsLadderHDectected == true)
             {
                 _player.IsCurrentLadderHorizontal = true;
                 _player.Animator.SetFloat("WallVH", 1);

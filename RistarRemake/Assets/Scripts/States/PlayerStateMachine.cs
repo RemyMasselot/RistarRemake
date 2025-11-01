@@ -1,10 +1,6 @@
 using Spine.Unity;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -132,6 +128,14 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField] public LadderVDetectionL LadderVDetectionL { get; private set; }
     [field: SerializeField] public LadderVDetectionR LadderVDetectionR { get; private set; }
     [field: SerializeField] public LadderHDetection LadderHDetection { get; private set; }
+    public enum LadderIs
+    {
+        VerticalLeft = 1,
+        VerticalRight = 2,
+        Horizontal = 3
+    }
+    public int IsLadder = 0;
+
 
     private void Awake()
     {
@@ -193,14 +197,6 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
-    public enum LadderIs
-    {
-        VerticalLeft = 1,
-        VerticalRight = 2,
-        Horizontal = 3
-    }
-
-    public int IsLadder = 0;
 
     public void LadderVerif(Collision2D collision)
     {
@@ -215,9 +211,13 @@ public class PlayerStateMachine : MonoBehaviour
                 IsLadder = (int)LadderIs.VerticalRight;
             }
         }
-        if (collision.gameObject.CompareTag("LadderH"))
+        else if (collision.gameObject.CompareTag("LadderH"))
         {
             IsLadder = (int)LadderIs.Horizontal;
+        }
+        else
+        {
+            IsLadder = 0;
         }
     }
 }

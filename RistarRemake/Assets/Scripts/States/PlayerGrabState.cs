@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using static PlayerStateMachine;
 
 public class PlayerGrabState : PlayerBaseState
 {
@@ -99,15 +98,6 @@ public class PlayerGrabState : PlayerBaseState
         // Vérification d'un sol ou non
         if (_player.GroundDetection.IsGroundDectected == true)
         {
-            //RaycastHit2D hit = Physics2D.Raycast(_ctx.ShoulderLeft.position, _ctx.AimDir.normalized, _ctx.DistanceGrab, 1 << 3);
-            //if (hit.collider != null)
-            //{
-            //    Debug.Log("hit raycast");
-            //    if (_ctx.AimDir.y <= 0)
-            //    {
-            //        _ctx.AimDir.y = 0;
-            //    }
-            //}
             if (_player.AimDir.y <= 0)
             {
                 _player.AimDir.y = 0;
@@ -307,21 +297,20 @@ public class PlayerGrabState : PlayerBaseState
 
     public override void OnCollisionStay2D(Collision2D collision) 
     {
-        if (collision.gameObject.CompareTag("LadderV"))
+        _player.LadderVerif(collision);
+
+        if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
         {
-            if (_player.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV") || _player.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
+            if (_player.UseSpine == false)
             {
-                if (_player.UseSpine == false)
-                {
-                    _player.Animator.SetFloat("WallVH", 0);
-                    _player.Arms.gameObject.SetActive(false);
-                }
-                SwitchState(_factory.WallIdle());
+                _player.Animator.SetFloat("WallVH", 0);
+                _player.Arms.gameObject.SetActive(false);
             }
+            SwitchState(_factory.WallIdle());
         }
-        if (collision.gameObject.CompareTag("LadderH"))
+        else if (_player.IsLadder == (int)LadderIs.Horizontal)
         {
-            if (_player.LadderHDetection.IsLadderHDectected == true)
+            //if (_player.LadderHDetection.IsLadderHDectected == true)
             {
                 if (_player.UseSpine == false)
                 {
@@ -334,18 +323,6 @@ public class PlayerGrabState : PlayerBaseState
 
         if (collision.gameObject.CompareTag("Wall"))
         {
-            //if (collision.transform.position.x < _ctx.transform.position.x)
-            //{
-            //    _ctx.WallDetectedPosition = 1;
-            //}
-            //if (collision.transform.position.x > _ctx.transform.position.x)
-            //{
-            //    _ctx.WallDetectedPosition = 2;
-            //}
-            //if (collision.transform.position.y > _ctx.transform.position.y)
-            //{
-            //    _ctx.WallDetectedPosition = 3;
-            //}
             SwitchState(_factory.Spin());
         }
     }
@@ -406,10 +383,6 @@ public class PlayerGrabState : PlayerBaseState
         Debug.Log("Wall Detected");
         _player.ArmDetection.gameObject.SetActive(false);
 
-        //// Move Left Arm
-        //_ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
-        //// Move Right Arm
-        //_ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
         _player.Rb.velocity = _player.AimDir.normalized * 10;
     }
     private void GrabFloor()
@@ -451,25 +424,13 @@ public class PlayerGrabState : PlayerBaseState
     {
         //Debug.Log("Enemy Detected");
         SwitchState(_factory.Hang());
-        //_ctx.Rb.velocity = _ctx.AimDir.normalized * 10;
-        //_ctx.ArmDetection.ObjectDetected = 0;
-        //Enlever le contrôle du joueur
-        //Déplacer le perso jusqu'au point de contact des mains
-        //Tuer l'ennemi
     }
     private void GrabLadder()
     {
         //Debug.Log("Ladder Detected");
         _player.ArmDetection.gameObject.SetActive(false);
 
-        //// Move Left Arm
-        //_ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
-        //// Move Right Arm
-        //_ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
         _player.Rb.velocity = _player.AimDir.normalized * 10;
-        //Enlever le contrôle du joueur
-        //Déplacer le perso jusqu'au point de contact des mains
-        //Passage du perso en state IDLECLIMB
     }
     private void GrabStarHandle()
     {

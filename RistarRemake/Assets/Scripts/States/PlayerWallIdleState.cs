@@ -1,7 +1,5 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static PlayerStateMachine;
 
 public class PlayerWallIdleState : PlayerBaseState
 {
@@ -32,23 +30,6 @@ public class PlayerWallIdleState : PlayerBaseState
     public override void UpdateState()
     {
         CheckSwitchStates();
-
-        //CAMERA BEHAVIOR
-        //Vector2 aimValue = _ctx.Aim.ReadValue<Vector2>();
-        //if (_ctx.Animator.GetFloat("WallVH") == 1) //Echelle Horizontale
-        //{
-        //    // Rotation visuelle
-        //    if (aimValue.x > 0)
-        //    {
-        //        _ctx.SpriteRenderer.flipX = false;
-        //        DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, _ctx.MainCameraBehavior.PosWalkX, 2f);
-        //    }
-        //    if (aimValue.x < 0)
-        //    {
-        //        _ctx.SpriteRenderer.flipX = true;
-        //        DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, -_ctx.MainCameraBehavior.PosWalkX, 2f);
-        //    }
-        //}
     }
     public override void FixedUpdateState(){ }
     public override void ExitState(){}
@@ -67,7 +48,7 @@ public class PlayerWallIdleState : PlayerBaseState
         // Passage en state WALL CLIMB
         if (_player.UseSpine == false)
         {
-            if (_player.Animator.GetFloat("WallVH") == 0) //Echelle Vertical
+            if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight) //Echelle Vertical
             {
                 float moveValueV = _player.MoveV.ReadValue<float>();
                 if (Mathf.Abs(moveValueV) != 0)
@@ -87,7 +68,7 @@ public class PlayerWallIdleState : PlayerBaseState
                     }
                 }
             }
-            else //Echelle Horizontal
+            else if (_player.IsLadder == (int)LadderIs.Horizontal) //Echelle Horizontal
             {
                 float moveValueH = _player.MoveH.ReadValue<float>();
                 if (Mathf.Abs(moveValueH) != 0)

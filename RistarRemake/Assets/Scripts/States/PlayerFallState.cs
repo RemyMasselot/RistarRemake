@@ -1,7 +1,5 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static PlayerStateMachine;
 
 public class PlayerFallState : PlayerBaseState
 {
@@ -29,26 +27,14 @@ public class PlayerFallState : PlayerBaseState
 
         _player.ArmDetection.ObjectDetected = 0;
         _player.Rb.gravityScale = 2;
-
-        // CAMERA BEHAVIOR
-        //_ctx.MainCameraBehavior.CurrentState = "FALL";
-        //_ctx.MainCameraBehavior.CorrectPosY();
-        //_ctx.Camera.DOOrthoSize(_ctx.MainCameraBehavior.SizeDefault, 0.8f);
-        //DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.y, x => _ctx.MainCameraBehavior.CameraPositionFallOff.y = x, _ctx.MainCameraBehavior.PosFallY, 0.8f);
     }
-    public override void ExitState()
-    {
-    }
+    public override void ExitState() { }
     public override void UpdateState() 
     {
         CheckSwitchStates();
     }
     public override void FixedUpdateState()
     {
-        // CAMERA BEHAVIOR
-        //_ctx.MainCameraBehavior.CorrectPosY();
-        //DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.y, x => _ctx.MainCameraBehavior.CameraPositionFallOff.y = x, _ctx.MainCameraBehavior.newYDown, 2f);
-
         // Air Control
         float moveValueH = _player.MoveH.ReadValue<float>();
         float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValue, _player.MoveDownFallValueMax);
@@ -146,34 +132,21 @@ public class PlayerFallState : PlayerBaseState
             //_ctx.MainCameraBehavior.CurrentState = "OTHER";
             SwitchState(_factory.Grab());
         }
-
-        //// Passage en state CLIMB
-        //if (_ctx.LadderVDetectionL.IsLadderVDectectedL == true || _ctx.LadderVDetectionR.IsLadderVDectectedR == true)
-        //{
-        //    _ctx.Animator.SetFloat("WallVH", 0);
-        //    SwitchState(_factory.WallClimb());
-        //}
-        //if (_ctx.LadderHDetection.IsLadderHDectected == true)
-        //{
-        //    _ctx.Animator.SetFloat("WallVH", 1);
-        //    SwitchState(_factory.WallClimb());
-        //}
     }
     public override void OnCollisionEnter2D(Collision2D collision) 
     {
-        if (collision.gameObject.CompareTag("LadderV"))
+        _player.LadderVerif(collision);
+
+        if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
         {
-            if (_player.LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV") || _player.LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
-            {
-                _player.IsCurrentLadderHorizontal = false;
-                _player.Animator.SetFloat("WallVH", 0);
-                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
-                SwitchState(_factory.WallClimb());
-            }
+            _player.IsCurrentLadderHorizontal = false;
+            _player.Animator.SetFloat("WallVH", 0);
+            //_ctx.MainCameraBehavior.CurrentState = "OTHER";
+            SwitchState(_factory.WallClimb());
         }
-        if (collision.gameObject.CompareTag("LadderH"))
+        else if (_player.IsLadder == (int)LadderIs.Horizontal)
         {
-            if (_player.LadderHDetection.IsLadderHDectected == true)
+            //if (_player.LadderHDetection.IsLadderHDectected == true)
             {
                 _player.IsCurrentLadderHorizontal = true;
                 _player.Animator.SetFloat("WallVH", 1);

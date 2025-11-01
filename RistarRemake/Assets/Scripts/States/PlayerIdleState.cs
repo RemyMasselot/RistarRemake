@@ -17,26 +17,10 @@ public class PlayerIdleState : PlayerBaseState
         _player.PreviousState = _player.CurrentState;
         // Mise à jour du coyote time
         _player.CoyoteCounter = _player.CoyoteTime;
-        //_ctx.MainCameraBehavior.PlayerTouchGround();
     }
     public override void UpdateState()
     {
         CheckSwitchStates();
-
-        //// CAMERA BEHAVIOR
-        //Vector2 aimValue = _ctx.Aim.ReadValue<Vector2>();
-
-        //// Rotation visuelle
-        //if (aimValue.x > 0)
-        //{
-        //    _ctx.SpriteRenderer.flipX = false;
-        //    DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, _ctx.MainCameraBehavior.PosWalkX, 2f);
-        //}
-        //if (aimValue.x < 0)
-        //{
-        //    _ctx.SpriteRenderer.flipX = true;
-        //    DOTween.To(() => _ctx.MainCameraBehavior.CameraPositionFallOff.x, x => _ctx.MainCameraBehavior.CameraPositionFallOff.x = x, - _ctx.MainCameraBehavior.PosWalkX, 2f);
-        //}
     }
     public override void FixedUpdateState()
     {

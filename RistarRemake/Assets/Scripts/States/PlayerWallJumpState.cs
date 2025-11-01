@@ -1,7 +1,5 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static PlayerStateMachine;
 
 public class PlayerWallJumpState : PlayerBaseState
 {
@@ -21,15 +19,6 @@ public class PlayerWallJumpState : PlayerBaseState
         {
             _player.SpriteRenderer.flipX = _player.Rb.velocity.x < 0;
         }
-
-        //if (_player.Rb.velocity.x > 0)
-        //{
-        //    _player.SpriteRenderer.flipX = false;
-        //}
-        //else if (_player.Rb.velocity.x < 0)
-        //{
-        //    _player.SpriteRenderer.flipX = true;
-        //}
 
         CheckSwitchStates();
     }
@@ -63,12 +52,14 @@ public class PlayerWallJumpState : PlayerBaseState
     }
     public override void OnCollisionEnter2D(Collision2D collision) 
     {
-        if (collision.gameObject.CompareTag("LadderV"))
+        _player.LadderVerif(collision);
+
+        if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
         {
             _player.Animator.SetFloat("WallVH", 0);
             SwitchState(_factory.WallClimb());
         }
-        if (collision.gameObject.CompareTag("LadderH"))
+        else if (_player.IsLadder == (int)LadderIs.Horizontal)
         {
             _player.Animator.SetFloat("WallVH", 1);
             SwitchState(_factory.WallClimb());
