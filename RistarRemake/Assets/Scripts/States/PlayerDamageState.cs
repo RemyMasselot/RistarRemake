@@ -14,8 +14,8 @@ public class PlayerDamageState : PlayerBaseState
         _player.LifeNumber--;
         if (_player.LifeNumber > 0)
         {
-            _player.Rb.gravityScale = 1;
-            _player.Rb.velocity = new Vector2(0, _player.LeapForceV/1.5f);
+            _player.PlayerRigidbody.gravityScale = 1;
+            _player.PlayerRigidbody.velocity = new Vector2(0, _player.LeapForceV/1.5f);
             _player.Invincinbility.InvincibilityCounter = _player.Invincinbility.InvincibilityTime;
             _player.Invincinbility.IsInvincible = true;
         }
@@ -29,22 +29,22 @@ public class PlayerDamageState : PlayerBaseState
         float moveValue = _player.MoveH.ReadValue<float>();
         if (moveValue != 0)
         {
-            _player.Rb.velocity = new Vector2(moveValue * _player.JumpForceH, _player.Rb.velocity.y);
+            _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.JumpForceH, _player.PlayerRigidbody.velocity.y);
         }
         else
         {
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Rb.velocity.y);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.PlayerRigidbody.velocity.y);
         }
 
         // Rotation visuelle -- SANS SPINE
-        if (_player.Rb.velocity.x > 0)
-        {
-            _player.SpriteRenderer.flipX = false;
-        }
-        if (_player.Rb.velocity.x < 0)
-        {
-            _player.SpriteRenderer.flipX = true;
-        }
+        //if (_player.Rb.velocity.x > 0)
+        //{
+        //    _player.SpriteRenderer.flipX = false;
+        //}
+        //if (_player.Rb.velocity.x < 0)
+        //{
+        //    _player.SpriteRenderer.flipX = true;
+        //}
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
@@ -57,7 +57,7 @@ public class PlayerDamageState : PlayerBaseState
         }
         
         // Passage en state FALL
-        if (_player.Rb.velocity.y < 0)
+        if (_player.PlayerRigidbody.velocity.y < 0)
         {
             SwitchState(_factory.Fall());
         }

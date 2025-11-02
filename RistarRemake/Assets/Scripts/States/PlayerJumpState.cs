@@ -11,7 +11,7 @@ public class PlayerJumpState : PlayerBaseState
         //Debug.Log("JUMP ENTER");
         _player.UpdateAnim("Jump");
         _player.Leap = false;
-        _player.Rb.gravityScale = 1;
+        _player.PlayerRigidbody.gravityScale = 1;
         _player.CoyoteCounter = 0;
         //DoCornerCorrection = false;
         _player.CornerCorrection.enabled = true;
@@ -23,12 +23,12 @@ public class PlayerJumpState : PlayerBaseState
             float percent = (_player._starHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
             _player.ShImpulseCurrent = _player.ShImpulseMin + (_player.ShImpulseMax - _player.ShImpulseMin) * (percent / 100f);
             
-            _player.Rb.velocity = dir.normalized * _player.ShImpulseCurrent;
-            Debug.Log("Dir : " + dir + " velo : " + _player.Rb.velocity);
+            _player.PlayerRigidbody.velocity = dir.normalized * _player.ShImpulseCurrent;
+            Debug.Log("Dir : " + dir + " velo : " + _player.PlayerRigidbody.velocity);
         }
         else
         {
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.JumpForceV);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.JumpForceV);
         }
         _player.ArmDetection.ObjectDetected = 0;
         StartTimer();
@@ -57,40 +57,42 @@ public class PlayerJumpState : PlayerBaseState
         float moveValue = _player.MoveH.ReadValue<float>();
         if (moveValue != 0)
         {
-            _player.Rb.velocity = new Vector2(moveValue * _player.JumpForceH, _player.Rb.velocity.y);
+            _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.JumpForceH, _player.PlayerRigidbody.velocity.y);
         }
         else
         {
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Rb.velocity.y);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.PlayerRigidbody.velocity.y);
         }
 
         //Debug.Log(_ctx.Rb.velocity.y);
         // Si on est a l'apex et que la touche est maintenu, on reste à l'apex
-        if (_player.Rb.velocity.y < 0)
+        if (_player.PlayerRigidbody.velocity.y < 0)
         {
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, 0);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, 0);
         }
+
+        _player.PlayerDirectionVelocityVerif();
 
         if (_player.UseSpine == false)
         {
             // Rotation visuelle -- SANS SPINE
-            if (_player.Rb.velocity.x > 0)
-            {
-                _player.SpriteRenderer.flipX = false;
-            }
-            if (_player.Rb.velocity.x < 0)
-            {
-                _player.SpriteRenderer.flipX = true;
-            }
+            //if (_player.Rb.velocity.x > 0)
+            //{
+            //    _player.SpriteRenderer.flipX = false;
+            //}
+            //if (_player.Rb.velocity.x < 0)
+            //{
+            //    _player.SpriteRenderer.flipX = true;
+            //}
         }
         else
         {
             // Rotation visuelle -- AVEC SPINE
-            if (_player.Rb.velocity.x > 0)
+            if (_player.PlayerRigidbody.velocity.x > 0)
             {
                 _player.SkeletonAnimation.skeleton.ScaleX = 1;
             }
-            if (_player.Rb.velocity.x < 0)
+            if (_player.PlayerRigidbody.velocity.x < 0)
             {
                 _player.SkeletonAnimation.skeleton.ScaleX = -1;
             }

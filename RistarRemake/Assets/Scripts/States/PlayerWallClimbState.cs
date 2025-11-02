@@ -10,16 +10,16 @@ public class PlayerWallClimbState : PlayerBaseState
     {
         //Debug.Log("ENTER WALL CLIMB");
         _player.UpdateAnim("WallClimb");
-        _player.Rb.gravityScale = 0;
+        _player.PlayerRigidbody.gravityScale = 0;
         if (_player.Animator.GetFloat("WallVH") == 0)
         {
-            if (_player.LadderVDetectionL.IsLadderVDectectedL == 1)
+            if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
             {
-                _player.SpriteRenderer.flipX = true;
+                _player.IsPlayerTurnToLeft = true;
             }
-            if (_player.LadderVDetectionR.IsLadderVDectectedR == 1)
+            else if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
             {
-                _player.SpriteRenderer.flipX = false;
+                _player.IsPlayerTurnToLeft = false;
             }
         }
     }
@@ -35,11 +35,11 @@ public class PlayerWallClimbState : PlayerBaseState
             float moveValueV = _player.MoveV.ReadValue<float>();
             if (moveValueV > 0)
             {
-                _player.Rb.velocity = new Vector2(0, _player.WalkSpeed * Time.deltaTime);
+                _player.PlayerRigidbody.velocity = new Vector2(0, _player.WalkSpeed * Time.deltaTime);
             }
             if (moveValueV < 0)
             {
-                _player.Rb.velocity = new Vector2(0, -_player.WalkSpeed * Time.deltaTime);
+                _player.PlayerRigidbody.velocity = new Vector2(0, -_player.WalkSpeed * Time.deltaTime);
             }
         }
         else if (_player.IsLadder == (int)LadderIs.Horizontal)
@@ -47,13 +47,13 @@ public class PlayerWallClimbState : PlayerBaseState
             float moveValueH = _player.MoveH.ReadValue<float>();
             if (moveValueH > 0)
             {
-                _player.SpriteRenderer.flipX = false;
-                _player.Rb.velocity = new Vector2(_player.WalkSpeed * Time.deltaTime, 0);
+                _player.IsPlayerTurnToLeft = false;
+                _player.PlayerRigidbody.velocity = new Vector2(_player.WalkSpeed * Time.deltaTime, 0);
             }
             if (moveValueH < 0)
             {
-                _player.SpriteRenderer.flipX = true;
-                _player.Rb.velocity = new Vector2(-_player.WalkSpeed * Time.deltaTime, 0);
+                _player.IsPlayerTurnToLeft = true;
+                _player.PlayerRigidbody.velocity = new Vector2(-_player.WalkSpeed * Time.deltaTime, 0);
             }
         }     
     }
@@ -131,5 +131,10 @@ public class PlayerWallClimbState : PlayerBaseState
             SwitchState(_factory.Leap());
         }
 
+    }
+
+    public override void OnCollisionEnter2D(Collision2D collision)
+    {
+        _player.LadderVerif(collision);
     }
 }

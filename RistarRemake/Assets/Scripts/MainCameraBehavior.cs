@@ -6,7 +6,6 @@ public class MainCameraBehavior : MonoBehaviour
     [Header ("SETTINGS")]
     [SerializeField] private PlayerStateMachine playerStateMachine;
     public GameObject target;
-    private Rigidbody2D rbPlayer;
     public Camera Camera;
     public Vector3 CameraPositionDefault;
     public Vector3 CameraPositionFallOff;
@@ -54,7 +53,6 @@ public class MainCameraBehavior : MonoBehaviour
         target = playerStateMachine.gameObject;
         playerStateMachine.CameraImpacted = false;
         playerStateMachine.CameraInde = true;
-        rbPlayer = playerStateMachine.GetComponent<Rigidbody2D>();
 
         currentPosition = playerStateMachine.transform.position;
     }
@@ -90,7 +88,7 @@ public class MainCameraBehavior : MonoBehaviour
 
         if (playerStateMachine.CurrentState is PlayerMeteorStrikeState)
         {
-            targetPosition += (Vector3)playerStateMachine.Rb.velocity.normalized * 2f;
+            targetPosition += (Vector3)playerStateMachine.PlayerRigidbody.velocity.normalized * 2f;
             lerpSpeed = 15f;
         }
 
@@ -102,56 +100,56 @@ public class MainCameraBehavior : MonoBehaviour
 
 
 
-        // AIM
-        Vector2 aimValue = playerStateMachine.Aim.ReadValue<Vector2>();
+        //// AIM
+        //Vector2 aimValue = playerStateMachine.Aim.ReadValue<Vector2>();
 
-        DOTween.To(() => aimX, x => aimX = x, aimValue.x, 1f);
-        DOTween.To(() => aimY, x => aimY = x, aimValue.y, 1f);
+        //DOTween.To(() => aimX, x => aimX = x, aimValue.x, 1f);
+        //DOTween.To(() => aimY, x => aimY = x, aimValue.y, 1f);
         
-        aimV3 = new Vector3(aimX, aimY, 0);
+        //aimV3 = new Vector3(aimX, aimY, 0);
 
-        bool isNotClimbingVertically = (playerStateMachine.CurrentState is not PlayerWallClimbState && playerStateMachine.CurrentState is not PlayerWallIdleState)
-            || ((playerStateMachine.CurrentState is not PlayerWallClimbState || playerStateMachine.CurrentState is not PlayerWallIdleState) && playerStateMachine.IsCurrentLadderHorizontal);
+        //bool isNotClimbingVertically = (playerStateMachine.CurrentState is not PlayerWallClimbState && playerStateMachine.CurrentState is not PlayerWallIdleState)
+        //    || ((playerStateMachine.CurrentState is not PlayerWallClimbState || playerStateMachine.CurrentState is not PlayerWallIdleState) && playerStateMachine.IsCurrentLadderHorizontal);
 
-        if (isNotClimbingVertically)
-        {
-            Debug.Log("ouigo");
+        //if (isNotClimbingVertically)
+        //{
+        //    Debug.Log("ouigo");
          
-            // DIRECTION AIM
-            if (aimValue.x > 0)
-            {
-                DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, PosWalkX, 2f);
-                playerStateMachine.SpriteRenderer.flipX = false;
-            }
-            else if (aimValue.x < 0)
-            {
-                DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, -PosWalkX, 2f);
-                playerStateMachine.SpriteRenderer.flipX = true;
-            }
+        //    // DIRECTION AIM
+        //    if (aimValue.x > 0)
+        //    {
+        //        DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, PosWalkX, 2f);
+        //        playerStateMachine.SpriteRenderer.flipX = false;
+        //    }
+        //    else if (aimValue.x < 0)
+        //    {
+        //        DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, -PosWalkX, 2f);
+        //        playerStateMachine.SpriteRenderer.flipX = true;
+        //    }
 
-            // DIRECTION WALK
-            float moveValue = playerStateMachine.MoveH.ReadValue<float>();
-            if (moveValue > 0)
-            {
-                DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, PosWalkX, 2f);
-                playerStateMachine.SpriteRenderer.flipX = false;
-            }
-            else if (moveValue < 0)
-            {
-                DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, -PosWalkX, 2f);
-                playerStateMachine.SpriteRenderer.flipX = true;
-            }
+        //    // DIRECTION WALK
+        //    float moveValue = playerStateMachine.MoveH.ReadValue<float>();
+        //    if (moveValue > 0)
+        //    {
+        //        DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, PosWalkX, 2f);
+        //        playerStateMachine.SpriteRenderer.flipX = false;
+        //    }
+        //    else if (moveValue < 0)
+        //    {
+        //        DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, -PosWalkX, 2f);
+        //        playerStateMachine.SpriteRenderer.flipX = true;
+        //    }
 
-            // DIRECTION SPRITE
-            if (playerStateMachine.SpriteRenderer.flipX == false)
-            {
-                DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, PosDirectionX, 2f);
-            }
-            else
-            {
-                DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, -PosDirectionX, 2f);
-            }
-        }
+        //    // DIRECTION SPRITE
+        //    if (playerStateMachine.SpriteRenderer.flipX == false)
+        //    {
+        //        DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, PosDirectionX, 2f);
+        //    }
+        //    else
+        //    {
+        //        DOTween.To(() => CameraPositionFallOff.x, x => CameraPositionFallOff.x = x, -PosDirectionX, 2f);
+        //    }
+        //}
 
         //CLIMB
         //if (CurrentState == "CLIMB")
@@ -198,33 +196,33 @@ public class MainCameraBehavior : MonoBehaviour
         //    }
         //}
 
-        // NEW POSITION
-        if (playerStateMachine.CameraImpacted == false)
-        {
-            // CALCULE NEW CAMERA POSITION
-            if (playerStateMachine.CameraInde == true)
-            {
-                NewTarget = target.transform.position + CameraPositionDefault + CameraPositionFallOff + aimV3;
-            }
-            else
-            {
-                NewTarget = playerStateMachine.CameraTargetOverride;
-            }
+        //// NEW POSITION
+        //if (playerStateMachine.CameraImpacted == false)
+        //{
+        //    // CALCULE NEW CAMERA POSITION
+        //    if (playerStateMachine.CameraInde == true)
+        //    {
+        //        NewTarget = target.transform.position + CameraPositionDefault + CameraPositionFallOff + aimV3;
+        //    }
+        //    else
+        //    {
+        //        NewTarget = playerStateMachine.CameraTargetOverride;
+        //    }
 
-            // MOVE CAMERA
-            if (GroundVerif().distance >= 2)
-            {
-                transform.DOMove(new Vector3(NewTarget.x, NewTarget.y, -1), 0.5f);
-            }
-            //else if (NewTarget.y <= -1)
-            //{
-            //    transform.DOMove(new Vector3(NewTarget.x, -1, -1), 0.5f);
-            //}
-            else
-            {
-                transform.DOMove(new Vector3(NewTarget.x, GroundVerif().posY + 6, -1), 0.5f);
-            }
-        }
+        //    // MOVE CAMERA
+        //    if (GroundVerif().distance >= 2)
+        //    {
+        //        transform.DOMove(new Vector3(NewTarget.x, NewTarget.y, -1), 0.5f);
+        //    }
+        //    //else if (NewTarget.y <= -1)
+        //    //{
+        //    //    transform.DOMove(new Vector3(NewTarget.x, -1, -1), 0.5f);
+        //    //}
+        //    else
+        //    {
+        //        transform.DOMove(new Vector3(NewTarget.x, GroundVerif().posY + 6, -1), 0.5f);
+        //    }
+        //}
 
         
     }

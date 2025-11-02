@@ -10,19 +10,22 @@ public class PlayerWallIdleState : PlayerBaseState
     {
         //Debug.Log("ENTER WALL IDLE");
         _player.UpdateAnim("WallIdle");
-        _player.Rb.velocity = Vector2.zero;
-        _player.Rb.gravityScale = 0;
-        if (_player.UseSpine ==false)
+        _player.PlayerRigidbody.velocity = Vector2.zero;
+        _player.PlayerRigidbody.gravityScale = 0;
+        if (_player.UseSpine == false)
         {
             if (_player.Animator.GetFloat("WallVH") == 0)
             {
-                if (_player.LadderVDetectionL.IsLadderVDectectedL == 1)
+                //Debug.Log("WALL VERTICAL");
+                if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
                 {
-                    _player.SpriteRenderer.flipX = true;
+                    _player.IsPlayerTurnToLeft = true;
+                    Debug.Log("LEFT");
                 }
-                if (_player.LadderVDetectionR.IsLadderVDectectedR == 1)
+                if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
                 {
-                    _player.SpriteRenderer.flipX = false;
+                    _player.IsPlayerTurnToLeft = false;
+                    Debug.Log("RIGHT");
                 }
             }
         }
@@ -63,7 +66,7 @@ public class PlayerWallIdleState : PlayerBaseState
                     }
                     else // Passage en state FALL
                     {
-                        _player.SpriteRenderer.flipX = !_player.SpriteRenderer.flipX;
+                        _player.IsPlayerTurnToLeft = !_player.IsPlayerTurnToLeft;
                         SwitchState(_factory.Fall());
                     }
                 }

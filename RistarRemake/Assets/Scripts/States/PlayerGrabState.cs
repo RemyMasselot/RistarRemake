@@ -33,7 +33,7 @@ public class PlayerGrabState : PlayerBaseState
             
             if (_player.AimDir == new Vector2(0, 0))
             {
-                if (_player.SpriteRenderer.flipX == false)
+                if (_player.IsPlayerTurnToLeft == false)
                 {
                     _player.AimDir = new Vector2(1, 0);
                     _player.LineArmLeft.sortingOrder = -1;
@@ -50,13 +50,13 @@ public class PlayerGrabState : PlayerBaseState
             {
                 if (_player.AimDir.x > 0)
                 {
-                    _player.SpriteRenderer.flipX = false;
+                    _player.IsPlayerTurnToLeft = false;
                     _player.LineArmLeft.sortingOrder = -1;
                     _player.LineArmRight.sortingOrder = 0;
                 }
                 else if (_player.AimDir.x < 0)
                 {
-                    _player.SpriteRenderer.flipX = true;
+                    _player.IsPlayerTurnToLeft = true;
                     _player.LineArmLeft.sortingOrder = 0;
                     _player.LineArmRight.sortingOrder = -1;
                 }
@@ -197,11 +197,11 @@ public class PlayerGrabState : PlayerBaseState
             float moveValueH = _player.MoveH.ReadValue<float>();
             if (moveValueH != 0)
             {
-                _player.Rb.velocity = new Vector2(moveValueH * _player.JumpForceH, _player.Rb.velocity.y);
+                _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.JumpForceH, _player.PlayerRigidbody.velocity.y);
             }
             else
             {
-                _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Rb.velocity.y);
+                _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.PlayerRigidbody.velocity.y);
             }
         }
 
@@ -383,7 +383,7 @@ public class PlayerGrabState : PlayerBaseState
         Debug.Log("Wall Detected");
         _player.ArmDetection.gameObject.SetActive(false);
 
-        _player.Rb.velocity = _player.AimDir.normalized * 10;
+        _player.PlayerRigidbody.velocity = _player.AimDir.normalized * 10;
     }
     private void GrabFloor()
     {
@@ -430,7 +430,7 @@ public class PlayerGrabState : PlayerBaseState
         //Debug.Log("Ladder Detected");
         _player.ArmDetection.gameObject.SetActive(false);
 
-        _player.Rb.velocity = _player.AimDir.normalized * 10;
+        _player.PlayerRigidbody.velocity = _player.AimDir.normalized * 10;
     }
     private void GrabStarHandle()
     {

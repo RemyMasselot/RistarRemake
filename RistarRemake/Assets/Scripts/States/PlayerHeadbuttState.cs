@@ -18,7 +18,7 @@ public class PlayerHeadbuttState : PlayerBaseState
         _player.IkArmRight.transform.DOPause();
         //_ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
         Vector2 dir = (new Vector3 (_player.ArmDetection.SnapPosHand.x, _player.ArmDetection.SnapPosHand.y, 0)) - _player.Transform.position;
-        _player.Rb.velocity = dir.normalized * 10;
+        _player.PlayerRigidbody.velocity = dir.normalized * 10;
     }
     public override void UpdateState()
     {

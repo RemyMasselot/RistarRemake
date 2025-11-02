@@ -25,10 +25,11 @@ public class PlayerStateMachine : MonoBehaviour
     public InputAction Back;
 
     // ANIM
+    public bool IsPlayerTurnToLeft = false;
     public bool UseSpine = false;
+    public SkeletonAnimation SkeletonAnimation;
     public Animator Animator;
     public SpriteRenderer SpriteRenderer;
-    public SkeletonAnimation SkeletonAnimation;
     public SpriteRenderer HandRight;
     public SpriteRenderer HandLeft;
     public Sprite HandOpen;
@@ -119,7 +120,7 @@ public class PlayerStateMachine : MonoBehaviour
     public float CurrentTimerValueMeteor = 0;
 
     // PHYSICS
-    public Rigidbody2D Rb { get { return GetComponent<Rigidbody2D>(); } }
+    public Rigidbody2D PlayerRigidbody { get { return GetComponent<Rigidbody2D>(); } }
     public Invincinbility Invincinbility;
     
     [field: SerializeField] public GroundDetection EnemyDetection { get; private set; }
@@ -182,6 +183,14 @@ public class PlayerStateMachine : MonoBehaviour
         CurrentState.OnCollisionStay2D(collision);
     }
 
+    public void PlayerDirectionVelocityVerif()
+    {
+        if (PlayerRigidbody.velocity.x != 0)
+        {
+            IsPlayerTurnToLeft = PlayerRigidbody.velocity.x < 0;
+        }
+    }
+
     public void UpdateAnim(string animName)
     {
         if (UseSpine == false)
@@ -197,16 +206,15 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
-
     public void LadderVerif(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("LadderV"))
         {
-            if (LadderVDetectionL.IsLadderVDectectedL == LayerMask.NameToLayer("LadderV"))
+            if (LadderVDetectionL.IsLadderVDectectedL == true)
             {
                 IsLadder = (int)LadderIs.VerticalLeft;
             }
-            if (LadderVDetectionR.IsLadderVDectectedR == LayerMask.NameToLayer("LadderV"))
+            else if (LadderVDetectionR.IsLadderVDectectedR == true)
             {
                 IsLadder = (int)LadderIs.VerticalRight;
             }

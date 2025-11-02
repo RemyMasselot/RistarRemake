@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDeathState : PlayerBaseState
@@ -10,7 +8,7 @@ public class PlayerDeathState : PlayerBaseState
     public override void EnterState() 
     {
         //Debug.Log("ENTER DEATH");
-        if (_player.SpriteRenderer.flipX == false)
+        if (_player.IsPlayerTurnToLeft == false)
         {
             _player.UpdateAnim("DeathL");
         }

@@ -23,21 +23,21 @@ public class PlayerSpinState : PlayerBaseState
             // Move Right Arm
             _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
         }
-        _player.Rb.gravityScale = 1;
+        _player.PlayerRigidbody.gravityScale = 1;
 
         if (_player.ArmDetection.ObjectDetected == 5)
         {
             if (_player.GrabDirection.x < 0)
             {
-                _player.Rb.velocity = new Vector2(1, 1) * 4;
+                _player.PlayerRigidbody.velocity = new Vector2(1, 1) * 4;
             }
             if (_player.GrabDirection.x > 0)
             {
-                _player.Rb.velocity = new Vector2(-1, 1) * 4;
+                _player.PlayerRigidbody.velocity = new Vector2(-1, 1) * 4;
             }
             if (_player.LadderHDetection.IsLadderHDectected == true)
             {
-                _player.Rb.velocity = new Vector2(0, -1);
+                _player.PlayerRigidbody.velocity = new Vector2(0, -1);
             }
         }
 
@@ -51,7 +51,7 @@ public class PlayerSpinState : PlayerBaseState
                 {
                     _player.CameraImpacted = false;
                 });
-            _player.Rb.velocity = new Vector2(0, 1) * 10;
+            _player.PlayerRigidbody.velocity = new Vector2(0, 1) * 10;
         }
     }
     public override void UpdateState()

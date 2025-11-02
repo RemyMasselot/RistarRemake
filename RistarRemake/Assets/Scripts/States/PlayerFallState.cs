@@ -20,13 +20,13 @@ public class PlayerFallState : PlayerBaseState
             float percent = (_player._starHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
             _player.ShImpulseCurrent = _player.ShImpulseMin + (_player.ShImpulseMax - _player.ShImpulseMin) * (percent / 100f);
 
-            _player.Rb.velocity = dir * _player.ShImpulseCurrent;
+            _player.PlayerRigidbody.velocity = dir * _player.ShImpulseCurrent;
         }
 
         PushAwayFromLadder();
 
         _player.ArmDetection.ObjectDetected = 0;
-        _player.Rb.gravityScale = 2;
+        _player.PlayerRigidbody.gravityScale = 2;
     }
     public override void ExitState() { }
     public override void UpdateState() 
@@ -40,33 +40,35 @@ public class PlayerFallState : PlayerBaseState
         float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValue, _player.MoveDownFallValueMax);
         if (moveValueH != 0)
         {
-            _player.Rb.velocity = new Vector2(moveValueH * _player.JumpForceH, _player.Rb.velocity.y + moveValueV);
+            _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.JumpForceH, _player.PlayerRigidbody.velocity.y + moveValueV);
         }
         else
         {
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Rb.velocity.y + moveValueV);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.PlayerRigidbody.velocity.y + moveValueV);
         }
+
+        _player.PlayerDirectionVelocityVerif();
 
         if (_player.UseSpine == false)
         {
             // Rotation visuelle -- SANS SPINE
-            if (_player.Rb.velocity.x > 0)
-            {
-                _player.SpriteRenderer.flipX = false;
-            }
-            if (_player.Rb.velocity.x < 0)
-            {
-                _player.SpriteRenderer.flipX = true;
-            }
+            //if (_player.Rb.velocity.x > 0)
+            //{
+            //    _player.SpriteRenderer.flipX = false;
+            //}
+            //if (_player.Rb.velocity.x < 0)
+            //{
+            //    _player.SpriteRenderer.flipX = true;
+            //}
         }
         else
         {
             // Rotation visuelle -- AVEC SPINE
-            if (_player.Rb.velocity.x > 0)
+            if (_player.PlayerRigidbody.velocity.x > 0)
             {
                 _player.SkeletonAnimation.skeleton.ScaleX = 1;
             }
-            if (_player.Rb.velocity.x < 0)
+            if (_player.PlayerRigidbody.velocity.x < 0)
             {
                 _player.SkeletonAnimation.skeleton.ScaleX = -1;
             }
@@ -97,7 +99,7 @@ public class PlayerFallState : PlayerBaseState
             // Jump Buffering
             if (_player.JumpBufferingDetection.IsGroundDectected == true)
             {
-                if (_player.Rb.velocity.y <= 0)
+                if (_player.PlayerRigidbody.velocity.y <= 0)
                 {
                     _player.JumpReady = true;
                 }
@@ -158,13 +160,13 @@ public class PlayerFallState : PlayerBaseState
 
     private void PushAwayFromLadder()
     {
-        if (_player.LadderVDetectionL.IsLadderVDectectedL == 1)
+        if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
         {
-            _player.Rb.velocity = new Vector2(_player.JumpForceH / 2, -_player.JumpForceV / 2);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.JumpForceH / 2, -_player.JumpForceV / 2);
         }
-        if (_player.LadderVDetectionR.IsLadderVDectectedR == 1)
+        else if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
         {
-            _player.Rb.velocity = new Vector2(-_player.JumpForceH / 2, -_player.JumpForceV / 2);
+            _player.PlayerRigidbody.velocity = new Vector2(-_player.JumpForceH / 2, -_player.JumpForceV / 2);
         }
     }   
 }

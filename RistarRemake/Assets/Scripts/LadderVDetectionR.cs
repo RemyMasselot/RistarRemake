@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LadderVDetectionR : MonoBehaviour
 {
-    [field: SerializeField] public int IsLadderVDectectedR { get; private set; }
+    [field: SerializeField] public bool IsLadderVDectectedR { get; private set; }
 
     public Vector2 CapsuleSize;
     public LayerMask LayerToCheck; // Couches à reconnaître
@@ -10,11 +10,7 @@ public class LadderVDetectionR : MonoBehaviour
 
     void FixedUpdate()
     {
-        Collider2D hit = Physics2D.OverlapCapsule(transform.position, CapsuleSize, CapsuleDirection2D.Horizontal, 0f, LayerToCheck);
-        if (hit != null)
-        {
-            IsLadderVDectectedR = hit.gameObject.layer;
-        }
+        IsLadderVDectectedR = Physics2D.OverlapCapsule(transform.position, CapsuleSize, CapsuleDirection2D.Horizontal, 0f, LayerToCheck);
     }
 
     void OnDrawGizmos()

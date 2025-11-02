@@ -17,28 +17,30 @@ public class PlayerWalkState : PlayerBaseState
     public override void FixedUpdateState() {
         // Déplacements du personnage
         float moveValue = _player.MoveH.ReadValue<float>();
-        _player.Rb.velocity = new Vector2(moveValue * _player.WalkSpeed * Time.deltaTime, 0);
+        _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.WalkSpeed * Time.deltaTime, 0);
+
+        _player.PlayerDirectionVelocityVerif();
 
         if (_player.UseSpine == false)
         {
             // Rotation visuelle -- SANS SPINE
-            if (_player.Rb.velocity.x > 0)
-            {
-                _player.SpriteRenderer.flipX = false;
-            }
-            if (_player.Rb.velocity.x < 0)
-            {
-                _player.SpriteRenderer.flipX = true;
-            }
+            //if (_player.Rb.velocity.x > 0)
+            //{
+            //    _player.SpriteRenderer.flipX = false;
+            //}
+            //if (_player.Rb.velocity.x < 0)
+            //{
+            //    _player.SpriteRenderer.flipX = true;
+            //}
         }
         else
         {
             //Rotation visuelle -- AVEC SPINE
-            if (_player.Rb.velocity.x > 0)
+            if (_player.PlayerRigidbody.velocity.x > 0)
             {
                 _player.SkeletonAnimation.skeleton.ScaleX = 1;
             }
-            if (_player.Rb.velocity.x < 0)
+            if (_player.PlayerRigidbody.velocity.x < 0)
             {
                 _player.SkeletonAnimation.skeleton.ScaleX = -1;
             }

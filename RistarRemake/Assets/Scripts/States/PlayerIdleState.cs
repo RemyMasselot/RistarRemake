@@ -13,7 +13,7 @@ public class PlayerIdleState : PlayerBaseState
     {
         //Debug.Log("ENTER IDLE");
         _player.UpdateAnim("Idle");
-        _player.Rb.velocity = Vector2.zero;
+        _player.PlayerRigidbody.velocity = Vector2.zero;
         _player.PreviousState = _player.CurrentState;
         // Mise à jour du coyote time
         _player.CoyoteCounter = _player.CoyoteTime;

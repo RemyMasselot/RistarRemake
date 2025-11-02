@@ -25,10 +25,10 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         });
 
         Vector2 dir = _player.transform.position - _player.ShCentre;
-        _player.Rb.velocity = dir.normalized * 10;
+        _player.PlayerRigidbody.velocity = dir.normalized * 10;
 
         _player.ArmDetection.ObjectDetected = 0;
-        _player.Rb.gravityScale = 0;
+        _player.PlayerRigidbody.gravityScale = 0;
         _rot = _player.transform.position - _player.ShCentre;
         _player.GroundDetection.gameObject.SetActive(false);
         _player.LadderHDetection.gameObject.SetActive(false);
@@ -41,7 +41,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         // Move Right Arm
         _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
         _player.transform.rotation = Quaternion.Euler(0, 0, 0);
-        _player.SpriteRenderer.flipX = false;
+        _player.IsPlayerTurnToLeft = false;
         StartTimer();
     }
 

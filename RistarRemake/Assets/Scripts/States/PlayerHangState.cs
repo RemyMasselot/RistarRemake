@@ -18,7 +18,7 @@ public class PlayerHangState : PlayerBaseState
         _player.CameraInde = false;
         _player.CameraTargetOverride = _player.ArmDetection.SnapPosHand;
 
-        _player.Rb.velocity = Vector2.zero;
+        _player.PlayerRigidbody.velocity = Vector2.zero;
         SnapHands = false;
         _goMeteorStrike = false;
         _player._starHandleCurrentValue = 0;
@@ -111,7 +111,7 @@ public class PlayerHangState : PlayerBaseState
             if (_player.ArmDetection.ObjectDetected == 4)
             {
                 //Tourner autour du Star Handle
-                if (_player.SpriteRenderer.flipX == true)
+                if (_player.IsPlayerTurnToLeft == true)
                 {
                     _SHangle += -_player.ShSpeed * Time.deltaTime;
                 }
@@ -172,7 +172,7 @@ public class PlayerHangState : PlayerBaseState
 
     private void ChargingMeteorStrike()
     {
-        if (_player.SpriteRenderer.flipX == true)
+        if (_player.IsPlayerTurnToLeft == true)
         {
             // Body Rotation
             Vector2 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
@@ -182,12 +182,10 @@ public class PlayerHangState : PlayerBaseState
             if (_player.MoveH.ReadValue<float>() < 0)
             {
                 _player._starHandleCurrentValue++;
-                //Debug.Log(_starHandleCurrentValue);
             }
             if (_player.MoveH.ReadValue<float>() > 0)
             {
                 _player._starHandleCurrentValue--;
-                //Debug.Log(_starHandleCurrentValue);
             }
         }
         else
@@ -200,12 +198,10 @@ public class PlayerHangState : PlayerBaseState
             if (_player.MoveH.ReadValue<float>() > 0)
             {
                 _player._starHandleCurrentValue++;
-                //Debug.Log(_starHandleCurrentValue);
             }
             if (_player.MoveH.ReadValue<float>() < 0)
             {
                 _player._starHandleCurrentValue--;
-                //Debug.Log(_starHandleCurrentValue);
             }
         }
 
@@ -233,7 +229,6 @@ public class PlayerHangState : PlayerBaseState
                     _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
                     // Move Right Arm
                     _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
-                    //_ctx.ArmDetection.ObjectDetected = 0;
                     _player.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (_player.transform.position.y <= _player.ShCentre.y)
                     {
@@ -263,7 +258,7 @@ public class PlayerHangState : PlayerBaseState
             });
         }
 
-        if (_player.Jump.WasReleasedThisFrame())
+        if (_player.Jump.WasPressedThisFrame())
         {
             if (_goMeteorStrike == true)
             {
