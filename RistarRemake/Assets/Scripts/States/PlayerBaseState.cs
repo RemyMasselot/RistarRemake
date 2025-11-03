@@ -36,5 +36,5 @@ public abstract class PlayerBaseState
     public virtual void InitializeSubState() { }
     public virtual void OnCollisionEnter2D(Collision2D collision) { }
     public virtual void OnCollisionStay2D(Collision2D collision) { }
-    public virtual void OnTriggerEnter2D (Collider2D collision) { }
+    public virtual void OnTriggerStay2D(Collider2D collision) { }
 }

@@ -13,17 +13,15 @@ public class PlayerStateMachine : MonoBehaviour
     public PlayerBaseState PreviousState;
     [HideInInspector] public bool IsNewState;
 
-    [SerializeField, FoldoutGroup("INPUT ACTIONS")] private Controller controls;
-    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction MoveH;
-    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction MoveV;
-    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction Jump;
-    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction Grab;
-    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction Aim;
-    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction Back;
+    [FoldoutGroup("INPUT ACTIONS")] private Controller controls;
+    [FoldoutGroup("INPUT ACTIONS")] public InputAction MoveH;
+    [FoldoutGroup("INPUT ACTIONS")] public InputAction MoveV;
+    [FoldoutGroup("INPUT ACTIONS")] public InputAction Jump;
+    [FoldoutGroup("INPUT ACTIONS")] public InputAction Grab;
+    [FoldoutGroup("INPUT ACTIONS")] public InputAction Aim;
+    [FoldoutGroup("INPUT ACTIONS")] public InputAction Back;
 
     // CAMERA
-    public Camera Camera;
-    public MainCameraBehavior MainCameraBehavior;
     [HideInInspector] public bool CameraImpacted;
     [HideInInspector] public bool CameraInde;
     [HideInInspector] public Vector3 CameraTargetOverride;
@@ -34,88 +32,75 @@ public class PlayerStateMachine : MonoBehaviour
     public SkeletonAnimation SkeletonAnimation;
     public Animator Animator;
 
-    // General Setting
-    public int LifeNumber = 4;
+    [Header("GENERAL SETTING")] public int LifesNumber = 4;
+    public Rigidbody2D PlayerRigidbody { get { return GetComponent<Rigidbody2D>(); } }
+    public Invincinbility Invincinbility { get { return GetComponent<Invincinbility>(); } }
 
+    [Header("MOVE")] public float WalkSpeed = 10;
 
-    // MOVE
-    public float WalkSpeed = 10;
-
+    public CornerCorrection CornerCorrection { get { return GetComponent<CornerCorrection>(); } }
     [FoldoutGroup("JUMP")] public float JumpForceV = 6f;
     [FoldoutGroup("JUMP")] public float JumpForceH = 4f;
     [FoldoutGroup("JUMP")] public float MaxTimeJump;
-    [FoldoutGroup("JUMP")] public float CurrentTimerValueJump;
-    [FoldoutGroup("JUMP")] public bool IsTimerRunningJump = false;
-    [FoldoutGroup("JUMP")] public CornerCorrection CornerCorrection;
+    [HideInInspector] public float CurrentTimerValueJump;
+    [HideInInspector] public bool IsTimerRunningJump = false;
     [FoldoutGroup("JUMP")] public float JumpBufferTime = 0.1f;
     [FoldoutGroup("JUMP")] public float CoyoteTime = 0.1f;
-    [FoldoutGroup("JUMP")] public float JumpBufferCounter;
-    [FoldoutGroup("JUMP")] public float CoyoteCounter;
-    [FoldoutGroup("JUMP")] public bool JumpReady = false;
+    [HideInInspector] public float JumpBufferCounter;
+    [HideInInspector] public float CoyoteCounter;
+    [HideInInspector] public bool JumpReady = false;
 
-    [FoldoutGroup("FALL")] public float MoveDownFallValue = -0.2f;
+    [FoldoutGroup("FALL")] public float MoveDownFallValueMin = -0.2f;
     [FoldoutGroup("FALL")] public float MoveDownFallValueMax = 1f;
 
     [FoldoutGroup("LEAP")] public float LeapForceV = 7f;
     [FoldoutGroup("LEAP")] public float LeapForceH = 3f;
 
-    [field: HideInInspector] public bool Leap { get; set; } = false;
-    [field: HideInInspector] public bool Fall { get; set; } = false;
-
-
-    // GRAB
-    public bool GamepadUsed;
-    public GameObject Arms;
-    [field: SerializeField] public ArmDetection ArmDetection { get; set; }
     [HideInInspector] public Vector2 AimDir;
-    public float DistanceGrab;
-    public float DurationExtendGrab;
-    public float MaxTimeGrab;
-    public float CurrentTimerValue;
-    public bool IsTimerRunning = false;
-    public Transform IkArmRight;
-    public LineRenderer LineArmRight;
-    public Transform ShoulderRight;
-    public Transform DefaultPosRight;
-    public Transform IkArmLeft;
-    public LineRenderer LineArmLeft;
-    public Transform ShoulderLeft;
-    public Transform DefaultPosLeft;
+    [FoldoutGroup("GRAB/References")] public GameObject Arms;
+    [FoldoutGroup("GRAB/References")] public ArmDetection ArmDetection;
+    [FoldoutGroup("GRAB/References")] public Transform IkArmRight;
+    [FoldoutGroup("GRAB/References")] public Transform IkArmLeft;
+    [FoldoutGroup("GRAB/References")] public Transform ShoulderRight;
+    [FoldoutGroup("GRAB/References")] public Transform ShoulderLeft;
+    [FoldoutGroup("GRAB/References")] public Transform DefaultPosRight;
+    [FoldoutGroup("GRAB/References")] public Transform DefaultPosLeft;
+    [FoldoutGroup("GRAB/References")] public LineRenderer LineArmRight;
+    [FoldoutGroup("GRAB/References")] public LineRenderer LineArmLeft;
+    [FoldoutGroup("GRAB")] public float DistanceGrab;
+    [FoldoutGroup("GRAB")] public float DurationExtendGrab;
+    [FoldoutGroup("GRAB")] public float MaxTimeGrab;
+    [HideInInspector] public bool IsTimerRunning = false;
+    [HideInInspector] public float CurrentTimerValue;
 
+    [HideInInspector] public Vector3 StarHandleCentre;
+    [FoldoutGroup("STAR HANDLE")] public GameObject TriggerGoToMeteorStrike;
+    [HideInInspector] public float StarHandleCurrentValue = 0;
+    [FoldoutGroup("STAR HANDLE")] public float StarHandleTargetValue = 200;
+    [FoldoutGroup("STAR HANDLE")] public float StarHandleRayonMin = 1.5f;
+    [FoldoutGroup("STAR HANDLE")] public float StarHandleRayonMax = 2.5f;
+    [HideInInspector] public float StarHandleCurrentRayon = 1.5f;
+    [FoldoutGroup("STAR HANDLE")] public float StarHandleMinSpeed = 6;
+    [FoldoutGroup("STAR HANDLE")] public float StarHandleMaxSpeed = 12;
+    [HideInInspector] public float StarHandleCurrentSpeed = 6;
+    [FoldoutGroup("STAR HANDLE")] public float StarHandleSpeedSlowMotion = 8;
+    [FoldoutGroup("STAR HANDLE")] public float StarHandleImpulseMin = 10;
+    [FoldoutGroup("STAR HANDLE")] public float StarHandleImpulseMax = 30;
+    [HideInInspector] public float StarHandleCurrentImpulse = 0;
 
-    // STAR HANDLE
-    public float _starHandleCurrentValue = 0;
-    public float StarHandleTargetValue = 200;
-    public Vector3 ShCentre;
-    public float ShRayonMin = 1.5f;
-    public float ShRayon = 1.5f;
-    public float ShRayonMax = 2.5f;
-    public float ShMinSpeed = 6;
-    public float ShSpeed = 6;
-    public float ShMaxSpeed = 12;
-    public float ShImpulseCurrent = 0;
-    public float ShImpulseMin = 10;
-    public float ShImpulseMax = 30;
-    public float ShSpeedSlowMotion = 8;
-    public GameObject TriggerGoToMeteorStrike;
-
-    // METEOR STRIKE
-    public float MeteorSpeed = 10;
-    public bool IsTimerRunningMeteor = true;
-    public float MaxTimeMeteor = 10;
-    public float CurrentTimerValueMeteor = 0;
-    public Vector2 MeteorStrikeDirection;
+    [FoldoutGroup("METEOR STRIKE")] public float MeteorSpeed = 10;
+    [FoldoutGroup("METEOR STRIKE")] public float MaxTimeMeteor = 10;
+    [HideInInspector] public bool IsTimerRunningMeteor = true;
+    [HideInInspector] public float CurrentTimerValueMeteor = 0;
+    [HideInInspector] public Vector2 MeteorStrikeDirection;
 
     // PHYSICS
-    public Rigidbody2D PlayerRigidbody { get { return GetComponent<Rigidbody2D>(); } }
-    public Invincinbility Invincinbility;
-    
-    [field: SerializeField] public GroundDetection EnemyDetection { get; private set; }
-    [field: SerializeField] public GroundDetection GroundDetection { get; private set; }
-    [field: SerializeField] public GroundDetection JumpBufferingDetection { get; private set; }
-    [field: SerializeField] public LadderVDetectionL LadderVDetectionL { get; private set; }
-    [field: SerializeField] public LadderVDetectionR LadderVDetectionR { get; private set; }
-    [field: SerializeField] public LadderHDetection LadderHDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public GroundDetection EnemyDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public GroundDetection GroundDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public GroundDetection JumpBufferingDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public LadderVDetectionL LadderVDetectionL { get; private set; }
+    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public LadderVDetectionR LadderVDetectionR { get; private set; }
+    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public LadderHDetection LadderHDetection { get; private set; }
     public enum LadderIs
     {
         Nothing = 0,
@@ -123,7 +108,7 @@ public class PlayerStateMachine : MonoBehaviour
         VerticalRight = 2,
         Horizontal = 3
     }
-    public int IsLadder = (int)LadderIs.Nothing;
+    [FoldoutGroup("DETECTIONS REFERENCES")] public int IsLadder = (int)LadderIs.Nothing;
 
 
     private void Awake()
@@ -168,9 +153,9 @@ public class PlayerStateMachine : MonoBehaviour
         CurrentState.OnCollisionStay2D(collision);
     }
     
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        CurrentState.OnTriggerEnter2D(collision);
+        CurrentState.OnTriggerStay2D(collision);
     }
 
     public void PlayerDirectionVerif()

@@ -12,7 +12,6 @@ public class PlayerWallJumpState : PlayerBaseState
         //{
         //    _player.PlayerVisual.UpdateAnim("Jump");
         //}
-        _player.Leap = false;
         _player.PlayerRigidbody.gravityScale = 1;
         _player.PlayerRigidbody.velocity = new Vector2(_player.JumpForceH, _player.JumpForceV);
     }

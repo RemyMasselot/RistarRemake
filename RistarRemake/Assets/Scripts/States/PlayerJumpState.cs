@@ -13,7 +13,6 @@ public class PlayerJumpState : PlayerBaseState
         //{
         //    _player.PlayerVisual.UpdateAnim("Jump");
         //}
-        _player.Leap = false;
         _player.PlayerRigidbody.gravityScale = 1;
         _player.CoyoteCounter = 0;
         //DoCornerCorrection = false;
@@ -21,12 +20,12 @@ public class PlayerJumpState : PlayerBaseState
         if (_player.ArmDetection.ObjectDetected == 4)
         {
             Debug.Log("JUMP from star handle");
-            Vector2 dir = _player.transform.position - _player.ShCentre;
+            Vector2 dir = _player.transform.position - _player.StarHandleCentre;
             
-            float percent = (_player._starHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
-            _player.ShImpulseCurrent = _player.ShImpulseMin + (_player.ShImpulseMax - _player.ShImpulseMin) * (percent / 100f);
+            float percent = (_player.StarHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
+            _player.StarHandleCurrentImpulse = _player.StarHandleImpulseMin + (_player.StarHandleImpulseMax - _player.StarHandleImpulseMin) * (percent / 100f);
             
-            _player.PlayerRigidbody.velocity = dir.normalized * _player.ShImpulseCurrent;
+            _player.PlayerRigidbody.velocity = dir.normalized * _player.StarHandleCurrentImpulse;
             Debug.Log("Dir : " + dir + " velo : " + _player.PlayerRigidbody.velocity);
         }
         else

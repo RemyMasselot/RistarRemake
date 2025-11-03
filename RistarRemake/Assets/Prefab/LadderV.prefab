@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 633357309090855091}
   - component: {fileID: 1295311906863297214}
   - component: {fileID: 7041524083400109034}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ExitUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 2819472246268972196}
   - component: {fileID: 6836411679682790950}
   - component: {fileID: 2792351508311535757}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ExitDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}

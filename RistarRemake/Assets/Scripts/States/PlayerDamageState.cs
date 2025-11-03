@@ -14,8 +14,8 @@ public class PlayerDamageState : PlayerBaseState
         //{
         //    _player.PlayerVisual.UpdateAnim("Damage");
         //}
-        _player.LifeNumber--;
-        if (_player.LifeNumber > 0)
+        _player.LifesNumber--;
+        if (_player.LifesNumber > 0)
         {
             _player.PlayerRigidbody.gravityScale = 1;
             _player.PlayerRigidbody.velocity = new Vector2(0, _player.LeapForceV/1.5f);
@@ -54,7 +54,7 @@ public class PlayerDamageState : PlayerBaseState
     public override void CheckSwitchStates() 
     {
         // Passage en state DEATH
-        if (_player.LifeNumber <= 0)
+        if (_player.LifesNumber <= 0)
         {
             SwitchState(_factory.Death());
         }

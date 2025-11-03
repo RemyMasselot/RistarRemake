@@ -136,7 +136,7 @@ public class PlayerWallClimbState : PlayerBaseState
         _player.LadderVerif(collision);
     }
 
-    public override void OnTriggerEnter2D(Collider2D collision)
+    public override void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.GetComponent<LadderExitDetection>() != null)
         {

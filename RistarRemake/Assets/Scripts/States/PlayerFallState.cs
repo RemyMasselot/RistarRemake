@@ -12,18 +12,17 @@ public class PlayerFallState : PlayerBaseState
         //{
         //    _player.PlayerVisual.UpdateAnim("Fall");
         //}
-        _player.Fall = false;
         _player.JumpReady = false;
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
             Debug.Log("FALL from star handle");
-            Vector2 dir = (_player.transform.position - _player.ShCentre).normalized;
+            Vector2 dir = (_player.transform.position - _player.StarHandleCentre).normalized;
 
-            float percent = (_player._starHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
-            _player.ShImpulseCurrent = _player.ShImpulseMin + (_player.ShImpulseMax - _player.ShImpulseMin) * (percent / 100f);
+            float percent = (_player.StarHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
+            _player.StarHandleCurrentImpulse = _player.StarHandleImpulseMin + (_player.StarHandleImpulseMax - _player.StarHandleImpulseMin) * (percent / 100f);
 
-            _player.PlayerRigidbody.velocity = dir * _player.ShImpulseCurrent;
+            _player.PlayerRigidbody.velocity = dir * _player.StarHandleCurrentImpulse;
         }
 
         PushAwayFromLadder();
@@ -40,7 +39,7 @@ public class PlayerFallState : PlayerBaseState
     {
         // Air Control
         float moveValueH = _player.MoveH.ReadValue<float>();
-        float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValue, _player.MoveDownFallValueMax);
+        float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValueMin, _player.MoveDownFallValueMax);
         if (moveValueH != 0)
         {
             _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.JumpForceH, _player.PlayerRigidbody.velocity.y + moveValueV);

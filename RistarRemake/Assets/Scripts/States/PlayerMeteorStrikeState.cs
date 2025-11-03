@@ -26,12 +26,12 @@ public class PlayerMeteorStrikeState : PlayerBaseState
             CanControl = true;
         });
 
-        Vector2 dir = _player.transform.position - _player.ShCentre;
+        Vector2 dir = _player.transform.position - _player.StarHandleCentre;
         _player.PlayerRigidbody.velocity = dir.normalized * 10;
 
         _player.ArmDetection.ObjectDetected = 0;
         _player.PlayerRigidbody.gravityScale = 0;
-        _player.MeteorStrikeDirection = _player.transform.position - _player.ShCentre;
+        _player.MeteorStrikeDirection = _player.transform.position - _player.StarHandleCentre;
         _player.GroundDetection.gameObject.SetActive(false);
         _player.LadderHDetection.gameObject.SetActive(false);
         _player.LadderVDetectionL.gameObject.SetActive(false);

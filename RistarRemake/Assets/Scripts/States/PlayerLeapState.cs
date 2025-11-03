@@ -17,7 +17,6 @@ public class PlayerLeapState : PlayerBaseState
         //{
         //    _player.PlayerVisual.UpdateAnim("Jump");
         //}
-        _player.Leap = false;
         _player.PlayerRigidbody.gravityScale = 1;
         PosY = _player.transform.position.y;
         newOrientation = false;
@@ -45,7 +44,7 @@ public class PlayerLeapState : PlayerBaseState
                 }
                 // Air Control
                 float moveValueH = _player.MoveH.ReadValue<float>();
-                float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValue, _player.MoveDownFallValueMax);
+                float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValueMin, _player.MoveDownFallValueMax);
                 if (moveValueH != 0)
                 {
                     _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.JumpForceH, _player.PlayerRigidbody.velocity.y + moveValueV);

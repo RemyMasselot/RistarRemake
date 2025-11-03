@@ -57,19 +57,6 @@ public class PlayerIdleState : PlayerBaseState
         // Passage en state GRAB
         if (_player.Grab.WasPerformedThisFrame())
         {
-            _player.Grab.performed += ctx =>
-            {
-                var device = ctx.control.device;
-
-                if (device is Mouse)
-                {
-                    _player.GamepadUsed = false;
-                }
-                else
-                {
-                    _player.GamepadUsed = true;
-                }
-            };
             SwitchState(_factory.Grab());
         }
     }
