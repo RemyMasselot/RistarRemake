@@ -11,11 +11,11 @@ public class PlayerSpinState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER SPIN");
-        _player.UpdateAnim("Spin");
 
         hasEnded = false;
         if (_player.UseSpine == false)
         {
+            //_player.PlayerVisual.UpdateAnim("Spin");
             _player.Arms.gameObject.SetActive(false);
             _player.ArmDetection.gameObject.SetActive(false);
             // Move Left Arm
@@ -23,15 +23,16 @@ public class PlayerSpinState : PlayerBaseState
             // Move Right Arm
             _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
         }
+
         _player.PlayerRigidbody.gravityScale = 1;
 
         if (_player.ArmDetection.ObjectDetected == 5)
         {
-            if (_player.GrabDirection.x < 0)
+            if (_player.IsPlayerTurnToLeft)
             {
                 _player.PlayerRigidbody.velocity = new Vector2(1, 1) * 4;
             }
-            if (_player.GrabDirection.x > 0)
+            else if (_player.IsPlayerTurnToLeft == false)
             {
                 _player.PlayerRigidbody.velocity = new Vector2(-1, 1) * 4;
             }
@@ -45,12 +46,12 @@ public class PlayerSpinState : PlayerBaseState
         {
             //Debug.Log("greg");
             // CAMERA BEHAVIOR
-            _player.CameraImpacted = true;
-            _player.CameraInde = true;
-            _player.Camera.DOShakePosition(0.2f, _player.MainCameraBehavior.CamShakeHeabbutt, 5).OnComplete(() =>
-                {
-                    _player.CameraImpacted = false;
-                });
+            //_player.CameraImpacted = true;
+            //_player.CameraInde = true;
+            //_player.Camera.DOShakePosition(0.2f, _player.MainCameraBehavior.CamShakeHeabbutt, 5).OnComplete(() =>
+            //    {
+            //        _player.CameraImpacted = false;
+            //    });
             _player.PlayerRigidbody.velocity = new Vector2(0, 1) * 10;
         }
     }

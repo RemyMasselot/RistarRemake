@@ -10,14 +10,17 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER HEADBUTT");
-        _player.UpdateAnim("Headbutt");
+        //if (_player.UseSpine == false)
+        //{
+        //    _player.PlayerVisual.UpdateAnim("Headbutt");
+        //}
         // Move Left Arm
         _player.IkArmLeft.transform.DOPause();
         //_ctx.IkArmLeft.transform.DOLocalMove(_ctx.DefaultPosLeft.localPosition, _ctx.DurationExtendGrab);
         // Move Right Arm
         _player.IkArmRight.transform.DOPause();
         //_ctx.IkArmRight.transform.DOLocalMove(_ctx.DefaultPosRight.localPosition, _ctx.DurationExtendGrab);
-        Vector2 dir = (new Vector3 (_player.ArmDetection.SnapPosHand.x, _player.ArmDetection.SnapPosHand.y, 0)) - _player.Transform.position;
+        Vector2 dir = (new Vector3 (_player.ArmDetection.SnapPosHand.x, _player.ArmDetection.SnapPosHand.y, 0)) - _player.transform.position;
         _player.PlayerRigidbody.velocity = dir.normalized * 10;
     }
     public override void UpdateState()

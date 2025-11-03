@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,37 +7,19 @@ public class PlayerStateMachine : MonoBehaviour
 {
     ///////////////////////////////////////////////////////       VARIABLES       ///////////////////////////////////////////////////////
     // STATES
-    PlayerBaseState _currentState;
     public PlayerStateFactory _states;
-
+    private PlayerBaseState _currentState;
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
     public PlayerBaseState PreviousState;
-    //public string StateName { get { return _currentState.GetType().Name; } }
+    [HideInInspector] public bool IsNewState;
 
-    // INPUT ACTIONS
-    [Space(10)]
-    [Header("INPUT ACTIONS")]
-    Controller controls;
-    public InputAction MoveH;
-    public InputAction MoveV;
-    public InputAction Jump;
-    public InputAction Grab;
-    public InputAction Aim;
-    public InputAction Back;
-
-    // ANIM
-    public bool IsPlayerTurnToLeft = false;
-    public bool UseSpine = false;
-    public SkeletonAnimation SkeletonAnimation;
-    public Animator Animator;
-    public SpriteRenderer SpriteRenderer;
-    public SpriteRenderer HandRight;
-    public SpriteRenderer HandLeft;
-    public Sprite HandOpen;
-    public Sprite HandClose;
-
-    // General Setting
-    public int LifeNumber = 4;
+    [SerializeField, FoldoutGroup("INPUT ACTIONS")] private Controller controls;
+    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction MoveH;
+    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction MoveV;
+    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction Jump;
+    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction Grab;
+    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction Aim;
+    [SerializeField, FoldoutGroup("INPUT ACTIONS")] public InputAction Back;
 
     // CAMERA
     public Camera Camera;
@@ -44,37 +27,41 @@ public class PlayerStateMachine : MonoBehaviour
     [HideInInspector] public bool CameraImpacted;
     [HideInInspector] public bool CameraInde;
     [HideInInspector] public Vector3 CameraTargetOverride;
+    
+    // ANIM
+    public bool IsPlayerTurnToLeft = false;
+    public bool UseSpine = false;
+    public SkeletonAnimation SkeletonAnimation;
+    public Animator Animator;
+
+    // General Setting
+    public int LifeNumber = 4;
+
 
     // MOVE
-    public Transform Transform;
     public float WalkSpeed = 10;
 
-    // JUMP
-    [field:SerializeField] public float JumpForceV { get; private set; } = 7f;
-    [field:SerializeField] public float JumpForceH { get; private set; } = 3f;
-    public float MaxTimeJump;
-    public float CurrentTimerValueJump;
-    public bool IsTimerRunningJump = false;
-    public CornerCorrection CornerCorrection;
-    public float JumpBufferTime = 0.1f;
-    public float CoyoteTime = 0.1f;
-    public float JumpBufferCounter;
-    public float CoyoteCounter;
-    public bool JumpReady = false;
+    [FoldoutGroup("JUMP")] public float JumpForceV = 6f;
+    [FoldoutGroup("JUMP")] public float JumpForceH = 4f;
+    [FoldoutGroup("JUMP")] public float MaxTimeJump;
+    [FoldoutGroup("JUMP")] public float CurrentTimerValueJump;
+    [FoldoutGroup("JUMP")] public bool IsTimerRunningJump = false;
+    [FoldoutGroup("JUMP")] public CornerCorrection CornerCorrection;
+    [FoldoutGroup("JUMP")] public float JumpBufferTime = 0.1f;
+    [FoldoutGroup("JUMP")] public float CoyoteTime = 0.1f;
+    [FoldoutGroup("JUMP")] public float JumpBufferCounter;
+    [FoldoutGroup("JUMP")] public float CoyoteCounter;
+    [FoldoutGroup("JUMP")] public bool JumpReady = false;
 
-    // FALL
-    public float MoveDownFallValue = -0.2f;
-    public float MoveDownFallValueMax = 1f;
+    [FoldoutGroup("FALL")] public float MoveDownFallValue = -0.2f;
+    [FoldoutGroup("FALL")] public float MoveDownFallValueMax = 1f;
 
-    // LEAP
-    [field: SerializeField] public float LeapForceV { get; private set; } = 7f;
-    [field: SerializeField] public float LeapForceH { get; private set; } = 3f;
+    [FoldoutGroup("LEAP")] public float LeapForceV = 7f;
+    [FoldoutGroup("LEAP")] public float LeapForceH = 3f;
 
-    // CLIMB
-    [field: SerializeField] public bool Leap { get; set; } = false;
-    [field: SerializeField] public bool Fall { get; set; } = false;
+    [field: HideInInspector] public bool Leap { get; set; } = false;
+    [field: HideInInspector] public bool Fall { get; set; } = false;
 
-    public bool IsCurrentLadderHorizontal;
 
     // GRAB
     public bool GamepadUsed;
@@ -94,7 +81,6 @@ public class PlayerStateMachine : MonoBehaviour
     public LineRenderer LineArmLeft;
     public Transform ShoulderLeft;
     public Transform DefaultPosLeft;
-    public Vector2 GrabDirection;
 
 
     // STAR HANDLE
@@ -118,6 +104,7 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsTimerRunningMeteor = true;
     public float MaxTimeMeteor = 10;
     public float CurrentTimerValueMeteor = 0;
+    public Vector2 MeteorStrikeDirection;
 
     // PHYSICS
     public Rigidbody2D PlayerRigidbody { get { return GetComponent<Rigidbody2D>(); } }
@@ -129,13 +116,15 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField] public LadderVDetectionL LadderVDetectionL { get; private set; }
     [field: SerializeField] public LadderVDetectionR LadderVDetectionR { get; private set; }
     [field: SerializeField] public LadderHDetection LadderHDetection { get; private set; }
+    [field: SerializeField] public LadderExitDetection LadderExitDetection { get; private set; }
     public enum LadderIs
     {
+        Nothing = 0,
         VerticalLeft = 1,
         VerticalRight = 2,
         Horizontal = 3
     }
-    public int IsLadder = 0;
+    public int IsLadder = (int)LadderIs.Nothing;
 
 
     private void Awake()
@@ -144,8 +133,6 @@ public class PlayerStateMachine : MonoBehaviour
         _states = new PlayerStateFactory(this);
         _currentState = _states.Idle();
         _currentState.EnterState();
-
-        Transform = this.transform;
     }
 
     ///////////////////////////////////////////////////////       START       ///////////////////////////////////////////////////////
@@ -161,7 +148,6 @@ public class PlayerStateMachine : MonoBehaviour
         Aim = controls.LAND.AIM;
         Back = controls.LAND.BACK;
     }
-
 
     void Update()
     {
@@ -183,28 +169,39 @@ public class PlayerStateMachine : MonoBehaviour
         CurrentState.OnCollisionStay2D(collision);
     }
 
-    public void PlayerDirectionVelocityVerif()
+    public void PlayerDirectionVerif()
     {
-        if (PlayerRigidbody.velocity.x != 0)
+        if (PlayerRigidbody.velocity.x != 0) // VELOCITY
         {
             IsPlayerTurnToLeft = PlayerRigidbody.velocity.x < 0;
         }
-    }
-
-    public void UpdateAnim(string animName)
-    {
-        if (UseSpine == false)
+        else if (IsLadder == (int)LadderIs.VerticalLeft || IsLadder == (int)LadderIs.VerticalRight) // VERTICAL LADDER
         {
-            foreach (var param in Animator.parameters)
+            if (LadderVDetectionL.IsLadderVDectectedL == true)
             {
-                if (param.type == AnimatorControllerParameterType.Bool)
-                {
-                    Animator.SetBool(param.name, false);
-                }
+                IsPlayerTurnToLeft = true;
             }
-            Animator.SetBool(animName, true);
+            if (LadderVDetectionR.IsLadderVDectectedR == true)
+            {
+                IsPlayerTurnToLeft = false;
+            }
         }
     }
+
+    //public void UpdateAnim(string animName)
+    //{
+    //    if (UseSpine == false)
+    //    {
+    //        foreach (var param in Animator.parameters)
+    //        {
+    //            if (param.type == AnimatorControllerParameterType.Bool)
+    //            {
+    //                Animator.SetBool(param.name, false);
+    //            }
+    //        }
+    //        Animator.SetBool(animName, true);
+    //    }
+    //}
 
     public void LadderVerif(Collision2D collision)
     {
@@ -225,7 +222,12 @@ public class PlayerStateMachine : MonoBehaviour
         }
         else
         {
-            IsLadder = 0;
+            IsLadder = (int)LadderIs.Nothing;
         }
+    }
+
+    public void NewStateVerif()
+    {
+        IsNewState = CurrentState != PreviousState;
     }
 }

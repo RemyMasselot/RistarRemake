@@ -13,7 +13,10 @@ public class PlayerLeapState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("JUMP ENTER");
-        _player.UpdateAnim("Jump");
+        //if (_player.UseSpine == false)
+        //{
+        //    _player.PlayerVisual.UpdateAnim("Jump");
+        //}
         _player.Leap = false;
         _player.PlayerRigidbody.gravityScale = 1;
         PosY = _player.transform.position.y;
@@ -53,7 +56,7 @@ public class PlayerLeapState : PlayerBaseState
                 }
             }
         }
-        _player.PlayerDirectionVelocityVerif();
+        _player.PlayerDirectionVerif();
         // Rotation visuelle -- SANS SPINE
         //if (_player.Rb.velocity.x > 0)
         //{

@@ -8,14 +8,17 @@ public class PlayerWallJumpState : PlayerBaseState
     
     public override void EnterState() {
         //Debug.Log("JUMP ENTER");
-        _player.UpdateAnim("Jump");
+        //if (_player.UseSpine == false)
+        //{
+        //    _player.PlayerVisual.UpdateAnim("Jump");
+        //}
         _player.Leap = false;
         _player.PlayerRigidbody.gravityScale = 1;
         _player.PlayerRigidbody.velocity = new Vector2(_player.JumpForceH, _player.JumpForceV);
     }
     public override void UpdateState() 
     {
-        _player.PlayerDirectionVelocityVerif();
+        _player.PlayerDirectionVerif();
         //if (_player.Rb.velocity.x != 0)
         //{
         //    _player.SpriteRenderer.flipX = _player.Rb.velocity.x < 0;
@@ -55,17 +58,21 @@ public class PlayerWallJumpState : PlayerBaseState
     {
         _player.LadderVerif(collision);
 
-        if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
+        if (_player.IsLadder != (int)LadderIs.Nothing)
         {
-            _player.Animator.SetFloat("WallVH", 0);
             SwitchState(_factory.WallClimb());
         }
-        else if (_player.IsLadder == (int)LadderIs.Horizontal)
-        {
-            _player.Animator.SetFloat("WallVH", 1);
-            SwitchState(_factory.WallClimb());
-        }
+
+        //if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
+        //{
+        //    //_player.Animator.SetFloat("WallVH", 0);
+        //    SwitchState(_factory.WallClimb());
+        //}
+        //else if (_player.IsLadder == (int)LadderIs.Horizontal)
+        //{
+        //    //_player.Animator.SetFloat("WallVH", 1);
+        //    SwitchState(_factory.WallClimb());
+        //}
     }
     public override void OnCollisionStay2D(Collision2D collision) { }
-
 }

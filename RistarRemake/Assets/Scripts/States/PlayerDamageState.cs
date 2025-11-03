@@ -10,7 +10,10 @@ public class PlayerDamageState : PlayerBaseState
     public override void EnterState() 
     {
         //Debug.Log("ENTER DAMAGE");
-        _player.UpdateAnim("Damage");
+        //if (_player.UseSpine == true)
+        //{
+        //    _player.PlayerVisual.UpdateAnim("Damage");
+        //}
         _player.LifeNumber--;
         if (_player.LifeNumber > 0)
         {

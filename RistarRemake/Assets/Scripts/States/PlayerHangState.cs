@@ -35,18 +35,21 @@ public class PlayerHangState : PlayerBaseState
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
-            _player.Animator.SetFloat("HangValue", 2);
+            //_player.Animator.SetFloat("HangValue", 2);
             _player.ShCentre = _player.ArmDetection.SnapPosHand;
             float x = _player.ShCentre.x + Mathf.Cos(_SHangle) * _player.ShRayon;
             float y = _player.ShCentre.y + Mathf.Sin(_SHangle) * _player.ShRayon;
             _player.transform.DOMove(new Vector2(x, y), 0.3f);
         }
-        else
-        {
-            _player.Animator.SetFloat("HangValue", 1);
-        }
+        //else
+        //{
+        //    _player.Animator.SetFloat("HangValue", 1);
+        //}
 
-        _player.UpdateAnim("Hang");
+        //if (_player.UseSpine == false)
+        //{
+        //    _player.PlayerVisual.UpdateAnim("Hang");
+        //}
     }
     public override void UpdateState()
     {

@@ -8,14 +8,16 @@ public class PlayerMeteorStrikeState : PlayerBaseState
     public PlayerMeteorStrikeState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
-    private Vector2 _rot;
     private Vector2 _dirPlayer;
     private bool CanControl;
 
     public override void EnterState()
     {
         Debug.Log("ENTER METEOR STRIKE");
-        _player.UpdateAnim("MeteorStrike");
+        //if (_player.UseSpine == false)
+        //{
+        //    _player.PlayerVisual.UpdateAnim("MeteorStrike");
+        //}
         // CAMERA BEHAVIOR
         _player.CameraInde = true;
         CanControl = false;
@@ -29,7 +31,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
 
         _player.ArmDetection.ObjectDetected = 0;
         _player.PlayerRigidbody.gravityScale = 0;
-        _rot = _player.transform.position - _player.ShCentre;
+        _player.MeteorStrikeDirection = _player.transform.position - _player.ShCentre;
         _player.GroundDetection.gameObject.SetActive(false);
         _player.LadderHDetection.gameObject.SetActive(false);
         _player.LadderVDetectionL.gameObject.SetActive(false);
@@ -59,13 +61,13 @@ public class PlayerMeteorStrikeState : PlayerBaseState
             if (_player.CurrentTimerValueMeteor <= 0f)
             {
                 _player.IsTimerRunningMeteor = false;
-                _player.SpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
-                _player.SpriteRenderer.flipY = false;
+                //_player.SpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
+                //_player.SpriteRenderer.flipY = false;
                 _player.GroundDetection.gameObject.SetActive(true);
                 _player.LadderHDetection.gameObject.SetActive(true);
                 _player.LadderVDetectionL.gameObject.SetActive(true);
                 _player.LadderVDetectionR.gameObject.SetActive(true);
-                if (_rot.y <= 0)
+                if (_player.MeteorStrikeDirection.y <= 0)
                 {
                     SwitchState(_factory.Fall());
                 }
@@ -84,22 +86,25 @@ public class PlayerMeteorStrikeState : PlayerBaseState
             float moveValueH = _player.MoveH.ReadValue<float>();
             float moveValueV = _player.MoveV.ReadValue<float>();
             _dirPlayer = new Vector2(moveValueH, moveValueV);
-            _rot = (_rot + _dirPlayer).normalized;
-        }
-        _player.transform.Translate(_rot.normalized * _player.MeteorSpeed);
 
-        // Body Rotation
-        float angle = Mathf.Atan2(_rot.y, _rot.x) * Mathf.Rad2Deg;
-        _player.SpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, angle);
+            _player.MeteorStrikeDirection = (_player.MeteorStrikeDirection + _dirPlayer).normalized;
+        }
 
-        if (_rot.x > 0)
-        {
-            _player.SpriteRenderer.flipY = false;
-        }
-        if (_rot.x < 0)
-        {
-            _player.SpriteRenderer.flipY = true;
-        }
+        _player.transform.Translate(_player.MeteorStrikeDirection.normalized * _player.MeteorSpeed);
+
+
+        //// Body Rotation
+        //float angle = Mathf.Atan2(_player.MeteorStrikeThrowDirection.y, _player.MeteorStrikeThrowDirection.x) * Mathf.Rad2Deg;
+        //_player.SpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        //if (_player.MeteorStrikeThrowDirection.x > 0)
+        //{
+        //    _player.SpriteRenderer.flipY = false;
+        //}
+        //if (_player.MeteorStrikeThrowDirection.x < 0)
+        //{
+        //    _player.SpriteRenderer.flipY = true;
+        //}
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
@@ -124,7 +129,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
             }
 
             Vector2 normale = collision.GetContact(0).normal;
-            _rot = Vector2.Reflect(_rot, normale);
+            _player.MeteorStrikeDirection = Vector2.Reflect(_player.MeteorStrikeDirection, normale);
         }
     }
 

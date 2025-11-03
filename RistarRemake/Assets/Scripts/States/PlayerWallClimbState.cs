@@ -9,19 +9,26 @@ public class PlayerWallClimbState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER WALL CLIMB");
-        _player.UpdateAnim("WallClimb");
+        //if (_player.UseSpine == false)
+        //{
+        //    _player.PlayerVisual.UpdateAnim("WallClimb");
+        //}
         _player.PlayerRigidbody.gravityScale = 0;
-        if (_player.Animator.GetFloat("WallVH") == 0)
-        {
-            if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
-            {
-                _player.IsPlayerTurnToLeft = true;
-            }
-            else if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
-            {
-                _player.IsPlayerTurnToLeft = false;
-            }
-        }
+
+        _player.PlayerDirectionVerif();
+
+        //// PLAYER DIRECTION
+        //if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
+        //{
+        //    if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
+        //    {
+        //        _player.IsPlayerTurnToLeft = true;
+        //    }
+        //    else if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
+        //    {
+        //        _player.IsPlayerTurnToLeft = false;
+        //    }
+        //}
     }
     public override void UpdateState()
     {
@@ -117,24 +124,52 @@ public class PlayerWallClimbState : PlayerBaseState
             }
         }
 
-        // Passage en state FALL
-        if (_player.Fall == true)
-        {
-            //_ctx.MainCameraBehavior.CurrentState = "OTHER";
-            SwitchState(_factory.Fall());
-        }
-        
-        // Passage en state LEAP
-        if (_player.Leap == true)
-        {
-            //_ctx.MainCameraBehavior.CurrentState = "OTHER";
-            SwitchState(_factory.Leap());
-        }
 
     }
 
     public override void OnCollisionEnter2D(Collision2D collision)
     {
         _player.LadderVerif(collision);
+
+        if (collision.gameObject.GetComponents<LadderExitDetection>() != null)
+        {
+            var the = collision.gameObject.GetComponents<LadderExitDetection>();
+            ChoseExitToTake(the);
+        }
+    }
+
+    private void ChoseExitToTake(LadderExitDetection ladderExitDetection)
+    {
+        float moveValueV = _player.MoveV.ReadValue<float>();
+        float moveValueH = _player.MoveH.ReadValue<float>();
+
+        if (ladderExitDetection.TriggerIdIs == LadderExitDetection.TriggerId.TriggerUp)
+        {
+            if (moveValueV > 0f)
+            {
+                SwitchState(_factory.Leap());
+            }
+        }
+        else if (_player.LadderExitDetection.TriggerIdIs == LadderExitDetection.TriggerId.TriggerDown)
+        {
+            if (moveValueV > 0f)
+            {
+                SwitchState(_factory.Fall());
+            }
+        }
+        else if (_player.LadderExitDetection.TriggerIdIs == LadderExitDetection.TriggerId.TriggerLeft)
+        {
+            if (moveValueH < 0f)
+            {
+                SwitchState(_factory.Fall());
+            }
+        }
+        else if (_player.LadderExitDetection.TriggerIdIs == LadderExitDetection.TriggerId.TriggerRight)
+        {
+            if (moveValueH > 0f)
+            {
+                SwitchState(_factory.Fall());
+            }
+        }
     }
 }

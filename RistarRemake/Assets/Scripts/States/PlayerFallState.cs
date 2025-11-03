@@ -8,7 +8,10 @@ public class PlayerFallState : PlayerBaseState
     
     public override void EnterState() 
     {
-        _player.UpdateAnim("Fall");
+        //if (_player.UseSpine == false)
+        //{
+        //    _player.PlayerVisual.UpdateAnim("Fall");
+        //}
         _player.Fall = false;
         _player.JumpReady = false;
 
@@ -47,7 +50,7 @@ public class PlayerFallState : PlayerBaseState
             _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.PlayerRigidbody.velocity.y + moveValueV);
         }
 
-        _player.PlayerDirectionVelocityVerif();
+        _player.PlayerDirectionVerif();
 
         if (_player.UseSpine == false)
         {
@@ -141,8 +144,8 @@ public class PlayerFallState : PlayerBaseState
 
         if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
         {
-            _player.IsCurrentLadderHorizontal = false;
-            _player.Animator.SetFloat("WallVH", 0);
+            //_player.IsCurrentLadderHorizontal = false;
+            //_player.Animator.SetFloat("WallVH", 0);
             //_ctx.MainCameraBehavior.CurrentState = "OTHER";
             SwitchState(_factory.WallClimb());
         }
@@ -150,8 +153,8 @@ public class PlayerFallState : PlayerBaseState
         {
             //if (_player.LadderHDetection.IsLadderHDectected == true)
             {
-                _player.IsCurrentLadderHorizontal = true;
-                _player.Animator.SetFloat("WallVH", 1);
+                //_player.IsCurrentLadderHorizontal = true;
+                //_player.Animator.SetFloat("WallVH", 1);
                 //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.WallClimb());
             }

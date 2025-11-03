@@ -6,7 +6,10 @@ public class PlayerWalkState : PlayerBaseState
     : base(currentContext, playerStateFactory) { }
     public override void EnterState() {
         //Debug.Log("ENTER WALK");
-        _player.UpdateAnim("Walk");
+        //if (_player.UseSpine == false)
+        //{
+        //    _player.PlayerVisual.UpdateAnim("Walk");
+        //}
         // Mise à jour du coyote time
         _player.CoyoteCounter = _player.CoyoteTime;
         //_ctx.MainCameraBehavior.PlayerTouchGround();
@@ -19,7 +22,7 @@ public class PlayerWalkState : PlayerBaseState
         float moveValue = _player.MoveH.ReadValue<float>();
         _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.WalkSpeed * Time.deltaTime, 0);
 
-        _player.PlayerDirectionVelocityVerif();
+        _player.PlayerDirectionVerif();
 
         if (_player.UseSpine == false)
         {

@@ -9,26 +9,35 @@ public class PlayerWallIdleState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER WALL IDLE");
-        _player.UpdateAnim("WallIdle");
         _player.PlayerRigidbody.velocity = Vector2.zero;
         _player.PlayerRigidbody.gravityScale = 0;
-        if (_player.UseSpine == false)
-        {
-            if (_player.Animator.GetFloat("WallVH") == 0)
-            {
-                //Debug.Log("WALL VERTICAL");
-                if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
-                {
-                    _player.IsPlayerTurnToLeft = true;
-                    Debug.Log("LEFT");
-                }
-                if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
-                {
-                    _player.IsPlayerTurnToLeft = false;
-                    Debug.Log("RIGHT");
-                }
-            }
-        }
+
+        _player.PlayerDirectionVerif();
+
+        //if (_player.UseSpine == false)
+        //{
+        //    //_player.PlayerVisual.UpdateAnim("WallIdle");
+
+        //    if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
+        //    {
+        //        //_player.Animator.SetFloat("WallVH", 0);
+        //        //Debug.Log("WALL VERTICAL");
+        //        if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
+        //        {
+        //            _player.IsPlayerTurnToLeft = true;
+        //            //Debug.Log("LEFT");
+        //        }
+        //        if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
+        //        {
+        //            _player.IsPlayerTurnToLeft = false;
+        //            //Debug.Log("RIGHT");
+        //        }
+        //    }
+        //    else if(_player.IsLadder == (int)LadderIs.Horizontal)
+        //    {
+        //        //_player.Animator.SetFloat("WallVH", 1);
+        //    }
+        //}
     }
     public override void UpdateState()
     {

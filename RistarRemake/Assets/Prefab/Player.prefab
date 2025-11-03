@@ -865,6 +865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed6ed46f9903e5448e4c11c775460e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsNewState: 0
   MoveH:
     m_Name: Move H
     m_Type: 0
@@ -919,24 +920,19 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  UseSpine: 0
-  Animator: {fileID: 5891116646931670803}
-  SpriteRenderer: {fileID: 8712983843123787148}
-  SkeletonAnimation: {fileID: 0}
-  HandRight: {fileID: 6929825119123361343}
-  HandLeft: {fileID: 3279288406607587484}
-  HandOpen: {fileID: 21300000, guid: aeecc0584a829444284730c8a2eb5799, type: 3}
-  HandClose: {fileID: 21300000, guid: 3d368954b106b8e419b6b4d70ead7a5b, type: 3}
-  LifeNumber: 4
   Camera: {fileID: 0}
   MainCameraBehavior: {fileID: 0}
   CameraImpacted: 0
   CameraInde: 0
   CameraTargetOverride: {x: 0, y: 0, z: 0}
-  Transform: {fileID: 8535036337940793503}
+  IsPlayerTurnToLeft: 0
+  UseSpine: 0
+  SkeletonAnimation: {fileID: 0}
+  Animator: {fileID: 5891116646931670803}
+  LifeNumber: 4
   WalkSpeed: 180
-  <JumpForceV>k__BackingField: 6
-  <JumpForceH>k__BackingField: 4
+  JumpForceV: 6
+  JumpForceH: 4
   MaxTimeJump: 0.6
   CurrentTimerValueJump: 0
   IsTimerRunningJump: 0
@@ -948,11 +944,10 @@ MonoBehaviour:
   JumpReady: 0
   MoveDownFallValue: -0.23
   MoveDownFallValueMax: 0.1
-  <LeapForceV>k__BackingField: 8
-  <LeapForceH>k__BackingField: 4
+  LeapForceV: 7
+  LeapForceH: 3
   <Leap>k__BackingField: 0
   <Fall>k__BackingField: 0
-  IsCurrentLadderHorizontal: 0
   GamepadUsed: 0
   Arms: {fileID: 980753910356476131}
   <ArmDetection>k__BackingField: {fileID: 6234253148292796384}
@@ -970,7 +965,6 @@ MonoBehaviour:
   LineArmLeft: {fileID: 7683459281555935350}
   ShoulderLeft: {fileID: 56796983860889730}
   DefaultPosLeft: {fileID: 656159738656065649}
-  GrabDirection: {x: 0, y: 0}
   _starHandleCurrentValue: 0
   StarHandleTargetValue: 150
   ShCentre: {x: 0, y: 0, z: 0}
@@ -989,6 +983,7 @@ MonoBehaviour:
   IsTimerRunningMeteor: 1
   MaxTimeMeteor: 5
   CurrentTimerValueMeteor: 0
+  MeteorStrikeDirection: {x: 0, y: 0}
   Invincinbility: {fileID: 0}
   <EnemyDetection>k__BackingField: {fileID: 0}
   <GroundDetection>k__BackingField: {fileID: 3719720874709478490}
@@ -996,6 +991,7 @@ MonoBehaviour:
   <LadderVDetectionL>k__BackingField: {fileID: 1149977443471627458}
   <LadderVDetectionR>k__BackingField: {fileID: 3782082570163832820}
   <LadderHDetection>k__BackingField: {fileID: 925709391015125550}
+  IsLadder: 0
 --- !u!1 &4052257545200088683
 GameObject:
   m_ObjectHideFlags: 0

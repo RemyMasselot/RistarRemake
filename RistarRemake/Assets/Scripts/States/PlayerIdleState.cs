@@ -11,10 +11,13 @@ public class PlayerIdleState : PlayerBaseState
     
     public override void EnterState()
     {
-        //Debug.Log("ENTER IDLE");
-        _player.UpdateAnim("Idle");
+        //if (_player.UseSpine == false)
+        //{
+        //    _player.PlayerVisual.UpdateAnim("Idle");
+        //    Debug.Log("ENTER IDLE");
+        //}
         _player.PlayerRigidbody.velocity = Vector2.zero;
-        _player.PreviousState = _player.CurrentState;
+        //_player.PreviousState = _player.CurrentState;
         // Mise à jour du coyote time
         _player.CoyoteCounter = _player.CoyoteTime;
     }

@@ -14,8 +14,6 @@ public abstract class PlayerBaseState
 
     protected void SwitchState(PlayerBaseState newState)
     {
-        _player.PreviousState = _player.CurrentState;
-
         // current state exits state
         ExitState();
 
@@ -24,6 +22,10 @@ public abstract class PlayerBaseState
 
         // switch current state of context
         _player.CurrentState = newState;
+
+        _player.NewStateVerif();
+        
+        _player.PreviousState = newState;
     }
 
     public abstract void EnterState();
