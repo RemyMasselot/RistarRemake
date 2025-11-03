@@ -761,7 +761,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8535036337940793503}
   - component: {fileID: 7538073745312595024}
-  - component: {fileID: 7566184316883252106}
+  - component: {fileID: 6704935291614628165}
   - component: {fileID: 5971321630394888149}
   m_Layer: 8
   m_Name: Player
@@ -818,8 +818,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &7566184316883252106
-CapsuleCollider2D:
+--- !u!61 &6704935291614628165
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -833,7 +833,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -851,8 +851,18 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.06}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
   m_Size: {x: 0.75, y: 1.12}
-  m_Direction: 0
+  m_EdgeRadius: 0
 --- !u!114 &5971321630394888149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,6 +875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed6ed46f9903e5448e4c11c775460e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CapsuleSize: {x: 0, y: 0}
   IsNewState: 0
   MoveH:
     m_Name: Move H
@@ -946,8 +957,6 @@ MonoBehaviour:
   MoveDownFallValueMax: 0.1
   LeapForceV: 7
   LeapForceH: 3
-  <Leap>k__BackingField: 0
-  <Fall>k__BackingField: 0
   GamepadUsed: 0
   Arms: {fileID: 980753910356476131}
   <ArmDetection>k__BackingField: {fileID: 6234253148292796384}
@@ -991,6 +1000,7 @@ MonoBehaviour:
   <LadderVDetectionL>k__BackingField: {fileID: 1149977443471627458}
   <LadderVDetectionR>k__BackingField: {fileID: 3782082570163832820}
   <LadderHDetection>k__BackingField: {fileID: 925709391015125550}
+  <LadderExitDetection>k__BackingField: {fileID: 0}
   IsLadder: 0
 --- !u!1 &4052257545200088683
 GameObject:

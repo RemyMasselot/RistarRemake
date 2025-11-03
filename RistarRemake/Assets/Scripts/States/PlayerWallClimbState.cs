@@ -36,7 +36,10 @@ public class PlayerWallClimbState : PlayerBaseState
     }
     public override void FixedUpdateState()
     {
-        // Déplacements du personnage
+        PlayerMovement();
+    }
+    private void PlayerMovement()
+    {
         if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
         {
             float moveValueV = _player.MoveV.ReadValue<float>();
@@ -62,8 +65,9 @@ public class PlayerWallClimbState : PlayerBaseState
                 _player.IsPlayerTurnToLeft = true;
                 _player.PlayerRigidbody.velocity = new Vector2(-_player.WalkSpeed * Time.deltaTime, 0);
             }
-        }     
+        }
     }
+
     public override void ExitState(){}
     public override void CheckSwitchStates()
     {
@@ -130,11 +134,13 @@ public class PlayerWallClimbState : PlayerBaseState
     public override void OnCollisionEnter2D(Collision2D collision)
     {
         _player.LadderVerif(collision);
+    }
 
-        if (collision.gameObject.GetComponents<LadderExitDetection>() != null)
+    public override void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<LadderExitDetection>() != null)
         {
-            var the = collision.gameObject.GetComponents<LadderExitDetection>();
-            ChoseExitToTake(the);
+            ChoseExitToTake(collision.GetComponent<LadderExitDetection>());
         }
     }
 
@@ -150,21 +156,21 @@ public class PlayerWallClimbState : PlayerBaseState
                 SwitchState(_factory.Leap());
             }
         }
-        else if (_player.LadderExitDetection.TriggerIdIs == LadderExitDetection.TriggerId.TriggerDown)
+        else if (ladderExitDetection.TriggerIdIs == LadderExitDetection.TriggerId.TriggerDown)
         {
-            if (moveValueV > 0f)
+            if (moveValueV < 0f)
             {
                 SwitchState(_factory.Fall());
             }
         }
-        else if (_player.LadderExitDetection.TriggerIdIs == LadderExitDetection.TriggerId.TriggerLeft)
+        else if (ladderExitDetection.TriggerIdIs == LadderExitDetection.TriggerId.TriggerLeft)
         {
             if (moveValueH < 0f)
             {
                 SwitchState(_factory.Fall());
             }
         }
-        else if (_player.LadderExitDetection.TriggerIdIs == LadderExitDetection.TriggerId.TriggerRight)
+        else if (ladderExitDetection.TriggerIdIs == LadderExitDetection.TriggerId.TriggerRight)
         {
             if (moveValueH > 0f)
             {

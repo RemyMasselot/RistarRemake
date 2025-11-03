@@ -116,7 +116,6 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField] public LadderVDetectionL LadderVDetectionL { get; private set; }
     [field: SerializeField] public LadderVDetectionR LadderVDetectionR { get; private set; }
     [field: SerializeField] public LadderHDetection LadderHDetection { get; private set; }
-    [field: SerializeField] public LadderExitDetection LadderExitDetection { get; private set; }
     public enum LadderIs
     {
         Nothing = 0,
@@ -168,6 +167,11 @@ public class PlayerStateMachine : MonoBehaviour
     {
         CurrentState.OnCollisionStay2D(collision);
     }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        CurrentState.OnTriggerEnter2D(collision);
+    }
 
     public void PlayerDirectionVerif()
     {
@@ -187,21 +191,6 @@ public class PlayerStateMachine : MonoBehaviour
             }
         }
     }
-
-    //public void UpdateAnim(string animName)
-    //{
-    //    if (UseSpine == false)
-    //    {
-    //        foreach (var param in Animator.parameters)
-    //        {
-    //            if (param.type == AnimatorControllerParameterType.Bool)
-    //            {
-    //                Animator.SetBool(param.name, false);
-    //            }
-    //        }
-    //        Animator.SetBool(animName, true);
-    //    }
-    //}
 
     public void LadderVerif(Collision2D collision)
     {
