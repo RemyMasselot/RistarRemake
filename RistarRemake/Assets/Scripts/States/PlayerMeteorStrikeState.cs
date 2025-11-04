@@ -8,6 +8,16 @@ public class PlayerMeteorStrikeState : PlayerBaseState
     public PlayerMeteorStrikeState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
+    /// <summary>
+    /// CHANGER LES CONTROLES :
+    /// - MAINTENIR RIHGT SHOULDER POUR CHARGER LE METEOR STRIKE
+    /// - DIRIGER LA DIRECTION DE PROPULSION AVEC LE JOYSTICK GAUCHE
+    /// - RELACHER RIGHT SHOULDER POUR LANCER
+    /// 
+    /// RETIRER LE SLOW MOTION ET LE TRIGGER DE PROPULSION
+    /// </summary>
+
+
     private Vector2 _dirPlayer;
     private bool CanControl;
 

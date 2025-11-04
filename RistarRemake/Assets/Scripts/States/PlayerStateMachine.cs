@@ -5,11 +5,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerStateMachine : MonoBehaviour
 {
-    ///////////////////////////////////////////////////////       VARIABLES       ///////////////////////////////////////////////////////
+    #region VARIABLES
     // STATES
     public PlayerStateFactory _states;
-    private PlayerBaseState _currentState;
-    public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
+    public PlayerBaseState CurrentState;
     public PlayerBaseState PreviousState;
     [HideInInspector] public bool IsNewState;
 
@@ -27,14 +26,15 @@ public class PlayerStateMachine : MonoBehaviour
     [HideInInspector] public Vector3 CameraTargetOverride;
     
     // ANIM
-    public bool IsPlayerTurnToLeft = false;
     public bool UseSpine = false;
     public SkeletonAnimation SkeletonAnimation;
     public Animator Animator;
 
     [Header("GENERAL SETTING")] public int LifesNumber = 4;
-    public Rigidbody2D PlayerRigidbody { get { return GetComponent<Rigidbody2D>(); } }
+    public Rigidbody2D PlayerRigidbody;
+
     public Invincinbility Invincinbility { get { return GetComponent<Invincinbility>(); } }
+    [HideInInspector] public bool IsPlayerTurnToLeft = false;
 
     [Header("MOVE")] public float WalkSpeed = 10;
 
@@ -88,6 +88,8 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("STAR HANDLE")] public float StarHandleImpulseMax = 30;
     [HideInInspector] public float StarHandleCurrentImpulse = 0;
 
+    //[InfoBox("Should be synchronized with spin animation", InfoMessageType.Warning)]
+    
     [FoldoutGroup("METEOR STRIKE")] public float MeteorSpeed = 10;
     [FoldoutGroup("METEOR STRIKE")] public float MaxTimeMeteor = 10;
     [HideInInspector] public bool IsTimerRunningMeteor = true;
@@ -110,16 +112,18 @@ public class PlayerStateMachine : MonoBehaviour
     }
     [FoldoutGroup("DETECTIONS REFERENCES")] public int IsLadder = (int)LadderIs.Nothing;
 
+    #endregion
 
     private void Awake()
     {
         // setup state
         _states = new PlayerStateFactory(this);
-        _currentState = _states.Idle();
-        _currentState.EnterState();
+        CurrentState = _states.Idle();
+        CurrentState.EnterState();
+
+        PlayerRigidbody = GetComponent<Rigidbody2D>();
     }
 
-    ///////////////////////////////////////////////////////       START       ///////////////////////////////////////////////////////
     private void Start()
     {
         // Set input actions
@@ -135,12 +139,12 @@ public class PlayerStateMachine : MonoBehaviour
 
     void Update()
     {
-        _currentState.UpdateState();
+        CurrentState.UpdateState();
     }
 
     void FixedUpdate()
     {
-        _currentState.FixedUpdateState();
+        CurrentState.FixedUpdateState();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

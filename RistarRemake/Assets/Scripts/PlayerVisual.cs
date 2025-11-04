@@ -14,7 +14,6 @@ public class PlayerVisual : MonoBehaviour
     [SerializeField, FoldoutGroup("RÉFÉRENCES")] private Sprite handOpen;
     [SerializeField, FoldoutGroup("RÉFÉRENCES")] private Sprite handClose;
 
-
     #endregion
 
     private void Update()
@@ -22,13 +21,14 @@ public class PlayerVisual : MonoBehaviour
         // PLAYER DIRECTION
         spriteRenderer.flipX = playerStateMachine.IsPlayerTurnToLeft;
 
-        // NEW ANIMATION
         if (playerStateMachine.IsNewState)
         {
+            // NEW ANIMATION
             ChooseAnimEnterNewState();
 
             if (playerStateMachine.CurrentState is not PlayerMeteorStrikeState)
             {
+                // PUT BACK THE BODY ROTATION TO 0 IF NOT IN METEOR STRIKE
                 spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
                 spriteRenderer.flipY = false;
             }
@@ -37,6 +37,7 @@ public class PlayerVisual : MonoBehaviour
         {
             if (playerStateMachine.ArmDetection.ObjectDetected != 0)
             {
+                // HANDS CLOSE
                 handRight.sprite = handClose;
                 handLeft.sprite = handClose;
             }
@@ -54,72 +55,75 @@ public class PlayerVisual : MonoBehaviour
         if (playerStateMachine.CurrentState is PlayerIdleState)
         {
             UpdateAnim("Idle");
+            //animator.SetTrigger("IdleTrigger");
         }
-        if (playerStateMachine.CurrentState is PlayerWalkState)
+        else if (playerStateMachine.CurrentState is PlayerWalkState)
         {
             UpdateAnim("Walk");
         }
-        if (playerStateMachine.CurrentState is PlayerJumpState)
+        else if (playerStateMachine.CurrentState is PlayerJumpState)
         {
             UpdateAnim("Jump");
         }
-        if (playerStateMachine.CurrentState is PlayerFallState)
+        else if (playerStateMachine.CurrentState is PlayerFallState)
         {
             UpdateAnim("Fall");
         }
-        if (playerStateMachine.CurrentState is PlayerGrabState)
+        else if (playerStateMachine.CurrentState is PlayerGrabState)
         {
             EnterGrabStateInitialization();
             ChoiceGrabAnim();
             UpdateAnim("Grab");
         }
-        if (playerStateMachine.CurrentState is PlayerHangState)
+        else if (playerStateMachine.CurrentState is PlayerHangState)
         {
             UpdateAnim("Hang");
-            if (playerStateMachine.ArmDetection.ObjectDetected == 4)
-            {
-                animator.SetFloat("HangValue", 2);
-            }
-            else
-            {
-                animator.SetFloat("HangValue", 1);
-            }
+            //if (playerStateMachine.ArmDetection.ObjectDetected == 4)
+            //{
+            //    animator.SetFloat("HangValue", 2);
+            //}
+            //else
+            //{
+            //    animator.SetFloat("HangValue", 1);
+            //}
+
+            animator.SetFloat("HangValue", playerStateMachine.ArmDetection.ObjectDetected == 4 ? 2 : 1);
         }
-        if (playerStateMachine.CurrentState is PlayerMeteorStrikeState)
+        else if (playerStateMachine.CurrentState is PlayerMeteorStrikeState)
         {
             UpdateAnim("MeteorStrike");
         }
-        if (playerStateMachine.CurrentState is PlayerHeadbuttState)
+        else if (playerStateMachine.CurrentState is PlayerHeadbuttState)
         {
             UpdateAnim("Headbutt");
         }
-        if (playerStateMachine.CurrentState is PlayerSpinState)
+        else if (playerStateMachine.CurrentState is PlayerSpinState)
         {
             UpdateAnim("Spin");
         }
-        if (playerStateMachine.CurrentState is PlayerWallIdleState)
+        else if (playerStateMachine.CurrentState is PlayerWallIdleState)
         {
             ChooseBetweenVerticalOrHorizontalAnimLadder();
             UpdateAnim("WallIdle");
         }
-        if (playerStateMachine.CurrentState is PlayerWallClimbState)
+        else if (playerStateMachine.CurrentState is PlayerWallClimbState)
         {
             ChooseBetweenVerticalOrHorizontalAnimLadder();
             UpdateAnim("WallClimb");
         }
-        if (playerStateMachine.CurrentState is PlayerWallJumpState)
+        else if (playerStateMachine.CurrentState is PlayerWallJumpState)
         {
             UpdateAnim("Jump");
         }
-        if (playerStateMachine.CurrentState is PlayerLeapState)
+        else if (playerStateMachine.CurrentState is PlayerLeapState)
         {
             UpdateAnim("Jump");
         }
-        if (playerStateMachine.CurrentState is PlayerDamageState)
+        else if (playerStateMachine.CurrentState is PlayerDamageState)
         {
             UpdateAnim("Damage");
         }
-        if (playerStateMachine.CurrentState is PlayerDeathState)
+        else if (playerStateMachine.CurrentState is PlayerDeathState)
         {
             if (playerStateMachine.IsPlayerTurnToLeft)
             {
@@ -131,6 +135,7 @@ public class PlayerVisual : MonoBehaviour
             }
         }
     }
+
     private void UpdateAnim(string animName)
     {
         foreach (var param in animator.parameters)
@@ -142,7 +147,6 @@ public class PlayerVisual : MonoBehaviour
         }
         animator.SetBool(animName, true);
     }
-
 
     private void ChooseBetweenVerticalOrHorizontalAnimLadder()
     {

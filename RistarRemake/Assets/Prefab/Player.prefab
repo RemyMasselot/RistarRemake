@@ -865,11 +865,11 @@ MonoBehaviour:
   CameraImpacted: 0
   CameraInde: 0
   CameraTargetOverride: {x: 0, y: 0, z: 0}
-  IsPlayerTurnToLeft: 0
   UseSpine: 0
   SkeletonAnimation: {fileID: 0}
   Animator: {fileID: 5891116646931670803}
   LifesNumber: 4
+  IsPlayerTurnToLeft: 0
   WalkSpeed: 180
   JumpForceV: 6
   JumpForceH: 4
@@ -909,7 +909,7 @@ MonoBehaviour:
   StarHandleRayonMax: 2.5
   StarHandleCurrentRayon: 1.5
   StarHandleMinSpeed: 6
-  StarHandleMaxSpeed: 12
+  StarHandleMaxSpeed: 23
   StarHandleCurrentSpeed: 6
   StarHandleSpeedSlowMotion: 8
   StarHandleImpulseMin: 10
