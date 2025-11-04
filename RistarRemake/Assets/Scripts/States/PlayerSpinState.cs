@@ -6,17 +6,17 @@ public class PlayerSpinState : PlayerBaseState
     public PlayerSpinState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
-    private bool hasEnded;
+    //private bool hasEnded;
 
     public override void EnterState()
     {
-        Debug.Log("ENTER SPIN");
+        //Debug.Log("ENTER SPIN");
 
-        hasEnded = false;
+        //hasEnded = false;
         if (_player.UseSpine == false)
         {
             //_player.PlayerVisual.UpdateAnim("Spin");
-            _player.Arms.gameObject.SetActive(false);
+            //_player.Arms.gameObject.SetActive(false);
             _player.ArmDetection.gameObject.SetActive(false);
             // Move Left Arm
             _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
@@ -57,24 +57,34 @@ public class PlayerSpinState : PlayerBaseState
     }
     public override void UpdateState()
     {
-        AnimatorStateInfo stateInfo = _player.Animator.GetCurrentAnimatorStateInfo(0);
+        _player.CountTimePassedInState();
 
-        if (stateInfo.IsName("Spin") && stateInfo.normalizedTime >= 1f && !hasEnded)
-        {
-            hasEnded = true;
-            OnAnimationEnd();
-        }
+        CheckSwitchStates();
+
+        //AnimatorStateInfo stateInfo = _player.Animator.GetCurrentAnimatorStateInfo(0);
+
+        //if (stateInfo.IsName("Spin") && stateInfo.normalizedTime >= 1f && !hasEnded)
+        //{
+        //    hasEnded = true;
+        //    OnAnimationEnd();
+        //}
     }
 
-    void OnAnimationEnd()
-    {
-        //Debug.Log("Animation terminée !");
-        SwitchState(_factory.Fall());
-    }
+    //void OnAnimationEnd()
+    //{
+    //    //Debug.Log("Animation terminée !");
+    //    SwitchState(_factory.Fall());
+    //}
     public override void FixedUpdateState() { }
     public override void ExitState() { }
     public override void InitializeSubState() { }
-    public override void CheckSwitchStates() { }
+    public override void CheckSwitchStates() 
+    {
+        if (_player.TimePassedInState >= _player.SpinTime)
+        {
+            SwitchState(_factory.Fall());
+        }
+    }
     public override void OnCollisionEnter2D(Collision2D collision) { }
     public override void OnCollisionStay2D(Collision2D collision) { }
 

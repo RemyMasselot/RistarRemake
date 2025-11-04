@@ -9,12 +9,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
     : base(currentContext, playerStateFactory) { }
 
     /// <summary>
-    /// CHANGER LES CONTROLES :
-    /// - MAINTENIR RIHGT SHOULDER POUR CHARGER LE METEOR STRIKE
-    /// - DIRIGER LA DIRECTION DE PROPULSION AVEC LE JOYSTICK GAUCHE
-    /// - RELACHER RIGHT SHOULDER POUR LANCER
-    /// 
-    /// RETIRER LE SLOW MOTION ET LE TRIGGER DE PROPULSION
+    /// FAIRE LONGER LE PLAYER LE LONG DES PAROIS PLUTOT QUE DE REBONDIR
     /// </summary>
 
 
@@ -46,7 +41,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         _player.LadderHDetection.gameObject.SetActive(false);
         _player.LadderVDetectionL.gameObject.SetActive(false);
         _player.LadderVDetectionR.gameObject.SetActive(false);
-        _player.Arms.gameObject.SetActive(false);
+        //_player.Arms.gameObject.SetActive(false);
         _player.TriggerGoToMeteorStrike.SetActive(false);
         // Move Left Arm
         _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;

@@ -10,8 +10,8 @@ public class ArmDetection : MonoBehaviour
     public Vector2 SnapPosHand;
     public Vector2 SnapPosHandL;
     public Vector2 SnapPosHandR;
-    [SerializeField] private Transform HandL;
     [SerializeField] private Transform HandR;
+    [SerializeField] private Transform HandL;
 
     public int rayCount = 8;              // Nombre de rayons
     public float rayDistance = 5f;         // Longueur des rayons

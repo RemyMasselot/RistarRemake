@@ -22,12 +22,10 @@ public class PlayerIdleState : PlayerBaseState
     }
     public override void UpdateState()
     {
+        _player.CountTimePassedInState();
         CheckSwitchStates();
     }
-    public override void FixedUpdateState()
-    {
-        
-    }
+    public override void FixedUpdateState(){}
     public override void ExitState(){}
     public override void InitializeSubState(){}
     public override void CheckSwitchStates()

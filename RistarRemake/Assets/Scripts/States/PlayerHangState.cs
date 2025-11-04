@@ -6,6 +6,15 @@ public class PlayerHangState : PlayerBaseState
     public PlayerHangState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
+    /// <summary>
+    /// CHANGER LES CONTROLES :
+    /// - MAINTENIR RIHGT SHOULDER POUR CHARGER LE METEOR STRIKE
+    /// - DIRIGER LA DIRECTION DE PROPULSION AVEC LE JOYSTICK GAUCHE
+    /// - RELACHER RIGHT SHOULDER POUR LANCER
+    /// 
+    /// RETIRER LE SLOW MOTION ET LE TRIGGER DE PROPULSION
+    /// </summary>
+
     private bool SnapHands = false;
     private float _SHangle = 0;
     private bool _goMeteorStrike = false;
@@ -85,11 +94,11 @@ public class PlayerHangState : PlayerBaseState
 
         if (_player.UseSpine == false)
         {
-            // Draw Line Arm
-            _player.LineArmLeft.SetPosition(0, _player.ShoulderLeft.position);
-            _player.LineArmLeft.SetPosition(1, _player.IkArmLeft.position);
-            _player.LineArmRight.SetPosition(0, _player.ShoulderRight.position);
-            _player.LineArmRight.SetPosition(1, _player.IkArmRight.position);
+            //// Draw Line Arm
+            //_player.LineArmLeft.SetPosition(0, _player.ShoulderLeft.position);
+            //_player.LineArmLeft.SetPosition(1, _player.IkArmLeft.position);
+            //_player.LineArmRight.SetPosition(0, _player.ShoulderRight.position);
+            //_player.LineArmRight.SetPosition(1, _player.IkArmRight.position);
         }
 
     }
@@ -138,7 +147,7 @@ public class PlayerHangState : PlayerBaseState
 
                 if (_player.UseSpine == false)
                 {
-                    _player.Arms.gameObject.SetActive(false);
+                    //_player.Arms.gameObject.SetActive(false);
                     // Move Left Arm
                     _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
                     // Move Right Arm
@@ -227,7 +236,7 @@ public class PlayerHangState : PlayerBaseState
                 }
                 else
                 {
-                    _player.Arms.gameObject.SetActive(false);
+                    //_player.Arms.gameObject.SetActive(false);
                     // Move Left Arm
                     _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
                     // Move Right Arm

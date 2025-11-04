@@ -208,7 +208,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1980762501653570550}
-  - {fileID: 5794240398821039373}
   m_Father: {fileID: 8535036337940793503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5891116646931670803
@@ -296,13 +295,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b598a4752412c49b44bbb1ebcc4183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStateMachine: {fileID: 5971321630394888149}
-  animator: {fileID: 5891116646931670803}
-  spriteRenderer: {fileID: 8712983843123787148}
   handRight: {fileID: 6929825119123361343}
   handLeft: {fileID: 3279288406607587484}
   handOpen: {fileID: 21300000, guid: aeecc0584a829444284730c8a2eb5799, type: 3}
   handClose: {fileID: 21300000, guid: 3d368954b106b8e419b6b4d70ead7a5b, type: 3}
+  arms: {fileID: 980753910356476131}
+  lineArmRight: {fileID: 3968311915153143471}
+  lineArmLeft: {fileID: 7683459281555935350}
 --- !u!1 &1282563685593971250
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,6 +713,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2786628724515430330}
+  - {fileID: 5794240398821039373}
   - {fileID: 7644166724655202036}
   - {fileID: 3359975085445979003}
   - {fileID: 7394740808944075429}
@@ -807,7 +807,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed6ed46f9903e5448e4c11c775460e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsNewState: 0
   MoveH:
     m_Name: Move H
     m_Type: 0
@@ -862,17 +861,44 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  CameraImpacted: 0
+  ArmDetection: {fileID: 6234253148292796384}
+  IkArmRight: {fileID: 3389265081751148596}
+  IkArmLeft: {fileID: 6282178533520518733}
+  ShoulderRight: {fileID: 1082555930154475796}
+  ShoulderLeft: {fileID: 56796983860889730}
+  DefaultPosRight: {fileID: 6705075075960125178}
+  DefaultPosLeft: {fileID: 656159738656065649}
+  TriggerGoToMeteorStrike: {fileID: 8749003172385253135}
+  <EnemyDetection>k__BackingField: {fileID: 3520695813044198357}
+  <GroundDetection>k__BackingField: {fileID: 3719720874709478490}
+  <JumpBufferingDetection>k__BackingField: {fileID: 4616474715250170806}
+  <LadderVDetectionL>k__BackingField: {fileID: 1149977443471627458}
+  <LadderVDetectionR>k__BackingField: {fileID: 3782082570163832820}
+  <LadderHDetection>k__BackingField: {fileID: 925709391015125550}
+  IsLadder: 0
   CameraInde: 0
   CameraTargetOverride: {x: 0, y: 0, z: 0}
   UseSpine: 0
-  SkeletonAnimation: {fileID: 0}
-  Animator: {fileID: 5891116646931670803}
   LifesNumber: 4
-  PlayerRigidbody: {fileID: 7538073745312595024}
+  IsPlayerTurnToLeft: 0
+  TimePassedInState: 0
   Invincinbility: {fileID: 0}
   CornerCorrection: {fileID: 0}
-  IsPlayerTurnToLeft: 0
+  NewStatePlayed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5971321630394888149}
+        m_TargetAssemblyTypeName: PlayerStateMachine, Assembly-CSharp
+        m_MethodName: GlobalStatesInitialization
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   WalkSpeed: 180
   JumpForceV: 6
   JumpForceH: 4
@@ -889,23 +915,13 @@ MonoBehaviour:
   LeapForceV: 7
   LeapForceH: 3
   AimDir: {x: 0, y: 0}
-  Arms: {fileID: 980753910356476131}
-  ArmDetection: {fileID: 6234253148292796384}
-  IkArmRight: {fileID: 3389265081751148596}
-  IkArmLeft: {fileID: 6282178533520518733}
-  ShoulderRight: {fileID: 1082555930154475796}
-  ShoulderLeft: {fileID: 56796983860889730}
-  DefaultPosRight: {fileID: 6705075075960125178}
-  DefaultPosLeft: {fileID: 656159738656065649}
-  LineArmRight: {fileID: 3968311915153143471}
-  LineArmLeft: {fileID: 7683459281555935350}
   DistanceGrab: 0.8
   DurationExtendGrab: 0.2
   MaxTimeGrab: 1
   IsTimerRunning: 0
   CurrentTimerValue: 0
+  SpinTime: 0.3
   StarHandleCentre: {x: 0, y: 0, z: 0}
-  TriggerGoToMeteorStrike: {fileID: 8749003172385253135}
   StarHandleCurrentValue: 0
   StarHandleTargetValue: 150
   StarHandleRayonMin: 1.5
@@ -923,13 +939,6 @@ MonoBehaviour:
   IsTimerRunningMeteor: 1
   CurrentTimerValueMeteor: 0
   MeteorStrikeDirection: {x: 0, y: 0}
-  <EnemyDetection>k__BackingField: {fileID: 3520695813044198357}
-  <GroundDetection>k__BackingField: {fileID: 3719720874709478490}
-  <JumpBufferingDetection>k__BackingField: {fileID: 4616474715250170806}
-  <LadderVDetectionL>k__BackingField: {fileID: 1149977443471627458}
-  <LadderVDetectionR>k__BackingField: {fileID: 3782082570163832820}
-  <LadderHDetection>k__BackingField: {fileID: 925709391015125550}
-  IsLadder: 0
 --- !u!114 &4075721877120542470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -992,11 +1001,11 @@ Transform:
   m_GameObject: {fileID: 4052257545200088683}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.097, y: 0.189, z: 0}
-  m_LocalScale: {x: 0.3030303, y: 0.3030303, z: 0.3030303}
+  m_LocalPosition: {x: 0.32010007, y: -0.000300169, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2786628724515430330}
+  m_Father: {fileID: 8535036337940793503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6234253148292796384
 MonoBehaviour:
@@ -1015,8 +1024,8 @@ MonoBehaviour:
   SnapPosHand: {x: 0, y: 0}
   SnapPosHandL: {x: 0, y: 0}
   SnapPosHandR: {x: 0, y: 0}
-  HandL: {fileID: 6282178533520518733}
   HandR: {fileID: 3389265081751148596}
+  HandL: {fileID: 6282178533520518733}
   rayCount: 12
   rayDistance: 0.4
   angleRange: 90

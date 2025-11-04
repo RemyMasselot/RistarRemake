@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class PlayerBaseState
@@ -23,9 +21,7 @@ public abstract class PlayerBaseState
         // switch current state of context
         _player.CurrentState = newState;
 
-        _player.NewStateVerif();
-        
-        _player.PreviousState = newState;
+        _player.NewStatePlayed.Invoke();
     }
 
     public abstract void EnterState();

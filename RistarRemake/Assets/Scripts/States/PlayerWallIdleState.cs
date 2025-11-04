@@ -58,39 +58,36 @@ public class PlayerWallIdleState : PlayerBaseState
         }
 
         // Passage en state WALL CLIMB
-        if (_player.UseSpine == false)
+        if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight) //Echelle Vertical
         {
-            if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight) //Echelle Vertical
+            float moveValueV = _player.MoveV.ReadValue<float>();
+            if (Mathf.Abs(moveValueV) != 0)
             {
-                float moveValueV = _player.MoveV.ReadValue<float>();
-                if (Mathf.Abs(moveValueV) != 0)
-                {
-                    SwitchState(_factory.WallClimb());
-                }
-                if (_player.Jump.WasPerformedThisFrame())
-                {
-                    if (Mathf.Abs(moveValueV) > 0) // Passage en state WALL JUMP
-                    {
-                        SwitchState(_factory.WallJump());
-                    }
-                    else // Passage en state FALL
-                    {
-                        _player.IsPlayerTurnToLeft = !_player.IsPlayerTurnToLeft;
-                        SwitchState(_factory.Fall());
-                    }
-                }
+                SwitchState(_factory.WallClimb());
             }
-            else if (_player.IsLadder == (int)LadderIs.Horizontal) //Echelle Horizontal
+            if (_player.Jump.WasPerformedThisFrame())
             {
-                float moveValueH = _player.MoveH.ReadValue<float>();
-                if (Mathf.Abs(moveValueH) != 0)
+                if (Mathf.Abs(moveValueV) > 0) // Passage en state WALL JUMP
                 {
-                    SwitchState(_factory.WallClimb());
+                    SwitchState(_factory.WallJump());
                 }
-                if (_player.Jump.WasPerformedThisFrame())
+                else // Passage en state FALL
                 {
+                    _player.IsPlayerTurnToLeft = !_player.IsPlayerTurnToLeft;
                     SwitchState(_factory.Fall());
                 }
+            }
+        }
+        else if (_player.IsLadder == (int)LadderIs.Horizontal) //Echelle Horizontal
+        {
+            float moveValueH = _player.MoveH.ReadValue<float>();
+            if (Mathf.Abs(moveValueH) != 0)
+            {
+                SwitchState(_factory.WallClimb());
+            }
+            if (_player.Jump.WasPerformedThisFrame())
+            {
+                SwitchState(_factory.Fall());
             }
         }
     }

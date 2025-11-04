@@ -1,6 +1,6 @@
 using Sirenix.OdinInspector;
-using Spine.Unity;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerStateMachine : MonoBehaviour
@@ -9,8 +9,6 @@ public class PlayerStateMachine : MonoBehaviour
     // STATES
     public PlayerStateFactory _states;
     public PlayerBaseState CurrentState;
-    public PlayerBaseState PreviousState;
-    [HideInInspector] public bool IsNewState;
 
     [FoldoutGroup("INPUT ACTIONS")] private Controller controls;
     [FoldoutGroup("INPUT ACTIONS")] public InputAction MoveH;
@@ -20,17 +18,41 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("INPUT ACTIONS")] public InputAction Aim;
     [FoldoutGroup("INPUT ACTIONS")] public InputAction Back;
 
+    [FoldoutGroup("REFERENCES")]
+    [FoldoutGroup("REFERENCES/Grab")] public ArmDetection ArmDetection;
+    [FoldoutGroup("REFERENCES/Grab")] public Transform IkArmRight;
+    [FoldoutGroup("REFERENCES/Grab")] public Transform IkArmLeft;
+    [FoldoutGroup("REFERENCES/Grab")] public Transform ShoulderRight;
+    [FoldoutGroup("REFERENCES/Grab")] public Transform ShoulderLeft;
+    [FoldoutGroup("REFERENCES/Grab")] public Transform DefaultPosRight;
+    [FoldoutGroup("REFERENCES/Grab")] public Transform DefaultPosLeft;
+    [FoldoutGroup("REFERENCES/Star Handle")] public GameObject TriggerGoToMeteorStrike;
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection EnemyDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection GroundDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection JumpBufferingDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionL LadderVDetectionL { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionR LadderVDetectionR { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderHDetection LadderHDetection { get; private set; }
+    public enum LadderIs
+    {
+        Nothing = 0,
+        VerticalLeft = 1,
+        VerticalRight = 2,
+        Horizontal = 3
+    }
+    [FoldoutGroup("REFERENCES/Detections")] public int IsLadder = (int)LadderIs.Nothing;
+    
     // CAMERA
-    [HideInInspector] public bool CameraImpacted;
     [HideInInspector] public bool CameraInde;
     [HideInInspector] public Vector3 CameraTargetOverride;
-    
-    // ANIM
-    public bool UseSpine = false;
-    public SkeletonAnimation SkeletonAnimation;
-    public Animator Animator;
 
     [Header("GENERAL SETTING")]
+    public bool UseSpine = false;
+    public int LifesNumber = 4;
+    [HideInInspector] public bool IsPlayerTurnToLeft = false;
+    [HideInInspector] public float TimePassedInState = 0;
+    [HideInInspector] public Invincinbility Invincinbility;
+    [HideInInspector] public CornerCorrection CornerCorrection;
     private Rigidbody2D _playerRigidbody;
     public Rigidbody2D PlayerRigidbody 
     { get 
@@ -42,12 +64,9 @@ public class PlayerStateMachine : MonoBehaviour
             return _playerRigidbody; 
         }
     }
-    public int LifesNumber = 4;
-    [HideInInspector] public Invincinbility Invincinbility;
-    [HideInInspector] public CornerCorrection CornerCorrection;
-    [HideInInspector] public bool IsPlayerTurnToLeft = false;
+    [HideInInspector] public UnityEvent NewStatePlayed;
 
-    [Header("MOVE")] public float WalkSpeed = 10;
+    [FoldoutGroup("MOVE")] public float WalkSpeed = 10;
 
     [FoldoutGroup("JUMP")] public float JumpForceV = 6f;
     [FoldoutGroup("JUMP")] public float JumpForceH = 4f;
@@ -67,24 +86,15 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("LEAP")] public float LeapForceH = 3f;
 
     [HideInInspector] public Vector2 AimDir;
-    [FoldoutGroup("GRAB/References")] public GameObject Arms;
-    [FoldoutGroup("GRAB/References")] public ArmDetection ArmDetection;
-    [FoldoutGroup("GRAB/References")] public Transform IkArmRight;
-    [FoldoutGroup("GRAB/References")] public Transform IkArmLeft;
-    [FoldoutGroup("GRAB/References")] public Transform ShoulderRight;
-    [FoldoutGroup("GRAB/References")] public Transform ShoulderLeft;
-    [FoldoutGroup("GRAB/References")] public Transform DefaultPosRight;
-    [FoldoutGroup("GRAB/References")] public Transform DefaultPosLeft;
-    [FoldoutGroup("GRAB/References")] public LineRenderer LineArmRight;
-    [FoldoutGroup("GRAB/References")] public LineRenderer LineArmLeft;
     [FoldoutGroup("GRAB")] public float DistanceGrab;
     [FoldoutGroup("GRAB")] public float DurationExtendGrab;
     [FoldoutGroup("GRAB")] public float MaxTimeGrab;
     [HideInInspector] public bool IsTimerRunning = false;
     [HideInInspector] public float CurrentTimerValue;
 
+    [FoldoutGroup("SPIN")] public float SpinTime;
+
     [HideInInspector] public Vector3 StarHandleCentre;
-    [FoldoutGroup("STAR HANDLE")] public GameObject TriggerGoToMeteorStrike;
     [HideInInspector] public float StarHandleCurrentValue = 0;
     [FoldoutGroup("STAR HANDLE")] public float StarHandleTargetValue = 200;
     [FoldoutGroup("STAR HANDLE")] public float StarHandleRayonMin = 1.5f;
@@ -106,21 +116,6 @@ public class PlayerStateMachine : MonoBehaviour
     [HideInInspector] public float CurrentTimerValueMeteor = 0;
     [HideInInspector] public Vector2 MeteorStrikeDirection;
 
-    // PHYSICS
-    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public GroundDetection EnemyDetection { get; private set; }
-    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public GroundDetection GroundDetection { get; private set; }
-    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public GroundDetection JumpBufferingDetection { get; private set; }
-    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public LadderVDetectionL LadderVDetectionL { get; private set; }
-    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public LadderVDetectionR LadderVDetectionR { get; private set; }
-    [field: SerializeField, FoldoutGroup("DETECTIONS REFERENCES")] public LadderHDetection LadderHDetection { get; private set; }
-    public enum LadderIs
-    {
-        Nothing = 0,
-        VerticalLeft = 1,
-        VerticalRight = 2,
-        Horizontal = 3
-    }
-    [FoldoutGroup("DETECTIONS REFERENCES")] public int IsLadder = (int)LadderIs.Nothing;
 
     #endregion
 
@@ -133,6 +128,12 @@ public class PlayerStateMachine : MonoBehaviour
 
         Invincinbility = GetComponent<Invincinbility>();
         CornerCorrection = GetComponent<CornerCorrection>();
+        
+        if (NewStatePlayed == null)
+        {
+            NewStatePlayed = new UnityEvent();
+        }
+        NewStatePlayed.AddListener(GlobalStatesInitialization);
     }
 
     private void Start()
@@ -146,6 +147,7 @@ public class PlayerStateMachine : MonoBehaviour
         Grab = controls.LAND.GRAB;
         Aim = controls.LAND.AIM;
         Back = controls.LAND.BACK;
+
     }
 
     void Update()
@@ -215,8 +217,13 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
-    public void NewStateVerif()
+    public void CountTimePassedInState()
     {
-        IsNewState = CurrentState != PreviousState;
+        TimePassedInState += Time.deltaTime;
+    }
+
+    public void GlobalStatesInitialization()
+    {
+        TimePassedInState = 0;
     }
 }

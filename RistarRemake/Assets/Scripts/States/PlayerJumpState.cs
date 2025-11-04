@@ -19,14 +19,14 @@ public class PlayerJumpState : PlayerBaseState
         _player.CornerCorrection.enabled = true;
         if (_player.ArmDetection.ObjectDetected == 4)
         {
-            Debug.Log("JUMP from star handle");
+            //Debug.Log("JUMP from star handle");
             Vector2 dir = _player.transform.position - _player.StarHandleCentre;
             
             float percent = (_player.StarHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
             _player.StarHandleCurrentImpulse = _player.StarHandleImpulseMin + (_player.StarHandleImpulseMax - _player.StarHandleImpulseMin) * (percent / 100f);
             
             _player.PlayerRigidbody.velocity = dir.normalized * _player.StarHandleCurrentImpulse;
-            Debug.Log("Dir : " + dir + " velo : " + _player.PlayerRigidbody.velocity);
+            //Debug.Log("Dir : " + dir + " velo : " + _player.PlayerRigidbody.velocity);
         }
         else
         {
@@ -74,31 +74,6 @@ public class PlayerJumpState : PlayerBaseState
         }
 
         _player.PlayerDirectionVerif();
-
-        if (_player.UseSpine == false)
-        {
-            // Rotation visuelle -- SANS SPINE
-            //if (_player.Rb.velocity.x > 0)
-            //{
-            //    _player.SpriteRenderer.flipX = false;
-            //}
-            //if (_player.Rb.velocity.x < 0)
-            //{
-            //    _player.SpriteRenderer.flipX = true;
-            //}
-        }
-        else
-        {
-            // Rotation visuelle -- AVEC SPINE
-            if (_player.PlayerRigidbody.velocity.x > 0)
-            {
-                _player.SkeletonAnimation.skeleton.ScaleX = 1;
-            }
-            if (_player.PlayerRigidbody.velocity.x < 0)
-            {
-                _player.SkeletonAnimation.skeleton.ScaleX = -1;
-            }
-        }
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }

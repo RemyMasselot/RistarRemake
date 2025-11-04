@@ -1,39 +1,40 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
-using static PlayerStateMachine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerVisual : MonoBehaviour
 {
     #region VARIABLES
 
-    [SerializeField, FoldoutGroup("RÉFÉRENCES")] private PlayerStateMachine playerStateMachine;
-    [SerializeField, FoldoutGroup("RÉFÉRENCES")] private Animator animator;
-    [SerializeField, FoldoutGroup("RÉFÉRENCES")] private SpriteRenderer spriteRenderer;
+    private PlayerStateMachine playerStateMachine;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
     [SerializeField, FoldoutGroup("RÉFÉRENCES")] private SpriteRenderer handRight;
     [SerializeField, FoldoutGroup("RÉFÉRENCES")] private SpriteRenderer handLeft;
     [SerializeField, FoldoutGroup("RÉFÉRENCES")] private Sprite handOpen;
     [SerializeField, FoldoutGroup("RÉFÉRENCES")] private Sprite handClose;
+    [SerializeField, FoldoutGroup("RÉFÉRENCES")] private GameObject arms;
+    [SerializeField, FoldoutGroup("RÉFÉRENCES")] private LineRenderer lineArmRight;
+    [SerializeField, FoldoutGroup("RÉFÉRENCES")] private LineRenderer lineArmLeft;
 
     #endregion
+
+    private void Awake()
+    {
+        playerStateMachine = GetComponentInParent<PlayerStateMachine>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        playerStateMachine.NewStatePlayed.AddListener(OnNewStatePlayed);
+    }
 
     private void Update()
     {
         // PLAYER DIRECTION
         spriteRenderer.flipX = playerStateMachine.IsPlayerTurnToLeft;
 
-        if (playerStateMachine.IsNewState)
-        {
-            // NEW ANIMATION
-            ChooseAnimEnterNewState();
+        ArmVisibility();
 
-            if (playerStateMachine.CurrentState is not PlayerMeteorStrikeState)
-            {
-                // PUT BACK THE BODY ROTATION TO 0 IF NOT IN METEOR STRIKE
-                spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
-                spriteRenderer.flipY = false;
-            }
-        }
-        else if (playerStateMachine.CurrentState is PlayerGrabState) // GRAB STATE ONGOING
+        if (playerStateMachine.CurrentState is PlayerGrabState) // GRAB STATE ONGOING
         {
             if (playerStateMachine.ArmDetection.ObjectDetected != 0)
             {
@@ -46,11 +47,22 @@ public class PlayerVisual : MonoBehaviour
         {
             MeteorStrikeBodyRotation();
         }
-
-        playerStateMachine.NewStateVerif();
     }
 
-    private void ChooseAnimEnterNewState()
+    private void OnNewStatePlayed()
+    {
+        // NEW ANIMATION
+        ChooseAnimationOnEnterNewState();
+
+        // PUT BACK THE BODY ROTATION TO 0 IF NOT IN METEOR STRIKE
+        if (playerStateMachine.CurrentState is not PlayerMeteorStrikeState)
+        {
+            spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
+            spriteRenderer.flipY = false;
+        }
+    }
+
+    private void ChooseAnimationOnEnterNewState()
     {
         if (playerStateMachine.CurrentState is PlayerIdleState)
         {
@@ -71,7 +83,7 @@ public class PlayerVisual : MonoBehaviour
         else if (playerStateMachine.CurrentState is PlayerGrabState)
         {
             EnterGrabStateInitialization();
-            ChoiceGrabAnim();
+            ChoiceGrabAnimation();
             animator.SetTrigger("Grab");
         }
         else if (playerStateMachine.CurrentState is PlayerHangState)
@@ -93,12 +105,12 @@ public class PlayerVisual : MonoBehaviour
         }
         else if (playerStateMachine.CurrentState is PlayerWallIdleState)
         {
-            ChooseBetweenVerticalOrHorizontalAnimLadder();
+            ChooseBetweenVerticalOrHorizontalAnimationLadder();
             animator.SetTrigger("WallIdle");
         }
         else if (playerStateMachine.CurrentState is PlayerWallClimbState)
         {
-            ChooseBetweenVerticalOrHorizontalAnimLadder();
+            ChooseBetweenVerticalOrHorizontalAnimationLadder();
             animator.SetTrigger("WallClimb");
         }
         else if (playerStateMachine.CurrentState is PlayerWallJumpState)
@@ -126,13 +138,13 @@ public class PlayerVisual : MonoBehaviour
         }
     }
 
-    private void ChooseBetweenVerticalOrHorizontalAnimLadder()
+    private void ChooseBetweenVerticalOrHorizontalAnimationLadder()
     {
-        if (playerStateMachine.IsLadder == (int)LadderIs.VerticalLeft || playerStateMachine.IsLadder == (int)LadderIs.VerticalRight)
+        if (playerStateMachine.IsLadder == (int)PlayerStateMachine.LadderIs.VerticalLeft || playerStateMachine.IsLadder == (int)PlayerStateMachine.LadderIs.VerticalRight)
         {
             animator.SetFloat("WallVH", 0);
         }
-        else if (playerStateMachine.IsLadder == (int)LadderIs.Horizontal)
+        else if (playerStateMachine.IsLadder == (int)PlayerStateMachine.LadderIs.Horizontal)
         {
             animator.SetFloat("WallVH", 1);
         }
@@ -145,17 +157,17 @@ public class PlayerVisual : MonoBehaviour
 
         if (playerStateMachine.IsPlayerTurnToLeft == false)
         {
-            playerStateMachine.LineArmLeft.sortingOrder = 0;
-            playerStateMachine.LineArmRight.sortingOrder = 10;
+            lineArmLeft.sortingOrder = 0;
+            lineArmRight.sortingOrder = 10;
         }
         else
         {
-            playerStateMachine.LineArmLeft.sortingOrder = 10;
-            playerStateMachine.LineArmRight.sortingOrder = 0;
+            lineArmLeft.sortingOrder = 10;
+            lineArmRight.sortingOrder = 0;
         }
     }
 
-    private void ChoiceGrabAnim()
+    private void ChoiceGrabAnimation()
     {
         // Vérification d'un sol ou non
         if (playerStateMachine.GroundDetection.IsGroundDectected)
@@ -183,6 +195,41 @@ public class PlayerVisual : MonoBehaviour
             {
                 animator.SetFloat("GrabAnimId", 3);
             }
+        }
+    }
+
+    private void ArmVisibility()
+    {
+        if (playerStateMachine.CurrentState is PlayerGrabState)
+        {
+            arms.SetActive(true);
+            // Draw Line Arm
+            lineArmLeft.SetPosition(0, playerStateMachine.ShoulderLeft.position);
+            lineArmLeft.SetPosition(1, playerStateMachine.IkArmLeft.position);
+            lineArmRight.SetPosition(0, playerStateMachine.ShoulderRight.position);
+            lineArmRight.SetPosition(1, playerStateMachine.IkArmRight.position);
+        }
+        else if (playerStateMachine.CurrentState is PlayerHangState)
+        {
+            arms.SetActive(true);
+            // Draw Line Arm
+            lineArmLeft.SetPosition(0, playerStateMachine.ShoulderLeft.position);
+            lineArmLeft.SetPosition(1, playerStateMachine.IkArmLeft.position);
+            lineArmRight.SetPosition(0, playerStateMachine.ShoulderRight.position);
+            lineArmRight.SetPosition(1, playerStateMachine.IkArmRight.position);
+        }
+        else if (playerStateMachine.CurrentState is PlayerHeadbuttState)
+        {
+            arms.SetActive(true);
+            // Draw Line Arm
+            lineArmLeft.SetPosition(0, playerStateMachine.ShoulderLeft.position);
+            lineArmLeft.SetPosition(1, playerStateMachine.IkArmLeft.position);
+            lineArmRight.SetPosition(0, playerStateMachine.ShoulderRight.position);
+            lineArmRight.SetPosition(1, playerStateMachine.IkArmRight.position);
+        }
+        else
+        {
+            arms.SetActive(false);
         }
     }
 

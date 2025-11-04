@@ -50,31 +50,6 @@ public class PlayerFallState : PlayerBaseState
         }
 
         _player.PlayerDirectionVerif();
-
-        if (_player.UseSpine == false)
-        {
-            // Rotation visuelle -- SANS SPINE
-            //if (_player.Rb.velocity.x > 0)
-            //{
-            //    _player.SpriteRenderer.flipX = false;
-            //}
-            //if (_player.Rb.velocity.x < 0)
-            //{
-            //    _player.SpriteRenderer.flipX = true;
-            //}
-        }
-        else
-        {
-            // Rotation visuelle -- AVEC SPINE
-            if (_player.PlayerRigidbody.velocity.x > 0)
-            {
-                _player.SkeletonAnimation.skeleton.ScaleX = 1;
-            }
-            if (_player.PlayerRigidbody.velocity.x < 0)
-            {
-                _player.SkeletonAnimation.skeleton.ScaleX = -1;
-            }
-        }
     }
     public override void CheckSwitchStates() 
     {

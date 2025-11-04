@@ -14,7 +14,9 @@ public class PlayerWalkState : PlayerBaseState
         _player.CoyoteCounter = _player.CoyoteTime;
         //_ctx.MainCameraBehavior.PlayerTouchGround();
     }
-    public override void UpdateState() { 
+    public override void UpdateState() 
+    { 
+        _player.CountTimePassedInState();
         CheckSwitchStates();
     }
     public override void FixedUpdateState() {
@@ -23,31 +25,6 @@ public class PlayerWalkState : PlayerBaseState
         _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.WalkSpeed * Time.deltaTime, 0);
 
         _player.PlayerDirectionVerif();
-
-        if (_player.UseSpine == false)
-        {
-            // Rotation visuelle -- SANS SPINE
-            //if (_player.Rb.velocity.x > 0)
-            //{
-            //    _player.SpriteRenderer.flipX = false;
-            //}
-            //if (_player.Rb.velocity.x < 0)
-            //{
-            //    _player.SpriteRenderer.flipX = true;
-            //}
-        }
-        else
-        {
-            //Rotation visuelle -- AVEC SPINE
-            if (_player.PlayerRigidbody.velocity.x > 0)
-            {
-                _player.SkeletonAnimation.skeleton.ScaleX = 1;
-            }
-            if (_player.PlayerRigidbody.velocity.x < 0)
-            {
-                _player.SkeletonAnimation.skeleton.ScaleX = -1;
-            }
-        }
 
         // Vérification d'un sol ou non
         if (_player.GroundDetection.IsGroundDectected == false)
