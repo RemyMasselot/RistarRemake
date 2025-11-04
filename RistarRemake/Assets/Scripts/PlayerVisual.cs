@@ -54,98 +54,76 @@ public class PlayerVisual : MonoBehaviour
     {
         if (playerStateMachine.CurrentState is PlayerIdleState)
         {
-            UpdateAnim("Idle");
-            //animator.SetTrigger("IdleTrigger");
+            animator.SetTrigger("Idle");
         }
         else if (playerStateMachine.CurrentState is PlayerWalkState)
         {
-            UpdateAnim("Walk");
+            animator.SetTrigger("Walk");
         }
         else if (playerStateMachine.CurrentState is PlayerJumpState)
         {
-            UpdateAnim("Jump");
+            animator.SetTrigger("Jump");
         }
         else if (playerStateMachine.CurrentState is PlayerFallState)
         {
-            UpdateAnim("Fall");
+            animator.SetTrigger("Fall");
         }
         else if (playerStateMachine.CurrentState is PlayerGrabState)
         {
             EnterGrabStateInitialization();
             ChoiceGrabAnim();
-            UpdateAnim("Grab");
+            animator.SetTrigger("Grab");
         }
         else if (playerStateMachine.CurrentState is PlayerHangState)
         {
-            UpdateAnim("Hang");
-            //if (playerStateMachine.ArmDetection.ObjectDetected == 4)
-            //{
-            //    animator.SetFloat("HangValue", 2);
-            //}
-            //else
-            //{
-            //    animator.SetFloat("HangValue", 1);
-            //}
-
             animator.SetFloat("HangValue", playerStateMachine.ArmDetection.ObjectDetected == 4 ? 2 : 1);
+            animator.SetTrigger("Hang");
         }
         else if (playerStateMachine.CurrentState is PlayerMeteorStrikeState)
         {
-            UpdateAnim("MeteorStrike");
+            animator.SetTrigger("MeteorStrike");
         }
         else if (playerStateMachine.CurrentState is PlayerHeadbuttState)
         {
-            UpdateAnim("Headbutt");
+            animator.SetTrigger("Headbutt");
         }
         else if (playerStateMachine.CurrentState is PlayerSpinState)
         {
-            UpdateAnim("Spin");
+            animator.SetTrigger("Spin");
         }
         else if (playerStateMachine.CurrentState is PlayerWallIdleState)
         {
             ChooseBetweenVerticalOrHorizontalAnimLadder();
-            UpdateAnim("WallIdle");
+            animator.SetTrigger("WallIdle");
         }
         else if (playerStateMachine.CurrentState is PlayerWallClimbState)
         {
             ChooseBetweenVerticalOrHorizontalAnimLadder();
-            UpdateAnim("WallClimb");
+            animator.SetTrigger("WallClimb");
         }
         else if (playerStateMachine.CurrentState is PlayerWallJumpState)
         {
-            UpdateAnim("Jump");
+            animator.SetTrigger("Jump");
         }
         else if (playerStateMachine.CurrentState is PlayerLeapState)
         {
-            UpdateAnim("Jump");
+            animator.SetTrigger("Jump");
         }
         else if (playerStateMachine.CurrentState is PlayerDamageState)
         {
-            UpdateAnim("Damage");
+            animator.SetTrigger("Damage");
         }
         else if (playerStateMachine.CurrentState is PlayerDeathState)
         {
             if (playerStateMachine.IsPlayerTurnToLeft)
             {
-                UpdateAnim("DeathR");
+                animator.SetTrigger("DeathR");
             }
             else
             {
-                UpdateAnim("DeathL");
+                animator.SetTrigger("DeathL");
             }
         }
-    }
-
-    private void UpdateAnim(string animName)
-    {
-        foreach (var param in animator.parameters)
-        {
-            if (param.type == AnimatorControllerParameterType.Bool)
-            {
-                animator.SetBool(param.name, false);
-            }
-        }
-        animator.SetBool(animName, true);
     }
 
     private void ChooseBetweenVerticalOrHorizontalAnimLadder()

@@ -31,7 +31,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Animator Animator;
 
     [Header("GENERAL SETTING")] public int LifesNumber = 4;
-    [HideInInspector] public Rigidbody2D PlayerRigidbody;
+    public Rigidbody2D PlayerRigidbody;
     [HideInInspector] public Invincinbility Invincinbility;
     [HideInInspector] public CornerCorrection CornerCorrection;
     [HideInInspector] public bool IsPlayerTurnToLeft = false;
