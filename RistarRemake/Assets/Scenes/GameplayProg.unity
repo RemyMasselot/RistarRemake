@@ -1273,11 +1273,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c7e0e868d4f7c47bb9fdc948849d8e, type: 3}
---- !u!50 &662191325 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 7538073745312595024, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-  m_PrefabInstance: {fileID: 4924099577031079842}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &700759051
 GameObject:
   m_ObjectHideFlags: 0
@@ -4050,10 +4045,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-      propertyPath: PlayerRigidbody
-      value: 
-      objectReference: {fileID: 662191325}
     - target: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.23

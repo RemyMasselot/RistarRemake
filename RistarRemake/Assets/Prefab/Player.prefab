@@ -869,6 +869,9 @@ MonoBehaviour:
   SkeletonAnimation: {fileID: 0}
   Animator: {fileID: 5891116646931670803}
   LifesNumber: 4
+  PlayerRigidbody: {fileID: 7538073745312595024}
+  Invincinbility: {fileID: 0}
+  CornerCorrection: {fileID: 0}
   IsPlayerTurnToLeft: 0
   WalkSpeed: 180
   JumpForceV: 6

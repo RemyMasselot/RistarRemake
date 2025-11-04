@@ -30,8 +30,19 @@ public class PlayerStateMachine : MonoBehaviour
     public SkeletonAnimation SkeletonAnimation;
     public Animator Animator;
 
-    [Header("GENERAL SETTING")] public int LifesNumber = 4;
-    public Rigidbody2D PlayerRigidbody;
+    [Header("GENERAL SETTING")]
+    private Rigidbody2D _playerRigidbody;
+    public Rigidbody2D PlayerRigidbody 
+    { get 
+        { 
+            if (_playerRigidbody == null) 
+            { 
+                _playerRigidbody = GetComponent<Rigidbody2D>(); 
+            } 
+            return _playerRigidbody; 
+        }
+    }
+    public int LifesNumber = 4;
     [HideInInspector] public Invincinbility Invincinbility;
     [HideInInspector] public CornerCorrection CornerCorrection;
     [HideInInspector] public bool IsPlayerTurnToLeft = false;
@@ -120,7 +131,6 @@ public class PlayerStateMachine : MonoBehaviour
         CurrentState = _states.Idle();
         CurrentState.EnterState();
 
-        PlayerRigidbody = GetComponent<Rigidbody2D>();
         Invincinbility = GetComponent<Invincinbility>();
         CornerCorrection = GetComponent<CornerCorrection>();
     }
