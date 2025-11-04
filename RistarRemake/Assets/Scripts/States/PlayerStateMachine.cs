@@ -31,14 +31,13 @@ public class PlayerStateMachine : MonoBehaviour
     public Animator Animator;
 
     [Header("GENERAL SETTING")] public int LifesNumber = 4;
-    public Rigidbody2D PlayerRigidbody;
-
-    public Invincinbility Invincinbility { get { return GetComponent<Invincinbility>(); } }
+    [HideInInspector] public Rigidbody2D PlayerRigidbody;
+    [HideInInspector] public Invincinbility Invincinbility;
+    [HideInInspector] public CornerCorrection CornerCorrection;
     [HideInInspector] public bool IsPlayerTurnToLeft = false;
 
     [Header("MOVE")] public float WalkSpeed = 10;
 
-    public CornerCorrection CornerCorrection { get { return GetComponent<CornerCorrection>(); } }
     [FoldoutGroup("JUMP")] public float JumpForceV = 6f;
     [FoldoutGroup("JUMP")] public float JumpForceH = 4f;
     [FoldoutGroup("JUMP")] public float MaxTimeJump;
@@ -122,6 +121,8 @@ public class PlayerStateMachine : MonoBehaviour
         CurrentState.EnterState();
 
         PlayerRigidbody = GetComponent<Rigidbody2D>();
+        Invincinbility = GetComponent<Invincinbility>();
+        CornerCorrection = GetComponent<CornerCorrection>();
     }
 
     private void Start()
