@@ -47,7 +47,6 @@ public class PlayerStateMachine : MonoBehaviour
     [HideInInspector] public Vector3 CameraTargetOverride;
 
     [Header("GENERAL SETTING")]
-    public bool UseSpine = false;
     public int LifesNumber = 4;
     [HideInInspector] public bool IsPlayerTurnToLeft = false;
     [HideInInspector] public float TimePassedInState = 0;

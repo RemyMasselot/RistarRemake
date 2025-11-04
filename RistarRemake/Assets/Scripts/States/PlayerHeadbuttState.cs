@@ -29,15 +29,6 @@ public class PlayerHeadbuttState : PlayerBaseState
         _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHand;
         // Move Right Arm
         _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHand;
-
-        if (_player.UseSpine == false)
-        {
-            // Draw Line Arm
-            //_player.LineArmLeft.SetPosition(0, _player.ShoulderLeft.position);
-            //_player.LineArmLeft.SetPosition(1, _player.IkArmLeft.position);
-            //_player.LineArmRight.SetPosition(0, _player.ShoulderRight.position);
-            //_player.LineArmRight.SetPosition(1, _player.IkArmRight.position);
-        }
     }
     public override void FixedUpdateState() {
     

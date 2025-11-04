@@ -3443,6 +3443,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2257395728677590724, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: flipBy180DegreeRotation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2858324397227329994, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: m_Name
       value: Player Spine
@@ -3450,6 +3454,18 @@ PrefabInstance:
     - target: {fileID: 2858324397227329994, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222947569775825569, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222947569775825569, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.36110398
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222947569775825569, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.41692796
       objectReference: {fileID: 0}
     - target: {fileID: 5864327716893613942, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: m_Mesh
@@ -3495,6 +3511,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7745040802583807653, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745040802583807653, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.179264
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745040802583807653, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.435408
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436594378040452183, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591811867487854241, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
+      propertyPath: initialFlipX
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3508,21 +3544,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1052246277735708907, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2836248471208439212, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2836248471208439212, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4052257545200088683, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.x

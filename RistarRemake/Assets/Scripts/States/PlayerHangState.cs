@@ -91,16 +91,6 @@ public class PlayerHangState : PlayerBaseState
             float angleR = Mathf.Atan2(directionR.y, directionR.x) * Mathf.Rad2Deg;
             _player.IkArmRight.rotation = Quaternion.Euler(0, 0, angleR);
         }
-
-        if (_player.UseSpine == false)
-        {
-            //// Draw Line Arm
-            //_player.LineArmLeft.SetPosition(0, _player.ShoulderLeft.position);
-            //_player.LineArmLeft.SetPosition(1, _player.IkArmLeft.position);
-            //_player.LineArmRight.SetPosition(0, _player.ShoulderRight.position);
-            //_player.LineArmRight.SetPosition(1, _player.IkArmRight.position);
-        }
-
     }
 
     public override void FixedUpdateState() 
@@ -145,23 +135,18 @@ public class PlayerHangState : PlayerBaseState
                 // CAMERA BEHAVIOR
                 _player.CameraInde = true;
 
-                if (_player.UseSpine == false)
+                // Move Left Arm
+                _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
+                // Move Right Arm
+                _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
+                _player.transform.rotation = Quaternion.Euler(0, 0, 0);
+                if (_player.transform.position.y <= _player.StarHandleCentre.y)
                 {
-                    //_player.Arms.gameObject.SetActive(false);
-                    // Move Left Arm
-                    _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
-                    // Move Right Arm
-                    _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
-                    //_ctx.ArmDetection.ObjectDetected = 0;
-                    _player.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    if (_player.transform.position.y <= _player.StarHandleCentre.y)
-                    {
-                        SwitchState(_factory.Fall());
-                    }
-                    else
-                    {
-                        SwitchState(_factory.Jump());
-                    }
+                    SwitchState(_factory.Fall());
+                }
+                else
+                {
+                    SwitchState(_factory.Jump());
                 }
             }
         }
@@ -228,28 +213,24 @@ public class PlayerHangState : PlayerBaseState
 
         if (_player.Grab.WasReleasedThisFrame())
         {
-            if (_player.UseSpine == false)
+            if (_player.StarHandleCurrentValue >= _player.StarHandleTargetValue)
             {
-                if (_player.StarHandleCurrentValue >= _player.StarHandleTargetValue)
+                _goMeteorStrike = true;
+            }
+            else
+            {
+                // Move Left Arm
+                _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
+                // Move Right Arm
+                _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
+                _player.transform.rotation = Quaternion.Euler(0, 0, 0);
+                if (_player.transform.position.y <= _player.StarHandleCentre.y)
                 {
-                    _goMeteorStrike = true;
+                    SwitchState(_factory.Fall());
                 }
                 else
                 {
-                    //_player.Arms.gameObject.SetActive(false);
-                    // Move Left Arm
-                    _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
-                    // Move Right Arm
-                    _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
-                    _player.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    if (_player.transform.position.y <= _player.StarHandleCentre.y)
-                    {
-                        SwitchState(_factory.Fall());
-                    }
-                    else
-                    {
-                        SwitchState(_factory.Jump());
-                    }
+                    SwitchState(_factory.Jump());
                 }
             }
         }

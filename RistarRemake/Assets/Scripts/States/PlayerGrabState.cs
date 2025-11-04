@@ -8,6 +8,10 @@ public class PlayerGrabState : PlayerBaseState
     : base(currentContext, playerStateFactory) { }
 
 
+    /// <summary>
+    /// POUVOIR SPAM LE GRAB EN UTILISANT LA TECHNIQUE DU JUMP BUFERING
+    /// </summary>
+
     public override void EnterState()
     {
         //Debug.Log("ENTER GRAB");
@@ -18,17 +22,7 @@ public class PlayerGrabState : PlayerBaseState
 
         MoveLimbsToDefaultPosition();
 
-        if (_player.UseSpine == false)
-        {
-            //SANS SPINE
-            ExtendArmsWithoutSpine();
-        }
-        else
-        {
-            // AVEC SPINE
-            ExtendArmsWithSpine();
-        }
-
+        ExtendArms();
 
         StartTimer();
     }
@@ -82,38 +76,23 @@ public class PlayerGrabState : PlayerBaseState
         _player.ArmDetection.gameObject.SetActive(true);
     }
 
-    private void ExtendArmsWithSpine()
+    private void ExtendArms()
     {
-        Vector2 grabDirection = (_player.AimDir.normalized * _player.DistanceGrab);
-        if (_player.AimDir.x < 0)
+        Vector2 _grabDirection = _player.AimDir.normalized *_player.DistanceGrab;
+
+        if (_player.GetComponentInChildren<PlayerVisualSpine>() != null)
         {
-            grabDirection.x *= -1;
+            if (_player.AimDir.x < 0)
+            {
+                _grabDirection.x *= -1;
+            }
         }
 
         // Move Left Arm
-        Vector2 PointDestinationArmLeft = new Vector2(_player.ShoulderLeft.localPosition.x + grabDirection.x, _player.ShoulderLeft.localPosition.y + grabDirection.y);
+        Vector2 PointDestinationArmLeft = new Vector2(_player.ShoulderLeft.localPosition.x + _grabDirection.x, _player.ShoulderLeft.localPosition.y + _grabDirection.y);
         _player.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _player.DurationExtendGrab);
         // Move Right Arm
-        Vector2 PointDestinationArmRight = new Vector2(_player.ShoulderRight.localPosition.x + grabDirection.x, _player.ShoulderRight.localPosition.y + grabDirection.y);
-        _player.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _player.DurationExtendGrab);
-    }
-    private void ExtendArmsWithoutSpine()
-    {
-        //_player.Arms.gameObject.SetActive(true);
-
-        // Hands rotation
-        float angle = Mathf.Atan2(_player.AimDir.x, _player.AimDir.y) * Mathf.Rad2Deg;
-        Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
-        _player.IkArmRight.transform.rotation = _dirQ;
-        _player.IkArmLeft.transform.rotation = _dirQ;
-
-        Vector2 grabDirection = (_player.AimDir.normalized * _player.DistanceGrab);
-
-        // Move Left Arm
-        Vector2 PointDestinationArmLeft = new Vector2(_player.ShoulderLeft.localPosition.x + grabDirection.x, _player.ShoulderLeft.localPosition.y + grabDirection.y);
-        _player.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _player.DurationExtendGrab);
-        // Move Right Arm
-        Vector2 PointDestinationArmRight = new Vector2(_player.ShoulderRight.localPosition.x + grabDirection.x, _player.ShoulderRight.localPosition.y + grabDirection.y);
+        Vector2 PointDestinationArmRight = new Vector2(_player.ShoulderRight.localPosition.x + _grabDirection.x, _player.ShoulderRight.localPosition.y + _grabDirection.y);
         _player.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _player.DurationExtendGrab);
     }
 
@@ -290,10 +269,6 @@ public class PlayerGrabState : PlayerBaseState
         // Move Right Arm
         _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.DurationExtendGrab).OnComplete(() =>
         {
-            if (_player.UseSpine == false)
-            {
-                //_player.Arms.gameObject.SetActive(false);
-            }
             // Vérification d'un sol ou non
             if (_player.GroundDetection.IsGroundDectected == false)
             {

@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 
 public class PlayerSpinState : PlayerBaseState
@@ -12,17 +11,11 @@ public class PlayerSpinState : PlayerBaseState
     {
         //Debug.Log("ENTER SPIN");
 
-        //hasEnded = false;
-        if (_player.UseSpine == false)
-        {
-            //_player.PlayerVisual.UpdateAnim("Spin");
-            //_player.Arms.gameObject.SetActive(false);
-            _player.ArmDetection.gameObject.SetActive(false);
-            // Move Left Arm
-            _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
-            // Move Right Arm
-            _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
-        }
+        _player.ArmDetection.gameObject.SetActive(false);
+        // Move Left Arm
+        _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
+        // Move Right Arm
+        _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
 
         _player.PlayerRigidbody.gravityScale = 1;
 

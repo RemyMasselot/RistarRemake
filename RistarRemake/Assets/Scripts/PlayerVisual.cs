@@ -1,6 +1,5 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerVisual : MonoBehaviour
 {
@@ -29,8 +28,7 @@ public class PlayerVisual : MonoBehaviour
 
     private void Update()
     {
-        // PLAYER DIRECTION
-        spriteRenderer.flipX = playerStateMachine.IsPlayerTurnToLeft;
+        ChangePlayerDirection();
 
         ArmVisibility();
 
@@ -47,6 +45,11 @@ public class PlayerVisual : MonoBehaviour
         {
             MeteorStrikeBodyRotation();
         }
+    }
+
+    private void ChangePlayerDirection()
+    {
+        spriteRenderer.flipX = playerStateMachine.IsPlayerTurnToLeft ? true : false;
     }
 
     private void OnNewStatePlayed()
@@ -200,37 +203,40 @@ public class PlayerVisual : MonoBehaviour
 
     private void ArmVisibility()
     {
+        // Draw Line Arm
+        lineArmLeft.SetPosition(0, playerStateMachine.ShoulderLeft.position);
+        lineArmLeft.SetPosition(1, playerStateMachine.IkArmLeft.position);
+        lineArmRight.SetPosition(0, playerStateMachine.ShoulderRight.position);
+        lineArmRight.SetPosition(1, playerStateMachine.IkArmRight.position);
+        
         if (playerStateMachine.CurrentState is PlayerGrabState)
         {
+            HandsRotation();
             arms.SetActive(true);
-            // Draw Line Arm
-            lineArmLeft.SetPosition(0, playerStateMachine.ShoulderLeft.position);
-            lineArmLeft.SetPosition(1, playerStateMachine.IkArmLeft.position);
-            lineArmRight.SetPosition(0, playerStateMachine.ShoulderRight.position);
-            lineArmRight.SetPosition(1, playerStateMachine.IkArmRight.position);
         }
         else if (playerStateMachine.CurrentState is PlayerHangState)
         {
+            HandsRotation();
             arms.SetActive(true);
-            // Draw Line Arm
-            lineArmLeft.SetPosition(0, playerStateMachine.ShoulderLeft.position);
-            lineArmLeft.SetPosition(1, playerStateMachine.IkArmLeft.position);
-            lineArmRight.SetPosition(0, playerStateMachine.ShoulderRight.position);
-            lineArmRight.SetPosition(1, playerStateMachine.IkArmRight.position);
         }
         else if (playerStateMachine.CurrentState is PlayerHeadbuttState)
         {
+            HandsRotation();
             arms.SetActive(true);
-            // Draw Line Arm
-            lineArmLeft.SetPosition(0, playerStateMachine.ShoulderLeft.position);
-            lineArmLeft.SetPosition(1, playerStateMachine.IkArmLeft.position);
-            lineArmRight.SetPosition(0, playerStateMachine.ShoulderRight.position);
-            lineArmRight.SetPosition(1, playerStateMachine.IkArmRight.position);
         }
         else
         {
             arms.SetActive(false);
         }
+    }
+
+    private void HandsRotation()
+    {
+        float angle = Mathf.Atan2(playerStateMachine.AimDir.x, playerStateMachine.AimDir.y) * Mathf.Rad2Deg;
+        Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
+
+        playerStateMachine.IkArmRight.transform.rotation = _dirQ;
+        playerStateMachine.IkArmLeft.transform.rotation = _dirQ;
     }
 
     private void MeteorStrikeBodyRotation()
