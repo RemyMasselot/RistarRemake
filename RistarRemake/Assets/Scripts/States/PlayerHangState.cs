@@ -23,8 +23,8 @@ public class PlayerHangState : PlayerBaseState
     {
         Debug.Log("ENTER HANG");
         _player.ArmDetection.gameObject.SetActive(false);
+
         // CAMERA BEHAVIOR
-        _player.CameraInde = false;
         _player.CameraTargetOverride = _player.ArmDetection.SnapPosHand;
 
         _player.PlayerRigidbody.velocity = Vector2.zero;
@@ -132,9 +132,6 @@ public class PlayerHangState : PlayerBaseState
         {
             if (_player.Grab.WasReleasedThisFrame())
             {
-                // CAMERA BEHAVIOR
-                _player.CameraInde = true;
-
                 // Move Left Arm
                 _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
                 // Move Right Arm

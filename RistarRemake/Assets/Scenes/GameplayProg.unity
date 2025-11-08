@@ -488,27 +488,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStateMachine: {fileID: 309670447}
-  target: {fileID: 0}
-  Camera: {fileID: 318104676}
-  CameraPositionDefault: {x: 0, y: 2.5, z: -1}
-  CameraPositionFallOff: {x: 1, y: 0, z: 0}
-  NewTarget: {x: 0, y: 0, z: 0}
-  CurrentState: 
-  SizeDefault: 5
-  AimMultiplier: 10
-  PosDirectionX: 1
-  PosWalkX: 1.5
-  SizeJump: 5
-  PosJumpY: 0.2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  rayLength: 5
-  PosFallY: -4
-  newYDown: 2
-  PosWallUpY: -3
-  PosWallDownY: -3
-  CamShakeHeabbutt: {x: 1, y: 0.6, z: 0}
+  lerpSpeedGlobal: 5
+  lerpSpeedMeteorStrike: 15
 --- !u!4 &364822036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7930056426981133293, guid: 36f7c4ee457d1e646a8b398848a2b3e2, type: 3}
@@ -3443,10 +3424,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2257395728677590724, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
-      propertyPath: flipBy180DegreeRotation
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2858324397227329994, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: m_Name
       value: Player Spine
@@ -3454,18 +3431,6 @@ PrefabInstance:
     - target: {fileID: 2858324397227329994, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222947569775825569, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222947569775825569, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.36110398
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222947569775825569, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.41692796
       objectReference: {fileID: 0}
     - target: {fileID: 5864327716893613942, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: m_Mesh
@@ -3509,26 +3474,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6102760028287174888, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7745040802583807653, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7745040802583807653, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.179264
-      objectReference: {fileID: 0}
-    - target: {fileID: 7745040802583807653, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.435408
-      objectReference: {fileID: 0}
-    - target: {fileID: 8436594378040452183, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8591811867487854241, guid: 4ca0b980f1ab5cf44bfa6cdaf5b7ab32, type: 3}
-      propertyPath: initialFlipX
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

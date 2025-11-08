@@ -19,13 +19,10 @@ public class PlayerMeteorStrikeState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER METEOR STRIKE");
-        //if (_player.UseSpine == false)
-        //{
-        //    _player.PlayerVisual.UpdateAnim("MeteorStrike");
-        //}
+
         // CAMERA BEHAVIOR
-        _player.CameraInde = true;
         CanControl = false;
+
         DOVirtual.DelayedCall(0.3f, () =>
         {
             CanControl = true;

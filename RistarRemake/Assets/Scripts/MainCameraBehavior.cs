@@ -1,81 +1,55 @@
-using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class MainCameraBehavior : MonoBehaviour
 {
-    [Header ("SETTINGS")]
-    [SerializeField] private PlayerStateMachine playerStateMachine;
-    public GameObject target;
-    public Camera Camera;
-    public Vector3 CameraPositionDefault;
-    public Vector3 CameraPositionFallOff;
-    [HideInInspector] public Vector3 NewTarget;
-    [HideInInspector] public string CurrentState;
+    #region VARIABLES
 
+    [SerializeField, FoldoutGroup("RÉFÉRENCES")] private PlayerStateMachine playerStateMachine;
+    [FoldoutGroup("RÉFÉRENCES")] private Transform playerTransform;
 
-    //// VARIABLE DATA
-    [Header ("DEFAULT")]
-    public float SizeDefault;
-
-    [Header ("AIM")]
-    public float AimMultiplier;
-
-    [Header ("WALK")]
-    public float PosDirectionX;
-    public float PosWalkX;
-
-    [Header ("JUMP")]
-    public float SizeJump;
-    public float PosJumpY;
-
-    [Header ("FALL")]
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float rayLength = 10f;
-    public float PosFallY;
-    public float newYDown;
-
-    [Header ("WALL")]
-    public float PosWallUpY;
-    public float PosWallDownY;
-
-    [Header("HEADBUTT")]
-    public Vector3 CamShakeHeabbutt;
-
+    private Vector3 targetPosition;
     private Vector3 currentPosition;
+
+    private float lerpSpeed;
+    [SerializeField, FoldoutGroup("MOVEMENT")] private float lerpSpeedGlobal = 5f;
+    [SerializeField, FoldoutGroup("MOVEMENT")] private float lerpSpeedMeteorStrike = 15f;
+    
+    #endregion
 
     private void Start()
     {
-        target = playerStateMachine.gameObject;
-        playerStateMachine.CameraInde = true;
-
-        currentPosition = playerStateMachine.transform.position;
+        playerTransform = playerStateMachine.gameObject.transform;
+        targetPosition = playerTransform.position;
+        currentPosition = targetPosition;
+        
+        lerpSpeed = lerpSpeedGlobal;
     }
 
     private void LateUpdate()
     {
-        Vector3 targetPosition = playerStateMachine.transform.position;
-        float lerpSpeed = 5f;
-
-        if (!playerStateMachine.CameraInde)
+        if (playerStateMachine.CurrentState is PlayerHangState
+            || playerStateMachine.CurrentState is PlayerHeadbuttState)
         {
             targetPosition = playerStateMachine.CameraTargetOverride;
+        }
+        else
+        {
+            targetPosition = playerTransform.position;
         }
 
         if (playerStateMachine.CurrentState is PlayerMeteorStrikeState)
         {
-            targetPosition += (Vector3)playerStateMachine.PlayerRigidbody.velocity.normalized * 2f;
-            lerpSpeed = 15f;
+            targetPosition = playerTransform.position + (Vector3)playerStateMachine.PlayerRigidbody.velocity.normalized * 2f;
+            lerpSpeed = lerpSpeedMeteorStrike;
+        }
+        else
+        {
+            lerpSpeed = lerpSpeedGlobal;
         }
 
         currentPosition = Vector3.Lerp(currentPosition, targetPosition, Time.deltaTime * lerpSpeed);
         currentPosition.z = -10f;
         transform.position = currentPosition;
-    }
-    
-    public void CamJumpEnter()
-    {
-        DOTween.KillAll();
-        Camera.DOOrthoSize(SizeJump, 0.2f);
-        DOTween.To(() => CameraPositionFallOff.y, x => CameraPositionFallOff.y = x, PosJumpY, 0.2f);
     }
 }

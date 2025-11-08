@@ -43,7 +43,6 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("REFERENCES/Detections")] public int IsLadder = (int)LadderIs.Nothing;
     
     // CAMERA
-    [HideInInspector] public bool CameraInde;
     [HideInInspector] public Vector3 CameraTargetOverride;
 
     [Header("GENERAL SETTING")]
