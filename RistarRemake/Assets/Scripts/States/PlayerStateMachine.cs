@@ -6,6 +6,10 @@ using UnityEngine.InputSystem;
 public class PlayerStateMachine : MonoBehaviour
 {
     #region VARIABLES
+
+    // CAMERA
+    [HideInInspector] public Vector3 CameraTargetOverride;
+    
     // STATES
     public PlayerStateFactory _states;
     public PlayerBaseState CurrentState;
@@ -27,12 +31,7 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("REFERENCES/Grab")] public Transform DefaultPosRight;
     [FoldoutGroup("REFERENCES/Grab")] public Transform DefaultPosLeft;
     [FoldoutGroup("REFERENCES/Star Handle")] public GameObject TriggerGoToMeteorStrike;
-    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection EnemyDetection { get; private set; }
-    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection GroundDetection { get; private set; }
-    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection JumpBufferingDetection { get; private set; }
-    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionL LadderVDetectionL { get; private set; }
-    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionR LadderVDetectionR { get; private set; }
-    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderHDetection LadderHDetection { get; private set; }
+
     public enum LadderIs
     {
         Nothing = 0,
@@ -41,12 +40,16 @@ public class PlayerStateMachine : MonoBehaviour
         Horizontal = 3
     }
     [FoldoutGroup("REFERENCES/Detections")] public int IsLadder = (int)LadderIs.Nothing;
-    
-    // CAMERA
-    [HideInInspector] public Vector3 CameraTargetOverride;
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection EnemyDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection GroundDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection JumpBufferingDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionL LadderVDetectionL { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionR LadderVDetectionR { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderHDetection LadderHDetection { get; private set; }
 
     [Header("GENERAL SETTING")]
     public int LifesNumber = 4;
+    [HideInInspector] public UnityEvent NewStatePlayed;
     [HideInInspector] public bool IsPlayerTurnToLeft = false;
     [HideInInspector] public float TimePassedInState = 0;
     [HideInInspector] public Invincinbility Invincinbility;
@@ -62,7 +65,6 @@ public class PlayerStateMachine : MonoBehaviour
             return _playerRigidbody; 
         }
     }
-    [HideInInspector] public UnityEvent NewStatePlayed;
 
     [FoldoutGroup("MOVE")] public float WalkSpeed = 10;
 
