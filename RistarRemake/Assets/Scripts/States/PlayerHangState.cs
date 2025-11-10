@@ -44,21 +44,11 @@ public class PlayerHangState : PlayerBaseState
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
-            //_player.Animator.SetFloat("HangValue", 2);
             _player.StarHandleCentre = _player.ArmDetection.SnapPosHand;
             float x = _player.StarHandleCentre.x + Mathf.Cos(_SHangle) * _player.StarHandleCurrentRayon;
             float y = _player.StarHandleCentre.y + Mathf.Sin(_SHangle) * _player.StarHandleCurrentRayon;
             _player.transform.DOMove(new Vector2(x, y), 0.3f);
         }
-        //else
-        //{
-        //    _player.Animator.SetFloat("HangValue", 1);
-        //}
-
-        //if (_player.UseSpine == false)
-        //{
-        //    _player.PlayerVisual.UpdateAnim("Hang");
-        //}
     }
     public override void UpdateState()
     {
@@ -151,6 +141,7 @@ public class PlayerHangState : PlayerBaseState
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
+
     public override void OnCollisionEnter2D(Collision2D collision) 
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -256,6 +247,7 @@ public class PlayerHangState : PlayerBaseState
             }
         }
     }
+
     public override void OnCollisionStay2D(Collision2D collision) { }
 
 }

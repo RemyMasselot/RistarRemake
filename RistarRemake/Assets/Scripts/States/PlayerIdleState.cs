@@ -1,6 +1,3 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerIdleState : PlayerBaseState
@@ -10,14 +7,8 @@ public class PlayerIdleState : PlayerBaseState
     
     public override void EnterState()
     {
-        //if (_player.UseSpine == false)
-        //{
-        //    _player.PlayerVisual.UpdateAnim("Idle");
-        //    Debug.Log("ENTER IDLE");
-        //}
+        //Debug.Log("ENTER IDLE");
         _player.PlayerRigidbody.velocity = Vector2.zero;
-        //_player.PreviousState = _player.CurrentState;
-        // Mise à jour du coyote time
         _player.CoyoteCounter = _player.CoyoteTime;
     }
     public override void UpdateState()

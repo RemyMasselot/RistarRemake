@@ -92,6 +92,8 @@ public class PlayerStateMachine : MonoBehaviour
     [HideInInspector] public bool IsTimerRunning = false;
     [HideInInspector] public float CurrentTimerValue;
 
+    [FoldoutGroup("HEADBUTT")] public float HeadbuttMoveSpead;
+
     [FoldoutGroup("SPIN")] public float SpinTime;
 
     [HideInInspector] public Vector3 StarHandleCentre;
@@ -107,8 +109,6 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("STAR HANDLE")] public float StarHandleImpulseMin = 10;
     [FoldoutGroup("STAR HANDLE")] public float StarHandleImpulseMax = 30;
     [HideInInspector] public float StarHandleCurrentImpulse = 0;
-
-    //[InfoBox("Should be synchronized with spin animation", InfoMessageType.Warning)]
     
     [FoldoutGroup("METEOR STRIKE")] public float MeteorSpeed = 10;
     [FoldoutGroup("METEOR STRIKE")] public float MaxTimeMeteor = 10;
@@ -127,7 +127,6 @@ public class PlayerStateMachine : MonoBehaviour
         CurrentState.EnterState();
 
         Invincinbility = GetComponent<Invincinbility>();
-        CornerCorrection = GetComponent<CornerCorrection>();
         
         if (NewStatePlayed == null)
         {

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDamageState : PlayerBaseState
@@ -10,15 +8,14 @@ public class PlayerDamageState : PlayerBaseState
     public override void EnterState() 
     {
         //Debug.Log("ENTER DAMAGE");
-        //if (_player.UseSpine == true)
-        //{
-        //    _player.PlayerVisual.UpdateAnim("Damage");
-        //}
+
         _player.LifesNumber--;
+
         if (_player.LifesNumber > 0)
         {
             _player.PlayerRigidbody.gravityScale = 1;
             _player.PlayerRigidbody.velocity = new Vector2(0, _player.LeapForceV/1.5f);
+
             _player.Invincinbility.InvincibilityCounter = _player.Invincinbility.InvincibilityTime;
             _player.Invincinbility.IsInvincible = true;
         }
@@ -27,6 +24,7 @@ public class PlayerDamageState : PlayerBaseState
     {
         CheckSwitchStates();
     }
+
     public override void FixedUpdateState() 
     {
         float moveValue = _player.MoveH.ReadValue<float>();
@@ -38,17 +36,8 @@ public class PlayerDamageState : PlayerBaseState
         {
             _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.PlayerRigidbody.velocity.y);
         }
-
-        // Rotation visuelle -- SANS SPINE
-        //if (_player.Rb.velocity.x > 0)
-        //{
-        //    _player.SpriteRenderer.flipX = false;
-        //}
-        //if (_player.Rb.velocity.x < 0)
-        //{
-        //    _player.SpriteRenderer.flipX = true;
-        //}
     }
+
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() 

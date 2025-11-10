@@ -13,31 +13,6 @@ public class PlayerWallIdleState : PlayerBaseState
         _player.PlayerRigidbody.gravityScale = 0;
 
         _player.PlayerDirectionVerif();
-
-        //if (_player.UseSpine == false)
-        //{
-        //    //_player.PlayerVisual.UpdateAnim("WallIdle");
-
-        //    if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
-        //    {
-        //        //_player.Animator.SetFloat("WallVH", 0);
-        //        //Debug.Log("WALL VERTICAL");
-        //        if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
-        //        {
-        //            _player.IsPlayerTurnToLeft = true;
-        //            //Debug.Log("LEFT");
-        //        }
-        //        if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
-        //        {
-        //            _player.IsPlayerTurnToLeft = false;
-        //            //Debug.Log("RIGHT");
-        //        }
-        //    }
-        //    else if(_player.IsLadder == (int)LadderIs.Horizontal)
-        //    {
-        //        //_player.Animator.SetFloat("WallVH", 1);
-        //    }
-        //}
     }
     public override void UpdateState()
     {
@@ -65,7 +40,7 @@ public class PlayerWallIdleState : PlayerBaseState
             {
                 SwitchState(_factory.WallClimb());
             }
-            if (_player.Jump.WasPerformedThisFrame())
+            else if (_player.Jump.WasPerformedThisFrame())
             {
                 if (Mathf.Abs(moveValueV) > 0) // Passage en state WALL JUMP
                 {
@@ -85,7 +60,7 @@ public class PlayerWallIdleState : PlayerBaseState
             {
                 SwitchState(_factory.WallClimb());
             }
-            if (_player.Jump.WasPerformedThisFrame())
+            else if (_player.Jump.WasPerformedThisFrame())
             {
                 SwitchState(_factory.Fall());
             }

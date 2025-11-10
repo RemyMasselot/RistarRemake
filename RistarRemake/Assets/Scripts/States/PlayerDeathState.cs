@@ -8,17 +8,6 @@ public class PlayerDeathState : PlayerBaseState
     public override void EnterState() 
     {
         //Debug.Log("ENTER DEATH");
-        //if (_player.UseSpine == true)
-        //{
-        //    if (_player.IsPlayerTurnToLeft == false)
-        //    {
-        //        _player.PlayerVisual.UpdateAnim("DeathL");
-        //    }
-        //    else
-        //    {
-        //        _player.PlayerVisual.UpdateAnim("DeathR");
-        //    }
-        //}
     }
     public override void UpdateState() 
     {

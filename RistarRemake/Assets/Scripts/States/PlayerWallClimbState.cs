@@ -9,26 +9,10 @@ public class PlayerWallClimbState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER WALL CLIMB");
-        //if (_player.UseSpine == false)
-        //{
-        //    _player.PlayerVisual.UpdateAnim("WallClimb");
-        //}
+
         _player.PlayerRigidbody.gravityScale = 0;
 
         _player.PlayerDirectionVerif();
-
-        //// PLAYER DIRECTION
-        //if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
-        //{
-        //    if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
-        //    {
-        //        _player.IsPlayerTurnToLeft = true;
-        //    }
-        //    else if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
-        //    {
-        //        _player.IsPlayerTurnToLeft = false;
-        //    }
-        //}
     }
     public override void UpdateState()
     {
@@ -76,36 +60,31 @@ public class PlayerWallClimbState : PlayerBaseState
         {
             if (_player.EnemyDetection.IsGroundDectected == true)
             {
-                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.Damage());
             }
         }
 
-        // Vertical or Horizontal
         if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight) // VERTICAL
         {
             // Passage en state WALL IDLE
             float moveValueV = _player.MoveV.ReadValue<float>();
             if (moveValueV == 0)
             {
-                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.WallIdle());
             }
-            if (moveValueV > 0)
+            else if (moveValueV > 0)
             {
                 // Passage en state JUMP
                 if (_player.Jump.WasPerformedThisFrame())
                 {
-                    //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                     SwitchState(_factory.WallJump());
                 }
             }
-            if (moveValueV < 0)
+            else if (moveValueV < 0)
             {
                 // Passage en state FALL
                 if (_player.Jump.WasPerformedThisFrame())
                 {
-                    //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                     SwitchState(_factory.Fall());
                 }
             }
@@ -116,14 +95,10 @@ public class PlayerWallClimbState : PlayerBaseState
             float moveValueH = _player.MoveH.ReadValue<float>();
             if (Mathf.Abs(moveValueH) == 0)
             {
-                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.WallIdle());
             }
-
-            // Passage en state FALL
-            if (_player.Jump.WasPerformedThisFrame())
+            else if (_player.Jump.WasPerformedThisFrame())
             {
-                //_ctx.MainCameraBehavior.CurrentState = "OTHER";
                 SwitchState(_factory.Fall());
             }
         }

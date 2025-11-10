@@ -125,7 +125,6 @@ public class PlayerGrabState : PlayerBaseState
             DOTween.Kill(_player.IkArmRight);
             _player.IkArmLeft.position = _player.ArmDetection.SnapPosHandL;
             _player.IkArmRight.position = _player.ArmDetection.SnapPosHandR;
-            //Debug.Log("dfef");
         }
         else
         {

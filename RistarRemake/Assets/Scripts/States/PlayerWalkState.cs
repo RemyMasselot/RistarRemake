@@ -4,35 +4,26 @@ public class PlayerWalkState : PlayerBaseState
 {
     public PlayerWalkState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
-    public override void EnterState() {
+
+    public override void EnterState() 
+    {
         //Debug.Log("ENTER WALK");
-        //if (_player.UseSpine == false)
-        //{
-        //    _player.PlayerVisual.UpdateAnim("Walk");
-        //}
-        // Mise à jour du coyote time
         _player.CoyoteCounter = _player.CoyoteTime;
-        //_ctx.MainCameraBehavior.PlayerTouchGround();
     }
     public override void UpdateState() 
     { 
         _player.CountTimePassedInState();
         CheckSwitchStates();
     }
-    public override void FixedUpdateState() {
+    public override void FixedUpdateState() 
+    {
         // Déplacements du personnage
         float moveValue = _player.MoveH.ReadValue<float>();
         _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.WalkSpeed * Time.deltaTime, 0);
 
         _player.PlayerDirectionVerif();
-
-        // Vérification d'un sol ou non
-        if (_player.GroundDetection.IsGroundDectected == false)
-        {
-            SwitchState(_factory.Fall());
-        }
-        //Debug.Log(_ctx.LayerDetection.IsLayerDectected);
     }
+
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() {
@@ -45,6 +36,12 @@ public class PlayerWalkState : PlayerBaseState
             }
         }
 
+        // Passage en state FALL
+        if (_player.GroundDetection.IsGroundDectected == false)
+        {
+            SwitchState(_factory.Fall());
+        }
+        
         // Passage en state IDLE
         float moveValue = _player.MoveH.ReadValue<float>();
         if (moveValue == 0)

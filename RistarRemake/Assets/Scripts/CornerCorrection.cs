@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CornerCorrection : MonoBehaviour
 {
-    public float cornerDistance = 0.08f;        // Distance de correction horizontale
+    public float cornerDistance = 0.08f; // Distance de correction horizontale
     public LayerMask groundLayer;
 
     [Header("Box settings")]
@@ -12,18 +12,18 @@ public class CornerCorrection : MonoBehaviour
     public float sideOffset = 0.3f;
 
     [Header("Ray settings")]
-    public float rayLength = 0.06f;             // Longueur des rayons latéraux pour vérifier l’espace
+    public float rayLength = 0.06f; // Longueur des rayons latéraux pour vérifier l’espace
 
-    private Rigidbody2D rb;
+    private PlayerStateMachine playerStateMachine;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
     void Update()
     {
-        if (rb.velocity.y > 0) // Le joueur monte
+        if (playerStateMachine.CurrentState is PlayerJumpState)
         {
             Vector2 pos = transform.position;
             Vector2 boxSize = new Vector2(boxWidth, boxHeight);
