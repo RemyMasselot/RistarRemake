@@ -18,16 +18,12 @@ public class CornerCorrection : MonoBehaviour
 
     [HideInInspector] public bool HitLeft;
     [HideInInspector] public bool HitRight;
-    [HideInInspector] public bool SpaceLeft;
-    [HideInInspector] public bool SpaceRight;
 
     void Awake()
     {
         playerStateMachine = GetComponent<PlayerStateMachine>();
         HitLeft = false;
         HitRight = false;
-        SpaceLeft = false;
-        SpaceRight = false;
     }
 
     void Update()
@@ -45,18 +41,14 @@ public class CornerCorrection : MonoBehaviour
             HitLeft = Physics2D.OverlapBox(leftPos, boxSize, 0f, groundLayer);
             HitRight = Physics2D.OverlapBox(rightPos, boxSize, 0f, groundLayer);
 
-            // Raycasts horizontaux pour vérifier l’espace libre
-            //SpaceRight = !Physics2D.Linecast(pos, pos + Vector2.right * (sideOffset + CornerDistance), groundLayer);
-            //SpaceLeft = !Physics2D.Linecast(pos, pos + Vector2.left * (sideOffset + CornerDistance), groundLayer);
-
             // Correction
             float moveValueH = playerStateMachine.MoveH.ReadValue<float>();
 
-            if (HitLeft && !HitRight && SpaceRight && moveValueH <= 0)
+            if (HitLeft && !HitRight && moveValueH <= 0)
             {
                 transform.position += new Vector3(CornerDistance, 0f, 0f);
             }
-            else if (HitRight && !HitLeft && SpaceLeft && moveValueH >= 0)
+            else if (HitRight && !HitLeft && moveValueH >= 0)
             {
                 transform.position -= new Vector3(CornerDistance, 0f, 0f);
             }

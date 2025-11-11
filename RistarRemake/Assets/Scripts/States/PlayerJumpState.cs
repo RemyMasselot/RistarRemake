@@ -59,7 +59,6 @@ public class PlayerJumpState : PlayerBaseState
         if (canCountTimeApex)
         {
             TimePassedAtApex += Time.deltaTime;
-            //Debug.Log("TimePassedAtApex");
         }
 
         _player.PlayerDirectionVerif();
@@ -85,14 +84,26 @@ public class PlayerJumpState : PlayerBaseState
                 currentPositionY = jumpOriginY + _player.MaxVerticalJumpDistance;
             }
         }
+        
+        distanceFromOriginY = Mathf.Abs(_player.transform.position.y - jumpOriginY);
+
+        if (distanceFromOriginY >= _player.MaxVerticalJumpDistance)
+        {
+            canCountTimeApex = true;
+        }
+
+        _player.transform.position = new Vector2(_player.transform.position.x, currentPositionY);
     }
 
     public override void FixedUpdateState() 
     {
+        ModifyVelocityX();
+    }
+
+    private void ModifyVelocityX()
+    {
         float velocityX = 0;
         float moveValueH = _player.MoveH.ReadValue<float>();
-        // Si les coins sont touchés, on corrige la position horizontale pendant un certain temps
-        // Pendant ce temps, les mouvement horizontaux sont ignorés
 
         if (_player.CornerCorrection.HitLeft && !_player.CornerCorrection.HitRight && moveValueH <= 0.5f)
         {
@@ -107,10 +118,19 @@ public class PlayerJumpState : PlayerBaseState
             canModifyVelocityXRight = false;
         }
 
-        if (_player.TimePassedInState >= pingTimerCornerCorrection + 0.25f)
+        if (canModifyVelocityXLeft == false)
         {
-            canModifyVelocityXLeft = true;
-            canModifyVelocityXRight = true;
+            if (moveValueH > 0)
+            {
+                canModifyVelocityXLeft = true;
+            }
+        }
+        else if (canModifyVelocityXRight == false)
+        {
+            if (moveValueH < 0)
+            {
+                canModifyVelocityXRight = true;
+            }
         }
 
         if (moveValueH < 0 && canModifyVelocityXLeft == true)
@@ -125,15 +145,6 @@ public class PlayerJumpState : PlayerBaseState
         {
             velocityX = 0;
         }
-
-        distanceFromOriginY = Mathf.Abs(_player.transform.position.y - jumpOriginY);
-
-        if (distanceFromOriginY >= _player.MaxVerticalJumpDistance)
-        {
-            canCountTimeApex = true;
-        }
-
-        _player.transform.position = new Vector2(_player.transform.position.x, currentPositionY);
 
         _player.PlayerRigidbody.velocity = new Vector2(velocityX, _player.PlayerRigidbody.velocity.y);
     }

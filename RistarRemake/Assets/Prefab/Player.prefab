@@ -1003,7 +1003,7 @@ MonoBehaviour:
   CornerDistance: 0.1
   groundLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1024
   boxWidth: 0.24
   boxHeight: 0.15
   heightOffset: 0.5
@@ -1011,8 +1011,6 @@ MonoBehaviour:
   rayLength: 0.08
   HitLeft: 0
   HitRight: 0
-  SpaceLeft: 0
-  SpaceRight: 0
 --- !u!114 &4143905908849990563
 MonoBehaviour:
   m_ObjectHideFlags: 0
