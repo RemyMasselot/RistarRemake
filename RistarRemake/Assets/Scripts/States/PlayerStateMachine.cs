@@ -47,8 +47,7 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionR LadderVDetectionR { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderHDetection LadderHDetection { get; private set; }
 
-    [Header("GENERAL SETTING")]
-    public int LifesNumber = 4;
+    [FoldoutGroup("GENERAL SETTING")] public int LifesNumber = 4;
     [HideInInspector] public UnityEvent NewStatePlayed;
     [HideInInspector] public bool IsPlayerTurnToLeft = false;
     [HideInInspector] public float TimePassedInState = 0;
@@ -74,10 +73,9 @@ public class PlayerStateMachine : MonoBehaviour
     [HideInInspector] public float CurrentTimerValueJump;
     [HideInInspector] public bool IsTimerRunningJump = false;
     [FoldoutGroup("JUMP")] public float JumpBufferTime = 0.1f;
-    [FoldoutGroup("JUMP")] public float CoyoteTime = 0.1f;
     [HideInInspector] public float JumpBufferCounter;
+    [FoldoutGroup("JUMP")] public float CoyoteTime = 0.1f;
     [HideInInspector] public float CoyoteCounter;
-    [HideInInspector] public bool JumpReady = false;
 
     [FoldoutGroup("FALL")] public float MoveDownFallValueMin = -0.2f;
     [FoldoutGroup("FALL")] public float MoveDownFallValueMax = 1f;

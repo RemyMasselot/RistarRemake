@@ -807,6 +807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed6ed46f9903e5448e4c11c775460e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraTargetOverride: {x: 0, y: 0, z: 0}
   MoveH:
     m_Name: Move H
     m_Type: 0
@@ -869,21 +870,14 @@ MonoBehaviour:
   DefaultPosRight: {fileID: 6705075075960125178}
   DefaultPosLeft: {fileID: 656159738656065649}
   TriggerGoToMeteorStrike: {fileID: 8749003172385253135}
+  IsLadder: 0
   <EnemyDetection>k__BackingField: {fileID: 3520695813044198357}
   <GroundDetection>k__BackingField: {fileID: 3719720874709478490}
   <JumpBufferingDetection>k__BackingField: {fileID: 4616474715250170806}
   <LadderVDetectionL>k__BackingField: {fileID: 1149977443471627458}
   <LadderVDetectionR>k__BackingField: {fileID: 3782082570163832820}
   <LadderHDetection>k__BackingField: {fileID: 925709391015125550}
-  IsLadder: 0
-  CameraInde: 0
-  CameraTargetOverride: {x: 0, y: 0, z: 0}
-  UseSpine: 0
   LifesNumber: 4
-  IsPlayerTurnToLeft: 0
-  TimePassedInState: 0
-  Invincinbility: {fileID: 0}
-  CornerCorrection: {fileID: 0}
   NewStatePlayed:
     m_PersistentCalls:
       m_Calls:
@@ -899,6 +893,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  IsPlayerTurnToLeft: 0
+  TimePassedInState: 0
+  Invincinbility: {fileID: 0}
+  CornerCorrection: {fileID: 0}
   WalkSpeed: 180
   JumpForceV: 6
   JumpForceH: 4
@@ -906,10 +904,9 @@ MonoBehaviour:
   CurrentTimerValueJump: 0
   IsTimerRunningJump: 0
   JumpBufferTime: 0.1
+  JumpBufferCounter: 10
   CoyoteTime: 0.2
-  JumpBufferCounter: 0
   CoyoteCounter: 0
-  JumpReady: 0
   MoveDownFallValueMin: -0.2
   MoveDownFallValueMax: 0.1
   LeapForceV: 7
@@ -920,6 +917,7 @@ MonoBehaviour:
   MaxTimeGrab: 1
   IsTimerRunning: 0
   CurrentTimerValue: 0
+  HeadbuttMoveSpead: 0
   SpinTime: 0.3
   StarHandleCentre: {x: 0, y: 0, z: 0}
   StarHandleCurrentValue: 0

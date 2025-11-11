@@ -37,7 +37,7 @@ public class PlayerIdleState : PlayerBaseState
         }
 
         // Passage en state JUMP
-        if (_player.Jump.WasPerformedThisFrame() || _player.JumpReady == true)
+        if (_player.Jump.WasPerformedThisFrame() || _player.JumpBufferCounter <= _player.JumpBufferTime)
         {
             SwitchState(_factory.Jump());
         }

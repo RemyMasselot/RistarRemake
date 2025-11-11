@@ -3493,6 +3493,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3359975085445979003, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616474715250170806, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: CapsuleSize.y
+      value: 1.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: <JumpBufferingDetection>k__BackingField
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6852848886019290092, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.23
@@ -3534,7 +3550,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6852848886019290092, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}

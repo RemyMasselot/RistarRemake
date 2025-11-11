@@ -28,25 +28,11 @@ public class PlayerJumpState : PlayerBaseState
             _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.JumpForceV);
         }
         _player.ArmDetection.ObjectDetected = 0;
-
-        StartTimer();
-    }
-    void StartTimer()
-    {
-        _player.CurrentTimerValueJump = _player.MaxTimeJump;
-        _player.IsTimerRunningJump = true;
     }
 
     public override void UpdateState() 
     {
-        if (_player.IsTimerRunningJump == true)
-        {
-            _player.CurrentTimerValueJump -= Time.deltaTime;
-            if (_player.CurrentTimerValueJump <= 0f)
-            {
-                _player.IsTimerRunningJump = false;
-            }
-        }
+        _player.CountTimePassedInState();
 
         _player.PlayerDirectionVerif();
 
@@ -85,14 +71,16 @@ public class PlayerJumpState : PlayerBaseState
         }
 
         // Passage en state FALL
-        if (_player.IsTimerRunningJump == false)
+        if (_player.TimePassedInState >= _player.MaxTimeJump)
         {
             SwitchState(_factory.Fall());
         }
-        if (_player.Jump.WasReleasedThisFrame())
+        else if (_player.TimePassedInState >= 0.1f)
         {
-            _player.IsTimerRunningJump = false;
-            SwitchState(_factory.Fall());
+            if (_player.Jump.WasReleasedThisFrame())
+            {
+                SwitchState(_factory.Fall());
+            }
         }
 
         // Passage en state GRAB

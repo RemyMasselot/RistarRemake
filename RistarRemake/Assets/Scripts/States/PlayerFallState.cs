@@ -5,12 +5,16 @@ public class PlayerFallState : PlayerBaseState
 {
     public PlayerFallState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
-    
+
+    private bool isJumpBufferingTimerCanCount;
+
     public override void EnterState() 
     {
         _player.ArmDetection.ObjectDetected = 0;
         _player.PlayerRigidbody.gravityScale = 2;
-        _player.JumpReady = false;
+
+        isJumpBufferingTimerCanCount = false;
+        _player.JumpBufferCounter = 10;
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
@@ -43,6 +47,12 @@ public class PlayerFallState : PlayerBaseState
     public override void UpdateState() 
     {
         _player.CountTimePassedInState();
+
+        // Jump Buffering Timer
+        if (isJumpBufferingTimerCanCount == true)
+        {
+            _player.JumpBufferCounter += Time.deltaTime;
+        }
 
         CheckSwitchStates();
     }
@@ -85,13 +95,8 @@ public class PlayerFallState : PlayerBaseState
             }
 
             // Jump Buffering
-            if (_player.JumpBufferingDetection.IsGroundDectected == true)
-            {
-                if (_player.PlayerRigidbody.velocity.y <= 0)
-                {
-                    _player.JumpReady = true;
-                }
-            }
+            isJumpBufferingTimerCanCount = true;
+            _player.JumpBufferCounter = 0;
         }
 
         // Vérification d'un sol ou non
