@@ -7,6 +7,8 @@ public class PlayerJumpState : PlayerBaseState
     : base(currentContext, playerStateFactory) { }
 
     private float jumpOriginY;
+    private float TimePassedApex;
+    private bool canCountTimeApex;
 
     public override void EnterState() 
     {
@@ -16,7 +18,8 @@ public class PlayerJumpState : PlayerBaseState
         _player.CoyoteCounter = 0;
         jumpOriginY = _player.transform.position.y;
 
-        // Modifier MaxTimeJump pour faire plutot MaxTimeApex
+        canCountTimeApex = false;
+        TimePassedApex = 0;
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
@@ -37,7 +40,10 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void UpdateState() 
     {
-        _player.CountTimePassedInState();
+        if (canCountTimeApex)
+        {
+            TimePassedApex += Time.deltaTime;
+        }
 
         _player.PlayerDirectionVerif();
 
@@ -52,7 +58,16 @@ public class PlayerJumpState : PlayerBaseState
         velocityX = moveValue != 0 ? moveValue * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
 
         float distanceFromOriginY = Mathf.Abs(_player.transform.position.y - jumpOriginY);
-        velocityY = distanceFromOriginY >= _player.MaxVerticalDistance ? 0 : _player.VerticalMovementSpeed;
+
+        if (distanceFromOriginY >= _player.MaxVerticalDistance)
+        {
+            velocityY = 0;
+        }
+        else
+        {
+            velocityY = _player.VerticalMovementSpeed;
+            canCountTimeApex = true;
+        }
 
         _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);
     }
@@ -70,11 +85,11 @@ public class PlayerJumpState : PlayerBaseState
         }
 
         // Passage en state FALL
-        if (_player.TimePassedInState >= _player.MaxTimeJump)
+        if (TimePassedApex >= _player.MaxTimeApex)
         {
             SwitchState(_factory.Fall());
         }
-        else if (_player.TimePassedInState >= 0.05f)
+        else if (TimePassedApex >= 0.05f)
         {
             if (_player.Jump.WasReleasedThisFrame())
             {

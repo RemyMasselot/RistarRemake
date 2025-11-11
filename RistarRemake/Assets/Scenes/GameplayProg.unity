@@ -4078,6 +4078,10 @@ PrefabInstance:
       value: 1.41
       objectReference: {fileID: 0}
     - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: MaxTimeApex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: MaxTimeJump
       value: 2
       objectReference: {fileID: 0}
