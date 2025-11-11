@@ -8,6 +8,9 @@ public class PlayerFallState : PlayerBaseState
 
     private bool isJumpBufferingTimerCanCount;
 
+    private float speedIncreaseCurrent = 0f;
+    private float timer = 0f;
+
     public override void EnterState() 
     {
         _player.PlayerRigidbody.gravityScale = 0;
@@ -15,6 +18,7 @@ public class PlayerFallState : PlayerBaseState
         isJumpBufferingTimerCanCount = false;
         _player.JumpBufferCounter = 10;
         _player.LowJumpActivated = false;
+        speedIncreaseCurrent = 0;
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
@@ -45,6 +49,7 @@ public class PlayerFallState : PlayerBaseState
 
     public override void ExitState() { }
 
+
     public override void UpdateState() 
     {
         _player.CountTimePassedInState();
@@ -55,7 +60,24 @@ public class PlayerFallState : PlayerBaseState
             _player.JumpBufferCounter += Time.deltaTime;
         }
 
+        UpdateSpeedIncreaseCurrent();
+
         CheckSwitchStates();
+    }
+
+    private void UpdateSpeedIncreaseCurrent()
+    {
+        if (timer < _player.TimeToFallSpeedMax)
+        {
+            timer += Time.deltaTime;
+            float t = Mathf.Clamp01(timer / _player.TimeToFallSpeedMax);
+            float curveValue = _player.FallSpeedCurve.Evaluate(t); // renvoie une valeur entre 0 et 1
+            speedIncreaseCurrent = _player.FallSpeedMax * curveValue;
+        }
+        else
+        {
+            speedIncreaseCurrent = _player.FallSpeedMax;
+        }
     }
 
     public override void FixedUpdateState()
@@ -65,10 +87,21 @@ public class PlayerFallState : PlayerBaseState
         float velocityY = 0;
 
         float moveValueH = _player.MoveH.ReadValue<float>();
-        float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValueMin, _player.MoveDownFallValueMax);
+        float moveValueV = _player.MoveV.ReadValue<float>();
+
+        float speedInputVertical = 0;
+
+        if (moveValueV < 0)
+        {
+            speedInputVertical = _player.InputFallSpeedIncrease * Mathf.Abs(moveValueV);
+        }
+        else if (moveValueV > 0)
+        {
+            speedInputVertical = _player.InputFallSpeedDecrease * Mathf.Abs(moveValueV);
+        }
 
         velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
-        velocityY = -_player.VerticalMovementSpeed / 1.5f + moveValueV;
+        velocityY = speedInputVertical - speedIncreaseCurrent;
 
         _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);
 

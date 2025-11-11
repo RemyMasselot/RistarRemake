@@ -898,17 +898,43 @@ MonoBehaviour:
   Invincinbility: {fileID: 0}
   CornerCorrection: {fileID: 0}
   WalkSpeed: 180
-  JumpForceV: 6
-  JumpForceH: 4
-  MaxTimeJump: 0.6
-  CurrentTimerValueJump: 0
-  IsTimerRunningJump: 0
+  VerticalMovementSpeed: 7
+  HorizontalMovementMultiplier: 4
+  MaxVerticalDistance: 2
+  MaxTimeApex: 0.4
   JumpBufferTime: 0.1
   JumpBufferCounter: 10
+  LowJumpActivated: 0
   CoyoteTime: 0.2
   CoyoteCounter: 0
-  MoveDownFallValueMin: -0.2
-  MoveDownFallValueMax: 0.1
+  FallSpeedMax: 15
+  TimeToFallSpeedMax: 0.8
+  FallSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.3
+      inSlope: 0.2358385
+      outSlope: 0.2358385
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.2889068
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.2067815
+      outSlope: 1.2067815
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08486235
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  InputFallSpeedIncrease: -3
+  InputFallSpeedDecrease: 3
   LeapForceV: 7
   LeapForceH: 3
   AimDir: {x: 0, y: 0}

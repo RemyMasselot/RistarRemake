@@ -77,8 +77,11 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("JUMP")] public float CoyoteTime = 0.1f;
     [HideInInspector] public float CoyoteCounter;
 
-    [FoldoutGroup("FALL")] public float MoveDownFallValueMin = -0.2f;
-    [FoldoutGroup("FALL")] public float MoveDownFallValueMax = 1f;
+    [FoldoutGroup("FALL")] public float FallSpeedMax = 15f;
+    [FoldoutGroup("FALL")] public float TimeToFallSpeedMax = 2f;
+    [FoldoutGroup("FALL")] public AnimationCurve FallSpeedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [FoldoutGroup("FALL")] public float InputFallSpeedIncrease = -0.2f;
+    [FoldoutGroup("FALL")] public float InputFallSpeedDecrease = 1f;
 
     [FoldoutGroup("LEAP")] public float LeapForceV = 7f;
     [FoldoutGroup("LEAP")] public float LeapForceH = 3f;

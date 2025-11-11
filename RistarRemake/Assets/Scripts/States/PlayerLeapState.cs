@@ -50,7 +50,7 @@ public class PlayerLeapState : PlayerBaseState
     private void AirControl()
     {
         float moveValueH = _player.MoveH.ReadValue<float>();
-        float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValueMin, _player.MoveDownFallValueMax);
+        float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.InputFallSpeedIncrease, _player.InputFallSpeedDecrease);
         if (moveValueH != 0)
         {
             _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.HorizontalMovementMultiplier, _player.PlayerRigidbody.velocity.y + moveValueV);
