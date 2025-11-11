@@ -50,8 +50,13 @@ public class PlayerWalkState : PlayerBaseState
         }
 
         // Passage en state JUMP
-        if (_player.Jump.WasPerformedThisFrame() || _player.JumpBufferCounter <= _player.JumpBufferTime)
+        if (_player.Jump.WasPerformedThisFrame())
         {
+            SwitchState(_factory.Jump());
+        }
+        else if (_player.JumpBufferCounter <= _player.JumpBufferTime)
+        {
+            _player.LowJumpActivated = true;
             SwitchState(_factory.Jump());
         }
 

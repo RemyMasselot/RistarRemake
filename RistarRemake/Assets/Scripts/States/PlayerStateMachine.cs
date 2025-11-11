@@ -73,6 +73,7 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("JUMP")] public float MaxTimeApex;
     [FoldoutGroup("JUMP")] public float JumpBufferTime = 0.1f;
     [HideInInspector] public float JumpBufferCounter;
+    [HideInInspector] public bool LowJumpActivated;
     [FoldoutGroup("JUMP")] public float CoyoteTime = 0.1f;
     [HideInInspector] public float CoyoteCounter;
 

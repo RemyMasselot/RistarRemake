@@ -10,6 +10,7 @@ public class PlayerJumpState : PlayerBaseState
     private float TimePassedApex;
     private bool canCountTimeApex;
 
+    private float distanceFromOriginY;
     public override void EnterState() 
     {
         //Debug.Log("JUMP ENTER");
@@ -40,6 +41,8 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void UpdateState() 
     {
+        _player.CountTimePassedInState();
+
         if (canCountTimeApex)
         {
             TimePassedApex += Time.deltaTime;
@@ -57,7 +60,7 @@ public class PlayerJumpState : PlayerBaseState
         float moveValue = _player.MoveH.ReadValue<float>();
         velocityX = moveValue != 0 ? moveValue * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
 
-        float distanceFromOriginY = Mathf.Abs(_player.transform.position.y - jumpOriginY);
+        distanceFromOriginY = Mathf.Abs(_player.transform.position.y - jumpOriginY);
 
         if (distanceFromOriginY >= _player.MaxVerticalDistance)
         {
@@ -85,16 +88,25 @@ public class PlayerJumpState : PlayerBaseState
         }
 
         // Passage en state FALL
+        if (_player.Jump.WasReleasedThisFrame())
+        {
+            if (distanceFromOriginY <= _player.MaxVerticalDistance / 1.5)
+            {
+                _player.LowJumpActivated = true;
+            }
+            else 
+            {
+                SwitchState(_factory.Fall());
+            }
+        }
+
         if (TimePassedApex >= _player.MaxTimeApex)
         {
             SwitchState(_factory.Fall());
         }
-        else if (TimePassedApex >= 0.05f)
+        else if (_player.LowJumpActivated && distanceFromOriginY >= _player.MaxVerticalDistance / 1.5)
         {
-            if (_player.Jump.WasReleasedThisFrame())
-            {
-                SwitchState(_factory.Fall());
-            }
+            SwitchState(_factory.Fall());
         }
 
         // Passage en state GRAB

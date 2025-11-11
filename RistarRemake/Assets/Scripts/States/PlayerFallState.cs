@@ -10,11 +10,11 @@ public class PlayerFallState : PlayerBaseState
 
     public override void EnterState() 
     {
-        _player.ArmDetection.ObjectDetected = 0;
-        _player.PlayerRigidbody.gravityScale = 2;
+        _player.PlayerRigidbody.gravityScale = 0;
 
         isJumpBufferingTimerCanCount = false;
         _player.JumpBufferCounter = 10;
+        _player.LowJumpActivated = false;
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
@@ -26,6 +26,7 @@ public class PlayerFallState : PlayerBaseState
 
             _player.PlayerRigidbody.velocity = dir * _player.StarHandleCurrentImpulse;
         }
+        _player.ArmDetection.ObjectDetected = 0;
 
         PushAwayFromLadder();
     }
@@ -60,16 +61,16 @@ public class PlayerFallState : PlayerBaseState
     public override void FixedUpdateState()
     {
         // Air Control
+        float velocityX = 0;
+        float velocityY = 0;
+
         float moveValueH = _player.MoveH.ReadValue<float>();
         float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValueMin, _player.MoveDownFallValueMax);
-        if (moveValueH != 0)
-        {
-            _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.HorizontalMovementMultiplier, _player.PlayerRigidbody.velocity.y + moveValueV);
-        }
-        else
-        {
-            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.PlayerRigidbody.velocity.y + moveValueV);
-        }
+
+        velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+        velocityY = -_player.VerticalMovementSpeed / 1.5f + moveValueV;
+
+        _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);
 
         _player.PlayerDirectionVerif();
     }
