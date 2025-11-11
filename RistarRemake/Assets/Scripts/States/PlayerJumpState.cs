@@ -5,13 +5,18 @@ public class PlayerJumpState : PlayerBaseState
 {
     public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
-    
+
+    private float jumpOriginY;
+
     public override void EnterState() 
     {
         //Debug.Log("JUMP ENTER");
 
-        _player.PlayerRigidbody.gravityScale = 1;
+        _player.PlayerRigidbody.gravityScale = 0;
         _player.CoyoteCounter = 0;
+        jumpOriginY = _player.transform.position.y;
+
+        // Modifier MaxTimeJump pour faire plutot MaxTimeApex
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
@@ -25,7 +30,7 @@ public class PlayerJumpState : PlayerBaseState
         }
         else
         {
-            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.JumpForceV);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.VerticalMovementSpeed);
         }
         _player.ArmDetection.ObjectDetected = 0;
     }
@@ -40,22 +45,16 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void FixedUpdateState() 
     {
+        float velocityX = 0;
+        float velocityY = 0;
+        
         float moveValue = _player.MoveH.ReadValue<float>();
-        if (moveValue != 0)
-        {
-            _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.JumpForceH, _player.PlayerRigidbody.velocity.y);
-        }
-        else
-        {
-            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.PlayerRigidbody.velocity.y);
-        }
+        velocityX = moveValue != 0 ? moveValue * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
 
-        // Si on est a l'apex et que la touche est maintenu, on reste à l'apex
-        if (_player.PlayerRigidbody.velocity.y < 0)
-        {
-            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, 0);
-        }
+        float distanceFromOriginY = Mathf.Abs(_player.transform.position.y - jumpOriginY);
+        velocityY = distanceFromOriginY >= _player.MaxVerticalDistance ? 0 : _player.VerticalMovementSpeed;
 
+        _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);
     }
     public override void ExitState() { }
     public override void InitializeSubState() { }
@@ -75,7 +74,7 @@ public class PlayerJumpState : PlayerBaseState
         {
             SwitchState(_factory.Fall());
         }
-        else if (_player.TimePassedInState >= 0.1f)
+        else if (_player.TimePassedInState >= 0.05f)
         {
             if (_player.Jump.WasReleasedThisFrame())
             {

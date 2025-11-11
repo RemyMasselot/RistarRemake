@@ -53,7 +53,7 @@ public class PlayerLeapState : PlayerBaseState
         float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValueMin, _player.MoveDownFallValueMax);
         if (moveValueH != 0)
         {
-            _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.JumpForceH, _player.PlayerRigidbody.velocity.y + moveValueV);
+            _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.HorizontalMovementMultiplier, _player.PlayerRigidbody.velocity.y + moveValueV);
         }
         else
         {

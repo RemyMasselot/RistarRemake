@@ -67,11 +67,10 @@ public class PlayerStateMachine : MonoBehaviour
 
     [FoldoutGroup("MOVE")] public float WalkSpeed = 10;
 
-    [FoldoutGroup("JUMP")] public float JumpForceV = 6f;
-    [FoldoutGroup("JUMP")] public float JumpForceH = 4f;
+    [FoldoutGroup("JUMP")] public float VerticalMovementSpeed = 6f;
+    [FoldoutGroup("JUMP")] public float HorizontalMovementMultiplier = 4f;
+    [FoldoutGroup("JUMP")] public float MaxVerticalDistance;
     [FoldoutGroup("JUMP")] public float MaxTimeJump;
-    [HideInInspector] public float CurrentTimerValueJump;
-    [HideInInspector] public bool IsTimerRunningJump = false;
     [FoldoutGroup("JUMP")] public float JumpBufferTime = 0.1f;
     [HideInInspector] public float JumpBufferCounter;
     [FoldoutGroup("JUMP")] public float CoyoteTime = 0.1f;

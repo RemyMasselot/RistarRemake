@@ -111,7 +111,7 @@ public class PlayerGrabState : PlayerBaseState
             float moveValueH = _player.MoveH.ReadValue<float>();
             if (moveValueH != 0)
             {
-                _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.JumpForceH, _player.PlayerRigidbody.velocity.y);
+                _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.HorizontalMovementMultiplier, _player.PlayerRigidbody.velocity.y);
             }
             else
             {

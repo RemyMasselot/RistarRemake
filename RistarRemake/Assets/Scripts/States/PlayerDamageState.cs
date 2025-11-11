@@ -30,7 +30,7 @@ public class PlayerDamageState : PlayerBaseState
         float moveValue = _player.MoveH.ReadValue<float>();
         if (moveValue != 0)
         {
-            _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.JumpForceH, _player.PlayerRigidbody.velocity.y);
+            _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.HorizontalMovementMultiplier, _player.PlayerRigidbody.velocity.y);
         }
         else
         {

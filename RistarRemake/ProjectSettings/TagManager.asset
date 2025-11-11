@@ -10,6 +10,7 @@ TagManager:
   - LadderH
   - StarHandle
   - Wall
+  - Ceiling
   layers:
   - Default
   - TransparentFX

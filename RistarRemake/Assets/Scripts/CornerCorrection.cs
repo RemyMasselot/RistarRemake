@@ -41,11 +41,14 @@ public class CornerCorrection : MonoBehaviour
             bool spaceLeft = !Physics2D.Linecast(pos, pos + Vector2.left * (sideOffset + cornerDistance), groundLayer);
 
             // Correction
-            if (hitLeft && !hitRight && spaceRight)
+            float moveValueH = playerStateMachine.MoveH.ReadValue<float>();
+
+            if (hitLeft && !hitRight && spaceRight && moveValueH <= 0)
             {
+
                 transform.position += new Vector3(cornerDistance, 0f, 0f);
             }
-            else if (hitRight && !hitLeft && spaceLeft)
+            else if (hitRight && !hitLeft && spaceLeft && moveValueH >= 0)
             {
                 transform.position -= new Vector3(cornerDistance, 0f, 0f);
             }

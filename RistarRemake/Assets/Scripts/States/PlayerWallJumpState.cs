@@ -11,7 +11,7 @@ public class PlayerWallJumpState : PlayerBaseState
         //Debug.Log("JUMP ENTER");
 
         _player.PlayerRigidbody.gravityScale = 1;
-        _player.PlayerRigidbody.velocity = new Vector2(_player.JumpForceH, _player.JumpForceV);
+        _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalMovementMultiplier, _player.VerticalMovementSpeed);
     }
 
     public override void UpdateState() 
@@ -24,7 +24,7 @@ public class PlayerWallJumpState : PlayerBaseState
     public override void FixedUpdateState() 
     {
         float moveValue = _player.MoveH.ReadValue<float>();
-        _player.PlayerRigidbody.velocity = new Vector2 (_player.JumpForceH * moveValue, _player.PlayerRigidbody.velocity.y);
+        _player.PlayerRigidbody.velocity = new Vector2 (_player.HorizontalMovementMultiplier * moveValue, _player.PlayerRigidbody.velocity.y);
     }
 
     public override void ExitState() { }

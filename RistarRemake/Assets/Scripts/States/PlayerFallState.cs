@@ -34,11 +34,11 @@ public class PlayerFallState : PlayerBaseState
     {
         if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
         {
-            _player.PlayerRigidbody.velocity = new Vector2(_player.JumpForceH / 2, -_player.JumpForceV / 2);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalMovementMultiplier / 2, -_player.VerticalMovementSpeed / 2);
         }
         else if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
         {
-            _player.PlayerRigidbody.velocity = new Vector2(-_player.JumpForceH / 2, -_player.JumpForceV / 2);
+            _player.PlayerRigidbody.velocity = new Vector2(-_player.HorizontalMovementMultiplier / 2, -_player.VerticalMovementSpeed / 2);
         }
     }   
 
@@ -64,7 +64,7 @@ public class PlayerFallState : PlayerBaseState
         float moveValueV = Mathf.Clamp(_player.MoveV.ReadValue<float>(), _player.MoveDownFallValueMin, _player.MoveDownFallValueMax);
         if (moveValueH != 0)
         {
-            _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.JumpForceH, _player.PlayerRigidbody.velocity.y + moveValueV);
+            _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.HorizontalMovementMultiplier, _player.PlayerRigidbody.velocity.y + moveValueV);
         }
         else
         {
@@ -130,7 +130,7 @@ public class PlayerFallState : PlayerBaseState
     {
         if (_player.TimePassedInState > 0.2f)
         {
-            Debug.Log("LADDER CHECK FALL");
+            //Debug.Log("LADDER CHECK FALL");
             _player.LadderVerif(collision);
 
             if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
