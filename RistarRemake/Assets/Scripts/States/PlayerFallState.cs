@@ -39,11 +39,11 @@ public class PlayerFallState : PlayerBaseState
     {
         if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
         {
-            _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalMovementMultiplier / 2, -_player.VerticalMovementSpeed / 2);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalMovementMultiplier / 2, -_player.JumpSpeedMax / 2);
         }
         else if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
         {
-            _player.PlayerRigidbody.velocity = new Vector2(-_player.HorizontalMovementMultiplier / 2, -_player.VerticalMovementSpeed / 2);
+            _player.PlayerRigidbody.velocity = new Vector2(-_player.HorizontalMovementMultiplier / 2, -_player.JumpSpeedMax / 2);
         }
     }   
 

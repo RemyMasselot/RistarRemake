@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CornerCorrection : MonoBehaviour
 {
-    public float cornerDistance = 0.08f; // Distance de correction horizontale
+    public float CornerDistance = 0.08f; // Distance de correction horizontale
     public LayerMask groundLayer;
 
     [Header("Box settings")]
@@ -16,9 +16,18 @@ public class CornerCorrection : MonoBehaviour
 
     private PlayerStateMachine playerStateMachine;
 
+    [HideInInspector] public bool HitLeft;
+    [HideInInspector] public bool HitRight;
+    [HideInInspector] public bool SpaceLeft;
+    [HideInInspector] public bool SpaceRight;
+
     void Awake()
     {
         playerStateMachine = GetComponent<PlayerStateMachine>();
+        HitLeft = false;
+        HitRight = false;
+        SpaceLeft = false;
+        SpaceRight = false;
     }
 
     void Update()
@@ -33,24 +42,23 @@ public class CornerCorrection : MonoBehaviour
             Vector2 rightPos = new Vector2(pos.x + sideOffset, pos.y + heightOffset);
 
             // Détection de coin touché
-            bool hitLeft = Physics2D.OverlapBox(leftPos, boxSize, 0f, groundLayer);
-            bool hitRight = Physics2D.OverlapBox(rightPos, boxSize, 0f, groundLayer);
+            HitLeft = Physics2D.OverlapBox(leftPos, boxSize, 0f, groundLayer);
+            HitRight = Physics2D.OverlapBox(rightPos, boxSize, 0f, groundLayer);
 
             // Raycasts horizontaux pour vérifier l’espace libre
-            bool spaceRight = !Physics2D.Linecast(pos, pos + Vector2.right * (sideOffset + cornerDistance), groundLayer);
-            bool spaceLeft = !Physics2D.Linecast(pos, pos + Vector2.left * (sideOffset + cornerDistance), groundLayer);
+            //SpaceRight = !Physics2D.Linecast(pos, pos + Vector2.right * (sideOffset + CornerDistance), groundLayer);
+            //SpaceLeft = !Physics2D.Linecast(pos, pos + Vector2.left * (sideOffset + CornerDistance), groundLayer);
 
             // Correction
             float moveValueH = playerStateMachine.MoveH.ReadValue<float>();
 
-            if (hitLeft && !hitRight && spaceRight && moveValueH <= 0)
+            if (HitLeft && !HitRight && SpaceRight && moveValueH <= 0)
             {
-
-                transform.position += new Vector3(cornerDistance, 0f, 0f);
+                transform.position += new Vector3(CornerDistance, 0f, 0f);
             }
-            else if (hitRight && !hitLeft && spaceLeft && moveValueH >= 0)
+            else if (HitRight && !HitLeft && SpaceLeft && moveValueH >= 0)
             {
-                transform.position -= new Vector3(cornerDistance, 0f, 0f);
+                transform.position -= new Vector3(CornerDistance, 0f, 0f);
             }
         }
     }
@@ -67,7 +75,7 @@ public class CornerCorrection : MonoBehaviour
 
         // Linecasts latéraux
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(pos, pos + Vector2.left * (sideOffset + cornerDistance));
-        Gizmos.DrawLine(pos, pos + Vector2.right * (sideOffset + cornerDistance));
+        Gizmos.DrawLine(pos, pos + Vector2.left * (sideOffset + CornerDistance));
+        Gizmos.DrawLine(pos, pos + Vector2.right * (sideOffset + CornerDistance));
     }
 }

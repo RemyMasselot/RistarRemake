@@ -898,10 +898,35 @@ MonoBehaviour:
   Invincinbility: {fileID: 0}
   CornerCorrection: {fileID: 0}
   WalkSpeed: 180
-  VerticalMovementSpeed: 7
+  JumpSpeedMax: 8
+  TimeToJump: 0.5
+  JumpSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   HorizontalMovementMultiplier: 4
-  MaxVerticalDistance: 2
-  MaxTimeApex: 0.4
+  MaxVerticalJumpDistance: 1.7
+  MaxTimeApex: 0.25
   JumpBufferTime: 0.1
   JumpBufferCounter: 10
   LowJumpActivated: 0
@@ -914,27 +939,27 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.3
-      inSlope: 0.2358385
-      outSlope: 0.2358385
+      value: 0.35
+      inSlope: 0.040778928
+      outSlope: 0.040778928
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.2889068
+      outWeight: 0.32993674
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1.2067815
-      outSlope: 1.2067815
+      inSlope: 1.5433481
+      outSlope: 1.5433481
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.08486235
+      inWeight: 0.044792116
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   InputFallSpeedIncrease: -3
-  InputFallSpeedDecrease: 3
+  InputFallSpeedDecrease: 0
   LeapForceV: 7
   LeapForceH: 3
   AimDir: {x: 0, y: 0}
@@ -975,15 +1000,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0044e0cef1e86d543a5b032f6532e0b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cornerDistance: 0.08
+  CornerDistance: 0.1
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
   boxWidth: 0.24
-  boxHeight: 0.1
+  boxHeight: 0.15
   heightOffset: 0.5
   sideOffset: 0.27
   rayLength: 0.08
+  HitLeft: 0
+  HitRight: 0
+  SpaceLeft: 0
+  SpaceRight: 0
 --- !u!114 &4143905908849990563
 MonoBehaviour:
   m_ObjectHideFlags: 0

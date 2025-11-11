@@ -67,10 +67,12 @@ public class PlayerStateMachine : MonoBehaviour
 
     [FoldoutGroup("MOVE")] public float WalkSpeed = 10;
 
-    [FoldoutGroup("JUMP")] public float VerticalMovementSpeed = 6f;
+    [FoldoutGroup("JUMP")] public float JumpSpeedMax = 8f;
+    [FoldoutGroup("JUMP")] public float TimeToJump = 0.5f;
+    [FoldoutGroup("JUMP")] public AnimationCurve JumpSpeedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [FoldoutGroup("JUMP")] public float HorizontalMovementMultiplier = 4f;
-    [FoldoutGroup("JUMP")] public float MaxVerticalDistance;
-    [FoldoutGroup("JUMP")] public float MaxTimeApex;
+    [FoldoutGroup("JUMP")] public float MaxVerticalJumpDistance = 1.7f;
+    [FoldoutGroup("JUMP")] public float MaxTimeApex = 0.25f;
     [FoldoutGroup("JUMP")] public float JumpBufferTime = 0.1f;
     [HideInInspector] public float JumpBufferCounter;
     [HideInInspector] public bool LowJumpActivated;
@@ -128,7 +130,9 @@ public class PlayerStateMachine : MonoBehaviour
         CurrentState.EnterState();
 
         Invincinbility = GetComponent<Invincinbility>();
-        
+        CornerCorrection = GetComponent<CornerCorrection>();
+
+
         if (NewStatePlayed == null)
         {
             NewStatePlayed = new UnityEvent();

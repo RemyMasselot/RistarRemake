@@ -6,11 +6,19 @@ public class PlayerJumpState : PlayerBaseState
     public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
-    private float jumpOriginY;
-    private float TimePassedApex;
     private bool canCountTimeApex;
+    private float TimePassedAtApex;
 
+    private float jumpOriginY;
     private float distanceFromOriginY;
+
+    private float timerUpdatePositionY = 0f;
+    private float currentPositionY;
+
+    private bool canModifyVelocityXLeft;
+    private bool canModifyVelocityXRight;
+    private float pingTimerCornerCorrection;
+
     public override void EnterState() 
     {
         //Debug.Log("JUMP ENTER");
@@ -18,9 +26,14 @@ public class PlayerJumpState : PlayerBaseState
         _player.PlayerRigidbody.gravityScale = 0;
         _player.CoyoteCounter = 0;
         jumpOriginY = _player.transform.position.y;
+        currentPositionY = jumpOriginY;
 
         canCountTimeApex = false;
-        TimePassedApex = 0;
+        TimePassedAtApex = 0;
+
+        canModifyVelocityXLeft = true;
+        canModifyVelocityXRight = true;
+        pingTimerCornerCorrection = 0;
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
@@ -34,7 +47,7 @@ public class PlayerJumpState : PlayerBaseState
         }
         else
         {
-            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.VerticalMovementSpeed);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.JumpSpeedMax);
         }
         _player.ArmDetection.ObjectDetected = 0;
     }
@@ -45,35 +58,86 @@ public class PlayerJumpState : PlayerBaseState
 
         if (canCountTimeApex)
         {
-            TimePassedApex += Time.deltaTime;
+            TimePassedAtApex += Time.deltaTime;
+            //Debug.Log("TimePassedAtApex");
         }
 
         _player.PlayerDirectionVerif();
 
+        UpdatePositionY();
+
         CheckSwitchStates();
     }
+
+    private void UpdatePositionY()
+    {
+        if (_player.CornerCorrection.HitLeft == false && _player.CornerCorrection.HitRight == false)
+        {
+            if (timerUpdatePositionY < _player.TimeToJump)
+            {
+                timerUpdatePositionY += Time.deltaTime;
+                float t = Mathf.Clamp01(timerUpdatePositionY / _player.TimeToJump);
+                float curveValue = _player.JumpSpeedCurve.Evaluate(t); // renvoie une valeur entre 0 et 1
+                currentPositionY = jumpOriginY + _player.MaxVerticalJumpDistance * curveValue;
+            }
+            else
+            {
+                currentPositionY = jumpOriginY + _player.MaxVerticalJumpDistance;
+            }
+        }
+    }
+
     public override void FixedUpdateState() 
     {
         float velocityX = 0;
-        float velocityY = 0;
-        
-        float moveValue = _player.MoveH.ReadValue<float>();
-        velocityX = moveValue != 0 ? moveValue * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+        float moveValueH = _player.MoveH.ReadValue<float>();
+        // Si les coins sont touchés, on corrige la position horizontale pendant un certain temps
+        // Pendant ce temps, les mouvement horizontaux sont ignorés
 
-        distanceFromOriginY = Mathf.Abs(_player.transform.position.y - jumpOriginY);
-
-        if (distanceFromOriginY >= _player.MaxVerticalDistance)
+        if (_player.CornerCorrection.HitLeft && !_player.CornerCorrection.HitRight && moveValueH <= 0.5f)
         {
-            velocityY = 0;
+            _player.transform.position += new Vector3(_player.CornerCorrection.CornerDistance, 0f, 0f);
+            pingTimerCornerCorrection = _player.TimePassedInState;
+            canModifyVelocityXLeft = false;
+        }
+        else if (_player.CornerCorrection.HitRight && !_player.CornerCorrection.HitLeft && moveValueH >= -0.5f)
+        {
+            _player.transform.position -= new Vector3(_player.CornerCorrection.CornerDistance, 0f, 0f);
+            pingTimerCornerCorrection = _player.TimePassedInState;
+            canModifyVelocityXRight = false;
+        }
+
+        if (_player.TimePassedInState >= pingTimerCornerCorrection + 0.25f)
+        {
+            canModifyVelocityXLeft = true;
+            canModifyVelocityXRight = true;
+        }
+
+        if (moveValueH < 0 && canModifyVelocityXLeft == true)
+        {
+            velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+        }
+        else if (moveValueH > 0 && canModifyVelocityXRight == true)
+        {
+            velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
         }
         else
         {
-            velocityY = _player.VerticalMovementSpeed;
+            velocityX = 0;
+        }
+
+        distanceFromOriginY = Mathf.Abs(_player.transform.position.y - jumpOriginY);
+
+        if (distanceFromOriginY >= _player.MaxVerticalJumpDistance)
+        {
             canCountTimeApex = true;
         }
 
-        _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);
+        _player.transform.position = new Vector2(_player.transform.position.x, currentPositionY);
+
+        _player.PlayerRigidbody.velocity = new Vector2(velocityX, _player.PlayerRigidbody.velocity.y);
     }
+
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() 
@@ -90,7 +154,7 @@ public class PlayerJumpState : PlayerBaseState
         // Passage en state FALL
         if (_player.Jump.WasReleasedThisFrame())
         {
-            if (distanceFromOriginY <= _player.MaxVerticalDistance / 1.5)
+            if (distanceFromOriginY <= _player.MaxVerticalJumpDistance / 1.5)
             {
                 _player.LowJumpActivated = true;
             }
@@ -100,13 +164,25 @@ public class PlayerJumpState : PlayerBaseState
             }
         }
 
-        if (TimePassedApex >= _player.MaxTimeApex)
+        if (TimePassedAtApex >= _player.MaxTimeApex)
         {
             SwitchState(_factory.Fall());
         }
-        else if (_player.LowJumpActivated && distanceFromOriginY >= _player.MaxVerticalDistance / 1.5)
+        else if (_player.LowJumpActivated && distanceFromOriginY >= _player.MaxVerticalJumpDistance / 1.5)
         {
             SwitchState(_factory.Fall());
+        }
+
+        if (_player.CornerCorrection.HitLeft && _player.CornerCorrection.HitRight)
+        {
+            if (_player.LowJumpActivated)
+            {
+                SwitchState(_factory.Fall());
+            }
+            else if (_player.TimePassedInState >= _player.TimeToJump)
+            {
+                SwitchState(_factory.Fall());
+            }
         }
 
         // Passage en state GRAB
