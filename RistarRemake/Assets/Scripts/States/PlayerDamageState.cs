@@ -13,7 +13,7 @@ public class PlayerDamageState : PlayerBaseState
 
         if (_player.LifesNumber > 0)
         {
-            _player.PlayerRigidbody.gravityScale = 1;
+            //_player.PlayerRigidbody.gravityScale = 1;
             _player.PlayerRigidbody.velocity = new Vector2(0, _player.LeapForceV/1.5f);
 
             _player.Invincinbility.InvincibilityCounter = _player.Invincinbility.InvincibilityTime;

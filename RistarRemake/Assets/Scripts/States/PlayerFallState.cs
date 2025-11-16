@@ -13,7 +13,7 @@ public class PlayerFallState : PlayerBaseState
 
     public override void EnterState() 
     {
-        _player.PlayerRigidbody.gravityScale = 0;
+        //_player.PlayerRigidbody.gravityScale = 0;
 
         isJumpBufferingTimerCanCount = false;
         _player.JumpBufferCounter = 10;

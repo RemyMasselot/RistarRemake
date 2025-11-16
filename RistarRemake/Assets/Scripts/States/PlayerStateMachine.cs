@@ -87,6 +87,9 @@ public class PlayerStateMachine : MonoBehaviour
 
     [FoldoutGroup("LEAP")] public float LeapForceV = 7f;
     [FoldoutGroup("LEAP")] public float LeapForceH = 3f;
+    [FoldoutGroup("LEAP")] public AnimationCurve LeapCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [FoldoutGroup("LEAP")] public float TimeToLeap = 0.7f;
+    [FoldoutGroup("LEAP")] public float LeapForce = 2f;
 
     [HideInInspector] public Vector2 AimDir;
     [FoldoutGroup("GRAB")] public float DistanceGrab;

@@ -10,7 +10,7 @@ public class PlayerWallJumpState : PlayerBaseState
     {
         //Debug.Log("JUMP ENTER");
 
-        _player.PlayerRigidbody.gravityScale = 1;
+        //_player.PlayerRigidbody.gravityScale = 1;
         _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalMovementMultiplier, _player.JumpSpeedMax);
     }
 

@@ -21,7 +21,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         canControl = false;
         _player.IsPlayerTurnToLeft = false;
         _player.transform.rotation = Quaternion.Euler(0, 0, 0);
-        _player.PlayerRigidbody.gravityScale = 0;
+        //_player.PlayerRigidbody.gravityScale = 0;
 
         DOVirtual.DelayedCall(0.3f, () =>
         {

@@ -939,21 +939,21 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.35
-      inSlope: 0.040778928
-      outSlope: 0.040778928
+      value: 0.25
+      inSlope: 0.50988024
+      outSlope: 0.50988024
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.32993674
+      outWeight: 0.13561569
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1.5433481
-      outSlope: 1.5433481
+      inSlope: 1.1437694
+      outSlope: 1.1437694
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.044792116
+      inWeight: 0.091442525
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -962,6 +962,32 @@ MonoBehaviour:
   InputFallSpeedDecrease: 0
   LeapForceV: 7
   LeapForceH: 3
+  LeapCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 10.256085
+      outSlope: 10.256085
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.07847449
+    - serializedVersion: 3
+      time: 0.38885057
+      value: 1.8227706
+      inSlope: 0.077853344
+      outSlope: 0.077853344
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.28749996
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  TimeToLeap: 0.7
+  LeapForce: 2
   AimDir: {x: 0, y: 0}
   DistanceGrab: 0.8
   DurationExtendGrab: 0.2

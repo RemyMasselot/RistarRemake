@@ -10,7 +10,7 @@ public class PlayerWallIdleState : PlayerBaseState
     {
         //Debug.Log("ENTER WALL IDLE");
         _player.PlayerRigidbody.velocity = Vector2.zero;
-        _player.PlayerRigidbody.gravityScale = 0;
+        //_player.PlayerRigidbody.gravityScale = 0;
 
         _player.PlayerDirectionVerif();
     }

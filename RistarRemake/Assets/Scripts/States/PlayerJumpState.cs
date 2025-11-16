@@ -17,13 +17,12 @@ public class PlayerJumpState : PlayerBaseState
 
     private bool canModifyVelocityXLeft;
     private bool canModifyVelocityXRight;
-    private float pingTimerCornerCorrection;
 
     public override void EnterState() 
     {
         //Debug.Log("JUMP ENTER");
 
-        _player.PlayerRigidbody.gravityScale = 0;
+        //_player.PlayerRigidbody.gravityScale = 0;
         _player.CoyoteCounter = 0;
         jumpOriginY = _player.transform.position.y;
         currentPositionY = jumpOriginY;
@@ -33,7 +32,6 @@ public class PlayerJumpState : PlayerBaseState
 
         canModifyVelocityXLeft = true;
         canModifyVelocityXRight = true;
-        pingTimerCornerCorrection = 0;
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
@@ -108,13 +106,11 @@ public class PlayerJumpState : PlayerBaseState
         if (_player.CornerCorrection.HitLeft && !_player.CornerCorrection.HitRight && moveValueH <= 0.5f)
         {
             _player.transform.position += new Vector3(_player.CornerCorrection.CornerDistance, 0f, 0f);
-            pingTimerCornerCorrection = _player.TimePassedInState;
             canModifyVelocityXLeft = false;
         }
         else if (_player.CornerCorrection.HitRight && !_player.CornerCorrection.HitLeft && moveValueH >= -0.5f)
         {
             _player.transform.position -= new Vector3(_player.CornerCorrection.CornerDistance, 0f, 0f);
-            pingTimerCornerCorrection = _player.TimePassedInState;
             canModifyVelocityXRight = false;
         }
 
