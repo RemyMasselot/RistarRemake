@@ -898,8 +898,10 @@ MonoBehaviour:
   Invincinbility: {fileID: 0}
   CornerCorrection: {fileID: 0}
   WalkSpeed: 180
-  JumpSpeedMax: 8
-  TimeToJump: 0.5
+  VerticalJumpDistance: 1.7
+  MaxTimeAtApex: 0.12
+  TimeToGoToApex: 0.45
+  MaxSpeedToGoToApex: 8
   JumpSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -924,16 +926,14 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  HorizontalMovementMultiplier: 4
-  MaxVerticalJumpDistance: 1.7
-  MaxTimeApex: 0.25
+  HorizontalJumpMovementMultiplier: 4
   JumpBufferTime: 0.1
   JumpBufferCounter: 10
   LowJumpActivated: 0
   CoyoteTime: 0.2
   CoyoteCounter: 0
   FallSpeedMax: 15
-  TimeToFallSpeedMax: 0.8
+  TimeToGoToFallSpeedMax: 0.8
   FallSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -960,8 +960,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   InputFallSpeedIncrease: -3
   InputFallSpeedDecrease: 0
-  LeapForceV: 7
-  LeapForceH: 3
   LeapCurve:
     serializedVersion: 2
     m_Curve:
@@ -990,10 +988,12 @@ MonoBehaviour:
   LeapForce: 2
   AimDir: {x: 0, y: 0}
   DistanceGrab: 0.8
-  DurationExtendGrab: 0.2
-  MaxTimeGrab: 1
-  IsTimerRunning: 0
-  CurrentTimerValue: 0
+  TimeToExtendArms: 0.2
+  MaxHoldGrabTime: 1
+  MaxTimeStayingAtApex: 0.3
+  FallInGrabValue: -6
+  HorizontalGrabMovementMultiplier: 1.5
+  VerticalGrabMovementMultiplier: 1
   HeadbuttMoveSpead: 0
   SpinTime: 0.3
   StarHandleCentre: {x: 0, y: 0, z: 0}

@@ -11,6 +11,10 @@ public class PlayerGrabState : PlayerBaseState
     /// <summary>
     /// POUVOIR SPAM LE GRAB EN UTILISANT LA TECHNIQUE DU JUMP BUFERING
     /// </summary>
+    /// 
+
+    private bool isHoldGrabTimerRunning = false;
+    private float currentHoldGrabTimerValue;
 
     public override void EnterState()
     {
@@ -24,7 +28,7 @@ public class PlayerGrabState : PlayerBaseState
 
         ExtendArms();
 
-        StartTimer();
+        
     }
     private void DirectionCorrection()
     {
@@ -90,33 +94,51 @@ public class PlayerGrabState : PlayerBaseState
 
         // Move Left Arm
         Vector2 PointDestinationArmLeft = new Vector2(_player.ShoulderLeft.localPosition.x + _grabDirection.x, _player.ShoulderLeft.localPosition.y + _grabDirection.y);
-        _player.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _player.DurationExtendGrab);
+        _player.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _player.TimeToExtendArms);
         // Move Right Arm
         Vector2 PointDestinationArmRight = new Vector2(_player.ShoulderRight.localPosition.x + _grabDirection.x, _player.ShoulderRight.localPosition.y + _grabDirection.y);
-        _player.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _player.DurationExtendGrab);
+        _player.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _player.TimeToExtendArms).OnComplete(()=>
+            {
+                StartHoldGrabTimer();
+            });
     }
 
-    void StartTimer()
+    void StartHoldGrabTimer()
     {
-        _player.CurrentTimerValue = _player.MaxTimeGrab;
-        _player.IsTimerRunning = true;
+        currentHoldGrabTimerValue = _player.MaxHoldGrabTime;
+        isHoldGrabTimerRunning = true;
     }
+
+
 
     public override void UpdateState()
     {
-        // Vérification d'un sol ou non
+        _player.CountTimePassedInState();
+        // Air Control
         if (_player.GroundDetection.IsGroundDectected == false)
         {
-            // Air Control
             float moveValueH = _player.MoveH.ReadValue<float>();
-            if (moveValueH != 0)
+            float moveValueV = _player.MoveV.ReadValue<float>();
+
+            float velocityX = 0;
+            float velocityY = 0;
+
+            velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalGrabMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+
+            if (_player.TimePassedInState < _player.MaxTimeStayingAtApex)
             {
-                _player.PlayerRigidbody.velocity = new Vector2(moveValueH * _player.HorizontalMovementMultiplier, _player.PlayerRigidbody.velocity.y);
+                velocityY = moveValueV != 0 ? _player.FallInGrabValue / 2 + moveValueV * _player.VerticalGrabMovementMultiplier : _player.FallInGrabValue / 2;
             }
             else
             {
-                _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.PlayerRigidbody.velocity.y);
+                velocityY = _player.FallInGrabValue;
             }
+
+            _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);
+        }
+        else
+        {
+            _player.PlayerRigidbody.velocity = new Vector2(0, 0);
         }
 
         if (_player.ArmDetection.ObjectDetected == 3 || _player.ArmDetection.ObjectDetected == 5)
@@ -128,19 +150,19 @@ public class PlayerGrabState : PlayerBaseState
         }
         else
         {
-            if (_player.IsTimerRunning == true)
+            if (isHoldGrabTimerRunning == true)
             {
-                _player.CurrentTimerValue -= Time.deltaTime;
-                if (_player.CurrentTimerValue <= 0f)
+                currentHoldGrabTimerValue -= Time.deltaTime;
+                if (currentHoldGrabTimerValue <= 0f)
                 {
-                    _player.IsTimerRunning = false;
+                    isHoldGrabTimerRunning = false;
                     ShortenArms();
                 }
             }
 
             if (_player.Grab.WasReleasedThisFrame())
             {
-                _player.IsTimerRunning = false;
+                isHoldGrabTimerRunning = false;
                 ShortenArms();
             }
         }
@@ -161,9 +183,9 @@ public class PlayerGrabState : PlayerBaseState
         _player.ArmDetection.gameObject.SetActive(false);
 
         // Move Left Arm
-        _player.IkArmLeft.transform.DOLocalMove(_player.DefaultPosLeft.localPosition, _player.DurationExtendGrab);
+        _player.IkArmLeft.transform.DOLocalMove(_player.DefaultPosLeft.localPosition, _player.TimeToExtendArms);
         // Move Right Arm
-        _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.DurationExtendGrab).OnComplete(() =>
+        _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.TimeToExtendArms).OnComplete(() =>
         {
             if (_player.ArmDetection.ObjectDetected == 0)
             {
@@ -248,7 +270,7 @@ public class PlayerGrabState : PlayerBaseState
     private void GrabOther()
     {
         Debug.Log("Other Detected");
-        _player.IsTimerRunning = false;
+        isHoldGrabTimerRunning = false;
         ShortenArms();
     }
     private void GrabWall()
@@ -264,9 +286,9 @@ public class PlayerGrabState : PlayerBaseState
         _player.ArmDetection.gameObject.SetActive(false);
 
         // Move Left Arm
-        _player.IkArmLeft.transform.DOLocalMove(_player.DefaultPosLeft.localPosition, _player.DurationExtendGrab);
+        _player.IkArmLeft.transform.DOLocalMove(_player.DefaultPosLeft.localPosition, _player.TimeToExtendArms);
         // Move Right Arm
-        _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.DurationExtendGrab).OnComplete(() =>
+        _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.TimeToExtendArms).OnComplete(() =>
         {
             // Vérification d'un sol ou non
             if (_player.GroundDetection.IsGroundDectected == false)

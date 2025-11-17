@@ -9,7 +9,7 @@ public class PlayerFallState : PlayerBaseState
     private bool isJumpBufferingTimerCanCount;
 
     private float speedIncreaseCurrent = 0f;
-    private float timer = 0f;
+    private float currentTimerValue = 0f;
 
     public override void EnterState() 
     {
@@ -19,6 +19,7 @@ public class PlayerFallState : PlayerBaseState
         _player.JumpBufferCounter = 10;
         _player.LowJumpActivated = false;
         speedIncreaseCurrent = 0;
+        currentTimerValue = 0;
 
         if (_player.ArmDetection.ObjectDetected == 4)
         {
@@ -39,11 +40,11 @@ public class PlayerFallState : PlayerBaseState
     {
         if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
         {
-            _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalMovementMultiplier / 2, -_player.JumpSpeedMax / 2);
+            _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalJumpMovementMultiplier / 2, -_player.MaxSpeedToGoToApex / 2);
         }
         else if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
         {
-            _player.PlayerRigidbody.velocity = new Vector2(-_player.HorizontalMovementMultiplier / 2, -_player.JumpSpeedMax / 2);
+            _player.PlayerRigidbody.velocity = new Vector2(-_player.HorizontalJumpMovementMultiplier / 2, -_player.MaxSpeedToGoToApex / 2);
         }
     }   
 
@@ -67,10 +68,10 @@ public class PlayerFallState : PlayerBaseState
 
     private void UpdateSpeedIncreaseCurrent()
     {
-        if (timer < _player.TimeToFallSpeedMax)
+        if (currentTimerValue < _player.TimeToGoToFallSpeedMax)
         {
-            timer += Time.deltaTime;
-            float t = Mathf.Clamp01(timer / _player.TimeToFallSpeedMax);
+            currentTimerValue += Time.deltaTime;
+            float t = Mathf.Clamp01(currentTimerValue / _player.TimeToGoToFallSpeedMax);
             float curveValue = _player.FallSpeedCurve.Evaluate(t); // renvoie une valeur entre 0 et 1
             speedIncreaseCurrent = _player.FallSpeedMax * curveValue;
         }
@@ -100,7 +101,7 @@ public class PlayerFallState : PlayerBaseState
             speedInputVertical = _player.InputFallSpeedDecrease * Mathf.Abs(moveValueV);
         }
 
-        velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+        velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalJumpMovementMultiplier : _player.PlayerRigidbody.velocity.x;
         velocityY = speedInputVertical - speedIncreaseCurrent;
 
         _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);

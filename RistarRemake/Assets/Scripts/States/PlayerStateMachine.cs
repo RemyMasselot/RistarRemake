@@ -67,12 +67,12 @@ public class PlayerStateMachine : MonoBehaviour
 
     [FoldoutGroup("MOVE")] public float WalkSpeed = 10;
 
-    [FoldoutGroup("JUMP")] public float JumpSpeedMax = 8f;
-    [FoldoutGroup("JUMP")] public float TimeToJump = 0.5f;
+    [FoldoutGroup("JUMP")] public float VerticalJumpDistance = 1.7f;
+    [FoldoutGroup("JUMP")] public float MaxTimeAtApex = 0.25f;
+    [FoldoutGroup("JUMP")] public float TimeToGoToApex = 0.5f;
+    [FoldoutGroup("JUMP")] public float MaxSpeedToGoToApex = 8f;
     [FoldoutGroup("JUMP")] public AnimationCurve JumpSpeedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-    [FoldoutGroup("JUMP")] public float HorizontalMovementMultiplier = 4f;
-    [FoldoutGroup("JUMP")] public float MaxVerticalJumpDistance = 1.7f;
-    [FoldoutGroup("JUMP")] public float MaxTimeApex = 0.25f;
+    [FoldoutGroup("JUMP")] public float HorizontalJumpMovementMultiplier = 4f;
     [FoldoutGroup("JUMP")] public float JumpBufferTime = 0.1f;
     [HideInInspector] public float JumpBufferCounter;
     [HideInInspector] public bool LowJumpActivated;
@@ -80,21 +80,23 @@ public class PlayerStateMachine : MonoBehaviour
     [HideInInspector] public float CoyoteCounter;
 
     [FoldoutGroup("FALL")] public float FallSpeedMax = 15f;
-    [FoldoutGroup("FALL")] public float TimeToFallSpeedMax = 2f;
+    [FoldoutGroup("FALL")] public float TimeToGoToFallSpeedMax = 0.8f;
     [FoldoutGroup("FALL")] public AnimationCurve FallSpeedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-    [FoldoutGroup("FALL")] public float InputFallSpeedIncrease = -0.2f;
-    [FoldoutGroup("FALL")] public float InputFallSpeedDecrease = 1f;
+    [FoldoutGroup("FALL")] public float InputFallSpeedIncrease = -3f;
+    [FoldoutGroup("FALL")] public float InputFallSpeedDecrease = 0f;
 
     [FoldoutGroup("LEAP")] public AnimationCurve LeapCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [FoldoutGroup("LEAP")] public float TimeToLeap = 0.7f;
     [FoldoutGroup("LEAP")] public float LeapForce = 2f;
 
     [HideInInspector] public Vector2 AimDir;
-    [FoldoutGroup("GRAB")] public float DistanceGrab;
-    [FoldoutGroup("GRAB")] public float DurationExtendGrab;
-    [FoldoutGroup("GRAB")] public float MaxTimeGrab;
-    [HideInInspector] public bool IsTimerRunning = false;
-    [HideInInspector] public float CurrentTimerValue;
+    [FoldoutGroup("GRAB")] public float DistanceGrab = 0.8f;
+    [FoldoutGroup("GRAB")] public float TimeToExtendArms = 0.2f;
+    [FoldoutGroup("GRAB")] public float MaxHoldGrabTime = 1;
+    [FoldoutGroup("GRAB")] public float MaxTimeStayingAtApex = 0.3f;
+    [FoldoutGroup("GRAB")] public float FallInGrabValue = -6;
+    [FoldoutGroup("GRAB")] public float HorizontalGrabMovementMultiplier = 1.5f;
+    [FoldoutGroup("GRAB")] public float VerticalGrabMovementMultiplier = 1;
 
     [FoldoutGroup("HEADBUTT")] public float HeadbuttMoveSpead;
 

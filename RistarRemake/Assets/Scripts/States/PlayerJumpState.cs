@@ -66,22 +66,22 @@ public class PlayerJumpState : PlayerBaseState
     {
         if (_player.CornerCorrection.HitLeft == false && _player.CornerCorrection.HitRight == false)
         {
-            if (timerUpdatePositionY < _player.TimeToJump)
+            if (timerUpdatePositionY < _player.TimeToGoToApex)
             {
                 timerUpdatePositionY += Time.deltaTime;
-                float t = Mathf.Clamp01(timerUpdatePositionY / _player.TimeToJump);
+                float t = Mathf.Clamp01(timerUpdatePositionY / _player.TimeToGoToApex);
                 float curveValue = _player.JumpSpeedCurve.Evaluate(t); // renvoie une valeur entre 0 et 1
-                currentPositionY = jumpOriginY + _player.MaxVerticalJumpDistance * curveValue;
+                currentPositionY = jumpOriginY + _player.VerticalJumpDistance * curveValue;
             }
             else
             {
-                currentPositionY = jumpOriginY + _player.MaxVerticalJumpDistance;
+                currentPositionY = jumpOriginY + _player.VerticalJumpDistance;
             }
         }
         
         distanceFromOriginY = Mathf.Abs(_player.transform.position.y - jumpOriginY);
 
-        if (distanceFromOriginY >= _player.MaxVerticalJumpDistance)
+        if (distanceFromOriginY >= _player.VerticalJumpDistance)
         {
             canCountTimeApex = true;
         }
@@ -127,11 +127,11 @@ public class PlayerJumpState : PlayerBaseState
 
         if (moveValueH < 0 && canModifyVelocityXLeft == true)
         {
-            velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+            velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalJumpMovementMultiplier : _player.PlayerRigidbody.velocity.x;
         }
         else if (moveValueH > 0 && canModifyVelocityXRight == true)
         {
-            velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+            velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalJumpMovementMultiplier : _player.PlayerRigidbody.velocity.x;
         }
         else
         {
@@ -157,7 +157,7 @@ public class PlayerJumpState : PlayerBaseState
         // Passage en state FALL
         if (_player.Jump.WasReleasedThisFrame())
         {
-            if (distanceFromOriginY <= _player.MaxVerticalJumpDistance / 1.5)
+            if (distanceFromOriginY <= _player.VerticalJumpDistance / 1.5)
             {
                 _player.LowJumpActivated = true;
             }
@@ -167,11 +167,11 @@ public class PlayerJumpState : PlayerBaseState
             }
         }
 
-        if (TimePassedAtApex >= _player.MaxTimeApex)
+        if (TimePassedAtApex >= _player.MaxTimeAtApex)
         {
             SwitchState(_factory.Fall());
         }
-        else if (_player.LowJumpActivated && distanceFromOriginY >= _player.MaxVerticalJumpDistance / 1.5)
+        else if (_player.LowJumpActivated && distanceFromOriginY >= _player.VerticalJumpDistance / 1.5)
         {
             SwitchState(_factory.Fall());
         }
@@ -182,7 +182,7 @@ public class PlayerJumpState : PlayerBaseState
             {
                 SwitchState(_factory.Fall());
             }
-            else if (_player.TimePassedInState >= _player.TimeToJump)
+            else if (_player.TimePassedInState >= _player.TimeToGoToApex)
             {
                 SwitchState(_factory.Fall());
             }

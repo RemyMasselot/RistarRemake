@@ -285,6 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed6ed46f9903e5448e4c11c775460e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraTargetOverride: {x: 0, y: 0, z: 0}
   MoveH:
     m_Name: Move H
     m_Type: 0
@@ -347,44 +348,119 @@ MonoBehaviour:
   DefaultPosRight: {fileID: 2073784023052505435}
   DefaultPosLeft: {fileID: 8183024466019581958}
   TriggerGoToMeteorStrike: {fileID: 2506346529092138592}
+  IsLadder: 0
   <EnemyDetection>k__BackingField: {fileID: 8776056730058072762}
   <GroundDetection>k__BackingField: {fileID: 2469590460740585969}
   <JumpBufferingDetection>k__BackingField: {fileID: 5726120423214813130}
   <LadderVDetectionL>k__BackingField: {fileID: 5087369339598093341}
   <LadderVDetectionR>k__BackingField: {fileID: 8121664889278199976}
   <LadderHDetection>k__BackingField: {fileID: 714829978821149103}
-  IsLadder: 0
-  CameraInde: 0
-  CameraTargetOverride: {x: 0, y: 0, z: 0}
   LifesNumber: 4
+  NewStatePlayed:
+    m_PersistentCalls:
+      m_Calls: []
   IsPlayerTurnToLeft: 0
   TimePassedInState: 0
   Invincinbility: {fileID: 0}
   CornerCorrection: {fileID: 0}
-  NewStatePlayed:
-    m_PersistentCalls:
-      m_Calls: []
   WalkSpeed: 180
-  JumpForceV: 6
-  JumpForceH: 4
-  MaxTimeJump: 0.6
-  CurrentTimerValueJump: 0
-  IsTimerRunningJump: 0
+  VerticalJumpDistance: 1.7
+  MaxTimeAtApex: 0.25
+  TimeToGoToApex: 0.5
+  MaxSpeedToGoToApex: 8
+  JumpSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HorizontalJumpMovementMultiplier: 4
   JumpBufferTime: 0.1
-  CoyoteTime: 0.2
   JumpBufferCounter: 0
+  LowJumpActivated: 0
+  CoyoteTime: 0.2
   CoyoteCounter: 0
-  JumpReady: 0
-  MoveDownFallValueMin: -0.2
-  MoveDownFallValueMax: 0.1
-  LeapForceV: 7
-  LeapForceH: 3
+  FallSpeedMax: 15
+  TimeToGoToFallSpeedMax: 0.8
+  FallSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.25
+      inSlope: 0.50988024
+      outSlope: 0.50988024
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.13561569
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.1437694
+      outSlope: 1.1437694
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.091442525
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  InputFallSpeedIncrease: -3
+  InputFallSpeedDecrease: 0
+  LeapCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 10.256085
+      outSlope: 10.256085
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.07847449
+    - serializedVersion: 3
+      time: 0.38885057
+      value: 1.8227706
+      inSlope: 0.077853344
+      outSlope: 0.077853344
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.28749996
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  TimeToLeap: 0.7
+  LeapForce: 2
   AimDir: {x: 0, y: 0}
   DistanceGrab: 2.3
-  DurationExtendGrab: 0.2
-  MaxTimeGrab: 1
-  IsTimerRunning: 0
-  CurrentTimerValue: 0
+  TimeToExtendArms: 0.2
+  MaxHoldGrabTime: 1
+  MaxTimeStayingAtApex: 0.3
+  FallInGrabValue: -6
+  HorizontalGrabMovementMultiplier: 1.5
+  VerticalGrabMovementMultiplier: 1
+  HeadbuttMoveSpead: 0
   SpinTime: 0.3
   StarHandleCentre: {x: 0, y: 0, z: 0}
   StarHandleCurrentValue: 0
@@ -416,7 +492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0044e0cef1e86d543a5b032f6532e0b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cornerDistance: 0.08
+  CornerDistance: 0.08
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -425,6 +501,8 @@ MonoBehaviour:
   heightOffset: 0.5
   sideOffset: 0.27
   rayLength: 0.08
+  HitLeft: 0
+  HitRight: 0
 --- !u!114 &7789714909879073016
 MonoBehaviour:
   m_ObjectHideFlags: 0
