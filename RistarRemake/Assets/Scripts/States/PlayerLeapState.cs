@@ -1,5 +1,6 @@
 using System.Threading;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerLeapState : PlayerBaseState
 {
@@ -18,9 +19,9 @@ public class PlayerLeapState : PlayerBaseState
 
     public override void UpdateState()
     {
-        SetPlayerPosition();
-
         _player.PlayerDirectionVerif();
+
+        SetPlayerPosition();
 
         CheckSwitchStates();
     }
@@ -38,16 +39,11 @@ public class PlayerLeapState : PlayerBaseState
             float curveTime = Mathf.Clamp01(currentTimeLeapCurve / _player.TimeToLeap);
             float curveValue = _player.LeapCurve.Evaluate(curveTime); // renvoie une valeur entre 0 et 1
 
-            float moveValueH = _player.MoveH.ReadValue<float>();
-            if (moveValueH < 0)
-            {
-                _player.transform.position = leapStartPosition + new Vector3(-curveTime * _player.LeapForce, curveValue * _player.LeapForce / 2, _player.transform.position.z);
-            }
-            else if (moveValueH > 0)
-            {
-                _player.transform.position = leapStartPosition + new Vector3(curveTime * _player.LeapForce, curveValue * _player.LeapForce / 2, _player.transform.position.z);
-            }
-            else if (_player.IsPlayerTurnToLeft)
+            //float moveValueH = _player.MoveH.ReadValue<float>();
+
+            //curveTime += moveValueH;
+
+            if (_player.IsPlayerTurnToLeft)
             {
                 _player.transform.position = leapStartPosition + new Vector3(-curveTime * _player.LeapForce, curveValue * _player.LeapForce / 2, _player.transform.position.z);
             }
