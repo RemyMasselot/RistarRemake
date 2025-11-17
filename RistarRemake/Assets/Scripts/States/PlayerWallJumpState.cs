@@ -6,12 +6,16 @@ public class PlayerWallJumpState : PlayerBaseState
     public PlayerWallJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
     
+    private float wallJumpOriginY;
+
     public override void EnterState() 
     {
         //Debug.Log("JUMP ENTER");
 
         //_player.PlayerRigidbody.gravityScale = 1;
-        _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalMovementMultiplier, _player.JumpSpeedMax);
+        //_player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalMovementMultiplier, _player.JumpSpeedMax);
+
+        wallJumpOriginY = _player.transform.position.y;
     }
 
     public override void UpdateState() 
@@ -23,8 +27,12 @@ public class PlayerWallJumpState : PlayerBaseState
 
     public override void FixedUpdateState() 
     {
-        float moveValue = _player.MoveH.ReadValue<float>();
-        _player.PlayerRigidbody.velocity = new Vector2 (_player.HorizontalMovementMultiplier * moveValue, _player.PlayerRigidbody.velocity.y);
+        float moveValueX = _player.MoveH.ReadValue<float>();
+        //_player.PlayerRigidbody.velocity = new Vector2 (_player.HorizontalMovementMultiplier * moveValue, _player.PlayerRigidbody.velocity.y);
+
+        float velocityY = 2;
+
+        _player.PlayerRigidbody.velocity = new Vector2(moveValueX * 12, velocityY);
     }
 
     public override void ExitState() { }
@@ -46,7 +54,11 @@ public class PlayerWallJumpState : PlayerBaseState
         }
 
         // Passage en state FALL
-        if (_player.PlayerRigidbody.velocity.y < 0)
+        if (_player.Jump.WasReleasedThisFrame())
+        {
+            SwitchState(_factory.Fall());
+        }
+        else if (_player.transform.position.y > wallJumpOriginY + 3)
         {
             SwitchState(_factory.Fall());
         }

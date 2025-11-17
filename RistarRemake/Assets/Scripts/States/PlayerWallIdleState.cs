@@ -31,20 +31,19 @@ public class PlayerWallIdleState : PlayerBaseState
                 SwitchState(_factory.Damage());
             }
         }
-
-        // Passage en state WALL CLIMB
+        
         if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight) //Echelle Vertical
         {
             float moveValueV = _player.MoveV.ReadValue<float>();
-            if (Mathf.Abs(moveValueV) != 0)
+            if (Mathf.Abs(moveValueV) != 0) // Passage en state WALL CLIMB
             {
-                SwitchState(_factory.WallClimb());
+                SwitchState(_factory.WallClimb()); 
             }
             else if (_player.Jump.WasPerformedThisFrame())
             {
                 if (Mathf.Abs(moveValueV) > 0) // Passage en state WALL JUMP
                 {
-                    SwitchState(_factory.WallJump());
+                    SwitchState(_factory.Jump());
                 }
                 else // Passage en state FALL
                 {

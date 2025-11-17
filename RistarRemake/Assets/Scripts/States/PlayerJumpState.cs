@@ -43,10 +43,6 @@ public class PlayerJumpState : PlayerBaseState
             
             _player.PlayerRigidbody.velocity = dir.normalized * _player.StarHandleCurrentImpulse;
         }
-        else
-        {
-            _player.PlayerRigidbody.velocity = new Vector2(_player.PlayerRigidbody.velocity.x, _player.JumpSpeedMax);
-        }
         _player.ArmDetection.ObjectDetected = 0;
     }
 
@@ -202,11 +198,14 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void OnCollisionStay2D(Collision2D collision) 
     {
-        _player.LadderVerif(collision);
-
-        if (_player.IsLadder != (int)LadderIs.Nothing)
+        if (_player.TimePassedInState > 0.05f)
         {
-            SwitchState(_factory.WallClimb());
+            _player.LadderVerif(collision);
+            
+            if (_player.IsLadder != (int)LadderIs.Nothing)
+            {
+                SwitchState(_factory.WallClimb());
+            }
         }
     }
 }

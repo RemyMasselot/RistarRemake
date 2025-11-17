@@ -77,7 +77,7 @@ public class PlayerWallClimbState : PlayerBaseState
                 // Passage en state JUMP
                 if (_player.Jump.WasPerformedThisFrame())
                 {
-                    SwitchState(_factory.WallJump());
+                    SwitchState(_factory.Jump());
                 }
             }
             else if (moveValueV < 0)
