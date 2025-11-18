@@ -50,7 +50,9 @@ public class PlayerIdleState : PlayerBaseState
         // Passage en state GRAB
         if (_player.Grab.WasPerformedThisFrame())
         {
-            SwitchState(_factory.Grab());
+            //SwitchState(_factory.Grab());
+            _player.IsGrabing = true;
+            _player.GrabScript.GrabInitialisation();
         }
     }
 

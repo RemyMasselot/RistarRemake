@@ -11,7 +11,7 @@ public class PlayerStateMachine : MonoBehaviour
     [HideInInspector] public Vector3 CameraTargetOverride;
     
     // STATES
-    public PlayerStateFactory _states;
+    public PlayerStateFactory StatesFactory;
     public PlayerBaseState CurrentState;
 
     [FoldoutGroup("INPUT ACTIONS")] private Controller controls;
@@ -23,6 +23,7 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("INPUT ACTIONS")] public InputAction Back;
 
     [FoldoutGroup("REFERENCES")]
+    [FoldoutGroup("REFERENCES/Grab")] public Grab GrabScript;
     [FoldoutGroup("REFERENCES/Grab")] public ArmDetection ArmDetection;
     [FoldoutGroup("REFERENCES/Grab")] public Transform IkArmRight;
     [FoldoutGroup("REFERENCES/Grab")] public Transform IkArmLeft;
@@ -89,6 +90,7 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("LEAP")] public float TimeToLeap = 0.7f;
     [FoldoutGroup("LEAP")] public float LeapForce = 2f;
 
+    [HideInInspector] public bool IsGrabing = false;
     [HideInInspector] public Vector2 AimDir;
     [FoldoutGroup("GRAB")] public float DistanceGrab = 0.8f;
     [FoldoutGroup("GRAB")] public float TimeToExtendArms = 0.2f;
@@ -128,8 +130,8 @@ public class PlayerStateMachine : MonoBehaviour
     private void Awake()
     {
         // setup state
-        _states = new PlayerStateFactory(this);
-        CurrentState = _states.Idle();
+        StatesFactory = new PlayerStateFactory(this);
+        CurrentState = StatesFactory.Idle();
         CurrentState.EnterState();
 
         Invincinbility = GetComponent<Invincinbility>();
