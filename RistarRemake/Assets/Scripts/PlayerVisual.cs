@@ -24,6 +24,7 @@ public class PlayerVisual : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerStateMachine.NewStatePlayed.AddListener(OnNewStatePlayed);
+        playerStateMachine.StartGrab.AddListener(OnNewStatePlayed);
     }
 
     private void Update()
@@ -67,7 +68,7 @@ public class PlayerVisual : MonoBehaviour
 
     private void ChooseAnimationOnEnterNewState()
     {
-        if (playerStateMachine.CurrentState is PlayerIdleState)
+        if (playerStateMachine.CurrentState is PlayerIdleState && playerStateMachine.IsGrabing == false)
         {
             animator.SetTrigger("Idle");
         }

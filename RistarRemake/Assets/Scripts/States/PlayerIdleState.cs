@@ -30,29 +30,29 @@ public class PlayerIdleState : PlayerBaseState
             }
         }
 
-        // Passage en state WALK
-        if (_player.MoveH.WasPerformedThisFrame())
+        if (_player.IsGrabing == false)
         {
-            SwitchState(_factory.Walk());
-        }
-
-        // Passage en state JUMP
-        if (_player.Jump.WasPerformedThisFrame())
-        {
-            SwitchState(_factory.Jump());
-        }
-        else if (_player.JumpBufferCounter <= _player.JumpBufferTime)
-        {
-            _player.LowJumpActivated = true;
-            SwitchState(_factory.Jump());
-        }
-
-        // Passage en state GRAB
-        if (_player.Grab.WasPerformedThisFrame())
-        {
-            //SwitchState(_factory.Grab());
-            if (_player.IsGrabing == false)
+            // Passage en state WALK
+            if (_player.MoveH.WasPerformedThisFrame())
             {
+                SwitchState(_factory.Walk());
+            }
+
+            // Passage en state JUMP
+            if (_player.Jump.WasPerformedThisFrame())
+            {
+                SwitchState(_factory.Jump());
+            }
+            else if (_player.JumpBufferCounter <= _player.JumpBufferTime)
+            {
+                _player.LowJumpActivated = true;
+                SwitchState(_factory.Jump());
+            }
+
+            // Passage en state GRAB
+            if (_player.Grab.WasPerformedThisFrame())
+            {
+                //SwitchState(_factory.Grab());
                 _player.IsGrabing = true;
                 _player.LaunchGrab = true;
                 if (_player.LaunchGrab == true)

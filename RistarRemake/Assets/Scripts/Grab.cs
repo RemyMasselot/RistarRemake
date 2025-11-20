@@ -28,7 +28,11 @@ public class Grab : MonoBehaviour
     public void GrabInitialisation()
     {
         Debug.Log("GRAB INITIALISATION");
+
+        _player.NewStatePlayed.Invoke();
+
         NewState = null;
+        isHoldGrabTimerRunning = false;
         _player.ArmDetection.ObjectDetected = 0;
         _player.AimDir = _player.Aim.ReadValue<Vector2>();
 
@@ -107,6 +111,7 @@ public class Grab : MonoBehaviour
         Vector2 PointDestinationArmRight = new Vector2(_player.ShoulderRight.localPosition.x + _grabDirection.x, _player.ShoulderRight.localPosition.y + _grabDirection.y);
         _player.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _player.TimeToExtendArms).OnComplete(() =>
         {
+            Debug.Log("Arms Extended");
             StartHoldGrabTimer();
         });
     }
@@ -117,9 +122,9 @@ public class Grab : MonoBehaviour
         isHoldGrabTimerRunning = true;
     }
 
-    public void UpdateState()
+    public void Update()
     {
-        _player.CountTimePassedInState();
+        //_player.CountTimePassedInState();
 
         if (_player.ArmDetection.ObjectDetected == 3 || _player.ArmDetection.ObjectDetected == 5)
         {
@@ -168,7 +173,8 @@ public class Grab : MonoBehaviour
         // Move Right Arm
         _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.TimeToExtendArms).OnComplete(() =>
         {
-            _player.IsGrabing = false;
+            //_player.IsGrabing = false;
+            //UpdatePlayerState(null);
             if (_player.ArmDetection.ObjectDetected == 0)
             {
                 // Vérification d'un sol ou non
@@ -307,6 +313,11 @@ public class Grab : MonoBehaviour
 
     private void UpdatePlayerState(PlayerBaseState newState)
     {
-        NewState = newState;
+        _player.IsGrabing = false;
+        if (NewState != null)
+        {
+            NewState = newState;
+        }
+        _player.NewStatePlayed.Invoke();
     }
 }

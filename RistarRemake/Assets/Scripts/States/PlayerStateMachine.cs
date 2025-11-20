@@ -50,6 +50,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     [FoldoutGroup("GENERAL SETTING")] public int LifesNumber = 4;
     [HideInInspector] public UnityEvent NewStatePlayed;
+    [HideInInspector] public UnityEvent StartGrab;
     [HideInInspector] public bool IsPlayerTurnToLeft = false;
     [HideInInspector] public float TimePassedInState = 0;
     [HideInInspector] public Invincinbility Invincinbility;
@@ -144,6 +145,11 @@ public class PlayerStateMachine : MonoBehaviour
             NewStatePlayed = new UnityEvent();
         }
         NewStatePlayed.AddListener(GlobalStatesInitialization);
+
+        if (StartGrab == null)
+        {
+            StartGrab = new UnityEvent();
+        }
     }
 
     private void Start()
@@ -157,7 +163,6 @@ public class PlayerStateMachine : MonoBehaviour
         Grab = controls.LAND.GRAB;
         Aim = controls.LAND.AIM;
         Back = controls.LAND.BACK;
-
     }
 
     void Update()
