@@ -32,7 +32,7 @@ public class PlayerVisual : MonoBehaviour
 
         ArmVisibility();
 
-        if (playerStateMachine.CurrentState is PlayerGrabState) // GRAB STATE ONGOING
+        if (playerStateMachine.CurrentState is PlayerGrabState || playerStateMachine.IsGrabing) // GRAB STATE ONGOING
         {
             if (playerStateMachine.ArmDetection.ObjectDetected != 0)
             {
@@ -83,7 +83,7 @@ public class PlayerVisual : MonoBehaviour
         {
             animator.SetTrigger("Fall");
         }
-        else if (playerStateMachine.CurrentState is PlayerGrabState)
+        else if (playerStateMachine.CurrentState is PlayerGrabState || playerStateMachine.IsGrabing)
         {
             EnterGrabStateInitialization();
             ChoiceGrabAnimation();
@@ -209,7 +209,7 @@ public class PlayerVisual : MonoBehaviour
         lineArmRight.SetPosition(0, playerStateMachine.ShoulderRight.position);
         lineArmRight.SetPosition(1, playerStateMachine.IkArmRight.position);
         
-        if (playerStateMachine.CurrentState is PlayerGrabState)
+        if (playerStateMachine.CurrentState is PlayerGrabState || playerStateMachine.IsGrabing)
         {
             HandsRotation();
             arms.SetActive(true);

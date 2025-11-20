@@ -90,7 +90,8 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("LEAP")] public float TimeToLeap = 0.7f;
     [FoldoutGroup("LEAP")] public float LeapForce = 2f;
 
-    [HideInInspector] public bool IsGrabing = false;
+    [HideInInspector] public bool LaunchGrab = false;
+    public bool IsGrabing = false;
     [HideInInspector] public Vector2 AimDir;
     [FoldoutGroup("GRAB")] public float DistanceGrab = 0.8f;
     [FoldoutGroup("GRAB")] public float TimeToExtendArms = 0.2f;

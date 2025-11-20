@@ -27,6 +27,7 @@ public class Grab : MonoBehaviour
 
     public void GrabInitialisation()
     {
+        Debug.Log("GRAB INITIALISATION");
         NewState = null;
         _player.ArmDetection.ObjectDetected = 0;
         _player.AimDir = _player.Aim.ReadValue<Vector2>();
@@ -167,6 +168,7 @@ public class Grab : MonoBehaviour
         // Move Right Arm
         _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.TimeToExtendArms).OnComplete(() =>
         {
+            _player.IsGrabing = false;
             if (_player.ArmDetection.ObjectDetected == 0)
             {
                 // Vérification d'un sol ou non
@@ -305,7 +307,6 @@ public class Grab : MonoBehaviour
 
     private void UpdatePlayerState(PlayerBaseState newState)
     {
-        _player.IsGrabing = false;
         NewState = newState;
     }
 }
