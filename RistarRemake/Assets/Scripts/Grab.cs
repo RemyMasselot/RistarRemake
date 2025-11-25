@@ -205,12 +205,19 @@ public class Grab : MonoBehaviour
 
         if (_player.IsLadder != (int)LadderIs.Nothing)
         {
-            UpdatePlayerState(_player.StatesFactory.WallIdle());
+            if (_player.CurrentState is not PlayerWallIdleState && _player.CurrentState is not PlayerWallClimbState)
+            {
+                UpdatePlayerState(_player.StatesFactory.WallIdle());
+                Debug.Log("LADDER GRAB COLLISION");
+            }
         }
 
         if (collision.gameObject.CompareTag("Wall"))
         {
-            UpdatePlayerState(_player.StatesFactory.Spin());
+            if (_player.CurrentState is PlayerHeadbuttState)
+            {
+                UpdatePlayerState(_player.StatesFactory.Headbutt());
+            }
         }
     }
 

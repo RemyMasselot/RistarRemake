@@ -72,15 +72,15 @@ public class PlayerVisual : MonoBehaviour
         {
             animator.SetTrigger("Idle");
         }
-        else if (playerStateMachine.CurrentState is PlayerWalkState)
+        else if (playerStateMachine.CurrentState is PlayerWalkState && playerStateMachine.IsGrabing == false)
         {
             animator.SetTrigger("Walk");
         }
-        else if (playerStateMachine.CurrentState is PlayerJumpState)
+        else if (playerStateMachine.CurrentState is PlayerJumpState && playerStateMachine.IsGrabing == false)
         {
             animator.SetTrigger("Jump");
         }
-        else if (playerStateMachine.CurrentState is PlayerFallState)
+        else if (playerStateMachine.CurrentState is PlayerFallState && playerStateMachine.IsGrabing == false)
         {
             animator.SetTrigger("Fall");
         }
@@ -90,46 +90,46 @@ public class PlayerVisual : MonoBehaviour
             ChoiceGrabAnimation();
             animator.SetTrigger("Grab");
         }
-        else if (playerStateMachine.CurrentState is PlayerHangState)
+        else if (playerStateMachine.CurrentState is PlayerHangState && playerStateMachine.IsGrabing == false)
         {
             animator.SetFloat("HangValue", playerStateMachine.ArmDetection.ObjectDetected == 4 ? 2 : 1);
             animator.SetTrigger("Hang");
         }
-        else if (playerStateMachine.CurrentState is PlayerMeteorStrikeState)
+        else if (playerStateMachine.CurrentState is PlayerMeteorStrikeState && playerStateMachine.IsGrabing == false)
         {
             animator.SetTrigger("MeteorStrike");
         }
-        else if (playerStateMachine.CurrentState is PlayerHeadbuttState)
+        else if (playerStateMachine.CurrentState is PlayerHeadbuttState && playerStateMachine.IsGrabing == false)
         {
             animator.SetTrigger("Headbutt");
         }
-        else if (playerStateMachine.CurrentState is PlayerSpinState)
+        else if (playerStateMachine.CurrentState is PlayerSpinState && playerStateMachine.IsGrabing == false)
         {
             animator.SetTrigger("Spin");
         }
-        else if (playerStateMachine.CurrentState is PlayerWallIdleState)
+        else if (playerStateMachine.CurrentState is PlayerWallIdleState && playerStateMachine.IsGrabing == false)
         {
             ChooseBetweenVerticalOrHorizontalAnimationLadder();
             animator.SetTrigger("WallIdle");
         }
-        else if (playerStateMachine.CurrentState is PlayerWallClimbState)
+        else if (playerStateMachine.CurrentState is PlayerWallClimbState && playerStateMachine.IsGrabing == false)
         {
             ChooseBetweenVerticalOrHorizontalAnimationLadder();
             animator.SetTrigger("WallClimb");
         }
-        else if (playerStateMachine.CurrentState is PlayerWallJumpState)
+        else if (playerStateMachine.CurrentState is PlayerWallJumpState && playerStateMachine.IsGrabing == false)
         {
             animator.SetTrigger("Jump");
         }
-        else if (playerStateMachine.CurrentState is PlayerLeapState)
+        else if (playerStateMachine.CurrentState is PlayerLeapState && playerStateMachine.IsGrabing == false)
         {
             animator.SetTrigger("Jump");
         }
-        else if (playerStateMachine.CurrentState is PlayerDamageState)
+        else if (playerStateMachine.CurrentState is PlayerDamageState && playerStateMachine.IsGrabing == false)
         {
             animator.SetTrigger("Damage");
         }
-        else if (playerStateMachine.CurrentState is PlayerDeathState)
+        else if (playerStateMachine.CurrentState is PlayerDeathState && playerStateMachine.IsGrabing == false)
         {
             if (playerStateMachine.IsPlayerTurnToLeft)
             {
