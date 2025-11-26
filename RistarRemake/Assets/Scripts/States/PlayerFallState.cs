@@ -13,8 +13,6 @@ public class PlayerFallState : PlayerBaseState
 
     public override void EnterState() 
     {
-        //_player.PlayerRigidbody.gravityScale = 0;
-
         isJumpBufferingTimerCanCount = false;
         _player.JumpBufferCounter = 10;
         _player.LowJumpActivated = false;
@@ -155,9 +153,13 @@ public class PlayerFallState : PlayerBaseState
         }
 
         // Passage en state GRAB
-        if (_player.Grab.WasPerformedThisFrame())
+        if (_player.IsGrabing == false)
         {
-            SwitchState(_factory.Grab());
+            if (_player.Grab.WasPerformedThisFrame())
+            {
+                //SwitchState(_factory.Grab());
+                _player.StartGrab();
+            }
         }
     }
 

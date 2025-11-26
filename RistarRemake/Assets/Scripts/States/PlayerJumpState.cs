@@ -22,7 +22,6 @@ public class PlayerJumpState : PlayerBaseState
     {
         //Debug.Log("JUMP ENTER");
 
-        //_player.PlayerRigidbody.gravityScale = 0;
         _player.CoyoteCounter = 0;
         jumpOriginY = _player.transform.position.y;
         currentPositionY = jumpOriginY;
@@ -189,9 +188,13 @@ public class PlayerJumpState : PlayerBaseState
         }
 
         // Passage en state GRAB
-        if (_player.Grab.WasPerformedThisFrame())
+        if (_player.IsGrabing == false)
         {
-            SwitchState(_factory.Grab());
+            if (_player.Grab.WasPerformedThisFrame())
+            {
+                //SwitchState(_factory.Grab());
+                _player.StartGrab();
+            }
         }
     }
     public override void OnCollisionEnter2D(Collision2D collision) { }
