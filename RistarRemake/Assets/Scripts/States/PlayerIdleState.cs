@@ -33,7 +33,7 @@ public class PlayerIdleState : PlayerBaseState
         if (_player.IsGrabing == false)
         {
             // Passage en state WALK
-            if (_player.MoveH.WasPerformedThisFrame())
+            if (_player.MoveH.ReadValue<float>() != 0)
             {
                 SwitchState(_factory.Walk());
             }
@@ -53,13 +53,7 @@ public class PlayerIdleState : PlayerBaseState
             if (_player.Grab.WasPerformedThisFrame())
             {
                 //SwitchState(_factory.Grab());
-                _player.IsGrabing = true;
-                _player.LaunchGrab = true;
-                if (_player.LaunchGrab == true)
-                {
-                    _player.LaunchGrab = false;
-                    _player.GrabScript.GrabInitialisation();
-                }
+                _player.StartGrab();
             }
         }
     }

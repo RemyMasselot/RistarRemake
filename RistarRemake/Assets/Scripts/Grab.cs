@@ -27,8 +27,6 @@ public class Grab : MonoBehaviour
 
     public void GrabInitialisation()
     {
-        Debug.Log("GRAB INITIALISATION");
-
         _player.NewStatePlayed.Invoke();
 
         NewState = null;
@@ -124,8 +122,6 @@ public class Grab : MonoBehaviour
 
     public void Update()
     {
-        //_player.CountTimePassedInState();
-
         if (_player.ArmDetection.ObjectDetected == 3 || _player.ArmDetection.ObjectDetected == 5)
         {
             DOTween.Kill(_player.IkArmLeft);

@@ -24,7 +24,6 @@ public class PlayerVisual : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerStateMachine.NewStatePlayed.AddListener(OnNewStatePlayed);
-        playerStateMachine.StartGrab.AddListener(OnNewStatePlayed);
     }
 
     private void Update()

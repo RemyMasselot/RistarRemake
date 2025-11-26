@@ -50,7 +50,6 @@ public class PlayerStateMachine : MonoBehaviour
 
     [FoldoutGroup("GENERAL SETTING")] public int LifesNumber = 4;
     [HideInInspector] public UnityEvent NewStatePlayed;
-    [HideInInspector] public UnityEvent StartGrab;
     [HideInInspector] public bool IsPlayerTurnToLeft = false;
     [HideInInspector] public float TimePassedInState = 0;
     [HideInInspector] public Invincinbility Invincinbility;
@@ -91,7 +90,7 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("LEAP")] public float TimeToLeap = 0.7f;
     [FoldoutGroup("LEAP")] public float LeapForce = 2f;
 
-    [HideInInspector] public bool LaunchGrab = false;
+    [HideInInspector] public bool StartGrabInitialisation = false;
     public bool IsGrabing = false;
     [HideInInspector] public Vector2 AimDir;
     [FoldoutGroup("GRAB")] public float DistanceGrab = 0.8f;
@@ -145,11 +144,6 @@ public class PlayerStateMachine : MonoBehaviour
             NewStatePlayed = new UnityEvent();
         }
         NewStatePlayed.AddListener(GlobalStatesInitialization);
-
-        if (StartGrab == null)
-        {
-            StartGrab = new UnityEvent();
-        }
     }
 
     private void Start()
@@ -240,5 +234,16 @@ public class PlayerStateMachine : MonoBehaviour
     public void GlobalStatesInitialization()
     {
         TimePassedInState = 0;
+    }
+
+    public void StartGrab()
+    {
+        IsGrabing = true;
+        StartGrabInitialisation = true;
+        if (StartGrabInitialisation == true)
+        {
+            StartGrabInitialisation = false;
+            GrabScript.GrabInitialisation();
+        }
     }
 }

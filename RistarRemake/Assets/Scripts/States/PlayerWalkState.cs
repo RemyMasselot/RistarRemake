@@ -61,9 +61,13 @@ public class PlayerWalkState : PlayerBaseState
         }
 
         // Passage en state GRAB
-        if (_player.Grab.WasPerformedThisFrame())
+        if (_player.IsGrabing == false)
         {
-            SwitchState(_factory.Grab());
+            if (_player.Grab.WasPerformedThisFrame())
+            {
+                SwitchState(_factory.Idle());
+                _player.StartGrab();
+            }
         }
     }
 
