@@ -47,7 +47,7 @@ public class Grab : MonoBehaviour
     private void DirectionCorrection()
     {
         // Vérification d'un sol ou non
-        if (_player.GroundDetection.IsGroundDectected == true)
+        if (_player.GroundDetection.IsDectected == true)
         {
             if (_player.AimDir.y <= 0)
             {
@@ -275,7 +275,7 @@ public class Grab : MonoBehaviour
     }
     private void GrabWall()
     {
-        Debug.Log("Wall Detected");
+        //Debug.Log("Wall Detected");
         //_player.ArmDetection.gameObject.SetActive(false);
 
         //DOTween.Kill(_player.IkArmLeft);

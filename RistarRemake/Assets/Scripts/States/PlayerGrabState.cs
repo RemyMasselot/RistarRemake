@@ -32,7 +32,7 @@ public class PlayerGrabState : PlayerBaseState
     private void DirectionCorrection()
     {
         // Vérification d'un sol ou non
-        if (_player.GroundDetection.IsGroundDectected == true)
+        if (_player.GroundDetection.IsDectected == true)
         {
             if (_player.AimDir.y <= 0)
             {
@@ -116,7 +116,7 @@ public class PlayerGrabState : PlayerBaseState
             if (_player.ArmDetection.ObjectDetected == 0)
             {
                 // Vérification d'un sol ou non
-                if (_player.GroundDetection.IsGroundDectected == false)
+                if (_player.GroundDetection.IsDectected == false)
                 {
                     SwitchState(_factory.Fall());
                 }
@@ -229,7 +229,7 @@ public class PlayerGrabState : PlayerBaseState
         // Enter DAMAGE STATE
         if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_player.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsDectected == true)
             {
                 SwitchState(_factory.Damage());
             }
@@ -282,7 +282,7 @@ public class PlayerGrabState : PlayerBaseState
         _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.TimeToExtendArms).OnComplete(() =>
         {
             // Vérification d'un sol ou non
-            if (_player.GroundDetection.IsGroundDectected == false)
+            if (_player.GroundDetection.IsDectected == false)
             {
                 SwitchState(_factory.Fall());
             }

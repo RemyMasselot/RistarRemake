@@ -49,7 +49,6 @@ public class PlayerFallState : PlayerBaseState
 
     public override void ExitState() { }
 
-
     public override void UpdateState() 
     {
         _player.CountTimePassedInState();
@@ -113,7 +112,7 @@ public class PlayerFallState : PlayerBaseState
         // Enter DAMAGE STATE
         if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_player.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsDectected == true)
             {
                 SwitchState(_factory.Damage());
             }
@@ -134,7 +133,7 @@ public class PlayerFallState : PlayerBaseState
         }
 
         // Vérification d'un sol ou non
-        if (_player.GroundDetection.IsGroundDectected == true)
+        if (_player.GroundDetection.IsDectected == true)
         {
             float moveValue = _player.MoveH.ReadValue<float>();
             if (moveValue != 0)
@@ -161,6 +160,12 @@ public class PlayerFallState : PlayerBaseState
                 //SwitchState(_factory.Grab());
                 _player.StartGrab();
             }
+        }
+
+        // Passage en state HEADBUTT ou HANG
+        if (_player.GrabScript.NewStateFromGrab != null)
+        {
+            SwitchState(_player.GrabScript.NewStateFromGrab);
         }
     }
 

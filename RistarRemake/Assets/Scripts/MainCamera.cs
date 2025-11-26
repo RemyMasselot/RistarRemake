@@ -1,7 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class MainCameraBehavior : MonoBehaviour
+public class MainCamera : MonoBehaviour
 {
     #region VARIABLES
 

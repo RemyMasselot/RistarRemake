@@ -28,6 +28,7 @@ public class PlayerSpinState : PlayerBaseState
             else
             {
                 _player.PlayerRigidbody.velocity = _player.IsPlayerTurnToLeft ? new Vector2(1, 1) * 4 : new Vector2(-1, 1) * 4;
+                //Debug.Log("WALL SPIN");
             }
         }
         else if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Enemy)
@@ -55,5 +56,4 @@ public class PlayerSpinState : PlayerBaseState
     }
     public override void OnCollisionEnter2D(Collision2D collision) { }
     public override void OnCollisionStay2D(Collision2D collision) { }
-
 }

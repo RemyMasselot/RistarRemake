@@ -148,7 +148,7 @@ public class PlayerJumpState : PlayerBaseState
         // Enter DAMAGE STATE
         if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_player.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsDectected == true)
             {
                 SwitchState(_factory.Damage());
             }
@@ -196,6 +196,12 @@ public class PlayerJumpState : PlayerBaseState
                 //SwitchState(_factory.Grab());
                 _player.StartGrab();
             }
+        }
+
+        // Passage en state HEADBUTT ou HANG
+        if (_player.GrabScript.NewStateFromGrab != null)
+        {
+            SwitchState(_player.GrabScript.NewStateFromGrab);
         }
     }
     public override void OnCollisionEnter2D(Collision2D collision) { }

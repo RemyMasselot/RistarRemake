@@ -43,7 +43,6 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("REFERENCES/Detections")] public int IsLadder = (int)LadderIs.Nothing;
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection EnemyDetection { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection GroundDetection { get; private set; }
-    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection JumpBufferingDetection { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionL LadderVDetectionL { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionR LadderVDetectionR { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderHDetection LadderHDetection { get; private set; }
@@ -103,6 +102,7 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("GRAB")] public float VerticalGrabMovementMultiplier = 1;
 
     [FoldoutGroup("HEADBUTT")] public float HeadbuttMoveSpead;
+    [HideInInspector] public Vector2 HeadbuttDirection;
 
     [FoldoutGroup("SPIN")] public float SpinTime;
 

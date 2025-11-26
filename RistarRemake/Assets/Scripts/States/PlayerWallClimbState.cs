@@ -58,7 +58,7 @@ public class PlayerWallClimbState : PlayerBaseState
         // Enter DAMAGE STATE
         if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_player.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsDectected == true)
             {
                 SwitchState(_factory.Damage());
             }

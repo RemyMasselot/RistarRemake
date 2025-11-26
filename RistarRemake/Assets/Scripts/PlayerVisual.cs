@@ -174,7 +174,7 @@ public class PlayerVisual : MonoBehaviour
     private void ChoiceGrabAnimation()
     {
         // Vérification d'un sol ou non
-        if (playerStateMachine.GroundDetection.IsGroundDectected)
+        if (playerStateMachine.GroundDetection.IsDectected)
         {
             if (playerStateMachine.AimDir.y <= 0.6f)
             {

@@ -30,14 +30,14 @@ public class PlayerWalkState : PlayerBaseState
         // Enter DAMAGE STATE
         if (_player.Invincinbility.IsInvincible == false)
         {
-            if (_player.EnemyDetection.IsGroundDectected == true)
+            if (_player.EnemyDetection.IsDectected == true)
             {
                 SwitchState(_factory.Damage());
             }
         }
 
         // Passage en state FALL
-        if (_player.GroundDetection.IsGroundDectected == false)
+        if (_player.GroundDetection.IsDectected == false)
         {
             SwitchState(_factory.Fall());
         }
