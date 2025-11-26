@@ -68,7 +68,8 @@ public class PlayerStateMachine : MonoBehaviour
 
     [FoldoutGroup("MOVE")] public float WalkSpeed = 10;
 
-    [FoldoutGroup("JUMP")] public float VerticalJumpDistance = 1.7f;
+    [FoldoutGroup("JUMP")] public float VerticalJumpDistanceHigh = 1.7f;
+    [FoldoutGroup("JUMP")] public float VerticalJumpDistanceLow = 1.4f;
     [FoldoutGroup("JUMP")] public float MaxTimeAtApex = 0.25f;
     [FoldoutGroup("JUMP")] public float TimeToGoToApex = 0.5f;
     [FoldoutGroup("JUMP")] public float MaxSpeedToGoToApex = 8f;

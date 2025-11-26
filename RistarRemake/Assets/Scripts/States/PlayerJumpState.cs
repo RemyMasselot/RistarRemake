@@ -70,17 +70,17 @@ public class PlayerJumpState : PlayerBaseState
                 timerUpdatePositionY += Time.deltaTime;
                 float t = Mathf.Clamp01(timerUpdatePositionY / _player.TimeToGoToApex);
                 float curveValue = _player.JumpSpeedCurve.Evaluate(t); // renvoie une valeur entre 0 et 1
-                currentPositionY = jumpOriginY + _player.VerticalJumpDistance * curveValue;
+                currentPositionY = jumpOriginY + _player.VerticalJumpDistanceHigh * curveValue;
             }
             else
             {
-                currentPositionY = jumpOriginY + _player.VerticalJumpDistance;
+                currentPositionY = jumpOriginY + _player.VerticalJumpDistanceHigh;
             }
         }
         
         distanceFromOriginY = Mathf.Abs(_player.transform.position.y - jumpOriginY);
 
-        if (distanceFromOriginY >= _player.VerticalJumpDistance)
+        if (distanceFromOriginY >= _player.VerticalJumpDistanceHigh)
         {
             canCountTimeApex = true;
         }
@@ -156,7 +156,7 @@ public class PlayerJumpState : PlayerBaseState
         // Passage en state FALL
         if (_player.Jump.WasReleasedThisFrame())
         {
-            if (distanceFromOriginY <= _player.VerticalJumpDistance / 1.5)
+            if (distanceFromOriginY <= _player.VerticalJumpDistanceLow)
             {
                 _player.LowJumpActivated = true;
             }
@@ -170,7 +170,7 @@ public class PlayerJumpState : PlayerBaseState
         {
             SwitchState(_factory.Fall());
         }
-        else if (_player.LowJumpActivated && distanceFromOriginY >= _player.VerticalJumpDistance / 1.5)
+        else if (_player.LowJumpActivated && distanceFromOriginY >= _player.VerticalJumpDistanceLow)
         {
             SwitchState(_factory.Fall());
         }
@@ -207,7 +207,7 @@ public class PlayerJumpState : PlayerBaseState
             
             if (_player.IsLadder != (int)LadderIs.Nothing)
             {
-                SwitchState(_factory.WallClimb());
+                SwitchState(_factory.WallIdle());
             }
         }
     }

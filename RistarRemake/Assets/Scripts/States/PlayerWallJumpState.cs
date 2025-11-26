@@ -10,7 +10,7 @@ public class PlayerWallJumpState : PlayerBaseState
 
     public override void EnterState() 
     {
-        //Debug.Log("JUMP ENTER");
+        Debug.Log("WALL JUMP ENTER");
 
         //_player.PlayerRigidbody.gravityScale = 1;
         //_player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalMovementMultiplier, _player.JumpSpeedMax);
@@ -48,9 +48,13 @@ public class PlayerWallJumpState : PlayerBaseState
         }
 
         // Passage en state GRAB
-        if (_player.Grab.WasPerformedThisFrame())
+        if (_player.IsGrabing == false)
         {
-            SwitchState(_factory.Grab());
+            if (_player.Grab.WasPerformedThisFrame())
+            {
+                //SwitchState(_factory.Grab());
+                _player.StartGrab();
+            }
         }
 
         // Passage en state FALL

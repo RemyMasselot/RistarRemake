@@ -165,18 +165,18 @@ public class PlayerFallState : PlayerBaseState
 
     public override void OnCollisionStay2D(Collision2D collision)
     {
-        if (_player.TimePassedInState > 0.2f)
+        if (_player.TimePassedInState > 0.05f)
         {
             //Debug.Log("LADDER CHECK FALL");
             _player.LadderVerif(collision);
 
             if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
             {
-                SwitchState(_factory.WallClimb());
+                SwitchState(_factory.WallIdle());
             }
             else if (_player.IsLadder == (int)LadderIs.Horizontal)
             {
-                SwitchState(_factory.WallClimb());
+                SwitchState(_factory.WallIdle());
             }
         }
     }

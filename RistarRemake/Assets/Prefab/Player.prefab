@@ -894,15 +894,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartGrab:
-    m_PersistentCalls:
-      m_Calls: []
   IsPlayerTurnToLeft: 0
   TimePassedInState: 0
   Invincinbility: {fileID: 0}
   CornerCorrection: {fileID: 0}
   WalkSpeed: 180
-  VerticalJumpDistance: 1.7
+  VerticalJumpDistanceHigh: 1.7
+  VerticalJumpDistanceLow: 1.4
   MaxTimeAtApex: 0.12
   TimeToGoToApex: 0.45
   MaxSpeedToGoToApex: 8
@@ -990,7 +988,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   TimeToLeap: 0.7
   LeapForce: 2
-  LaunchGrab: 0
+  StartGrabInitialisation: 0
   IsGrabing: 0
   AimDir: {x: 0, y: 0}
   DistanceGrab: 0.8

@@ -74,10 +74,14 @@ public class PlayerLeapState : PlayerBaseState
         }
 
         // Passage en state GRAB
-        if (_player.Grab.WasPerformedThisFrame())
-        {
-            SwitchState(_factory.Grab());
-        }
+        //if (_player.IsGrabing == false)
+        //{
+        //    if (_player.Grab.WasPerformedThisFrame())
+        //    {
+        //        //SwitchState(_factory.Grab());
+        //        _player.StartGrab();
+        //    }
+        //}
     }
 
     public override void OnCollisionEnter2D(Collision2D collision) { }
