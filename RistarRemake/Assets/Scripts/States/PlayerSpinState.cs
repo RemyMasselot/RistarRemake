@@ -11,7 +11,7 @@ public class PlayerSpinState : PlayerBaseState
         //Debug.Log("ENTER SPIN");
 
         //_player.PlayerRigidbody.gravityScale = 1;
-        _player.ArmDetection.gameObject.SetActive(false);
+        //_player.ArmDetection.gameObject.SetActive(false);
 
         // Move Left Arm
         _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;

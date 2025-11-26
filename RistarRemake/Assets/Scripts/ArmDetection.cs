@@ -49,6 +49,7 @@ public class ArmDetection : MonoBehaviour
                 {
                     SnapPosHandL = HandL.position;
                     SnapPosHandR = HandR.position;
+                    SnapPosHand = (HandL.position + HandR.position) / 2;
                     ObjectDetected = (int)ObjectDetectedIs.Wall;
                 }
                 else if (hit.collider.CompareTag("StarHandle"))

@@ -24,7 +24,7 @@ public class PlayerVisual : MonoBehaviour
         playerStateMachine = GetComponentInParent<PlayerStateMachine>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        playerStateMachine.NewStatePlayed.AddListener(OnNewStatePlayed);
+        playerStateMachine.NewStatePlayed.AddListener(UpdateVisual);
     }
 
     private void Update()
@@ -53,7 +53,7 @@ public class PlayerVisual : MonoBehaviour
         spriteRenderer.flipX = playerStateMachine.IsPlayerTurnToLeft ? true : false;
     }
 
-    private void OnNewStatePlayed()
+    private void UpdateVisual()
     {
         // NEW ANIMATION
         ChooseAnimationOnEnterNewState();

@@ -692,6 +692,7 @@ GameObject:
   - component: {fileID: 5971321630394888149}
   - component: {fileID: 4075721877120542470}
   - component: {fileID: 4143905908849990563}
+  - component: {fileID: 1269225165506540676}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -1056,6 +1057,18 @@ MonoBehaviour:
   IsInvincible: 0
   InvincibilityTime: 2
   InvincibilityCounter: 0
+--- !u!114 &1269225165506540676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2836248471208439212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11229741ed3be9d4fae7e1e010cf2193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4052257545200088683
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,7 +1114,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectDetected: 0
-  EndAnim: 0
   SnapPosHand: {x: 0, y: 0}
   SnapPosHandL: {x: 0, y: 0}
   SnapPosHandR: {x: 0, y: 0}

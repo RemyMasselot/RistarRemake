@@ -144,7 +144,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             NewStatePlayed = new UnityEvent();
         }
-        NewStatePlayed.AddListener(GlobalStatesInitialization);
+        NewStatePlayed.AddListener(ResetTimePassedInState);
     }
 
     private void Start()
@@ -232,7 +232,7 @@ public class PlayerStateMachine : MonoBehaviour
         TimePassedInState += Time.deltaTime;
     }
 
-    public void GlobalStatesInitialization()
+    public void ResetTimePassedInState()
     {
         TimePassedInState = 0;
     }

@@ -30,7 +30,7 @@ public class PlayerFallState : PlayerBaseState
 
             _player.PlayerRigidbody.velocity = dir * _player.StarHandleCurrentImpulse;
         }
-        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Enemy;
+        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
 
         PushAwayFromLadder();
     }

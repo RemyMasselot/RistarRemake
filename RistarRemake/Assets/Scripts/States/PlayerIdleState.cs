@@ -55,6 +55,12 @@ public class PlayerIdleState : PlayerBaseState
                 //SwitchState(_factory.Grab());
                 _player.StartGrab();
             }
+
+            // Passage en state HEADBUTT ou HANG
+            if (_player.GrabScript.NewStateFromGrab != null)
+            {
+                SwitchState(_player.GrabScript.NewStateFromGrab);
+            }
         }
     }
 

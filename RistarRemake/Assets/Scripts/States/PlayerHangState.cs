@@ -23,7 +23,7 @@ public class PlayerHangState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("ENTER HANG");
-        _player.ArmDetection.gameObject.SetActive(false);
+        //_player.ArmDetection.gameObject.SetActive(false);
 
         // CAMERA BEHAVIOR
         _player.CameraTargetOverride = _player.ArmDetection.SnapPosHand;
