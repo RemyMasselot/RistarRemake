@@ -1,4 +1,5 @@
 using UnityEngine;
+using static ArmDetection;
 
 public class PlayerSpinState : PlayerBaseState
 {
@@ -18,7 +19,7 @@ public class PlayerSpinState : PlayerBaseState
         _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
 
 
-        if (_player.ArmDetection.ObjectDetected == 5)
+        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Wall)
         {
             if (_player.LadderHDetection.IsLadderHDectected == true)
             {
@@ -29,7 +30,7 @@ public class PlayerSpinState : PlayerBaseState
                 _player.PlayerRigidbody.velocity = _player.IsPlayerTurnToLeft ? new Vector2(1, 1) * 4 : new Vector2(-1, 1) * 4;
             }
         }
-        else if (_player.ArmDetection.ObjectDetected == 2)
+        else if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Enemy)
         {
             _player.PlayerRigidbody.velocity = new Vector2(0, 1) * 10;
         }

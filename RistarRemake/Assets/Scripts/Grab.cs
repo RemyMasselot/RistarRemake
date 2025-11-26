@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using static ArmDetection;
 using static PlayerStateMachine;
 
 public class Grab : MonoBehaviour
@@ -21,7 +22,7 @@ public class Grab : MonoBehaviour
         _player = GetComponent<PlayerStateMachine>();
 
         NewState = null;
-        _player.ArmDetection.ObjectDetected = 0;
+        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
         _player.AimDir = _player.Aim.ReadValue<Vector2>();
     }
 
@@ -31,7 +32,7 @@ public class Grab : MonoBehaviour
 
         NewState = null;
         isHoldGrabTimerRunning = false;
-        _player.ArmDetection.ObjectDetected = 0;
+        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
         _player.AimDir = _player.Aim.ReadValue<Vector2>();
 
         DirectionCorrection();
@@ -40,6 +41,7 @@ public class Grab : MonoBehaviour
 
         ExtendArms();
     }
+
     private void DirectionCorrection()
     {
         // Vérification d'un sol ou non
@@ -122,7 +124,7 @@ public class Grab : MonoBehaviour
 
     public void Update()
     {
-        if (_player.ArmDetection.ObjectDetected == 3 || _player.ArmDetection.ObjectDetected == 5)
+        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Ladder || _player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Wall)
         {
             DOTween.Kill(_player.IkArmLeft);
             DOTween.Kill(_player.IkArmRight);
@@ -169,9 +171,7 @@ public class Grab : MonoBehaviour
         // Move Right Arm
         _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.TimeToExtendArms).OnComplete(() =>
         {
-            //_player.IsGrabing = false;
-            //UpdatePlayerState(null);
-            if (_player.ArmDetection.ObjectDetected == 0)
+            if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Nothing)
             {
                 // Vérification d'un sol ou non
                 if (_player.GroundDetection.IsGroundDectected == false)
@@ -230,22 +230,22 @@ public class Grab : MonoBehaviour
 
         switch (_player.ArmDetection.ObjectDetected)
         {
-            case 1:
+            case (int)ObjectDetectedIs.Other:
                 GrabOther();
                 break;
-            case 2:
+            case (int)ObjectDetectedIs.Enemy:
                 GrabEnemy();
                 break;
-            case 3:
+            case (int)ObjectDetectedIs.Ladder:
                 GrabLadder();
                 break;
-            case 4:
+            case (int)ObjectDetectedIs.StarHandle:
                 GrabStarHandle();
                 break;
-            case 5:
+            case (int)ObjectDetectedIs.Wall:
                 GrabWall();
                 break;
-            case 6:
+            case (int)ObjectDetectedIs.Floor:
                 GrabFloor();
                 break;
         }
@@ -294,7 +294,7 @@ public class Grab : MonoBehaviour
                 }
             }
         });
-        _player.ArmDetection.ObjectDetected = 0;
+        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
     }
     private void GrabEnemy()
     {

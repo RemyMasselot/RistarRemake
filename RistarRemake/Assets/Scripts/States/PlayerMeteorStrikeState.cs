@@ -1,5 +1,6 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
+using static ArmDetection;
 
 public class PlayerMeteorStrikeState : PlayerBaseState
 {
@@ -31,7 +32,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         _player.MeteorStrikeDirection = _player.transform.position - _player.StarHandleCentre;
         _player.PlayerRigidbody.velocity = _player.MeteorStrikeDirection.normalized * 10;
 
-        _player.ArmDetection.ObjectDetected = 0;
+        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
         _player.GroundDetection.gameObject.SetActive(false);
         _player.LadderHDetection.gameObject.SetActive(false);
         _player.LadderVDetectionL.gameObject.SetActive(false);

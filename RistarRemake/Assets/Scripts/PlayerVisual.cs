@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using static ArmDetection;
 
 public class PlayerVisual : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class PlayerVisual : MonoBehaviour
 
         if (playerStateMachine.CurrentState is PlayerGrabState || playerStateMachine.IsGrabing) // GRAB STATE ONGOING
         {
-            if (playerStateMachine.ArmDetection.ObjectDetected != 0)
+            if (playerStateMachine.ArmDetection.ObjectDetected != (int)ObjectDetectedIs.Nothing)
             {
                 // HANDS CLOSE
                 handRight.sprite = handClose;
@@ -91,7 +92,7 @@ public class PlayerVisual : MonoBehaviour
         }
         else if (playerStateMachine.CurrentState is PlayerHangState && playerStateMachine.IsGrabing == false)
         {
-            animator.SetFloat("HangValue", playerStateMachine.ArmDetection.ObjectDetected == 4 ? 2 : 1);
+            animator.SetFloat("HangValue", playerStateMachine.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle ? 2 : 1);
             animator.SetTrigger("Hang");
         }
         else if (playerStateMachine.CurrentState is PlayerMeteorStrikeState && playerStateMachine.IsGrabing == false)

@@ -19,17 +19,16 @@ public class PlayerGrabState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER GRAB");
-        _player.ArmDetection.ObjectDetected = 0;
-        _player.AimDir = _player.Aim.ReadValue<Vector2>();
+        //_player.ArmDetection.ObjectDetected = 0;
+        //_player.AimDir = _player.Aim.ReadValue<Vector2>();
 
-        DirectionCorrection();
+        //DirectionCorrection();
 
-        MoveLimbsToDefaultPosition();
+        //MoveLimbsToDefaultPosition();
 
-        ExtendArms();
-
-        
+        //ExtendArms();
     }
+
     private void DirectionCorrection()
     {
         // Vérification d'un sol ou non
@@ -64,7 +63,6 @@ public class PlayerGrabState : PlayerBaseState
             }
         }
     }
-
     private void MoveLimbsToDefaultPosition()
     {
         // Move Left Arm
@@ -79,7 +77,6 @@ public class PlayerGrabState : PlayerBaseState
 
         _player.ArmDetection.gameObject.SetActive(true);
     }
-
     private void ExtendArms()
     {
         Vector2 _grabDirection = _player.AimDir.normalized *_player.DistanceGrab;
@@ -102,81 +99,10 @@ public class PlayerGrabState : PlayerBaseState
                 StartHoldGrabTimer();
             });
     }
-
     void StartHoldGrabTimer()
     {
         currentHoldGrabTimerValue = _player.MaxHoldGrabTime;
         isHoldGrabTimerRunning = true;
-    }
-
-
-
-    public override void UpdateState()
-    {
-        _player.CountTimePassedInState();
-        // Air Control
-        if (_player.GroundDetection.IsGroundDectected == false)
-        {
-            float moveValueH = _player.MoveH.ReadValue<float>();
-            float moveValueV = _player.MoveV.ReadValue<float>();
-
-            float velocityX = 0;
-            float velocityY = 0;
-
-            velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalGrabMovementMultiplier : _player.PlayerRigidbody.velocity.x;
-
-            if (_player.TimePassedInState < _player.MaxTimeStayingAtApex)
-            {
-                velocityY = moveValueV != 0 ? _player.FallInGrabValue / 2 + moveValueV * _player.VerticalGrabMovementMultiplier : _player.FallInGrabValue / 2;
-            }
-            else
-            {
-                velocityY = _player.FallInGrabValue;
-            }
-
-            _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);
-        }
-        else
-        {
-            _player.PlayerRigidbody.velocity = new Vector2(0, 0);
-        }
-
-        if (_player.ArmDetection.ObjectDetected == 3 || _player.ArmDetection.ObjectDetected == 5)
-        {
-            DOTween.Kill(_player.IkArmLeft);
-            DOTween.Kill(_player.IkArmRight);
-            _player.IkArmLeft.position = _player.ArmDetection.SnapPosHandL;
-            _player.IkArmRight.position = _player.ArmDetection.SnapPosHandR;
-        }
-        else
-        {
-            if (isHoldGrabTimerRunning == true)
-            {
-                currentHoldGrabTimerValue -= Time.deltaTime;
-                if (currentHoldGrabTimerValue <= 0f)
-                {
-                    isHoldGrabTimerRunning = false;
-                    ShortenArms();
-                }
-            }
-
-            if (_player.Grab.WasReleasedThisFrame())
-            {
-                isHoldGrabTimerRunning = false;
-                ShortenArms();
-            }
-        }
-        
-        // Déplacement de Arm Detection pour suivre les mains
-        _player.ArmDetection.GetComponent<Transform>().position = (_player.IkArmLeft.position + _player.IkArmRight.position) / 2;
-        float angle = Mathf.Atan2(_player.AimDir.y, _player.AimDir.x) * Mathf.Rad2Deg;
-        _player.ArmDetection.rotationOffset = angle;
-
-
-        // Parce que je n'arrive pas à référencer ce script dans le script ArmDetection, ici je vérifie à chaque frame ce que les bras ont touché,
-        // plutôt que de lancer la bonne fonction au moment où les bras entre en collision avec un élément dans le script ArmDetection.
-        // Un raycast envoyé dans ce script et qui influe sur l'avancé des mains pourrait être une bonne solution
-        GrabDetectionVerif();
     }
     public void ShortenArms()
     {
@@ -211,25 +137,91 @@ public class PlayerGrabState : PlayerBaseState
         });
     }
 
+    public override void UpdateState()
+    {
+        //_player.CountTimePassedInState();
+        //// Air Control
+        //if (_player.GroundDetection.IsGroundDectected == false)
+        //{
+        //    float moveValueH = _player.MoveH.ReadValue<float>();
+        //    float moveValueV = _player.MoveV.ReadValue<float>();
+
+        //    float velocityX = 0;
+        //    float velocityY = 0;
+
+        //    velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalGrabMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+
+        //    if (_player.TimePassedInState < _player.MaxTimeStayingAtApex)
+        //    {
+        //        velocityY = moveValueV != 0 ? _player.FallInGrabValue / 2 + moveValueV * _player.VerticalGrabMovementMultiplier : _player.FallInGrabValue / 2;
+        //    }
+        //    else
+        //    {
+        //        velocityY = _player.FallInGrabValue;
+        //    }
+
+        //    _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);
+        //}
+        //else
+        //{
+        //    _player.PlayerRigidbody.velocity = new Vector2(0, 0);
+        //}
+
+        //if (_player.ArmDetection.ObjectDetected == 3 || _player.ArmDetection.ObjectDetected == 5)
+        //{
+        //    DOTween.Kill(_player.IkArmLeft);
+        //    DOTween.Kill(_player.IkArmRight);
+        //    _player.IkArmLeft.position = _player.ArmDetection.SnapPosHandL;
+        //    _player.IkArmRight.position = _player.ArmDetection.SnapPosHandR;
+        //}
+        //else
+        //{
+        //    if (isHoldGrabTimerRunning == true)
+        //    {
+        //        currentHoldGrabTimerValue -= Time.deltaTime;
+        //        if (currentHoldGrabTimerValue <= 0f)
+        //        {
+        //            isHoldGrabTimerRunning = false;
+        //            ShortenArms();
+        //        }
+        //    }
+
+        //    if (_player.Grab.WasReleasedThisFrame())
+        //    {
+        //        isHoldGrabTimerRunning = false;
+        //        ShortenArms();
+        //    }
+        //}
+        
+        //// Déplacement de Arm Detection pour suivre les mains
+        //_player.ArmDetection.GetComponent<Transform>().position = (_player.IkArmLeft.position + _player.IkArmRight.position) / 2;
+        //float angle = Mathf.Atan2(_player.AimDir.y, _player.AimDir.x) * Mathf.Rad2Deg;
+        //_player.ArmDetection.rotationOffset = angle;
+
+
+        //// Parce que je n'arrive pas à référencer ce script dans le script ArmDetection, ici je vérifie à chaque frame ce que les bras ont touché,
+        //// plutôt que de lancer la bonne fonction au moment où les bras entre en collision avec un élément dans le script ArmDetection.
+        //// Un raycast envoyé dans ce script et qui influe sur l'avancé des mains pourrait être une bonne solution
+        //GrabDetectionVerif();
+    }
     public override void FixedUpdateState() { }
     public override void ExitState() { }
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
     public override void OnCollisionEnter2D(Collision2D collision) { }
-
     public override void OnCollisionStay2D(Collision2D collision) 
     {
-        _player.LadderVerif(collision);
+        //_player.LadderVerif(collision);
 
-        if (_player.IsLadder != (int)LadderIs.Nothing)
-        {
-            SwitchState(_factory.WallIdle());
-        }
+        //if (_player.IsLadder != (int)LadderIs.Nothing)
+        //{
+        //    SwitchState(_factory.WallIdle());
+        //}
         
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-            SwitchState(_factory.Spin());
-        }
+        //if (collision.gameObject.CompareTag("Wall"))
+        //{
+        //    SwitchState(_factory.Spin());
+        //}
     }
 
     public void GrabDetectionVerif()
@@ -266,7 +258,6 @@ public class PlayerGrabState : PlayerBaseState
         }
         //Debug.Log(_ctx.ArmDetection.ObjectDetected);
     }
-
     private void GrabOther()
     {
         Debug.Log("Other Detected");

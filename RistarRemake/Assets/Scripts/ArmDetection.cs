@@ -1,22 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ArmDetection : MonoBehaviour
 {
-    public int ObjectDetected = 0;
-    public PlayerGrabState PlayerGrabState;
-    public bool EndAnim = false;
+    public enum ObjectDetectedIs
+    {
+        Nothing = 0,
+        Other = 1,
+        Enemy = 2,
+        Ladder = 3,
+        StarHandle = 4,
+        Wall = 5,
+        Floor = 6
+    }
+    public int ObjectDetected = (int)ObjectDetectedIs.Nothing;
+
     public Vector2 SnapPosHand;
     public Vector2 SnapPosHandL;
     public Vector2 SnapPosHandR;
     [SerializeField] private Transform HandR;
     [SerializeField] private Transform HandL;
 
-    public int rayCount = 8;              // Nombre de rayons
-    public float rayDistance = 5f;         // Longueur des rayons
-    public float angleRange = 90f;         // Ouverture en degrés (ex: 90°, 180°, etc.)
-    public float rotationOffset = 0f;      // Rotation globale du cône (modifiable en temps réel)
+    public int rayCount = 8;         
+    public float rayDistance = 5f;   
+    public float angleRange = 90f;   
+    public float rotationOffset = 0f;
     public LayerMask layerMask;
     public Color gizmoColor = Color.red;
 
@@ -36,43 +43,39 @@ public class ArmDetection : MonoBehaviour
                 if (hit.collider.CompareTag("Floor"))
                 {
                     SnapPosHand = hit.collider.gameObject.transform.position;
-                    ObjectDetected = 6;
-                    //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
+                    ObjectDetected = (int)ObjectDetectedIs.Floor;
                 }
                 else if (hit.collider.CompareTag("Wall"))
                 {
-                    //SnapPosHand = hit.collider.gameObject.transform.position;
                     SnapPosHandL = HandL.position;
                     SnapPosHandR = HandR.position;
-                    ObjectDetected = 5;
-                    //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
+                    ObjectDetected = (int)ObjectDetectedIs.Wall;
                 }
                 else if (hit.collider.CompareTag("StarHandle"))
                 {
                     SnapPosHand = hit.collider.gameObject.transform.position;
-                    ObjectDetected = 4;
-                    //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
+                    ObjectDetected = (int)ObjectDetectedIs.StarHandle;
                 }
                 else if (hit.collider.CompareTag("LadderV") || hit.collider.CompareTag("LadderH"))
                 {
                     SnapPosHandL = HandL.position;
                     SnapPosHandR = HandR.position;
-                    ObjectDetected = 3;
-                    //Debug.Log("reg");
-                    //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
+                    ObjectDetected = (int)ObjectDetectedIs.Ladder;
                 }
                 else if (hit.collider.CompareTag("Enemy"))
                 {
                     SnapPosHand = hit.collider.gameObject.transform.position;
-                    ObjectDetected = 2;
-                    //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
+                    ObjectDetected = (int)ObjectDetectedIs.Enemy;
                 }
                 else
                 {
-                    ObjectDetected = 1;
-                    //PlayerGrabState.GrabDetectionVerif(ObjectDetected);
+                    ObjectDetected = (int)ObjectDetectedIs.Other;
                 }
             }
+            //else
+            //{
+            //    ObjectDetected = (int)ObjectDetectedIs.Nothing;
+            //}
         }
     }
 

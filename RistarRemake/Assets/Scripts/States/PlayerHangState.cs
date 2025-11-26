@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using static ArmDetection;
 
 public class PlayerHangState : PlayerBaseState
 {
@@ -42,7 +43,7 @@ public class PlayerHangState : PlayerBaseState
             SnapHands = true;
         });
 
-        if (_player.ArmDetection.ObjectDetected == 4)
+        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
         {
             _player.StarHandleCentre = _player.ArmDetection.SnapPosHand;
             float x = _player.StarHandleCentre.x + Mathf.Cos(_SHangle) * _player.StarHandleCurrentRayon;
@@ -85,7 +86,7 @@ public class PlayerHangState : PlayerBaseState
 
     public override void FixedUpdateState() 
     {
-        if (_player.ArmDetection.ObjectDetected == 2)
+        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Ladder)
         {
             if (_player.Grab.WasReleasedThisFrame())
             {
@@ -100,7 +101,7 @@ public class PlayerHangState : PlayerBaseState
 
         if (SnapHands == true)
         {
-            if (_player.ArmDetection.ObjectDetected == 4)
+            if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
             {
                 //Tourner autour du Star Handle
                 if (_player.IsPlayerTurnToLeft == true)

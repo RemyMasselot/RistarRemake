@@ -1,4 +1,5 @@
 using UnityEngine;
+using static ArmDetection;
 using static PlayerStateMachine;
 
 public class PlayerJumpState : PlayerBaseState
@@ -32,7 +33,7 @@ public class PlayerJumpState : PlayerBaseState
         canModifyVelocityXLeft = true;
         canModifyVelocityXRight = true;
 
-        if (_player.ArmDetection.ObjectDetected == 4)
+        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
         {
             //Debug.Log("JUMP from star handle");
             Vector2 dir = _player.transform.position - _player.StarHandleCentre;
@@ -42,7 +43,7 @@ public class PlayerJumpState : PlayerBaseState
             
             _player.PlayerRigidbody.velocity = dir.normalized * _player.StarHandleCurrentImpulse;
         }
-        _player.ArmDetection.ObjectDetected = 0;
+        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
     }
 
     public override void UpdateState() 

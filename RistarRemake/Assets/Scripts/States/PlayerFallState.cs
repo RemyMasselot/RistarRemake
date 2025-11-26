@@ -1,4 +1,5 @@
 using UnityEngine;
+using static ArmDetection;
 using static PlayerStateMachine;
 
 public class PlayerFallState : PlayerBaseState
@@ -19,7 +20,7 @@ public class PlayerFallState : PlayerBaseState
         speedIncreaseCurrent = 0;
         currentTimerValue = 0;
 
-        if (_player.ArmDetection.ObjectDetected == 4)
+        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
         {
             Debug.Log("FALL from star handle");
             Vector2 dir = (_player.transform.position - _player.StarHandleCentre).normalized;
@@ -29,7 +30,7 @@ public class PlayerFallState : PlayerBaseState
 
             _player.PlayerRigidbody.velocity = dir * _player.StarHandleCurrentImpulse;
         }
-        _player.ArmDetection.ObjectDetected = 0;
+        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Enemy;
 
         PushAwayFromLadder();
     }
