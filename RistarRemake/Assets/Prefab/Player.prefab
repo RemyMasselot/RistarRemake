@@ -862,6 +862,7 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  GrabScript: {fileID: 0}
   ArmDetection: {fileID: 6234253148292796384}
   IkArmRight: {fileID: 3389265081751148596}
   IkArmLeft: {fileID: 6282178533520518733}
@@ -893,6 +894,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  StartGrab:
+    m_PersistentCalls:
+      m_Calls: []
   IsPlayerTurnToLeft: 0
   TimePassedInState: 0
   Invincinbility: {fileID: 0}
@@ -939,7 +943,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.25
+      value: 0.22
       inSlope: 0.50988024
       outSlope: 0.50988024
       tangentMode: 0
@@ -986,6 +990,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   TimeToLeap: 0.7
   LeapForce: 2
+  LaunchGrab: 0
+  IsGrabing: 0
   AimDir: {x: 0, y: 0}
   DistanceGrab: 0.8
   TimeToExtendArms: 0.2
