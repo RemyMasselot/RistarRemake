@@ -67,7 +67,13 @@ public class PlayerHangState : PlayerBaseState
         //    }
         //}
 
-        // Position des mains
+        KeepHandPositionToSnapPoint();
+
+        CheckSwitchStates();
+    }
+
+    private void KeepHandPositionToSnapPoint()
+    {
         if (snapHands == true)
         {
             // Move Left Arm
@@ -76,7 +82,7 @@ public class PlayerHangState : PlayerBaseState
             Vector2 directionL = (Vector2)(_player.IkArmLeft.position - _player.ShoulderLeft.position);
             float angleL = Mathf.Atan2(directionL.y, directionL.x) * Mathf.Rad2Deg;
             _player.IkArmLeft.rotation = Quaternion.Euler(0, 0, angleL);
-            
+
             // Move Right Arm
             _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHand;
             // Hands rotation
@@ -88,22 +94,21 @@ public class PlayerHangState : PlayerBaseState
 
     public override void FixedUpdateState() 
     {
-        //if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Ladder)
-        //{
-        //    if (_player.Grab.WasReleasedThisFrame())
-        //    {
-        //        // Move Left Arm
-        //        _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHand;
-        //        // Move Right Arm
-        //        _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHand;
-        //        SnapHands = true;
-        //        SwitchState(_factory.Headbutt());
-        //    }
-        //}
+        MovementHangingEnemy();
 
-        if (snapHands == true)
+        ChargingMeteorStrike();
+    }
+
+   private void MovementHangingEnemy()
+    {
+        
+    }
+
+    private void ChargingMeteorStrike()
+    {
+        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
         {
-            if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
+            if (snapHands == true)
             {
                 //Tourner autour du Star Handle
                 if (_player.IsPlayerTurnToLeft == true)
@@ -118,126 +123,132 @@ public class PlayerHangState : PlayerBaseState
                 float y = _player.StarHandleCentre.y + Mathf.Sin(starHandleAngle) * _player.StarHandleCurrentRayon;
                 _player.transform.position = new Vector2(x, y);
 
-                ChargingMeteorStrike();
-            }
-        }
-        else
-        {
-            if (_player.Grab.WasReleasedThisFrame())
-            {
-                // Move Left Arm
-                _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
-                // Move Right Arm
-                _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
-                _player.transform.rotation = Quaternion.Euler(0, 0, 0);
-                if (_player.transform.position.y <= _player.StarHandleCentre.y)
+                if (_player.IsPlayerTurnToLeft == true)
                 {
-                    SwitchState(_factory.Fall());
+                    // Body Rotation
+                    Vector2 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
+                    Vector2 direction = bodyPos - _player.ArmDetection.SnapPosHand;
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    _player.transform.rotation = Quaternion.Euler(0, 0, angle);
+                    if (_player.MoveH.ReadValue<float>() < 0)
+                    {
+                        _player.StarHandleCurrentValue++;
+                    }
+                    if (_player.MoveH.ReadValue<float>() > 0)
+                    {
+                        _player.StarHandleCurrentValue--;
+                    }
                 }
                 else
                 {
-                    SwitchState(_factory.Jump());
+                    // Body Rotation
+                    Vector2 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
+                    Vector2 direction = _player.ArmDetection.SnapPosHand - bodyPos;
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    _player.transform.rotation = Quaternion.Euler(0, 0, angle);
+                    if (_player.MoveH.ReadValue<float>() > 0)
+                    {
+                        _player.StarHandleCurrentValue++;
+                    }
+                    if (_player.MoveH.ReadValue<float>() < 0)
+                    {
+                        _player.StarHandleCurrentValue--;
+                    }
                 }
-            }
-        }
-    }
 
-    private void ChargingMeteorStrike()
-    {
-        if (_player.IsPlayerTurnToLeft == true)
-        {
-            // Body Rotation
-            Vector2 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
-            Vector2 direction = bodyPos - _player.ArmDetection.SnapPosHand;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            _player.transform.rotation = Quaternion.Euler(0, 0, angle);
-            if (_player.MoveH.ReadValue<float>() < 0)
-            {
-                _player.StarHandleCurrentValue++;
-            }
-            if (_player.MoveH.ReadValue<float>() > 0)
-            {
-                _player.StarHandleCurrentValue--;
-            }
-        }
-        else
-        {
-            // Body Rotation
-            Vector2 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
-            Vector2 direction = _player.ArmDetection.SnapPosHand - bodyPos;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            _player.transform.rotation = Quaternion.Euler(0, 0, angle);
-            if (_player.MoveH.ReadValue<float>() > 0)
-            {
-                _player.StarHandleCurrentValue++;
-            }
-            if (_player.MoveH.ReadValue<float>() < 0)
-            {
-                _player.StarHandleCurrentValue--;
-            }
-        }
-
-        if (_player.StarHandleCurrentValue <= 0)
-        {
-            _player.StarHandleCurrentValue = 0;
-        }
-        if (_player.StarHandleCurrentValue >= _player.StarHandleTargetValue)
-        {
-            _player.StarHandleCurrentValue = _player.StarHandleTargetValue;
-        }
-
-        if (_player.Grab.WasReleasedThisFrame())
-        {
-            if (_player.StarHandleCurrentValue >= _player.StarHandleTargetValue)
-            {
-                goMeteorStrike = true;
-            }
-            else
-            {
-                // Move Left Arm
-                _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
-                // Move Right Arm
-                _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
-                _player.transform.rotation = Quaternion.Euler(0, 0, 0);
-                if (_player.transform.position.y <= _player.StarHandleCentre.y)
+                if (_player.StarHandleCurrentValue <= 0)
                 {
-                    SwitchState(_factory.Fall());
+                    _player.StarHandleCurrentValue = 0;
                 }
-                else
+                if (_player.StarHandleCurrentValue >= _player.StarHandleTargetValue)
                 {
-                    SwitchState(_factory.Jump());
+                    _player.StarHandleCurrentValue = _player.StarHandleTargetValue;
                 }
-            }
-        }
 
-        float percent = (_player.StarHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
-        _player.StarHandleCurrentRayon = _player.StarHandleRayonMin + (_player.StarHandleRayonMax - _player.StarHandleRayonMin) * (percent / 100f);
-        if (goMeteorStrike == false)
-        {
-             _player.StarHandleCurrentSpeed = _player.StarHandleMinSpeed + (_player.StarHandleMaxSpeed - _player.StarHandleMinSpeed) * (percent / 100f);
-        }
-        else if (_player.StarHandleCurrentSpeed != _player.StarHandleSpeedSlowMotion)
-        {
-            _player.StarHandleCurrentSpeed = _player.StarHandleSpeedSlowMotion;
-            _player.TriggerGoToMeteorStrike.transform.position = _player.transform.position;
-            DOVirtual.DelayedCall(0.5f, () =>
-            {
-                _player.TriggerGoToMeteorStrike.SetActive(true);
-            });
-        }
+                if (_player.Grab.WasReleasedThisFrame())
+                {
+                    if (_player.StarHandleCurrentValue >= _player.StarHandleTargetValue)
+                    {
+                        goMeteorStrike = true;
+                    }
+                    else
+                    {
+                        // Move Left Arm
+                        _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
+                        // Move Right Arm
+                        _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
+                        _player.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        if (_player.transform.position.y <= _player.StarHandleCentre.y)
+                        {
+                            SwitchState(_factory.Fall());
+                        }
+                        else
+                        {
+                            SwitchState(_factory.Jump());
+                        }
+                    }
+                }
 
-        if (_player.Jump.WasPressedThisFrame())
-        {
-            if (goMeteorStrike == true)
-            {
-                SwitchState(_factory.MeteorStrike());
+                float percent = (_player.StarHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
+                _player.StarHandleCurrentRayon = _player.StarHandleRayonMin + (_player.StarHandleRayonMax - _player.StarHandleRayonMin) * (percent / 100f);
+                if (goMeteorStrike == false)
+                {
+                     _player.StarHandleCurrentSpeed = _player.StarHandleMinSpeed + (_player.StarHandleMaxSpeed - _player.StarHandleMinSpeed) * (percent / 100f);
+                }
+                else if (_player.StarHandleCurrentSpeed != _player.StarHandleSpeedSlowMotion)
+                {
+                    _player.StarHandleCurrentSpeed = _player.StarHandleSpeedSlowMotion;
+                    _player.TriggerGoToMeteorStrike.transform.position = _player.transform.position;
+                    DOVirtual.DelayedCall(0.5f, () =>
+                    {
+                        _player.TriggerGoToMeteorStrike.SetActive(true);
+                    });
+                }
+
+                if (_player.Jump.WasPressedThisFrame())
+                {
+                    if (goMeteorStrike == true)
+                    {
+                        SwitchState(_factory.MeteorStrike());
+                    }
+                }
             }
         }
     }
 
     public override void ExitState() { }
+
     public override void InitializeSubState() { }
-    public override void CheckSwitchStates() { }
+
+    public override void CheckSwitchStates()
+    {
+        if (_player.Grab.ReadValue<float>() == 0)
+        {
+            if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Enemy)
+            {
+                SwitchState(_factory.Headbutt());
+            }
+            else if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
+            {
+                if (snapHands == false)
+                {
+                    // Move Left Arm
+                    _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
+                    // Move Right Arm
+                    _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
+                    _player.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    if (_player.transform.position.y <= _player.StarHandleCentre.y)
+                    {
+                        SwitchState(_factory.Fall());
+                    }
+                    else
+                    {
+                        SwitchState(_factory.Jump());
+                    }
+                }
+            }
+        }
+    }
    
     public override void OnCollisionEnter2D(Collision2D collision) 
     {

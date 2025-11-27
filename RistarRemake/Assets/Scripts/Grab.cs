@@ -207,6 +207,8 @@ public class Grab : MonoBehaviour
     private void GrabEnemy()
     {
         //Debug.Log("Enemy Detected ");
+        ExitGrab();
+        NewStateFromGrab = _player.StatesFactory.Hang();
     }
     private void GrabLadder()
     {
@@ -216,8 +218,7 @@ public class Grab : MonoBehaviour
     }
     private void GrabStarHandle()
     {
-        Debug.Log("Star Handle Detected");
-
+        //Debug.Log("Star Handle Detected");
         ExitGrab();
         NewStateFromGrab = _player.StatesFactory.Hang();
     }
