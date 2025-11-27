@@ -44,33 +44,28 @@ public class ArmDetection : MonoBehaviour
 
             if (hit.collider != null)
             {
+                SnapPosHand = hit.point;
+                SnapPosHandL = new Vector2 (hit.point.x, hit.point.y + 0.2f);
+                SnapPosHandR = new Vector2(hit.point.x, hit.point.y - 0.2f);
+
                 if (hit.collider.CompareTag("Floor"))
                 {
-                    SnapPosHand = hit.collider.gameObject.transform.position;
                     ObjectDetected = (int)ObjectDetectedIs.Floor;
                 }
                 else if (hit.collider.CompareTag("Wall"))
                 {
-                    SnapPosHandL = HandL.position;
-                    SnapPosHandR = HandR.position;
-                    SnapPosHand = (HandL.position + HandR.position) / 2;
                     ObjectDetected = (int)ObjectDetectedIs.Wall;
                 }
                 else if (hit.collider.CompareTag("StarHandle"))
                 {
-                    SnapPosHand = hit.collider.gameObject.transform.position;
                     ObjectDetected = (int)ObjectDetectedIs.StarHandle;
                 }
                 else if (hit.collider.CompareTag("LadderV") || hit.collider.CompareTag("LadderH"))
                 {
-                    SnapPosHandL = HandL.position;
-                    SnapPosHandR = HandR.position;
-                    SnapPosHand = (HandL.position + HandR.position) / 2;
                     ObjectDetected = (int)ObjectDetectedIs.Ladder;
                 }
                 else if (hit.collider.CompareTag("Enemy"))
                 {
-                    SnapPosHand = hit.collider.gameObject.transform.position;
                     ObjectDetected = (int)ObjectDetectedIs.Enemy;
                 }
                 else

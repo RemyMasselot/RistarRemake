@@ -32,9 +32,9 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void UpdateState()
     {
         // Move Left Arm
-        _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHand;
+        _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHandL;
         // Move Right Arm
-        _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHand;
+        _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHandR;
     }
     public override void FixedUpdateState() {
     

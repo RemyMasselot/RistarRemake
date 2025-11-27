@@ -15,14 +15,14 @@ public class PlayerSpinState : PlayerBaseState
 
         _player.GrabScript.NewStateFromGrab = null;
 
-        _player.transform.position = _player.ArmDetection.SnapPosHand;
-
-        SpinMovement();
-
         // Move Left Arm
         _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
         // Move Right Arm
         _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
+
+        _player.transform.position = _player.ArmDetection.SnapPosHand;
+
+        SpinMovement();
     }
     private void SpinMovement()
     {
