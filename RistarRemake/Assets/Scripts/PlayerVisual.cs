@@ -210,17 +210,9 @@ public class PlayerVisual : MonoBehaviour
         lineArmRight.SetPosition(0, playerStateMachine.ShoulderRight.position);
         lineArmRight.SetPosition(1, playerStateMachine.IkArmRight.position);
         
-        if (playerStateMachine.CurrentState is PlayerGrabState || playerStateMachine.IsGrabing)
-        {
-            HandsRotation();
-            arms.SetActive(true);
-        }
-        else if (playerStateMachine.CurrentState is PlayerHangState)
-        {
-            HandsRotation();
-            arms.SetActive(true);
-        }
-        else if (playerStateMachine.CurrentState is PlayerHeadbuttState)
+        if (playerStateMachine.CurrentState is PlayerGrabState || playerStateMachine.IsGrabing
+            || playerStateMachine.CurrentState is PlayerHangState
+            || playerStateMachine.CurrentState is PlayerHeadbuttState)
         {
             HandsRotation();
             arms.SetActive(true);

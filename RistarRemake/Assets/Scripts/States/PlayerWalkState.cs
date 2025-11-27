@@ -69,6 +69,12 @@ public class PlayerWalkState : PlayerBaseState
                 _player.StartGrab();
             }
         }
+
+        // Passage en state HEADBUTT ou HANG
+        if (_player.GrabScript.NewStateFromGrab != null)
+        {
+            SwitchState(_player.GrabScript.NewStateFromGrab);
+        }
     }
 
     public override void OnCollisionEnter2D(Collision2D collision) { }

@@ -875,7 +875,6 @@ MonoBehaviour:
   IsLadder: 0
   <EnemyDetection>k__BackingField: {fileID: 3520695813044198357}
   <GroundDetection>k__BackingField: {fileID: 3719720874709478490}
-  <JumpBufferingDetection>k__BackingField: {fileID: 4616474715250170806}
   <LadderVDetectionL>k__BackingField: {fileID: 1149977443471627458}
   <LadderVDetectionR>k__BackingField: {fileID: 3782082570163832820}
   <LadderHDetection>k__BackingField: {fileID: 925709391015125550}
@@ -1000,6 +999,7 @@ MonoBehaviour:
   HorizontalGrabMovementMultiplier: 1.5
   VerticalGrabMovementMultiplier: 1
   HeadbuttMoveSpead: 0
+  HeadbuttDirection: {x: 0, y: 0}
   SpinTime: 0.3
   StarHandleCentre: {x: 0, y: 0, z: 0}
   StarHandleCurrentValue: 0
@@ -1119,7 +1119,7 @@ MonoBehaviour:
   SnapPosHandR: {x: 0, y: 0}
   HandR: {fileID: 3389265081751148596}
   HandL: {fileID: 6282178533520518733}
-  rayCount: 12
+  rayCount: 5
   rayDistance: 0.4
   angleRange: 90
   rotationOffset: 0

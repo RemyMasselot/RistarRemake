@@ -66,5 +66,4 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void OnCollisionEnter2D(Collision2D collision) { }
     public override void OnCollisionStay2D(Collision2D collision) { }
-
 }

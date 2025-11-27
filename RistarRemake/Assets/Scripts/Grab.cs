@@ -30,7 +30,7 @@ public class Grab : MonoBehaviour
     {
         _player.NewStatePlayed.Invoke();
 
-        //NewState = null;
+        NewStateFromGrab = null;
         canStartGrabSituation = true;
         canCancelGrab = true;
         isHoldGrabTimerRunning = false;
@@ -113,7 +113,7 @@ public class Grab : MonoBehaviour
         Vector2 PointDestinationArmRight = new Vector2(_player.ShoulderRight.localPosition.x + _grabDirection.x, _player.ShoulderRight.localPosition.y + _grabDirection.y);
         _player.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _player.TimeToExtendArms).OnComplete(() =>
         {
-            Debug.Log("Arms Extended");
+            //Debug.Log("Arms Extended");
             StartHoldGrabTimer();
         });
     }
@@ -276,15 +276,6 @@ public class Grab : MonoBehaviour
     private void GrabWall()
     {
         //Debug.Log("Wall Detected");
-        //_player.ArmDetection.gameObject.SetActive(false);
-
-        //DOTween.Kill(_player.IkArmLeft);
-        //DOTween.Kill(_player.IkArmRight);
-        //_player.IkArmLeft.position = _player.ArmDetection.SnapPosHandL;
-        //_player.IkArmRight.position = _player.ArmDetection.SnapPosHandR;
-
-        //_player.PlayerRigidbody.velocity = _player.AimDir.normalized * 10;
-
         ExitGrab();
         NewStateFromGrab = _player.StatesFactory.Headbutt();
     }
