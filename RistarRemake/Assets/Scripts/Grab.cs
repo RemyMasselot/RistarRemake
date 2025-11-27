@@ -293,12 +293,16 @@ public class Grab : MonoBehaviour
         //Debug.Log("Ladder Detected");
         //_player.ArmDetection.gameObject.SetActive(false);
 
-        DOTween.Kill(_player.IkArmLeft);
-        DOTween.Kill(_player.IkArmRight);
-        _player.IkArmLeft.position = _player.ArmDetection.SnapPosHandL;
-        _player.IkArmRight.position = _player.ArmDetection.SnapPosHandR;
+        //DOTween.Kill(_player.IkArmLeft);
+        //DOTween.Kill(_player.IkArmRight);
+        //_player.IkArmLeft.position = _player.ArmDetection.SnapPosHandL;
+        //_player.IkArmRight.position = _player.ArmDetection.SnapPosHandR;
 
-        _player.PlayerRigidbody.velocity = _player.AimDir.normalized * 10;
+        //_player.PlayerRigidbody.velocity = _player.AimDir.normalized * 10;
+
+
+        ExitGrab();
+        NewStateFromGrab = _player.StatesFactory.Headbutt();
     }
     private void GrabStarHandle()
     {

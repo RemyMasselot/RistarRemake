@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using static PlayerStateMachine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerHeadbuttState : PlayerBaseState
@@ -48,9 +49,18 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void OnCollisionEnter2D(Collision2D collision) { }
     public override void OnCollisionStay2D(Collision2D collision)
     {
+        // COLLISION WITH WALL
         if (collision.gameObject.CompareTag("Wall"))
         {
             SwitchState(_factory.Spin());
+        }
+
+        // COLLISION LADDER
+        _player.LadderVerif(collision);
+
+        if (_player.IsLadder != (int)LadderIs.Nothing)
+        {
+            SwitchState(_factory.WallIdle());
         }
     }
 }

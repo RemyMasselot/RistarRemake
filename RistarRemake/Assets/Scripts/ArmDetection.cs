@@ -65,6 +65,7 @@ public class ArmDetection : MonoBehaviour
                 {
                     SnapPosHandL = HandL.position;
                     SnapPosHandR = HandR.position;
+                    SnapPosHand = (HandL.position + HandR.position) / 2;
                     ObjectDetected = (int)ObjectDetectedIs.Ladder;
                 }
                 else if (hit.collider.CompareTag("Enemy"))
