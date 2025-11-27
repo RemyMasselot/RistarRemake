@@ -155,6 +155,7 @@ public class PlayerJumpState : PlayerBaseState
         }
 
         // Passage en state FALL
+        #region FALL SWITCH
         if (_player.Jump.WasReleasedThisFrame())
         {
             if (distanceFromOriginY <= _player.VerticalJumpDistanceLow)
@@ -188,6 +189,8 @@ public class PlayerJumpState : PlayerBaseState
             }
         }
 
+        #endregion
+
         // Passage en state GRAB
         if (_player.IsGrabing == false)
         {
@@ -196,12 +199,12 @@ public class PlayerJumpState : PlayerBaseState
                 //SwitchState(_factory.Grab());
                 _player.StartGrab();
             }
-        }
 
-        // Passage en state HEADBUTT ou HANG
-        if (_player.GrabScript.NewStateFromGrab != null)
-        {
-            SwitchState(_player.GrabScript.NewStateFromGrab);
+            // Passage en state HEADBUTT ou HANG
+            if (_player.GrabScript.NewStateFromGrab != null)
+            {
+                SwitchState(_player.GrabScript.NewStateFromGrab);
+            }
         }
     }
     public override void OnCollisionEnter2D(Collision2D collision) { }

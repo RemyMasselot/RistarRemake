@@ -22,7 +22,7 @@ public class PlayerFallState : PlayerBaseState
 
         if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
         {
-            Debug.Log("FALL from star handle");
+            //Debug.Log("FALL from star handle");
             Vector2 dir = (_player.transform.position - _player.StarHandleCentre).normalized;
 
             float percent = (_player.StarHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
@@ -136,7 +136,7 @@ public class PlayerFallState : PlayerBaseState
         if (_player.GroundDetection.IsDectected == true)
         {
             float moveValue = _player.MoveH.ReadValue<float>();
-            if (moveValue != 0)
+            if (moveValue != 0 && _player.IsGrabing == false)
             {
                 // Passage en state WALK
                 SwitchState(_factory.Walk());
@@ -160,13 +160,13 @@ public class PlayerFallState : PlayerBaseState
                 //SwitchState(_factory.Grab());
                 _player.StartGrab();
             }
-        }
 
-        // Passage en state HEADBUTT ou HANG
-        if (_player.GrabScript.NewStateFromGrab != null)
-        {
-            SwitchState(_player.GrabScript.NewStateFromGrab);
-            Debug.Log("FALL to GRAB STATE SWITCH"); 
+            // Passage en state HEADBUTT ou HANG
+            if (_player.GrabScript.NewStateFromGrab != null)
+            {
+                SwitchState(_player.GrabScript.NewStateFromGrab);
+                Debug.Log("FALL to GRAB STATE SWITCH"); 
+            }
         }
     }
 

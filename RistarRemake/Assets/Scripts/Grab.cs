@@ -19,12 +19,12 @@ public class Grab : MonoBehaviour
     private bool isHoldGrabTimerRunning = false;
     private float currentHoldGrabTimerValue;
 
-    #region INITIALISATION
-
     private void Start()
     {
         _player = GetComponent<PlayerStateMachine>();
     }
+
+    #region INITIALISATION
 
     public void GrabInitialisation()
     {
@@ -128,38 +128,14 @@ public class Grab : MonoBehaviour
 
     public void Update()
     {
-        MoveArmDectection();
+        if (_player.IsGrabing)
+        {
+            MoveArmDectection();
 
-        GrabDetectionVerif();
+            GrabDetectionVerif();
 
-        CancelGrab();
-
-        //if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Ladder || _player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Wall)
-        //{
-        //    DOTween.Kill(_player.IkArmLeft);
-        //    DOTween.Kill(_player.IkArmRight);
-        //    _player.IkArmLeft.position = _player.ArmDetection.SnapPosHandL;
-        //    _player.IkArmRight.position = _player.ArmDetection.SnapPosHandR;
-        //}
-        //else
-        //{
-        //    if (isHoldGrabTimerRunning == true)
-        //    {
-        //        currentHoldGrabTimerValue -= Time.deltaTime;
-        //        if (currentHoldGrabTimerValue <= 0f)
-        //        {
-        //            isHoldGrabTimerRunning = false;
-        //            ExitGrab(NewState);
-        //            //ShortenArms();
-        //        }
-        //    }
-
-        //    if (_player.Grab.WasReleasedThisFrame())
-        //    {
-        //        isHoldGrabTimerRunning = false;
-        //        ShortenArms();
-        //    }
-        //}
+            CancelGrab();
+        }
     }
 
     private void MoveArmDectection()
@@ -168,62 +144,6 @@ public class Grab : MonoBehaviour
         float angle = Mathf.Atan2(_player.AimDir.y, _player.AimDir.x) * Mathf.Rad2Deg;
         _player.ArmDetection.rotationOffset = angle;
     }
-
-    private void CancelGrab()
-    {
-        if (canCancelGrab)
-        {
-            if (isHoldGrabTimerRunning == true)
-            {
-                currentHoldGrabTimerValue -= Time.deltaTime;
-                if (currentHoldGrabTimerValue <= 0f)
-                {
-                    ShortenArms();
-                }
-            }
-
-            if (_player.Grab.WasReleasedThisFrame())
-            {
-                ShortenArms();
-            }
-        }
-    }
-
-    public void ShortenArms()
-    {
-        canCancelGrab = false;
-        isHoldGrabTimerRunning = false;
-
-        // Move Left Arm
-        _player.IkArmLeft.transform.DOLocalMove(_player.DefaultPosLeft.localPosition, _player.TimeToExtendArms);
-        // Move Right Arm
-        _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.TimeToExtendArms).OnComplete(() =>
-        {
-            ExitGrab();
-        });
-    }
-
-    //public void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    _player.LadderVerif(collision);
-
-    //    if (_player.IsLadder != (int)LadderIs.Nothing)
-    //    {
-    //        if (_player.CurrentState is not PlayerWallIdleState && _player.CurrentState is not PlayerWallClimbState)
-    //        {
-    //            UpdatePlayerState(_player.StatesFactory.WallIdle());
-    //            Debug.Log("LADDER GRAB COLLISION");
-    //        }
-    //    }
-
-    //    if (collision.gameObject.CompareTag("Wall"))
-    //    {
-    //        if (_player.CurrentState is PlayerHeadbuttState)
-    //        {
-    //            UpdatePlayerState(_player.StatesFactory.Headbutt());
-    //        }
-    //    }
-    //}
 
     #region SITUATIONS GRAB
 
@@ -291,25 +211,52 @@ public class Grab : MonoBehaviour
     private void GrabLadder()
     {
         //Debug.Log("Ladder Detected");
-        //_player.ArmDetection.gameObject.SetActive(false);
-
-        //DOTween.Kill(_player.IkArmLeft);
-        //DOTween.Kill(_player.IkArmRight);
-        //_player.IkArmLeft.position = _player.ArmDetection.SnapPosHandL;
-        //_player.IkArmRight.position = _player.ArmDetection.SnapPosHandR;
-
-        //_player.PlayerRigidbody.velocity = _player.AimDir.normalized * 10;
-
-
         ExitGrab();
         NewStateFromGrab = _player.StatesFactory.Headbutt();
     }
     private void GrabStarHandle()
     {
-        //Debug.Log("Star Handle Detected");
+        Debug.Log("Star Handle Detected");
+
+        ExitGrab();
+        NewStateFromGrab = _player.StatesFactory.Hang();
     }
 
     #endregion
+
+    private void CancelGrab()
+    {
+        if (canCancelGrab)
+        {
+            if (isHoldGrabTimerRunning == true)
+            {
+                currentHoldGrabTimerValue -= Time.deltaTime;
+                if (currentHoldGrabTimerValue <= 0f)
+                {
+                    ShortenArms();
+                }
+            }
+
+            if (_player.Grab.WasReleasedThisFrame())
+            {
+                ShortenArms();
+            }
+        }
+    }
+
+    public void ShortenArms()
+    {
+        canCancelGrab = false;
+        isHoldGrabTimerRunning = false;
+
+        // Move Left Arm
+        _player.IkArmLeft.transform.DOLocalMove(_player.DefaultPosLeft.localPosition, _player.TimeToExtendArms);
+        // Move Right Arm
+        _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.TimeToExtendArms).OnComplete(() =>
+        {
+            ExitGrab();
+        });
+    }
 
     private void ExitGrab()
     {

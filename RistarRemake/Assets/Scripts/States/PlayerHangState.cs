@@ -16,41 +16,43 @@ public class PlayerHangState : PlayerBaseState
     /// RETIRER LE SLOW MOTION ET LE TRIGGER DE PROPULSION
     /// </summary>
 
-    private bool SnapHands = false;
-    private float _SHangle = 0;
-    private bool _goMeteorStrike = false;
+    private bool snapHands = false;
+    private float starHandleAngle = 0;
+    private bool goMeteorStrike = false;
 
     public override void EnterState()
     {
         Debug.Log("ENTER HANG");
-        //_player.ArmDetection.gameObject.SetActive(false);
 
         // CAMERA BEHAVIOR
         _player.CameraTargetOverride = _player.ArmDetection.SnapPosHand;
 
-        _player.PlayerRigidbody.velocity = Vector2.zero;
-        SnapHands = false;
-        _goMeteorStrike = false;
+        snapHands = false;
+        goMeteorStrike = false;
         _player.StarHandleCurrentValue = 0;
-        _SHangle = -1.5f;
+        starHandleAngle = -1.5f;
         _player.StarHandleCurrentRayon = _player.StarHandleRayonMin;
+
+        _player.PlayerRigidbody.velocity = Vector2.zero;
+        _player.GrabScript.NewStateFromGrab = null;
 
         // Move Left Arm
         _player.IkArmLeft.transform.DOMove(_player.ArmDetection.SnapPosHand, 0.2f);
         // Move Right Arm
         _player.IkArmRight.transform.DOMove(_player.ArmDetection.SnapPosHand, 0.2f).OnComplete(()=>
         {
-            SnapHands = true;
+            snapHands = true;
         });
 
         if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
         {
             _player.StarHandleCentre = _player.ArmDetection.SnapPosHand;
-            float x = _player.StarHandleCentre.x + Mathf.Cos(_SHangle) * _player.StarHandleCurrentRayon;
-            float y = _player.StarHandleCentre.y + Mathf.Sin(_SHangle) * _player.StarHandleCurrentRayon;
+            float x = _player.StarHandleCentre.x + Mathf.Cos(starHandleAngle) * _player.StarHandleCurrentRayon;
+            float y = _player.StarHandleCentre.y + Mathf.Sin(starHandleAngle) * _player.StarHandleCurrentRayon;
             _player.transform.DOMove(new Vector2(x, y), 0.3f);
         }
     }
+
     public override void UpdateState()
     {
         //// Enter DAMAGE STATE
@@ -66,7 +68,7 @@ public class PlayerHangState : PlayerBaseState
         //}
 
         // Position des mains
-        if (SnapHands == true)
+        if (snapHands == true)
         {
             // Move Left Arm
             _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHand;
@@ -86,34 +88,34 @@ public class PlayerHangState : PlayerBaseState
 
     public override void FixedUpdateState() 
     {
-        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Ladder)
-        {
-            if (_player.Grab.WasReleasedThisFrame())
-            {
-                // Move Left Arm
-                _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHand;
-                // Move Right Arm
-                _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHand;
-                SnapHands = true;
-                SwitchState(_factory.Headbutt());
-            }
-        }
+        //if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Ladder)
+        //{
+        //    if (_player.Grab.WasReleasedThisFrame())
+        //    {
+        //        // Move Left Arm
+        //        _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHand;
+        //        // Move Right Arm
+        //        _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHand;
+        //        SnapHands = true;
+        //        SwitchState(_factory.Headbutt());
+        //    }
+        //}
 
-        if (SnapHands == true)
+        if (snapHands == true)
         {
             if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
             {
                 //Tourner autour du Star Handle
                 if (_player.IsPlayerTurnToLeft == true)
                 {
-                    _SHangle += -_player.StarHandleCurrentSpeed * Time.deltaTime;
+                    starHandleAngle += -_player.StarHandleCurrentSpeed * Time.deltaTime;
                 }
                 else
                 {
-                    _SHangle += _player.StarHandleCurrentSpeed * Time.deltaTime;
+                    starHandleAngle += _player.StarHandleCurrentSpeed * Time.deltaTime;
                 }
-                float x = _player.StarHandleCentre.x + Mathf.Cos(_SHangle) * _player.StarHandleCurrentRayon;
-                float y = _player.StarHandleCentre.y + Mathf.Sin(_SHangle) * _player.StarHandleCurrentRayon;
+                float x = _player.StarHandleCentre.x + Mathf.Cos(starHandleAngle) * _player.StarHandleCurrentRayon;
+                float y = _player.StarHandleCentre.y + Mathf.Sin(starHandleAngle) * _player.StarHandleCurrentRayon;
                 _player.transform.position = new Vector2(x, y);
 
                 ChargingMeteorStrike();
@@ -137,22 +139,6 @@ public class PlayerHangState : PlayerBaseState
                     SwitchState(_factory.Jump());
                 }
             }
-        }
-    }
-    public override void ExitState() { }
-    public override void InitializeSubState() { }
-    public override void CheckSwitchStates() { }
-
-    public override void OnCollisionEnter2D(Collision2D collision) 
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            SwitchState(_factory.Spin());
-        }
-
-        if (collision.gameObject == _player.TriggerGoToMeteorStrike)
-        {
-            SwitchState(_factory.MeteorStrike());
         }
     }
 
@@ -204,7 +190,7 @@ public class PlayerHangState : PlayerBaseState
         {
             if (_player.StarHandleCurrentValue >= _player.StarHandleTargetValue)
             {
-                _goMeteorStrike = true;
+                goMeteorStrike = true;
             }
             else
             {
@@ -226,7 +212,7 @@ public class PlayerHangState : PlayerBaseState
 
         float percent = (_player.StarHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
         _player.StarHandleCurrentRayon = _player.StarHandleRayonMin + (_player.StarHandleRayonMax - _player.StarHandleRayonMin) * (percent / 100f);
-        if (_goMeteorStrike == false)
+        if (goMeteorStrike == false)
         {
              _player.StarHandleCurrentSpeed = _player.StarHandleMinSpeed + (_player.StarHandleMaxSpeed - _player.StarHandleMinSpeed) * (percent / 100f);
         }
@@ -242,13 +228,29 @@ public class PlayerHangState : PlayerBaseState
 
         if (_player.Jump.WasPressedThisFrame())
         {
-            if (_goMeteorStrike == true)
+            if (goMeteorStrike == true)
             {
                 SwitchState(_factory.MeteorStrike());
             }
         }
     }
 
-    public override void OnCollisionStay2D(Collision2D collision) { }
+    public override void ExitState() { }
+    public override void InitializeSubState() { }
+    public override void CheckSwitchStates() { }
+   
+    public override void OnCollisionEnter2D(Collision2D collision) 
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            SwitchState(_factory.Spin());
+        }
 
+        if (collision.gameObject == _player.TriggerGoToMeteorStrike)
+        {
+            SwitchState(_factory.MeteorStrike());
+        }
+    }
+
+    public override void OnCollisionStay2D(Collision2D collision) { }
 }
