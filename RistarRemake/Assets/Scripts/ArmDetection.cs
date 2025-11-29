@@ -44,28 +44,29 @@ public class ArmDetection : MonoBehaviour
 
             if (hit.collider != null)
             {
-                SnapPosHand = hit.point;
-                SnapPosHandL = new Vector2 (hit.point.x, hit.point.y + 0.2f);
-                SnapPosHandR = new Vector2(hit.point.x, hit.point.y - 0.2f);
-
                 if (hit.collider.CompareTag("Floor"))
                 {
+                    SetSnapPosHitPoint(hit);
                     ObjectDetected = (int)ObjectDetectedIs.Floor;
                 }
                 else if (hit.collider.CompareTag("Wall"))
                 {
+                    SetSnapPosHitPoint(hit);
                     ObjectDetected = (int)ObjectDetectedIs.Wall;
                 }
                 else if (hit.collider.CompareTag("StarHandle"))
                 {
+                    SetSnapPosCollider(hit);
                     ObjectDetected = (int)ObjectDetectedIs.StarHandle;
                 }
                 else if (hit.collider.CompareTag("LadderV") || hit.collider.CompareTag("LadderH"))
                 {
+                    SetSnapPosHitPoint(hit);
                     ObjectDetected = (int)ObjectDetectedIs.Ladder;
                 }
                 else if (hit.collider.CompareTag("Enemy"))
                 {
+                    SetSnapPosCollider(hit);
                     ObjectDetected = (int)ObjectDetectedIs.Enemy;
                 }
                 else
@@ -78,6 +79,20 @@ public class ArmDetection : MonoBehaviour
             //    ObjectDetected = (int)ObjectDetectedIs.Nothing;
             //}
         }
+    }
+
+    private void SetSnapPosCollider(RaycastHit2D hit)
+    {
+        SnapPosHand = hit.collider.transform.position;
+        SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
+        SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
+    }
+
+    private void SetSnapPosHitPoint(RaycastHit2D hit)
+    {
+        SnapPosHand = hit.point;
+        SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
+        SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
     }
 
     private void OnDrawGizmos()
