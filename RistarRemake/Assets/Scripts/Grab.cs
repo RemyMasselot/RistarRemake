@@ -259,7 +259,7 @@ public class Grab : MonoBehaviour
         });
     }
 
-    private void ExitGrab()
+    public void ExitGrab()
     {
         _player.ArmDetection.gameObject.SetActive(false);
         _player.IsGrabing = false;

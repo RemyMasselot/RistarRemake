@@ -14,6 +14,8 @@ public class PlayerDamageState : PlayerBaseState
     {
         Debug.Log("ENTER DAMAGE");
 
+        _player.GrabScript.ExitGrab();
+
         _player.LifesNumber--;
 
         if (_player.LifesNumber > 0)
@@ -69,15 +71,15 @@ public class PlayerDamageState : PlayerBaseState
             SwitchState(_factory.Fall());
         }
 
-        // Passage en state GRAB
-        if (_player.IsGrabing == false)
-        {
-            if (_player.Grab.WasPerformedThisFrame())
-            {
-                //SwitchState(_factory.Grab());
-                _player.StartGrab();
-            }
-        }
+        //// Passage en state GRAB
+        //if (_player.IsGrabing == false)
+        //{
+        //    if (_player.Grab.WasPerformedThisFrame())
+        //    {
+        //        //SwitchState(_factory.Grab());
+        //        _player.StartGrab();
+        //    }
+        //}
     }
     public override void OnCollisionEnter2D(Collision2D collision) { }
     public override void OnCollisionStay2D(Collision2D collision) { }
