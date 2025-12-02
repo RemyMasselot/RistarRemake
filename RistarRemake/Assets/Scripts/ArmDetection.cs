@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class ArmDetection : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class ArmDetection : MonoBehaviour
         {
             float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
             Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-            float distance = rayDistance;
+            float distance = CalculateDistance(origin, direction);
 
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
 
@@ -105,29 +106,7 @@ public class ArmDetection : MonoBehaviour
             // Calcul de l'angle pour chaque rayon
             float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
             Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
-
-
-            //Calculer le point d'arrivée
-            // Le point d'arrivée se trouve sur une droite perpendiculaire au segment entre le point d'origine
-            // et le point final qui part du point d'origine dans la direction visée multipliée par la distance
-
-            // 1 - Trouver le segment entre le point d'origine et le point final
-            // Trouver le point final
-
-            Vector2 finalPoint = origin + playerStateMachine.AimDir * rayDistance;
-            Vector2 segment = finalPoint - origin;
-
-
-            // 2 - Trouver le vecteur perpendiculaire à ce segment et qui passe par finalPoint
-
-            Vector2 perpendiculaire = new Vector2(-segment.y, segment.x).normalized;
-
-
-            // 3 - Trouver le point d'intersection entre la droite de la direction visée et la droite perpendiculaire au segment
-
-            Vector2 targetPoint = GetLineIntersection(finalPoint, perpendiculaire, origin, direction);
-            
-            float distance = Vector2.Distance(origin, targetPoint);
+            float distance = CalculateDistance(origin, direction);
 
 
             Gizmos.DrawRay(origin, direction * distance); 
@@ -135,7 +114,32 @@ public class ArmDetection : MonoBehaviour
         }
     }
 
-    public static Vector2 GetLineIntersection(Vector2 p1, Vector2 dir1, Vector2 p2, Vector2 dir2)
+    private float CalculateDistance(Vector2 origin, Vector2 direction)
+    {
+        //Calculer le point d'arrivée
+        // Le point d'arrivée se trouve sur une droite perpendiculaire au segment entre le point d'origine
+        // et le point final qui part du point d'origine dans la direction visée multipliée par la distance
+
+        // 1 - Trouver le segment entre le point d'origine et le point final
+        // Trouver le point final
+
+        Vector2 finalPoint = origin + playerStateMachine.AimDir * rayDistance;
+        Vector2 segment = finalPoint - origin;
+
+
+        // 2 - Trouver le vecteur perpendiculaire à ce segment et qui passe par finalPoint
+
+        Vector2 perpendiculaire = new Vector2(-segment.y, segment.x).normalized;
+
+
+        // 3 - Trouver le point d'intersection entre la droite de la direction visée et la droite perpendiculaire au segment
+
+        Vector2 targetPoint = GetLineIntersection(finalPoint, perpendiculaire, origin, direction);
+
+        return Vector2.Distance(origin, targetPoint);
+    }
+
+    private static Vector2 GetLineIntersection(Vector2 p1, Vector2 dir1, Vector2 p2, Vector2 dir2)
     {
         float a1 = -dir1.y;
         float b1 = dir1.x;
