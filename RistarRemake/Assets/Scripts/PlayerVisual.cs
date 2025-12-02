@@ -1,6 +1,8 @@
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
 using static ArmDetection;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerVisual : MonoBehaviour
 {
@@ -29,12 +31,19 @@ public class PlayerVisual : MonoBehaviour
 
     private void Update()
     {
-        ChangePlayerDirection();
-
         ArmVisibility();
 
         if (playerStateMachine.CurrentState is PlayerGrabState || playerStateMachine.IsGrabing) // GRAB STATE ONGOING
         {
+            if (playerStateMachine.AimDir.x < 0)
+            {
+                playerStateMachine.IsPlayerTurnToLeft = true;
+            }
+            else if(playerStateMachine.AimDir.x > 0)
+            {
+                playerStateMachine.IsPlayerTurnToLeft = false;
+            }
+
             if (playerStateMachine.ArmDetection.ObjectDetected != (int)ObjectDetectedIs.Nothing)
             {
                 // HANDS CLOSE
@@ -46,6 +55,8 @@ public class PlayerVisual : MonoBehaviour
         {
             MeteorStrikeBodyRotation();
         }
+
+        ChangePlayerDirection();
     }
 
     private void ChangePlayerDirection()

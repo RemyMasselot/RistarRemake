@@ -28,8 +28,6 @@ public class Grab : MonoBehaviour
 
     public void GrabInitialisation()
     {
-        _player.NewStatePlayed.Invoke();
-
         NewStateFromGrab = null;
         canStartGrabSituation = true;
         canCancelGrab = true;
@@ -40,6 +38,8 @@ public class Grab : MonoBehaviour
         DirectionCorrection();
 
         MoveLimbsToDefaultPosition();
+
+        _player.NewStatePlayed.Invoke();
 
         ExtendArms();
     }
