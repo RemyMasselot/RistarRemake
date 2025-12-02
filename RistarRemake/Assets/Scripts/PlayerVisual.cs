@@ -55,6 +55,11 @@ public class PlayerVisual : MonoBehaviour
         {
             MeteorStrikeBodyRotation();
         }
+        
+        if (playerStateMachine.CurrentState is PlayerHeadbuttState)
+        {
+            HeadbuttBodyRotation();
+        }
 
         ChangePlayerDirection();
     }
@@ -253,6 +258,21 @@ public class PlayerVisual : MonoBehaviour
             spriteRenderer.flipY = false;
         }
         if (playerStateMachine.MeteorStrikeDirection.x < 0)
+        {
+            spriteRenderer.flipY = true;
+        }
+    }
+
+    private void HeadbuttBodyRotation()
+    {
+        float angle = Mathf.Atan2(playerStateMachine.AimDir.y, playerStateMachine.AimDir.x) * Mathf.Rad2Deg;
+        spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        if (playerStateMachine.AimDir.x > 0)
+        {
+            spriteRenderer.flipY = false;
+        }
+        if (playerStateMachine.AimDir.x < 0)
         {
             spriteRenderer.flipY = true;
         }
