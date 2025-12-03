@@ -26,16 +26,22 @@ public class PlayerHeadbuttState : PlayerBaseState
         DOTween.Kill(_player.IkArmLeft);
         DOTween.Kill(_player.IkArmRight);
 
-        _player.HeadbuttDirection = (new Vector3 (_player.ArmDetection.SnapPosHand.x, _player.ArmDetection.SnapPosHand.y, 0)) - _player.transform.position;
+        _player.HeadbuttDirection = _player.AimDir;
         _player.PlayerRigidbody.velocity = _player.HeadbuttDirection.normalized * _player.HeadbuttMoveSpead;
     }
     public override void UpdateState()
+    {
+        SetHandPosition();
+    }
+
+    private void SetHandPosition()
     {
         // Move Left Arm
         _player.IkArmLeft.transform.position = _player.ArmDetection.SnapPosHandL;
         // Move Right Arm
         _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHandR;
     }
+
     public override void FixedUpdateState() {
     
         if (_player.EnemyDetection.IsDectected == true)

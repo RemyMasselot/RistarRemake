@@ -18,7 +18,7 @@ public class ArmDetection : MonoBehaviour
 
     [SerializeField] private PlayerStateMachine playerStateMachine;
 
-    public Vector2 SnapPosHand;
+    public Vector3 SnapPosHand;
     public Vector2 SnapPosHandL;
     public Vector2 SnapPosHandR;
     [SerializeField] private Transform HandR;
@@ -41,7 +41,7 @@ public class ArmDetection : MonoBehaviour
             Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
             float distance = CalculateDistance(origin, direction);
 
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, rayDistance, layerMask);
 
             if (hit.collider != null)
             {
@@ -85,15 +85,15 @@ public class ArmDetection : MonoBehaviour
     private void SetSnapPosCollider(RaycastHit2D hit)
     {
         SnapPosHand = hit.collider.transform.position;
-        SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
-        SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
+        SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
+        SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
     }
 
     private void SetSnapPosHitPoint(RaycastHit2D hit)
     {
         SnapPosHand = hit.point;
-        SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
-        SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
+        SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
+        SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
     }
 
     private void OnDrawGizmos()
@@ -109,7 +109,7 @@ public class ArmDetection : MonoBehaviour
             float distance = CalculateDistance(origin, direction);
 
 
-            Gizmos.DrawRay(origin, direction * distance); 
+            Gizmos.DrawRay(origin, direction * rayDistance); 
             //Debug.Log(targetPoint);
         }
     }

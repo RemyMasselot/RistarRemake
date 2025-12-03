@@ -126,8 +126,8 @@ public class PlayerHangState : PlayerBaseState
                 if (_player.IsPlayerTurnToLeft == true)
                 {
                     // Body Rotation
-                    Vector2 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
-                    Vector2 direction = bodyPos - _player.ArmDetection.SnapPosHand;
+                    Vector3 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
+                    Vector3 direction = bodyPos - _player.ArmDetection.SnapPosHand;
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     _player.transform.rotation = Quaternion.Euler(0, 0, angle);
                     if (_player.MoveH.ReadValue<float>() < 0)
@@ -142,8 +142,8 @@ public class PlayerHangState : PlayerBaseState
                 else
                 {
                     // Body Rotation
-                    Vector2 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
-                    Vector2 direction = _player.ArmDetection.SnapPosHand - bodyPos;
+                    Vector3 bodyPos = new Vector2(_player.transform.position.x, _player.transform.position.y);
+                    Vector3 direction = _player.ArmDetection.SnapPosHand - bodyPos;
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     _player.transform.rotation = Quaternion.Euler(0, 0, angle);
                     if (_player.MoveH.ReadValue<float>() > 0)

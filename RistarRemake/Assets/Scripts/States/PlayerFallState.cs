@@ -165,7 +165,7 @@ public class PlayerFallState : PlayerBaseState
             if (_player.GrabScript.NewStateFromGrab != null)
             {
                 SwitchState(_player.GrabScript.NewStateFromGrab);
-                Debug.Log("FALL to GRAB STATE SWITCH"); 
+                //Debug.Log("FALL to GRAB STATE SWITCH"); 
             }
         }
     }

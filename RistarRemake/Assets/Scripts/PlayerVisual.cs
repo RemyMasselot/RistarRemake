@@ -11,6 +11,7 @@ public class PlayerVisual : MonoBehaviour
     private PlayerStateMachine playerStateMachine;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private Transform pivot;
     [SerializeField, FoldoutGroup("RÉFÉRENCES")] private SpriteRenderer handRight;
     [SerializeField, FoldoutGroup("RÉFÉRENCES")] private SpriteRenderer handLeft;
     [SerializeField, FoldoutGroup("RÉFÉRENCES")] private Sprite handOpen;
@@ -26,6 +27,7 @@ public class PlayerVisual : MonoBehaviour
         playerStateMachine = GetComponentInParent<PlayerStateMachine>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        pivot = transform.parent;
         playerStateMachine.NewStatePlayed.AddListener(UpdateVisual);
     }
 
@@ -56,12 +58,12 @@ public class PlayerVisual : MonoBehaviour
             MeteorStrikeBodyRotation();
         }
         
+        ChangePlayerDirection();
+
         if (playerStateMachine.CurrentState is PlayerHeadbuttState)
         {
             HeadbuttBodyRotation();
         }
-
-        ChangePlayerDirection();
     }
 
     private void ChangePlayerDirection()
@@ -265,16 +267,11 @@ public class PlayerVisual : MonoBehaviour
 
     private void HeadbuttBodyRotation()
     {
-        float angle = Mathf.Atan2(playerStateMachine.AimDir.y, playerStateMachine.AimDir.x) * Mathf.Rad2Deg;
-        spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, angle);
+        Vector2 direction = playerStateMachine.ArmDetection.SnapPosHand - pivot.position;
+        float angle = Vector2.SignedAngle(Vector2.up, playerStateMachine.AimDir);
+        pivot.rotation = Quaternion.Euler(0, 0, -angle);
+        Debug.Log(-angle);
 
-        if (playerStateMachine.AimDir.x > 0)
-        {
-            spriteRenderer.flipY = false;
-        }
-        if (playerStateMachine.AimDir.x < 0)
-        {
-            spriteRenderer.flipY = true;
-        }
+        //spriteRenderer.flipY = playerStateMachine.IsPlayerTurnToLeft ? true : false;
     }
 }
