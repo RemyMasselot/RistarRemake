@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public class ArmDetection : MonoBehaviour
 {
@@ -85,15 +83,25 @@ public class ArmDetection : MonoBehaviour
     private void SetSnapPosCollider(RaycastHit2D hit)
     {
         SnapPosHand = hit.collider.transform.position;
-        SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
-        SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
+        SnapPosHandL = SnapPosHand;
+        SnapPosHandR = SnapPosHand;
     }
 
     private void SetSnapPosHitPoint(RaycastHit2D hit)
     {
         SnapPosHand = hit.point;
-        SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
-        SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
+        //Debug.Log(hit.transform.name);
+
+        if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Ceiling") || hit.transform.gameObject.tag == "LadderH")
+        {
+            SnapPosHandL = new Vector2(SnapPosHand.x - 0.2f, SnapPosHand.y);
+            SnapPosHandR = new Vector2(SnapPosHand.x + 0.2f, SnapPosHand.y);
+        }
+        else
+        {
+            SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
+            SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
+        }
     }
 
     private void OnDrawGizmos()

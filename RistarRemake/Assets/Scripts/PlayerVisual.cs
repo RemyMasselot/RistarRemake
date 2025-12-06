@@ -1,8 +1,6 @@
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 using static ArmDetection;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerVisual : MonoBehaviour
 {
@@ -68,7 +66,11 @@ public class PlayerVisual : MonoBehaviour
 
     private void ChangePlayerDirection()
     {
-        spriteRenderer.flipX = playerStateMachine.IsPlayerTurnToLeft ? true : false;
+        //spriteRenderer.flipX = playerStateMachine.IsPlayerTurnToLeft ? true : false;
+
+        float newScaleX = playerStateMachine.IsPlayerTurnToLeft ? -1 : 1;
+
+        pivot.transform.localScale = new Vector3(newScaleX, 1, 1);
     }
 
     private void UpdateVisual()
@@ -79,7 +81,7 @@ public class PlayerVisual : MonoBehaviour
         // PUT BACK THE BODY ROTATION TO 0 IF NOT IN METEOR STRIKE
         if (playerStateMachine.CurrentState is not PlayerMeteorStrikeState)
         {
-            spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
+            pivot.rotation = Quaternion.Euler(0, 0, 0);
             spriteRenderer.flipY = false;
         }
     }
@@ -176,17 +178,6 @@ public class PlayerVisual : MonoBehaviour
     {
         handRight.sprite = handOpen;
         handLeft.sprite = handOpen;
-
-        if (playerStateMachine.IsPlayerTurnToLeft == false)
-        {
-            lineArmLeft.sortingOrder = 0;
-            lineArmRight.sortingOrder = 10;
-        }
-        else
-        {
-            lineArmLeft.sortingOrder = 10;
-            lineArmRight.sortingOrder = 0;
-        }
     }
 
     private void ChoiceGrabAnimation()
@@ -227,7 +218,7 @@ public class PlayerVisual : MonoBehaviour
         lineArmLeft.SetPosition(1, playerStateMachine.IkArmLeft.position);
         lineArmRight.SetPosition(0, playerStateMachine.ShoulderRight.position);
         lineArmRight.SetPosition(1, playerStateMachine.IkArmRight.position);
-        
+
         if (playerStateMachine.CurrentState is PlayerGrabState || playerStateMachine.IsGrabing
             || playerStateMachine.CurrentState is PlayerHangState
             || playerStateMachine.CurrentState is PlayerHeadbuttState)
@@ -243,11 +234,16 @@ public class PlayerVisual : MonoBehaviour
 
     private void HandsRotation()
     {
-        float angle = Mathf.Atan2(playerStateMachine.AimDir.x, playerStateMachine.AimDir.y) * Mathf.Rad2Deg;
-        Quaternion _dirQ = Quaternion.Euler(new Vector3(0, 0, -angle + 90));
+        Vector2 lineReference = new Vector2(0, 1);
 
-        playerStateMachine.IkArmRight.transform.rotation = _dirQ;
-        playerStateMachine.IkArmLeft.transform.rotation = _dirQ;
+        Vector2 directionHandLeft = lineArmLeft.GetPosition(1) - lineArmLeft.GetPosition(0);
+        float angleHandLeft = Vector2.SignedAngle(lineReference, directionHandLeft);
+
+        Vector2 directionHandRight = lineArmLeft.GetPosition(1) - lineArmLeft.GetPosition(0);
+        float angleHandRight = Vector2.SignedAngle(lineReference, directionHandRight);
+
+        playerStateMachine.IkArmRight.transform.rotation = Quaternion.Euler(0, 0, angleHandRight);
+        playerStateMachine.IkArmLeft.transform.rotation = Quaternion.Euler(0, 0, angleHandLeft);
     }
 
     private void MeteorStrikeBodyRotation()
@@ -267,11 +263,11 @@ public class PlayerVisual : MonoBehaviour
 
     private void HeadbuttBodyRotation()
     {
-        Vector2 direction = playerStateMachine.ArmDetection.SnapPosHand - pivot.position;
-        float angle = Vector2.SignedAngle(Vector2.up, playerStateMachine.AimDir);
-        pivot.rotation = Quaternion.Euler(0, 0, -angle);
-        Debug.Log(-angle);
+        Vector2 lineReference = new Vector2(0, 1);
+        Vector2 direction = playerStateMachine.AimDir;
 
-        //spriteRenderer.flipY = playerStateMachine.IsPlayerTurnToLeft ? true : false;
+        float angle = Vector2.SignedAngle(lineReference, direction);
+        pivot.rotation = Quaternion.Euler(0, 0, angle);
+        //Debug.Log(angle);
     }
 }

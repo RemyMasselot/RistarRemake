@@ -98,12 +98,17 @@ public class Grab : MonoBehaviour
     {
         Vector2 _grabDirection = _player.AimDir.normalized * _player.DistanceGrab;
 
-        if (_player.GetComponentInChildren<PlayerVisualSpine>() != null)
+        //if (_player.GetComponentInChildren<PlayerVisualSpine>() != null)
+        //{
+        //    if (_player.AimDir.x < 0)
+        //    {
+        //        _grabDirection.x *= -1;
+        //    }
+        //}
+
+        if (_player.AimDir.x < 0)
         {
-            if (_player.AimDir.x < 0)
-            {
-                _grabDirection.x *= -1;
-            }
+            _grabDirection.x *= -1;
         }
 
         // Move Left Arm
