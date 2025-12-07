@@ -17,11 +17,17 @@ public class PlayerWalkState : PlayerBaseState
     }
     public override void FixedUpdateState() 
     {
-        // Déplacements du personnage
-        float moveValue = _player.MoveH.ReadValue<float>();
-        _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.WalkSpeed * Time.deltaTime, 0);
-
+        movement();
         _player.PlayerDirectionVerif();
+    }
+
+    private void movement()
+    {
+        if (_player.IsGrabing == false)
+        {
+            float moveValue = _player.MoveH.ReadValue<float>();
+            _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.WalkSpeed * Time.deltaTime, 0);
+        }
     }
 
     public override void ExitState() { }
