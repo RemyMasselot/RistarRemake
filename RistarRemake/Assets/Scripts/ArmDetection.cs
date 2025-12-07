@@ -10,7 +10,8 @@ public class ArmDetection : MonoBehaviour
         Ladder = 3,
         StarHandle = 4,
         Wall = 5,
-        Floor = 6
+        Floor = 6,
+        Ceiling= 7
     }
     public int ObjectDetected = (int)ObjectDetectedIs.Nothing;
 
@@ -33,51 +34,107 @@ public class ArmDetection : MonoBehaviour
     {
         Vector2 origin = transform.position;
 
-        for (int i = 0; i < rayCount; i++)
-        {
-            float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
-            Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-            float distance = CalculateDistance(origin, direction);
-
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, rayDistance, layerMask);
-
-            if (hit.collider != null)
+        if (ObjectDetected == (int)ObjectDetectedIs.Nothing)
+        { 
+            for (int i = 0; i < rayCount; i++)
             {
-                if (hit.collider.CompareTag("Floor"))
+                float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
+                Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+                float distance = CalculateDistance(origin, direction);
+
+                RaycastHit2D hit = Physics2D.Raycast(origin, direction, rayDistance, layerMask);
+
+                if (hit.collider != null)
                 {
-                    SetSnapPosHitPoint(hit);
-                    ObjectDetected = (int)ObjectDetectedIs.Floor;
-                }
-                else if (hit.collider.CompareTag("Wall"))
-                {
-                    SetSnapPosHitPoint(hit);
-                    ObjectDetected = (int)ObjectDetectedIs.Wall;
-                }
-                else if (hit.collider.CompareTag("StarHandle"))
-                {
-                    SetSnapPosCollider(hit);
-                    ObjectDetected = (int)ObjectDetectedIs.StarHandle;
-                }
-                else if (hit.collider.CompareTag("LadderV") || hit.collider.CompareTag("LadderH"))
-                {
-                    SetSnapPosHitPoint(hit);
-                    ObjectDetected = (int)ObjectDetectedIs.Ladder;
-                }
-                else if (hit.collider.CompareTag("Enemy"))
-                {
-                    SetSnapPosCollider(hit);
-                    ObjectDetected = (int)ObjectDetectedIs.Enemy;
+                    if (hit.collider.CompareTag("Enemy"))
+                    {
+                        ObjectDetected = (int)ObjectDetectedIs.Enemy;
+                        SetSnapPosCollider(hit);
+                    }
+                    else if (hit.collider.CompareTag("StarHandle"))
+                    {
+                        ObjectDetected = (int)ObjectDetectedIs.StarHandle;
+                        SetSnapPosCollider(hit);
+                    }
+                    else if (hit.collider.CompareTag("LadderV") || hit.collider.CompareTag("LadderH"))
+                    {
+                        ObjectDetected = (int)ObjectDetectedIs.Ladder;
+                        SetSnapPosHitPoint(hit);
+                    }
+                    else if (hit.collider.CompareTag("Wall"))
+                    {
+                        //Debug.Log("Wall detected");
+                        DetecPlatform(hit);
+                    }
+                    else
+                    {
+                        ObjectDetected = (int)ObjectDetectedIs.Other;
+                    }
                 }
                 else
                 {
-                    ObjectDetected = (int)ObjectDetectedIs.Other;
+                    ObjectDetected = (int)ObjectDetectedIs.Nothing;
                 }
             }
-            //else
-            //{
-            //    ObjectDetected = (int)ObjectDetectedIs.Nothing;
-            //}
         }
+    }
+
+    private void DetecPlatform(RaycastHit2D hit)
+    {
+        LayerMask wallMask = LayerMask.GetMask("Wall");
+
+        SnapPosHand = hit.point;
+        Vector3 verticalOffset = new Vector2(0f, 0.1f);
+        Vector3 horizontalOffset = new Vector2(0.1f, 0f);
+
+        if (playerStateMachine.AimDir.y > 0)
+        {
+            Vector3 startPointDetection = SnapPosHand - verticalOffset;
+
+            Collider2D newHitRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset);
+            Collider2D newHitLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset);
+
+            bool isWallRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset, wallMask) != null;
+            bool isWallLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset, wallMask) != null;
+
+            if (isWallRight || isWallLeft)
+            {
+                ObjectDetected = (int)ObjectDetectedIs.Wall;
+                //Debug.Log("WALL");
+            }
+            else
+            {
+                ObjectDetected = (int)ObjectDetectedIs.Ceiling;
+                //Debug.Log("CEILING");
+            }
+        }
+        else if (playerStateMachine.AimDir.y < 0)
+        {
+            Vector3 startPointDetection = SnapPosHand + verticalOffset;
+
+            Collider2D newHitRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset);
+            Collider2D newHitLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset);
+
+            bool isWallRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset, wallMask) != null;
+            bool isWallLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset, wallMask) != null;
+
+            if (isWallRight || isWallLeft)
+            {
+                ObjectDetected = (int)ObjectDetectedIs.Wall;
+                //Debug.Log("WALL");
+            }
+            else
+            {
+                ObjectDetected = (int)ObjectDetectedIs.Floor;
+                Debug.Log("GROUND");
+            }
+        }
+        else
+        {
+            ObjectDetected = (int)ObjectDetectedIs.Wall;
+            //Debug.Log("WALL");
+        }
+        SetSnapPosHitPoint(hit);
     }
 
     private void SetSnapPosCollider(RaycastHit2D hit)
@@ -92,10 +149,18 @@ public class ArmDetection : MonoBehaviour
         SnapPosHand = hit.point;
         //Debug.Log(hit.transform.name);
 
-        if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Ceiling") || hit.transform.gameObject.tag == "LadderH")
+        if (ObjectDetected == (int)ObjectDetectedIs.Ceiling || hit.transform.gameObject.tag == "LadderH")
         {
-            SnapPosHandL = new Vector2(SnapPosHand.x - 0.2f, SnapPosHand.y);
-            SnapPosHandR = new Vector2(SnapPosHand.x + 0.2f, SnapPosHand.y);
+            if (playerStateMachine.IsPlayerTurnToLeft)
+            {
+                SnapPosHandL = new Vector2(SnapPosHand.x - 0.2f, SnapPosHand.y);
+                SnapPosHandR = new Vector2(SnapPosHand.x + 0.2f, SnapPosHand.y);
+            }
+            else
+            {
+                SnapPosHandL = new Vector2(SnapPosHand.x + 0.2f, SnapPosHand.y);
+                SnapPosHandR = new Vector2(SnapPosHand.x - 0.2f, SnapPosHand.y);
+            }
         }
         else
         {

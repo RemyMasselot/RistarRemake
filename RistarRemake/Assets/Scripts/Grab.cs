@@ -190,6 +190,10 @@ public class Grab : MonoBehaviour
                     GrabFloor();
                     canStartGrabSituation = false;
                     break;
+                case (int)ObjectDetectedIs.Ceiling:
+                    GrabWall();
+                    canStartGrabSituation = false;
+                    break;
             }
         }
     }

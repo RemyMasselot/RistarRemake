@@ -1,7 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
 using static PlayerStateMachine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerHeadbuttState : PlayerBaseState
 {
@@ -42,7 +41,8 @@ public class PlayerHeadbuttState : PlayerBaseState
         _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHandR;
     }
 
-    public override void FixedUpdateState() {
+    public override void FixedUpdateState() 
+    {
     
         if (_player.EnemyDetection.IsDectected == true)
         {
@@ -59,6 +59,7 @@ public class PlayerHeadbuttState : PlayerBaseState
         if (collision.gameObject.CompareTag("Wall"))
         {
             SwitchState(_factory.Spin());
+            Debug.Log("HEADBUTT WALL");
         }
 
         // COLLISION LADDER

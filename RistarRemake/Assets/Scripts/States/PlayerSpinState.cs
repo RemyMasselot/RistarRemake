@@ -31,12 +31,17 @@ public class PlayerSpinState : PlayerBaseState
             if (_player.LadderHDetection.IsLadderHDectected == true)
             {
                 _player.PlayerRigidbody.velocity = new Vector2(0, -1);
+                Debug.Log("LADDER SPIN");
             }
             else
             {
                 _player.PlayerRigidbody.velocity = _player.IsPlayerTurnToLeft ? new Vector2(1, 1) * 4 : new Vector2(-1, 1) * 4;
                 //Debug.Log("WALL SPIN");
             }
+        }
+        else if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Ceiling)
+        {
+            _player.PlayerRigidbody.velocity = new Vector2(0, -1);
         }
         else if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Enemy)
         {
