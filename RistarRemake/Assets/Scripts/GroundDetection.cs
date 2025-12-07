@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GroundDetection : MonoBehaviour
 {
-    public bool IsDectected { get; private set; }
+    public bool IsDectected;
     
     public Vector2 CapsuleSize;
     public LayerMask LayerToCheck; // Couches à reconnaître

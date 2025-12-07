@@ -64,7 +64,7 @@ public class PlayerJumpState : PlayerBaseState
 
     private void UpdatePositionY()
     {
-        if (_player.CornerCorrection.HitLeft == false && _player.CornerCorrection.HitRight == false)
+        if (_player.platformCollisionDetection.CeilingDetected == false)
         {
             if (timerUpdatePositionY < _player.TimeToGoToApex)
             {
@@ -99,15 +99,18 @@ public class PlayerJumpState : PlayerBaseState
         float velocityX = 0;
         float moveValueH = _player.MoveH.ReadValue<float>();
 
-        if (_player.CornerCorrection.HitLeft && !_player.CornerCorrection.HitRight && moveValueH <= 0.5f)
+        if (_player.platformCollisionDetection.CeilingDetected)
         {
-            _player.transform.position += new Vector3(_player.CornerCorrection.CornerDistance, 0f, 0f);
-            canModifyVelocityXLeft = false;
-        }
-        else if (_player.CornerCorrection.HitRight && !_player.CornerCorrection.HitLeft && moveValueH >= -0.5f)
-        {
-            _player.transform.position -= new Vector3(_player.CornerCorrection.CornerDistance, 0f, 0f);
-            canModifyVelocityXRight = false;
+            if (_player.CornerCorrection.HitLeft && !_player.CornerCorrection.HitRight && moveValueH <= 0.5f)
+            {
+                _player.transform.position += new Vector3(_player.CornerCorrection.CornerDistance, 0f, 0f);
+                canModifyVelocityXLeft = false;
+            }
+            else if (_player.CornerCorrection.HitRight && !_player.CornerCorrection.HitLeft && moveValueH >= -0.5f)
+            {
+                _player.transform.position -= new Vector3(_player.CornerCorrection.CornerDistance, 0f, 0f);
+                canModifyVelocityXRight = false;
+            }
         }
 
         if (canModifyVelocityXLeft == false)
@@ -177,16 +180,10 @@ public class PlayerJumpState : PlayerBaseState
             SwitchState(_factory.Fall());
         }
 
-        if (_player.CornerCorrection.HitLeft && _player.CornerCorrection.HitRight)
+        if (_player.platformCollisionDetection.CeilingDetected
+            && _player.CornerCorrection.HitLeft && _player.CornerCorrection.HitRight)
         {
-            if (_player.LowJumpActivated)
-            {
-                SwitchState(_factory.Fall());
-            }
-            else if (_player.TimePassedInState >= _player.TimeToGoToApex)
-            {
-                SwitchState(_factory.Fall());
-            }
+            SwitchState(_factory.Fall());
         }
 
         #endregion

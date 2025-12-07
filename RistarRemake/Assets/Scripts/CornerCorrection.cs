@@ -3,7 +3,7 @@ using UnityEngine;
 public class CornerCorrection : MonoBehaviour
 {
     public float CornerDistance = 0.08f; // Distance de correction horizontale
-    public LayerMask groundLayer;
+    public LayerMask Layer;
 
     [Header("Box settings")]
     public float boxWidth = 0.02f;
@@ -15,6 +15,7 @@ public class CornerCorrection : MonoBehaviour
     public float rayLength = 0.06f; // Longueur des rayons latéraux pour vérifier l’espace
 
     private PlayerStateMachine playerStateMachine;
+    private PlatformCollisionDetection platformCollisionDetection;
 
     [HideInInspector] public bool HitLeft;
     [HideInInspector] public bool HitRight;
@@ -22,6 +23,7 @@ public class CornerCorrection : MonoBehaviour
     void Awake()
     {
         playerStateMachine = GetComponent<PlayerStateMachine>();
+        platformCollisionDetection = GetComponent<PlatformCollisionDetection>();
         HitLeft = false;
         HitRight = false;
     }
@@ -38,20 +40,8 @@ public class CornerCorrection : MonoBehaviour
             Vector2 rightPos = new Vector2(pos.x + sideOffset, pos.y + heightOffset);
 
             // Détection de coin touché
-            HitLeft = Physics2D.OverlapBox(leftPos, boxSize, 0f, groundLayer);
-            HitRight = Physics2D.OverlapBox(rightPos, boxSize, 0f, groundLayer);
-
-            // Correction
-            float moveValueH = playerStateMachine.MoveH.ReadValue<float>();
-
-            if (HitLeft && !HitRight && moveValueH <= 0)
-            {
-                transform.position += new Vector3(CornerDistance, 0f, 0f);
-            }
-            else if (HitRight && !HitLeft && moveValueH >= 0)
-            {
-                transform.position -= new Vector3(CornerDistance, 0f, 0f);
-            }
+            HitLeft = Physics2D.OverlapBox(leftPos, boxSize, 0f, Layer);
+            HitRight = Physics2D.OverlapBox(rightPos, boxSize, 0f, Layer);
         }
     }
 

@@ -46,6 +46,7 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionL LadderVDetectionL { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionR LadderVDetectionR { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderHDetection LadderHDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public PlatformCollisionDetection platformCollisionDetection { get; private set; }
 
     [FoldoutGroup("GENERAL SETTING")] public int LifesNumber = 4;
     [HideInInspector] public UnityEvent NewStatePlayed;
