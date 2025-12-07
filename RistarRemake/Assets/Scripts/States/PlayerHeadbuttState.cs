@@ -26,7 +26,7 @@ public class PlayerHeadbuttState : PlayerBaseState
         DOTween.Kill(_player.IkArmLeft);
         DOTween.Kill(_player.IkArmRight);
 
-        _player.HeadbuttDirection = _player.AimDir;
+        _player.HeadbuttDirection = _player.ArmDetection.SnapPosHand - _player.transform.position;
         _player.PlayerRigidbody.velocity = _player.HeadbuttDirection.normalized * _player.HeadbuttMoveSpead;
     }
     public override void UpdateState()

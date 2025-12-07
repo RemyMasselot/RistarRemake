@@ -176,8 +176,8 @@ public class PlayerVisual : MonoBehaviour
 
     private void EnterGrabStateInitialization()
     {
-        handRight.sprite = handOpen;
         handLeft.sprite = handOpen;
+        handRight.sprite = handOpen;
     }
 
     private void ChoiceGrabAnimation()
@@ -264,10 +264,12 @@ public class PlayerVisual : MonoBehaviour
     private void HeadbuttBodyRotation()
     {
         Vector2 lineReference = new Vector2(0, 1);
-        Vector2 direction = playerStateMachine.AimDir;
+        Vector2 direction = playerStateMachine.HeadbuttDirection;
+
+        float spriteAngleCorrection = playerStateMachine.IsPlayerTurnToLeft ? -23f : 23f;
 
         float angle = Vector2.SignedAngle(lineReference, direction);
-        pivot.rotation = Quaternion.Euler(0, 0, angle);
+        pivot.rotation = Quaternion.Euler(0, 0, angle + spriteAngleCorrection);
         //Debug.Log(angle);
     }
 }
