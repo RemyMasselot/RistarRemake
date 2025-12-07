@@ -76,6 +76,7 @@ public class PlayerJumpState : PlayerBaseState
             else
             {
                 currentPositionY = jumpOriginY + _player.VerticalJumpDistanceHigh;
+                canCountTimeApex = true;
             }
         }
         

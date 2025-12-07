@@ -60,7 +60,7 @@ public class PlayerHeadbuttState : PlayerBaseState
             || _player.platformCollisionDetection.CeilingDetected)
         {
             SwitchState(_factory.Spin());
-            Debug.Log("HEADBUTT WALL");
+            //Debug.Log("HEADBUTT WALL");
         }
 
         // COLLISION LADDER

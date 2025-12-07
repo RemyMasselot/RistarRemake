@@ -151,7 +151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1980762501653570550
 Transform:
   m_ObjectHideFlags: 0
@@ -1188,6 +1188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDectected: 0
+  DectectedCollider: {fileID: 0}
   CapsuleSize: {x: 0.53, y: 1.12}
   LayerToCheck:
     serializedVersion: 2
@@ -1237,6 +1238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDectected: 0
+  DectectedCollider: {fileID: 0}
   CapsuleSize: {x: 0.7, y: 0.1}
   LayerToCheck:
     serializedVersion: 2

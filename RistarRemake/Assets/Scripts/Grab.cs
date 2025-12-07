@@ -163,7 +163,7 @@ public class Grab : MonoBehaviour
         //}
         if (canStartGrabSituation)
         {
-            Debug.Log(_player.ArmDetection.ObjectDetected);
+            //Debug.Log(_player.ArmDetection.ObjectDetected);
             switch (_player.ArmDetection.ObjectDetected)
             {
                 case (int)ObjectDetectedIs.Other:
