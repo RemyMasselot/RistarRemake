@@ -56,7 +56,8 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void OnCollisionStay2D(Collision2D collision)
     {
         // COLLISION WITH WALL
-        if (collision.gameObject.CompareTag("Wall"))
+        if (_player.platformCollisionDetection.WallDetected 
+            || _player.platformCollisionDetection.CeilingDetected)
         {
             SwitchState(_factory.Spin());
             Debug.Log("HEADBUTT WALL");

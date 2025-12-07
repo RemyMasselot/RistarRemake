@@ -164,8 +164,8 @@ public class ArmDetection : MonoBehaviour
         }
         else
         {
-            SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
-            SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
+            SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y + 0f);
+            SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.4f);
         }
     }
 
