@@ -10,8 +10,11 @@ public class PlayerWallIdleState : PlayerBaseState
     {
         //Debug.Log("ENTER WALL IDLE");
         _player.PlayerRigidbody.velocity = Vector2.zero;
-        //_player.PlayerRigidbody.gravityScale = 0;
 
+        if (_player.IsGrabing == true)
+        {
+            _player.GrabScript.ExitGrab();
+        }
         _player.PlayerDirectionVerif();
     }
     public override void UpdateState()

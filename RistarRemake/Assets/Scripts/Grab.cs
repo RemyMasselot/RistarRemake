@@ -1,7 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
 using static ArmDetection;
-using static PlayerStateMachine;
 
 public class Grab : MonoBehaviour
 {
@@ -164,6 +163,7 @@ public class Grab : MonoBehaviour
         //}
         if (canStartGrabSituation)
         {
+            Debug.Log(_player.ArmDetection.ObjectDetected);
             switch (_player.ArmDetection.ObjectDetected)
             {
                 case (int)ObjectDetectedIs.Other:

@@ -50,25 +50,31 @@ public class ArmDetection : MonoBehaviour
                     {
                         ObjectDetected = (int)ObjectDetectedIs.Enemy;
                         SetSnapPosCollider(hit);
+                        break;
                     }
                     else if (hit.collider.CompareTag("StarHandle"))
                     {
                         ObjectDetected = (int)ObjectDetectedIs.StarHandle;
                         SetSnapPosCollider(hit);
+                        break;
                     }
                     else if (hit.collider.CompareTag("LadderV") || hit.collider.CompareTag("LadderH"))
                     {
                         ObjectDetected = (int)ObjectDetectedIs.Ladder;
+                        //Debug.Log("Ladder detected");
                         SetSnapPosHitPoint(hit);
+                        break;
                     }
                     else if (hit.collider.CompareTag("Wall"))
                     {
                         //Debug.Log("Wall detected");
                         DetecPlatform(hit);
+                        break;
                     }
                     else
                     {
                         ObjectDetected = (int)ObjectDetectedIs.Other;
+                        break;
                     }
                 }
                 else

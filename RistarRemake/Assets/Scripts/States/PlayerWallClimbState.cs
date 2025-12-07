@@ -10,9 +10,7 @@ public class PlayerWallClimbState : PlayerBaseState
     {
         //Debug.Log("ENTER WALL CLIMB");
 
-        //_player.PlayerRigidbody.gravityScale = 0;
-
-        _player.PlayerDirectionVerif();
+        //_player.PlayerDirectionVerif();
     }
     public override void UpdateState()
     {
