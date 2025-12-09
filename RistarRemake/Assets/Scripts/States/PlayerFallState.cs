@@ -14,6 +14,7 @@ public class PlayerFallState : PlayerBaseState
 
     public override void EnterState() 
     {
+        //Debug.Log("ENTER FALL STATE");
         isJumpBufferingTimerCanCount = false;
         _player.JumpBufferCounter = 10;
         _player.LowJumpActivated = false;
@@ -22,7 +23,7 @@ public class PlayerFallState : PlayerBaseState
 
         if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
         {
-            //Debug.Log("FALL from star handle");
+            Debug.Log("FALL from star handle");
             Vector2 dir = (_player.transform.position - _player.StarHandleCentre).normalized;
 
             float percent = (_player.StarHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
@@ -124,6 +125,7 @@ public class PlayerFallState : PlayerBaseState
             // Coyote Time 
             if (_player.CoyoteCounter > 0)
             {
+                //Debug.Log("COYOTE JUMP");
                 SwitchState(_factory.Jump());
             }
 
@@ -177,11 +179,7 @@ public class PlayerFallState : PlayerBaseState
             //Debug.Log("LADDER CHECK FALL");
             _player.LadderVerif(collision);
 
-            if (_player.IsLadder == (int)LadderIs.VerticalLeft || _player.IsLadder == (int)LadderIs.VerticalRight)
-            {
-                SwitchState(_factory.WallIdle());
-            }
-            else if (_player.IsLadder == (int)LadderIs.Horizontal)
+            if (_player.IsLadder != (int)LadderIs.Nothing)
             {
                 SwitchState(_factory.WallIdle());
             }

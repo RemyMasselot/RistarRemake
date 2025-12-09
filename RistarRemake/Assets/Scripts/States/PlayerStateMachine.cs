@@ -46,7 +46,7 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionL LadderVDetectionL { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionR LadderVDetectionR { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderHDetection LadderHDetection { get; private set; }
-    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public PlatformCollisionDetection platformCollisionDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public PlatformCollisionDetection platformCollisionDetection { get; set; }
 
     [FoldoutGroup("GENERAL SETTING")] public int LifesNumber = 4;
     [HideInInspector] public UnityEvent NewStatePlayed;
@@ -67,6 +67,8 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
     [FoldoutGroup("MOVE")] public float WalkSpeed = 10;
+    [HideInInspector] public Vector2 LadderSnapPosition;
+    [HideInInspector] public bool CanSnapPositionLadder = true;
 
     [FoldoutGroup("JUMP")] public float VerticalJumpDistanceHigh = 1.7f;
     [FoldoutGroup("JUMP")] public float VerticalJumpDistanceLow = 1.4f;
@@ -225,6 +227,31 @@ public class PlayerStateMachine : MonoBehaviour
         else
         {
             IsLadder = (int)LadderIs.Nothing;
+        }
+
+        if (IsLadder != (int)LadderIs.Nothing)
+        {
+            SetLadderSnapPosition(collision);
+        }
+    }
+
+    private void SetLadderSnapPosition(Collision2D collision)
+    {
+        CanSnapPositionLadder = true;
+
+        LadderSnapPosition = collision.GetContact(0).point;
+
+        if (IsLadder == (int)LadderIs.VerticalLeft)
+        {
+            LadderSnapPosition.x += 0.4f;
+        }
+        if (IsLadder == (int)LadderIs.VerticalRight)
+        {
+            LadderSnapPosition.x -= 0.4f;
+        }
+        else if (IsLadder == (int)LadderIs.Horizontal)
+        {
+            LadderSnapPosition.y -= 0.6f;
         }
     }
 

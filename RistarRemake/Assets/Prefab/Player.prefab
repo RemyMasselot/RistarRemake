@@ -900,6 +900,8 @@ MonoBehaviour:
   Invincinbility: {fileID: 0}
   CornerCorrection: {fileID: 0}
   WalkSpeed: 180
+  LadderSnapPosition: {x: 0, y: 0}
+  CanSnapPositionLadder: 1
   VerticalJumpDistanceHigh: 1.7
   VerticalJumpDistanceLow: 1.4
   MaxTimeAtApex: 0.12

@@ -5,17 +5,24 @@ public class PlayerWallIdleState : PlayerBaseState
 {
     public PlayerWallIdleState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
-    
+
     public override void EnterState()
     {
         //Debug.Log("ENTER WALL IDLE");
         _player.PlayerRigidbody.velocity = Vector2.zero;
+        _player.CoyoteCounter = 0;
 
         if (_player.IsGrabing == true)
         {
             _player.GrabScript.ExitGrab();
         }
         _player.PlayerDirectionVerif();
+
+        if (_player.CanSnapPositionLadder)
+        {
+            _player.transform.position = _player.LadderSnapPosition;
+            _player.CanSnapPositionLadder = false;
+        }
     }
     public override void UpdateState()
     {
@@ -46,6 +53,7 @@ public class PlayerWallIdleState : PlayerBaseState
             {
                 if (Mathf.Abs(moveValueV) > 0) // Passage en state WALL JUMP
                 {
+                    Debug.Log(moveValueV);
                     SwitchState(_factory.Jump());
                 }
                 else // Passage en state FALL

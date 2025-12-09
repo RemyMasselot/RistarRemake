@@ -12,11 +12,6 @@ public class PlayerHeadbuttState : PlayerBaseState
     {
         //Debug.Log("ENTER HEADBUTT");
 
-        //// Move Left Arm
-        //_player.IkArmLeft.transform.DOPause();
-        //// Move Right Arm
-        //_player.IkArmRight.transform.DOPause();
-
         // CAMERA BEHAVIOR
         _player.CameraTargetOverride = _player.ArmDetection.SnapPosHand;
 
@@ -31,6 +26,8 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void UpdateState()
     {
         SetHandPosition();
+
+        OnCollisionWithWall();
     }
 
     private void SetHandPosition()
@@ -55,13 +52,6 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void OnCollisionEnter2D(Collision2D collision) { }
     public override void OnCollisionStay2D(Collision2D collision)
     {
-        // COLLISION WITH WALL
-        if (_player.platformCollisionDetection.WallDetected 
-            || _player.platformCollisionDetection.CeilingDetected)
-        {
-            SwitchState(_factory.Spin());
-            //Debug.Log("HEADBUTT WALL");
-        }
 
         // COLLISION LADDER
         _player.LadderVerif(collision);
@@ -69,6 +59,17 @@ public class PlayerHeadbuttState : PlayerBaseState
         if (_player.IsLadder != (int)LadderIs.Nothing)
         {
             SwitchState(_factory.WallIdle());
+        }
+    }
+
+    private void OnCollisionWithWall()
+    {
+        // COLLISION WITH WALL
+        if (_player.platformCollisionDetection.WallDetected 
+            || _player.platformCollisionDetection.CeilingDetected)
+        {
+            SwitchState(_factory.Spin());
+            //Debug.Log("HEADBUTT WALL");
         }
     }
 }
