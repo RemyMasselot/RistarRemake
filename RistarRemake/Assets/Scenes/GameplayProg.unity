@@ -4184,10 +4184,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2279275518584447364, guid: 02367964ee78a4a4595361bfaf1f0c19, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3651622963600693292, guid: 02367964ee78a4a4595361bfaf1f0c19, type: 3}
       propertyPath: playerStateMachine
       value: 
       objectReference: {fileID: 309670447}
+    - target: {fileID: 3657225420642728434, guid: 02367964ee78a4a4595361bfaf1f0c19, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7257643414950007689, guid: 02367964ee78a4a4595361bfaf1f0c19, type: 3}
       propertyPath: m_Enabled
       value: 1

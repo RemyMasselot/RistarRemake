@@ -258,11 +258,55 @@ public class PlayerStateMachine : MonoBehaviour
         {
             direction = Vector2.up;
             offset = new Vector2(0, -0.6f);
+
+            // Si le perso dépasse , on ajuste l'offset en fonction de sa position relative à l'échelle
         }
 
         RaycastHit2D hit = Physics2D.Raycast(playerPosition, direction, 1f, ladderLayerMask);
 
-        LadderSnapPosition = hit.point + offset;
+        if (hit.collider != null)
+        {
+            LadderSnapPosition = hit.point + offset;
+        }
+        else
+        {
+            if (IsLadder == (int)LadderIs.Horizontal)
+            {
+                float leftX = collision.collider.bounds.min.x;
+                float rightX = collision.collider.bounds.max.x;
+
+                float playerX = transform.position.x;
+
+                if (Mathf.Abs(playerX - leftX) < Mathf.Abs(playerX - rightX))
+                {
+                    // Snap to left
+                    LadderSnapPosition = new Vector2(leftX + 0.4f, transform.position.y - 0.1f);
+                }
+                else
+                {
+                    // Snap to right
+                    LadderSnapPosition = new Vector2(rightX - 0.4f, transform.position.y - 0.1f);
+                }
+            }
+            else
+            {
+                float topY = collision.collider.bounds.max.y;
+                float bottomY = collision.collider.bounds.min.y;
+
+                float playerY = transform.position.y;
+
+                if (Mathf.Abs(playerY - bottomY) < Mathf.Abs(playerY - topY))
+                {
+                    // Snap to bottom
+                    LadderSnapPosition = new Vector2(transform.position.x + ((IsLadder == (int)LadderIs.VerticalLeft) ? 0.4f : -0.4f), bottomY + 0.6f);
+                }
+                else
+                {
+                    // Snap to top
+                    LadderSnapPosition = new Vector2(transform.position.x + ((IsLadder == (int)LadderIs.VerticalLeft) ? 0.4f : -0.4f), topY - 0.6f);
+                }
+            }
+        }
     }
 
     public void CountTimePassedInState()
