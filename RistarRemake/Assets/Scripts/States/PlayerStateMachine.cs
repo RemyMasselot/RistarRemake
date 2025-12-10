@@ -239,20 +239,34 @@ public class PlayerStateMachine : MonoBehaviour
     {
         CanSnapPositionLadder = true;
 
-        LadderSnapPosition = collision.GetContact(0).point;
+        Vector2 playerPosition = transform.position;
+        Vector2 direction = Vector2.zero;
+        Vector2 offset = Vector2.zero;
+
+        //LadderSnapPosition = collision.GetContact(0).point;
 
         if (IsLadder == (int)LadderIs.VerticalLeft)
         {
-            LadderSnapPosition.x += 0.4f;
+            direction = Vector2.left;
+            offset = new Vector2(0.4f, 0);
+            //LadderSnapPosition.x += 0.4f;
         }
         if (IsLadder == (int)LadderIs.VerticalRight)
         {
-            LadderSnapPosition.x -= 0.4f;
+            direction = Vector2.right;
+            offset = new Vector2(-0.4f, 0);
+            //LadderSnapPosition.x -= 0.4f;
         }
         else if (IsLadder == (int)LadderIs.Horizontal)
         {
-            LadderSnapPosition.y -= 0.6f;
+            direction = Vector2.up;
+            offset = new Vector2(0, -0.06f);
+            //LadderSnapPosition.y -= 0.6f;
         }
+
+        RaycastHit2D hit = Physics2D.Raycast(playerPosition, direction, 0.4f, LayerMask.GetMask("LadderV", "LadderH"));
+
+        LadderSnapPosition = hit.point + offset;
     }
 
     public void CountTimePassedInState()
