@@ -239,72 +239,59 @@ public class PlayerStateMachine : MonoBehaviour
     {
         CanSnapPositionLadder = true;
 
-        Vector2 playerPosition = transform.position;
-        Vector2 direction = Vector2.zero;
-        Vector2 offset = Vector2.zero;
-        LayerMask ladderLayerMask = LayerMask.GetMask("LadderH", "LadderV");
-
         if (IsLadder == (int)LadderIs.VerticalLeft)
         {
-            direction = Vector2.left;
-            offset = new Vector2(0.4f, 0);
-        }
-        else if (IsLadder == (int)LadderIs.VerticalRight)
-        {
-            direction = Vector2.right;
-            offset = new Vector2(-0.4f, 0);
-        }
-        else if (IsLadder == (int)LadderIs.Horizontal)
-        {
-            direction = Vector2.up;
-            offset = new Vector2(0, -0.6f);
+            //direction = Vector2.left;
+            //offset = new Vector2(0.4f, 0);
 
-            // Si le perso dépasse , on ajuste l'offset en fonction de sa position relative à l'échelle
-        }
+            float collisionRightX = collision.collider.bounds.max.x;
 
-        RaycastHit2D hit = Physics2D.Raycast(playerPosition, direction, 1f, ladderLayerMask);
+            float collisionBottomY = collision.collider.bounds.min.y;
+            float collisionTopY = collision.collider.bounds.max.y;
 
-        if (hit.collider != null)
-        {
-            LadderSnapPosition = hit.point + offset;
-        }
-        else
-        {
-            if (IsLadder == (int)LadderIs.Horizontal)
+
+            float distanceToBottom = Mathf.Abs(transform.position.y - collisionBottomY);
+            float distanceToTop = Mathf.Abs(transform.position.y - collisionTopY);
+
+            if (distanceToBottom < 0.6f)
             {
-                float leftX = collision.collider.bounds.min.x;
-                float rightX = collision.collider.bounds.max.x;
-
-                float playerX = transform.position.x;
-
-                if (Mathf.Abs(playerX - leftX) < Mathf.Abs(playerX - rightX))
-                {
-                    // Snap to left
-                    LadderSnapPosition = new Vector2(leftX + 0.4f, transform.position.y - 0.1f);
-                }
-                else
-                {
-                    // Snap to right
-                    LadderSnapPosition = new Vector2(rightX - 0.4f, transform.position.y - 0.1f);
-                }
+                LadderSnapPosition = new Vector2(collisionRightX + 0.4f, collisionBottomY + 0.6f);
+            }
+            else if (distanceToTop < 0.6f)
+            {
+                LadderSnapPosition = new Vector2(collisionRightX + 0.4f, collisionTopY - 0.6f);
             }
             else
             {
-                float topY = collision.collider.bounds.max.y;
-                float bottomY = collision.collider.bounds.min.y;
+                LadderSnapPosition = new Vector2(collisionRightX + 0.4f, transform.position.y);
+            }
+        }
+        else if (IsLadder == (int)LadderIs.VerticalRight)
+        {
+            //direction = Vector2.right;
+            //offset = new Vector2(-0.4f, 0);
+        }
+        else if (IsLadder == (int)LadderIs.Horizontal)
+        {
+            float collisionBottomY = collision.collider.bounds.min.y;
 
-                float playerY = transform.position.y;
+            float collisionLeftX = collision.collider.bounds.min.x;
+            float collisionRightX = collision.collider.bounds.max.x;
 
-                if (Mathf.Abs(playerY - bottomY) < Mathf.Abs(playerY - topY))
-                {
-                    // Snap to bottom
-                    LadderSnapPosition = new Vector2(transform.position.x + ((IsLadder == (int)LadderIs.VerticalLeft) ? 0.4f : -0.4f), bottomY + 0.6f);
-                }
-                else
-                {
-                    // Snap to top
-                    LadderSnapPosition = new Vector2(transform.position.x + ((IsLadder == (int)LadderIs.VerticalLeft) ? 0.4f : -0.4f), topY - 0.6f);
-                }
+            float distanceToLeft = Mathf.Abs(transform.position.x - collisionLeftX);
+            float distanceToRight = Mathf.Abs(transform.position.x - collisionRightX);
+
+            if (distanceToLeft < 0.5f)
+            {
+                LadderSnapPosition = new Vector2(collisionLeftX + 0.5f, collisionBottomY - 0.6f);
+            }
+            else if (distanceToRight < 0.5f)
+            {
+                LadderSnapPosition = new Vector2(collisionRightX - 0.5f, collisionBottomY - 0.6f);
+            }
+            else
+            {
+                LadderSnapPosition = new Vector2(transform.position.x, collisionBottomY - 0.6f);
             }
         }
     }
