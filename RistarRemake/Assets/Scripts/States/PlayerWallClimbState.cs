@@ -135,17 +135,6 @@ public class PlayerWallClimbState : PlayerBaseState
                 }
             }
         }
-
-        // Calculer la distance entre le joueur et le bord du ladder
-
-        // Si le ladder est vertical
-            // Le perso monte, verifier la distance avec le bord haut
-            // Le perso descend, verifier la distance avec le bord bas
-                // Si le perso est assez proche du bord, le faire sortir du ladder
-        // Si le ladder est horizontal
-            // Si le perso va a gauche, verifier la distance avec le bord gauche
-            // Si le perso va a droite, verifier la distance avec le bord droit
-                // Si le perso est assez proche du bord, le faire sortir du ladder
     }
 
     public override void OnCollisionEnter2D(Collision2D collision)
