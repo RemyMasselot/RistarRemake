@@ -241,9 +241,6 @@ public class PlayerStateMachine : MonoBehaviour
 
         if (IsLadder == (int)LadderIs.VerticalLeft)
         {
-            //direction = Vector2.left;
-            //offset = new Vector2(0.4f, 0);
-
             float collisionRightX = collision.collider.bounds.max.x;
 
             float collisionBottomY = collision.collider.bounds.min.y;
@@ -268,8 +265,27 @@ public class PlayerStateMachine : MonoBehaviour
         }
         else if (IsLadder == (int)LadderIs.VerticalRight)
         {
-            //direction = Vector2.right;
-            //offset = new Vector2(-0.4f, 0);
+            float collisionLeftX = collision.collider.bounds.min.x;
+
+            float collisionBottomY = collision.collider.bounds.min.y;
+            float collisionTopY = collision.collider.bounds.max.y;
+
+
+            float distanceToBottom = Mathf.Abs(transform.position.y - collisionBottomY);
+            float distanceToTop = Mathf.Abs(transform.position.y - collisionTopY);
+
+            if (distanceToBottom < 0.6f)
+            {
+                LadderSnapPosition = new Vector2(collisionLeftX - 0.4f, collisionBottomY + 0.6f);
+            }
+            else if (distanceToTop < 0.6f)
+            {
+                LadderSnapPosition = new Vector2(collisionLeftX - 0.4f, collisionTopY - 0.6f);
+            }
+            else
+            {
+                LadderSnapPosition = new Vector2(collisionLeftX - 0.4f, transform.position.y);
+            }
         }
         else if (IsLadder == (int)LadderIs.Horizontal)
         {
