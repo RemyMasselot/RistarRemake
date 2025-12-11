@@ -13,6 +13,7 @@ public class PlayerStateMachine : MonoBehaviour
     // STATES
     public PlayerStateFactory StatesFactory;
     public PlayerBaseState CurrentState;
+    public PlayerBaseState PreviousState;
 
     [FoldoutGroup("INPUT ACTIONS")] private Controller controls;
     [FoldoutGroup("INPUT ACTIONS")] public InputAction MoveH;
@@ -33,14 +34,6 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("REFERENCES/Grab")] public Transform DefaultPosLeft;
     [FoldoutGroup("REFERENCES/Star Handle")] public GameObject TriggerGoToMeteorStrike;
 
-    public enum LadderIs
-    {
-        Nothing = 0,
-        VerticalLeft = 1,
-        VerticalRight = 2,
-        Horizontal = 3
-    }
-    [FoldoutGroup("REFERENCES/Detections")] public int IsLadder = (int)LadderIs.Nothing;
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection EnemyDetection { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection GroundDetection { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionL LadderVDetectionL { get; private set; }
@@ -78,9 +71,18 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
     [FoldoutGroup("MOVE")] public float WalkSpeed = 10;
+
     [HideInInspector] public Vector2 LadderSnapPosition;
     [HideInInspector] public bool CanSnapPositionLadder = true;
     [HideInInspector] public Collider2D ColliderLadder;
+    public enum LadderIs
+    {
+        Nothing = 0,
+        VerticalLeft = 1,
+        VerticalRight = 2,
+        Horizontal = 3
+    }
+    [HideInInspector] public int IsLadder = (int)LadderIs.Nothing;
 
     [FoldoutGroup("JUMP")] public float VerticalJumpDistanceHigh = 1.7f;
     [FoldoutGroup("JUMP")] public float VerticalJumpDistanceLow = 1.4f;
@@ -251,8 +253,8 @@ public class PlayerStateMachine : MonoBehaviour
     private void SetLadderSnapPosition(Collision2D collision)
     {
         CanSnapPositionLadder = true;
-
-        //float = gameObject.GetComponent<Collider2D>().bounds.extents.y;
+        float playerExtentX = PlayerCollider.bounds.extents.x;
+        float playerExtentY = PlayerCollider.bounds.extents.y;
 
         if (IsLadder == (int)LadderIs.VerticalLeft)
         {
@@ -265,17 +267,17 @@ public class PlayerStateMachine : MonoBehaviour
             float distanceToBottom = Mathf.Abs(transform.position.y - collisionBottomY);
             float distanceToTop = Mathf.Abs(transform.position.y - collisionTopY);
 
-            if (distanceToBottom < 0.6f)
+            if (distanceToBottom < playerExtentY)
             {
-                LadderSnapPosition = new Vector2(collisionRightX + 0.4f, collisionBottomY + 0.6f);
+                LadderSnapPosition = new Vector2(collisionRightX + playerExtentX, collisionBottomY + playerExtentY);
             }
-            else if (distanceToTop < 0.6f)
+            else if (distanceToTop < playerExtentY)
             {
-                LadderSnapPosition = new Vector2(collisionRightX + 0.4f, collisionTopY - 0.6f);
+                LadderSnapPosition = new Vector2(collisionRightX + playerExtentX, collisionTopY - playerExtentY);
             }
             else
             {
-                LadderSnapPosition = new Vector2(collisionRightX + 0.4f, transform.position.y);
+                LadderSnapPosition = new Vector2(collisionRightX + playerExtentX, transform.position.y);
             }
         }
         else if (IsLadder == (int)LadderIs.VerticalRight)
@@ -289,17 +291,17 @@ public class PlayerStateMachine : MonoBehaviour
             float distanceToBottom = Mathf.Abs(transform.position.y - collisionBottomY);
             float distanceToTop = Mathf.Abs(transform.position.y - collisionTopY);
 
-            if (distanceToBottom < 0.6f)
+            if (distanceToBottom < playerExtentY)
             {
-                LadderSnapPosition = new Vector2(collisionLeftX - 0.4f, collisionBottomY + 0.6f);
+                LadderSnapPosition = new Vector2(collisionLeftX - playerExtentX, collisionBottomY + playerExtentY);
             }
-            else if (distanceToTop < 0.6f)
+            else if (distanceToTop < playerExtentY)
             {
-                LadderSnapPosition = new Vector2(collisionLeftX - 0.4f, collisionTopY - 0.6f);
+                LadderSnapPosition = new Vector2(collisionLeftX - playerExtentX, collisionTopY - playerExtentY);
             }
             else
             {
-                LadderSnapPosition = new Vector2(collisionLeftX - 0.4f, transform.position.y);
+                LadderSnapPosition = new Vector2(collisionLeftX - playerExtentX, transform.position.y);
             }
         }
         else if (IsLadder == (int)LadderIs.Horizontal)
@@ -312,17 +314,17 @@ public class PlayerStateMachine : MonoBehaviour
             float distanceToLeft = Mathf.Abs(transform.position.x - collisionLeftX);
             float distanceToRight = Mathf.Abs(transform.position.x - collisionRightX);
 
-            if (distanceToLeft < 0.5f)
+            if (distanceToLeft < playerExtentX)
             {
-                LadderSnapPosition = new Vector2(collisionLeftX + 0.5f, collisionBottomY - 0.6f);
+                LadderSnapPosition = new Vector2(collisionLeftX + playerExtentX, collisionBottomY - playerExtentY);
             }
-            else if (distanceToRight < 0.5f)
+            else if (distanceToRight < playerExtentX)
             {
-                LadderSnapPosition = new Vector2(collisionRightX - 0.5f, collisionBottomY - 0.6f);
+                LadderSnapPosition = new Vector2(collisionRightX - playerExtentX, collisionBottomY - playerExtentY);
             }
             else
             {
-                LadderSnapPosition = new Vector2(transform.position.x, collisionBottomY - 0.6f);
+                LadderSnapPosition = new Vector2(transform.position.x, collisionBottomY - playerExtentY);
             }
         }
     }

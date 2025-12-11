@@ -12,11 +12,12 @@ public class PlayerWallIdleState : PlayerBaseState
         _player.PlayerRigidbody.velocity = Vector2.zero;
         _player.CoyoteCounter = 0;
 
+        _player.PlayerDirectionVerif();
+
         if (_player.IsGrabing == true)
         {
             _player.GrabScript.ExitGrab();
         }
-        _player.PlayerDirectionVerif();
 
         if (_player.CanSnapPositionLadder)
         {

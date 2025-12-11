@@ -19,6 +19,7 @@ public abstract class PlayerBaseState
         newState.EnterState();
 
         // switch current state of context
+        _player.PreviousState = _player.CurrentState;
         _player.CurrentState = newState;
 
         _player.NewStatePlayed.Invoke();
