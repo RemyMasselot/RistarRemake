@@ -1,5 +1,6 @@
 using UnityEngine;
 using static PlayerStateMachine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerWallClimbState : PlayerBaseState
 {
@@ -9,8 +10,6 @@ public class PlayerWallClimbState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER WALL CLIMB");
-
-        //_player.PlayerDirectionVerif();
     }
     public override void UpdateState()
     {
@@ -77,13 +76,31 @@ public class PlayerWallClimbState : PlayerBaseState
                 {
                     SwitchState(_factory.Jump());
                 }
+                else
+                {
+                    float distance = Mathf.Abs(_player.transform.position.y - _player.ColliderLadder.bounds.max.y);
+
+                    if (distance <= _player.PlayerCollider.bounds.extents.y)
+                    {
+                        SwitchState(_factory.Leap());
+                    }
+                }
             }
-            else if (moveValueV < 0)
+            else
             {
                 // Passage en state FALL
                 if (_player.Jump.WasPerformedThisFrame())
                 {
                     SwitchState(_factory.Fall());
+                }
+                else
+                {
+                    float distance = Mathf.Abs(_player.transform.position.y - _player.ColliderLadder.bounds.min.y);
+
+                    if (distance <= _player.PlayerCollider.bounds.extents.y)
+                    {
+                        SwitchState(_factory.Fall());
+                    }
                 }
             }
         }
@@ -99,22 +116,49 @@ public class PlayerWallClimbState : PlayerBaseState
             {
                 SwitchState(_factory.Fall());
             }
+            else if (moveValueH > 0)
+            {
+                float distance = Mathf.Abs(_player.transform.position.x - _player.ColliderLadder.bounds.max.x);
+
+                if (distance <= _player.PlayerCollider.bounds.extents.x)
+                {
+                    SwitchState(_factory.Fall());
+                }
+            }
+            else
+            {
+                float distance = Mathf.Abs(_player.transform.position.x - _player.ColliderLadder.bounds.min.x);
+
+                if (distance <= _player.PlayerCollider.bounds.extents.x)
+                {
+                    SwitchState(_factory.Fall());
+                }
+            }
         }
 
+        // Calculer la distance entre le joueur et le bord du ladder
 
+        // Si le ladder est vertical
+            // Le perso monte, verifier la distance avec le bord haut
+            // Le perso descend, verifier la distance avec le bord bas
+                // Si le perso est assez proche du bord, le faire sortir du ladder
+        // Si le ladder est horizontal
+            // Si le perso va a gauche, verifier la distance avec le bord gauche
+            // Si le perso va a droite, verifier la distance avec le bord droit
+                // Si le perso est assez proche du bord, le faire sortir du ladder
     }
 
     public override void OnCollisionEnter2D(Collision2D collision)
     {
-        _player.LadderVerif(collision);
+        //_player.LadderVerif(collision);
     }
 
     public override void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.GetComponent<LadderExitDetection>() != null)
-        {
-            ChoseExitToTake(collision.GetComponent<LadderExitDetection>());
-        }
+        //if (collision.GetComponent<LadderExitDetection>() != null)
+        //{
+        //    ChoseExitToTake(collision.GetComponent<LadderExitDetection>());
+        //}
     }
 
     private void ChoseExitToTake(LadderExitDetection ladderExitDetection)

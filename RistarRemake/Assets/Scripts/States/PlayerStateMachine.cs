@@ -65,10 +65,22 @@ public class PlayerStateMachine : MonoBehaviour
             return _playerRigidbody; 
         }
     }
+    private Collider2D _playerCollider;
+    public Collider2D PlayerCollider 
+    { get 
+        { 
+            if (_playerCollider == null) 
+            {
+                _playerCollider = GetComponent<Collider2D>(); 
+            } 
+            return _playerCollider; 
+        }
+    }
 
     [FoldoutGroup("MOVE")] public float WalkSpeed = 10;
     [HideInInspector] public Vector2 LadderSnapPosition;
     [HideInInspector] public bool CanSnapPositionLadder = true;
+    [HideInInspector] public Collider2D ColliderLadder;
 
     [FoldoutGroup("JUMP")] public float VerticalJumpDistanceHigh = 1.7f;
     [FoldoutGroup("JUMP")] public float VerticalJumpDistanceLow = 1.4f;
@@ -231,6 +243,7 @@ public class PlayerStateMachine : MonoBehaviour
 
         if (IsLadder != (int)LadderIs.Nothing)
         {
+            ColliderLadder = collision.collider;
             SetLadderSnapPosition(collision);
         }
     }
@@ -238,6 +251,8 @@ public class PlayerStateMachine : MonoBehaviour
     private void SetLadderSnapPosition(Collision2D collision)
     {
         CanSnapPositionLadder = true;
+
+        //float = gameObject.GetComponent<Collider2D>().bounds.extents.y;
 
         if (IsLadder == (int)LadderIs.VerticalLeft)
         {
