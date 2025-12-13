@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using static ArmDetection;
 using static PlayerStateMachine;
 
 public class PlayerHeadbuttState : PlayerBaseState
@@ -27,7 +28,7 @@ public class PlayerHeadbuttState : PlayerBaseState
     {
         SetHandPosition();
 
-        OnCollisionWithWall();
+        CheckDistanceWithTarget();
     }
 
     private void SetHandPosition()
@@ -52,24 +53,36 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void OnCollisionEnter2D(Collision2D collision) { }
     public override void OnCollisionStay2D(Collision2D collision)
     {
-
-        // COLLISION LADDER
         _player.LadderVerif(collision);
+    }
 
-        if (_player.IsLadder != (int)LadderIs.Nothing)
+    private void CheckDistanceWithTarget()
+    {
+        float distanceWithTarget = Vector2.Distance(_player.transform.position, _player.ArmDetection.SnapPosHand);
+
+        if (distanceWithTarget <= DistanceRelative())
         {
-            SwitchState(_factory.WallIdle());
+            if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Ladder)
+            {
+
+                if (_player.IsLadder != (int)LadderIs.Nothing)
+                {
+                    SwitchState(_factory.WallIdle());
+                }
+            }
+            else
+            {
+                SwitchState(_factory.Spin());
+            }
         }
     }
 
-    private void OnCollisionWithWall()
+    private float DistanceRelative()
     {
-        // COLLISION WITH WALL
-        if (_player.platformCollisionDetection.WallDetected 
-            || _player.platformCollisionDetection.CeilingDetected)
-        {
-            SwitchState(_factory.Spin());
-            //Debug.Log("HEADBUTT WALL");
-        }
+        Vector2 closestPoint = _player.PlayerCollider.ClosestPoint(_player.ArmDetection.SnapPosHand);
+        
+        float distance = Vector2.Distance(_player.transform.position, closestPoint);
+
+        return distance + 0.2f;
     }
 }
