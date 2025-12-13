@@ -18,6 +18,8 @@ public class GroundDetection : MonoBehaviour
 
     private void CheckIfThereIsAGround()
     {
+        bool tempIsDectected = IsDectected;
+
         Vector2 originLeft = new Vector2(playerCollider.bounds.min.x, playerCollider.bounds.min.y);
         Vector2 originRight = new Vector2(playerCollider.bounds.max.x, playerCollider.bounds.min.y);
 
@@ -36,11 +38,18 @@ public class GroundDetection : MonoBehaviour
             {
                 if (downLeftVerification.transform.GetInstanceID() == sideLeftVerification.transform.GetInstanceID())
                 {
-                    IsDectected = false;
+                    if (downRightVerification.collider != null)
+                    {
+                        tempIsDectected = true;
+                    }
+                    else
+                    {
+                        tempIsDectected = false;
+                    }
                 }
                 else
                 {
-                    IsDectected = true;
+                    tempIsDectected = true;
                 }
             }
 
@@ -48,22 +57,31 @@ public class GroundDetection : MonoBehaviour
             {
                 if (downRightVerification.transform.GetInstanceID() == sideRightVerification.transform.GetInstanceID())
                 {
-                    IsDectected = false;
+                    if (downLeftVerification.collider != null)
+                    {
+                        tempIsDectected = true;
+                    }
+                    else
+                    {
+                        tempIsDectected = false;
+                    }
                 }
                 else
                 {
-                    IsDectected = true;
+                    tempIsDectected = true;
                 }
             }
 
             if (sideLeftVerification.collider == null && sideRightVerification.collider == null)
             {
-                IsDectected = true;
+                tempIsDectected = true;
             }
         }
         else
         {
-            IsDectected = false;
+            tempIsDectected = false;
         }
+
+        IsDectected = tempIsDectected;
     }
 }

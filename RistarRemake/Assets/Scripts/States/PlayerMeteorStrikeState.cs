@@ -33,7 +33,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         _player.PlayerRigidbody.velocity = _player.MeteorStrikeDirection.normalized * 10;
 
         _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
-        _player.GroundDetection.gameObject.SetActive(false);
+        //_player.GroundDetection.gameObject.SetActive(false);
         _player.LadderHDetection.gameObject.SetActive(false);
         _player.LadderVDetectionL.gameObject.SetActive(false);
         _player.LadderVDetectionR.gameObject.SetActive(false);
@@ -72,7 +72,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
     { 
         if (_player.TimePassedInState >= _player.MaxTimeMeteor)
         {
-            _player.GroundDetection.gameObject.SetActive(true);
+            //_player.GroundDetection.gameObject.SetActive(true);
             _player.LadderHDetection.gameObject.SetActive(true);
             _player.LadderVDetectionL.gameObject.SetActive(true);
             _player.LadderVDetectionR.gameObject.SetActive(true);
