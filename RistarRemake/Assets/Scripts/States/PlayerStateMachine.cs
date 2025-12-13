@@ -34,7 +34,7 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("REFERENCES/Grab")] public Transform DefaultPosLeft;
     [FoldoutGroup("REFERENCES/Star Handle")] public GameObject TriggerGoToMeteorStrike;
 
-    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection EnemyDetection { get; private set; }
+    [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public EnemyDetection EnemyDetection { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection GroundDetection { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionL LadderVDetectionL { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public LadderVDetectionR LadderVDetectionR { get; private set; }
