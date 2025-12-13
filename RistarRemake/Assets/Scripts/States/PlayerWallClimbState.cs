@@ -1,6 +1,5 @@
 using UnityEngine;
 using static PlayerStateMachine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerWallClimbState : PlayerBaseState
 {

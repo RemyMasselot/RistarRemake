@@ -253,8 +253,8 @@ public class PlayerStateMachine : MonoBehaviour
     private void SetLadderSnapPosition(Collision2D collision)
     {
         CanSnapPositionLadder = true;
-        float playerExtentX = PlayerCollider.bounds.extents.x;
-        float playerExtentY = PlayerCollider.bounds.extents.y;
+        float playerExtentX = PlayerCollider.bounds.extents.x + 0.1f;
+        float playerExtentY = PlayerCollider.bounds.extents.y + 0.1f;
 
         if (IsLadder == (int)LadderIs.VerticalLeft)
         {
