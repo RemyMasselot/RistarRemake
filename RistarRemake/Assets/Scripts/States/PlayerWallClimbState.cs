@@ -9,6 +9,10 @@ public class PlayerWallClimbState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER WALL CLIMB");
+        if (_player.PreviousState is PlayerLeapState)
+        {
+            Debug.Log("blabla");
+        }
     }
     public override void UpdateState()
     {

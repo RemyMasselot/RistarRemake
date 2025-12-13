@@ -223,6 +223,8 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void LadderVerif(Collision2D collision)
     {
+        IsLadder = (int)LadderIs.Nothing;
+
         if (collision.gameObject.CompareTag("LadderV"))
         {
             if (LadderVDetectionL.IsLadderVDectectedL == true)
@@ -237,10 +239,6 @@ public class PlayerStateMachine : MonoBehaviour
         else if (collision.gameObject.CompareTag("LadderH"))
         {
             IsLadder = (int)LadderIs.Horizontal;
-        }
-        else
-        {
-            IsLadder = (int)LadderIs.Nothing;
         }
 
         if (IsLadder != (int)LadderIs.Nothing)
@@ -279,6 +277,12 @@ public class PlayerStateMachine : MonoBehaviour
             {
                 LadderSnapPosition = new Vector2(collisionRightX + playerExtentX, transform.position.y);
             }
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.left, playerExtentX + 0.2f, LayerMask.GetMask("LadderV"));
+            if (hit == false)
+            {
+                IsLadder = (int)LadderIs.Nothing;
+            }
         }
         else if (IsLadder == (int)LadderIs.VerticalRight)
         {
@@ -302,6 +306,12 @@ public class PlayerStateMachine : MonoBehaviour
             else
             {
                 LadderSnapPosition = new Vector2(collisionLeftX - playerExtentX, transform.position.y);
+            }
+            
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, playerExtentX + 0.2f, LayerMask.GetMask("LadderV"));
+            if (hit == false)
+            {
+                IsLadder = (int)LadderIs.Nothing;
             }
         }
         else if (IsLadder == (int)LadderIs.Horizontal)
