@@ -3068,6 +3068,11 @@ MonoBehaviour:
   LayerToCheck:
     serializedVersion: 2
     m_Bits: 512
+--- !u!4 &1379036555 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+  m_PrefabInstance: {fileID: 4924099577031079842}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1410845076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4358,6 +4363,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: DistanceGrab
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: ladderLayerMask.m_Bits
       value: 192
       objectReference: {fileID: 0}
@@ -4369,13 +4378,21 @@ PrefabInstance:
       propertyPath: <GroundDetection>k__BackingField
       value: 
       objectReference: {fileID: 1379036548}
+    - target: {fileID: 6234253148292796384, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: rayCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6234253148292796384, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 1379036555}
     - target: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 9.16
       objectReference: {fileID: 0}
     - target: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.98
+      value: 24.81
       objectReference: {fileID: 0}
     - target: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.z

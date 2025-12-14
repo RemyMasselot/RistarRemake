@@ -16,6 +16,7 @@ public class ArmDetection : MonoBehaviour
     public int ObjectDetected = (int)ObjectDetectedIs.Nothing;
 
     [SerializeField] private PlayerStateMachine playerStateMachine;
+    [SerializeField] private Transform playerTransform;
 
     public Vector3 SnapPosHand;
     public Vector2 SnapPosHandL;
@@ -24,25 +25,35 @@ public class ArmDetection : MonoBehaviour
     [SerializeField] private Transform HandL;
 
     public int rayCount = 8;         
-    public float rayDistance = 5f;   
+    //public float rayDistance = 5f;
     public float angleRange = 90f;   
     public float rotationOffset = 0f;
     public LayerMask layerMask;
     public Color gizmoColor = Color.red;
+    public float SpaceBetweenRays = 0.2f;
 
     private void Update()
     {
-        Vector2 origin = transform.position;
+        //Vector2 origin = transform.position;
 
         if (ObjectDetected == (int)ObjectDetectedIs.Nothing)
         { 
             for (int i = 0; i < rayCount; i++)
             {
-                float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
-                Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-                float distance = CalculateDistance(origin, direction);
+                //float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
+                //Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+                //float distance = CalculateDistance(origin, direction);
 
-                RaycastHit2D hit = Physics2D.Raycast(origin, direction, rayDistance, layerMask);
+                Vector2 perpendicular = new Vector2(-playerStateMachine.AimDir.y, playerStateMachine.AimDir.x).normalized;
+                float distanceOffset = (rayCount - 1) * SpaceBetweenRays;
+
+                Vector2 originOffset = (Vector2)playerTransform.position + perpendicular * SpaceBetweenRays * i;
+                Vector2 startPointRay = originOffset - perpendicular * distanceOffset;
+
+                Vector2 pointBetweenHands = (HandR.position + HandL.position) / 2;
+                float distance = Vector2.Distance(playerTransform.position, pointBetweenHands);
+
+                RaycastHit2D hit = Physics2D.Raycast(startPointRay, playerStateMachine.AimDir, distance, layerMask);
 
                 if (hit.collider != null)
                 {
@@ -178,18 +189,30 @@ public class ArmDetection : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = gizmoColor;
-        Vector2 origin = transform.position;
+        //Vector2 origin = transform.position;
 
-        for (int i = 0; i < rayCount; i++)
+        for (int i = 1; i < rayCount + 1; i++)
         {
+            Vector2 perpendicular = new Vector2(-playerStateMachine.AimDir.y, playerStateMachine.AimDir.x).normalized;
+
+            float distanceOffset = (rayCount - 1) * SpaceBetweenRays;
+
+            Vector2 originOffset = (Vector2)playerTransform.position + perpendicular * SpaceBetweenRays * i;
+
+            Vector2 startPointRay = originOffset - perpendicular * distanceOffset;
+
+            Vector2 pointBetweenHands = (HandR.position + HandL.position) / 2;
+
+            float distance = Vector2.Distance(playerTransform.position, pointBetweenHands);
+
+            Gizmos.DrawRay(startPointRay, playerStateMachine.AimDir * distance);
+
+            Debug.Log(playerStateMachine.DistanceGrab + 0.2f);
+
             // Calcul de l'angle pour chaque rayon
-            float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
-            Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
-            float distance = CalculateDistance(origin, direction);
-
-
-            Gizmos.DrawRay(origin, direction * rayDistance); 
-            //Debug.Log(targetPoint);
+            //float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
+            //Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
+            //float distance = CalculateDistance(origin, direction);
         }
     }
 
@@ -202,7 +225,7 @@ public class ArmDetection : MonoBehaviour
         // 1 - Trouver le segment entre le point d'origine et le point final
         // Trouver le point final
 
-        Vector2 finalPoint = origin + playerStateMachine.AimDir * rayDistance;
+        Vector2 finalPoint = origin + playerStateMachine.AimDir * 0.3f;
         Vector2 segment = finalPoint - origin;
 
 
