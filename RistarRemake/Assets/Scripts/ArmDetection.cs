@@ -143,7 +143,7 @@ public class ArmDetection : MonoBehaviour
             else
             {
                 ObjectDetected = (int)ObjectDetectedIs.Floor;
-                Debug.Log("GROUND");
+                //Debug.Log("GROUND");
             }
         }
         else
@@ -207,7 +207,7 @@ public class ArmDetection : MonoBehaviour
 
             Gizmos.DrawRay(startPointRay, playerStateMachine.AimDir * distance);
 
-            Debug.Log(playerStateMachine.DistanceGrab + 0.2f);
+            //Debug.Log(playerStateMachine.DistanceGrab + 0.2f);
 
             // Calcul de l'angle pour chaque rayon
             //float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));

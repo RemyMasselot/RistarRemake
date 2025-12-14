@@ -185,7 +185,7 @@ public class PlayerVisual : MonoBehaviour
         // Vérification d'un sol ou non
         if (playerStateMachine.GroundDetection.IsDectected)
         {
-            if (playerStateMachine.AimDir.y <= 0.6f)
+            if (playerStateMachine.AimDir.y <= 0.4f)
             {
                 animator.SetFloat("GrabAnimId", 1);
             }
