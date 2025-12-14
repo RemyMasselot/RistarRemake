@@ -55,8 +55,6 @@ public class PlayerJumpState : PlayerBaseState
             TimePassedAtApex += Time.deltaTime;
         }
 
-        _player.PlayerDirectionVerif();
-
         UpdatePositionY();
 
         CheckSwitchStates();
@@ -93,6 +91,8 @@ public class PlayerJumpState : PlayerBaseState
     public override void FixedUpdateState() 
     {
         ModifyVelocityX();
+
+        _player.PlayerDirectionVerif();
     }
 
     private void ModifyVelocityX()
