@@ -9,6 +9,7 @@ public class PlayerWallIdleState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("ENTER WALL IDLE");
+
         _player.PlayerRigidbody.velocity = Vector2.zero;
         _player.CoyoteCounter = 0;
 

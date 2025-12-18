@@ -13,6 +13,8 @@ public class PlayerHeadbuttState : PlayerBaseState
     {
         //Debug.Log("ENTER HEADBUTT");
 
+        _player.IsLadder = (int)LadderIs.Nothing;
+
         // CAMERA BEHAVIOR
         _player.CameraTargetOverride = _player.ArmDetection.SnapPosHand;
 
