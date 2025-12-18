@@ -206,7 +206,7 @@ public class ArmDetection : MonoBehaviour
 
             Gizmos.DrawRay(startPointRay, playerStateMachine.AimDir * distance);
 
-            Debug.Log("Draw " + i + " : " + pointBetweenHands);
+            //Debug.Log("Draw " + i + " : " + pointBetweenHands);
 
             //Debug.Log(playerStateMachine.DistanceGrab + 0.2f);
 

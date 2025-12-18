@@ -22,7 +22,6 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         canControl = false;
         _player.IsPlayerTurnToLeft = false;
         _player.transform.rotation = Quaternion.Euler(0, 0, 0);
-        //_player.PlayerRigidbody.gravityScale = 0;
 
         DOVirtual.DelayedCall(0.3f, () =>
         {
@@ -33,11 +32,9 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         _player.PlayerRigidbody.velocity = _player.MeteorStrikeDirection.normalized * 10;
 
         _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
-        //_player.GroundDetection.gameObject.SetActive(false);
         _player.LadderHDetection.gameObject.SetActive(false);
         _player.LadderVDetectionL.gameObject.SetActive(false);
         _player.LadderVDetectionR.gameObject.SetActive(false);
-        _player.TriggerGoToMeteorStrike.SetActive(false);
 
         // Move Left Arm
         _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
@@ -66,13 +63,15 @@ public class PlayerMeteorStrikeState : PlayerBaseState
 
         _player.transform.Translate(_player.MeteorStrikeDirection.normalized * _player.MeteorSpeed);
     }
+
     public override void ExitState() { }
+
     public override void InitializeSubState() { }
+
     public override void CheckSwitchStates() 
     { 
         if (_player.TimePassedInState >= _player.MaxTimeMeteor)
         {
-            //_player.GroundDetection.gameObject.SetActive(true);
             _player.LadderHDetection.gameObject.SetActive(true);
             _player.LadderVDetectionL.gameObject.SetActive(true);
             _player.LadderVDetectionR.gameObject.SetActive(true);
@@ -87,7 +86,9 @@ public class PlayerMeteorStrikeState : PlayerBaseState
             }
         }
     }
+
     public override void OnCollisionEnter2D(Collision2D collision) { }
+
     public override void OnCollisionStay2D(Collision2D collision) 
     {
         if (collision.gameObject.CompareTag("Wall"))

@@ -51,14 +51,14 @@ public class PlayerVisual : MonoBehaviour
                 handLeft.sprite = handClose;
             }
         }
-        else if (playerStateMachine.CurrentState is PlayerMeteorStrikeState) // METEOR STRIKE ONGOING
+        
+        ChangePlayerDirection();
+        
+        if (playerStateMachine.CurrentState is PlayerMeteorStrikeState) // METEOR STRIKE ONGOING
         {
             MeteorStrikeBodyRotation();
         }
-        
-        ChangePlayerDirection();
-
-        if (playerStateMachine.CurrentState is PlayerHeadbuttState)
+        else if (playerStateMachine.CurrentState is PlayerHeadbuttState)
         {
             HeadbuttBodyRotation();
         }
@@ -66,11 +66,9 @@ public class PlayerVisual : MonoBehaviour
 
     private void ChangePlayerDirection()
     {
-        //spriteRenderer.flipX = playerStateMachine.IsPlayerTurnToLeft ? true : false;
-
         float newScaleX = playerStateMachine.IsPlayerTurnToLeft ? -1 : 1;
 
-        pivot.transform.localScale = new Vector3(newScaleX, 1, 1);
+        pivot.localScale = new Vector3(newScaleX, 1, 1);
     }
 
     private void UpdateVisual()
@@ -249,15 +247,12 @@ public class PlayerVisual : MonoBehaviour
     private void MeteorStrikeBodyRotation()
     {
         float angle = Mathf.Atan2(playerStateMachine.MeteorStrikeDirection.y, playerStateMachine.MeteorStrikeDirection.x) * Mathf.Rad2Deg;
-        spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, angle);
+        pivot.rotation = Quaternion.Euler(0, 0, angle);
 
-        if (playerStateMachine.MeteorStrikeDirection.x > 0)
+        if (playerStateMachine.MeteorStrikeDirection.x != 0)
         {
-            spriteRenderer.flipY = false;
-        }
-        if (playerStateMachine.MeteorStrikeDirection.x < 0)
-        {
-            spriteRenderer.flipY = true;
+            float newScaleY = playerStateMachine.MeteorStrikeDirection.x > 0 ? 1 : -1;
+            pivot.localScale = new Vector3(pivot.localScale.x, newScaleY, 1);
         }
     }
 

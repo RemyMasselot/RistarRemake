@@ -32,7 +32,6 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("REFERENCES/Grab")] public Transform ShoulderLeft;
     [FoldoutGroup("REFERENCES/Grab")] public Transform DefaultPosRight;
     [FoldoutGroup("REFERENCES/Grab")] public Transform DefaultPosLeft;
-    [FoldoutGroup("REFERENCES/Star Handle")] public GameObject TriggerGoToMeteorStrike;
 
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public EnemyDetection EnemyDetection { get; private set; }
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public GroundDetection GroundDetection { get; private set; }
@@ -124,6 +123,7 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("SPIN")] public float SpinTime;
 
     [HideInInspector] public Vector3 StarHandleCentre;
+    [FoldoutGroup("STAR HANDLE")] public float TimeToChargeMeteorStrike = 3;
     [HideInInspector] public float StarHandleCurrentValue = 0;
     [FoldoutGroup("STAR HANDLE")] public float StarHandleTargetValue = 200;
     [FoldoutGroup("STAR HANDLE")] public float StarHandleRayonMin = 1.5f;
@@ -133,9 +133,9 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("STAR HANDLE")] public float StarHandleMaxSpeed = 12;
     [HideInInspector] public float StarHandleCurrentSpeed = 6;
     [FoldoutGroup("STAR HANDLE")] public float StarHandleSpeedSlowMotion = 8;
+    [HideInInspector] public float StarHandleCurrentImpulse = 0;
     [FoldoutGroup("STAR HANDLE")] public float StarHandleImpulseMin = 10;
     [FoldoutGroup("STAR HANDLE")] public float StarHandleImpulseMax = 30;
-    [HideInInspector] public float StarHandleCurrentImpulse = 0;
     
     [FoldoutGroup("METEOR STRIKE")] public float MeteorSpeed = 10;
     [FoldoutGroup("METEOR STRIKE")] public float MaxTimeMeteor = 10;
