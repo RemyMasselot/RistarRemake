@@ -38,7 +38,7 @@ public class ArmDetection : MonoBehaviour
 
         if (ObjectDetected == (int)ObjectDetectedIs.Nothing)
         { 
-            for (int i = 0; i < rayCount; i++)
+            for (int i = 1; i < rayCount + 1; i++)
             {
                 //float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
                 //Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
@@ -100,13 +100,12 @@ public class ArmDetection : MonoBehaviour
     {
         LayerMask wallMask = LayerMask.GetMask("Wall");
 
-        SnapPosHand = hit.point;
         Vector3 verticalOffset = new Vector2(0f, 0.1f);
         Vector3 horizontalOffset = new Vector2(0.1f, 0f);
 
         if (playerStateMachine.AimDir.y > 0)
         {
-            Vector3 startPointDetection = SnapPosHand - verticalOffset;
+            Vector3 startPointDetection = (Vector3)hit.point - verticalOffset;
 
             Collider2D newHitRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset);
             Collider2D newHitLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset);
@@ -127,7 +126,7 @@ public class ArmDetection : MonoBehaviour
         }
         else if (playerStateMachine.AimDir.y < 0)
         {
-            Vector3 startPointDetection = SnapPosHand + verticalOffset;
+            Vector3 startPointDetection = (Vector3)hit.point + verticalOffset;
 
             Collider2D newHitRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset);
             Collider2D newHitLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset);
@@ -166,7 +165,7 @@ public class ArmDetection : MonoBehaviour
         SnapPosHand = hit.point;
         //Debug.Log(hit.transform.name);
 
-        if (ObjectDetected == (int)ObjectDetectedIs.Ceiling || hit.transform.gameObject.tag == "LadderH")
+        if (ObjectDetected == (int)ObjectDetectedIs.Ceiling || hit.transform.gameObject.CompareTag("LadderH"))
         {
             if (playerStateMachine.IsPlayerTurnToLeft)
             {
@@ -181,8 +180,8 @@ public class ArmDetection : MonoBehaviour
         }
         else
         {
-            SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y + 0f);
-            SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.4f);
+            SnapPosHandL = new Vector2(SnapPosHand.x, SnapPosHand.y - 0.2f);
+            SnapPosHandR = new Vector2(SnapPosHand.x, SnapPosHand.y + 0.2f);
         }
     }
 
@@ -206,6 +205,8 @@ public class ArmDetection : MonoBehaviour
             float distance = Vector2.Distance(playerTransform.position, pointBetweenHands) + rayDistanceAdd;
 
             Gizmos.DrawRay(startPointRay, playerStateMachine.AimDir * distance);
+
+            Debug.Log("Draw " + i + " : " + pointBetweenHands);
 
             //Debug.Log(playerStateMachine.DistanceGrab + 0.2f);
 

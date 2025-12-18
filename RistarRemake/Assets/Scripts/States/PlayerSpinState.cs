@@ -66,6 +66,7 @@ public class PlayerSpinState : PlayerBaseState
         if (_player.TimePassedInState >= _player.SpinTime)
         {
             //Debug.Log(_player.TimePassedInState);
+            //_player.PlayerRigidbody.velocity = new Vector2(-1, _player.PlayerRigidbody.velocity.y);
             SwitchState(_factory.Fall());
         }
     }
