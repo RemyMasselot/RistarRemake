@@ -3058,11 +3058,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffebf82b6a4ca34eb2bf13a3131f9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1379036555 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8535036337940793503, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-  m_PrefabInstance: {fileID: 4924099577031079842}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1410845076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4404,14 +4399,6 @@ PrefabInstance:
       propertyPath: <GroundDetection>k__BackingField
       value: 
       objectReference: {fileID: 1379036548}
-    - target: {fileID: 6234253148292796384, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-      propertyPath: rayCount
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6234253148292796384, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-      propertyPath: playerTransform
-      value: 
-      objectReference: {fileID: 1379036555}
     - target: {fileID: 6705075075960125178, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.0128

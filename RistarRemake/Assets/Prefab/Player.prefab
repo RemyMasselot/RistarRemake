@@ -1003,7 +1003,7 @@ MonoBehaviour:
   FallInGrabValue: -6
   HorizontalGrabMovementMultiplier: 1.5
   VerticalGrabMovementMultiplier: 1
-  HeadbuttMoveSpead: 4
+  HeadbuttMoveSpead: 10
   HeadbuttDirection: {x: 0, y: 0}
   SpinTime: 0.3
   StarHandleCentre: {x: 0, y: 0, z: 0}
@@ -1150,13 +1150,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectDetected: 0
   playerStateMachine: {fileID: 5971321630394888149}
-  playerTransform: {fileID: 0}
+  playerTransform: {fileID: 8535036337940793503}
   SnapPosHand: {x: 0, y: 0, z: 0}
   SnapPosHandL: {x: 0, y: 0}
   SnapPosHandR: {x: 0, y: 0}
   HandR: {fileID: 3389265081751148596}
   HandL: {fileID: 6282178533520518733}
-  rayCount: 5
+  rayCount: 3
+  rayDistanceAdd: 0.5
   angleRange: 65
   rotationOffset: 0
   layerMask:

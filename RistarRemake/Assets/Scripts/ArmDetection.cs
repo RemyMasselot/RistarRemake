@@ -25,7 +25,7 @@ public class ArmDetection : MonoBehaviour
     [SerializeField] private Transform HandL;
 
     public int rayCount = 8;         
-    //public float rayDistance = 5f;
+    public float rayDistanceAdd = 0.2f;
     public float angleRange = 90f;   
     public float rotationOffset = 0f;
     public LayerMask layerMask;
@@ -51,7 +51,7 @@ public class ArmDetection : MonoBehaviour
                 Vector2 startPointRay = originOffset - perpendicular * distanceOffset;
 
                 Vector2 pointBetweenHands = (HandR.position + HandL.position) / 2;
-                float distance = Vector2.Distance(playerTransform.position, pointBetweenHands);
+                float distance = Vector2.Distance(playerTransform.position, pointBetweenHands) + rayDistanceAdd;
 
                 RaycastHit2D hit = Physics2D.Raycast(startPointRay, playerStateMachine.AimDir, distance, layerMask);
 
@@ -203,7 +203,7 @@ public class ArmDetection : MonoBehaviour
 
             Vector2 pointBetweenHands = (HandR.position + HandL.position) / 2;
 
-            float distance = Vector2.Distance(playerTransform.position, pointBetweenHands);
+            float distance = Vector2.Distance(playerTransform.position, pointBetweenHands) + rayDistanceAdd;
 
             Gizmos.DrawRay(startPointRay, playerStateMachine.AimDir * distance);
 
