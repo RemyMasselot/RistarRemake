@@ -45,27 +45,24 @@ public class Grab : MonoBehaviour
 
     private void DirectionCorrection()
     {
-        // Vérification d'un sol ou non
-        if (_player.GroundDetection.IsDectected == true)
+        if (_player.AimDir == new Vector2(0, 0))
         {
-            if (_player.AimDir.y <= 0)
+            _player.AimDir = new Vector2 (_player.MoveH.ReadValue<float>(), _player.MoveV.ReadValue<float>());
+
+            if (_player.AimDir == new Vector2(0, 0))
             {
-                _player.AimDir.y = 0;
+                if (_player.IsPlayerTurnToLeft == false)
+                {
+                    _player.AimDir = new Vector2(1, 0);
+                }
+                else
+                {
+                    _player.AimDir = new Vector2(-1, 0);
+                }
             }
         }
 
-        if (_player.AimDir == new Vector2(0, 0))
-        {
-            if (_player.IsPlayerTurnToLeft == false)
-            {
-                _player.AimDir = new Vector2(1, 0);
-            }
-            else
-            {
-                _player.AimDir = new Vector2(-1, 0);
-            }
-        }
-        else
+        if (_player.AimDir != new Vector2(0, 0))
         {
             if (_player.AimDir.x > 0)
             {
@@ -74,6 +71,15 @@ public class Grab : MonoBehaviour
             else if (_player.AimDir.x < 0)
             {
                 _player.IsPlayerTurnToLeft = true;
+            }
+        }
+        
+        // Vérification d'un sol ou non
+        if (_player.GroundDetection.IsDectected == true)
+        {
+            if (_player.AimDir.y <= 0)
+            {
+                _player.AimDir.y = 0;
             }
         }
     }
