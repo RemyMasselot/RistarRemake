@@ -872,7 +872,6 @@ MonoBehaviour:
   ShoulderLeft: {fileID: 56796983860889730}
   DefaultPosRight: {fileID: 6705075075960125178}
   DefaultPosLeft: {fileID: 656159738656065649}
-  TriggerGoToMeteorStrike: {fileID: 8749003172385253135}
   <EnemyDetection>k__BackingField: {fileID: 0}
   <GroundDetection>k__BackingField: {fileID: 3719720874709478490}
   <LadderVDetectionL>k__BackingField: {fileID: 1149977443471627458}
@@ -899,7 +898,8 @@ MonoBehaviour:
   TimePassedInState: 0
   Invincinbility: {fileID: 0}
   CornerCorrection: {fileID: 0}
-  WalkSpeed: 180
+  WalkMinSpeed: 2
+  WalkMaxSpeed: 4.5
   LadderSnapPosition: {x: 0, y: 0}
   CanSnapPositionLadder: 1
   ColliderLadder: {fileID: 0}
@@ -1007,6 +1007,7 @@ MonoBehaviour:
   HeadbuttDirection: {x: 0, y: 0}
   SpinTime: 0.3
   StarHandleCentre: {x: 0, y: 0, z: 0}
+  TimeToChargeMeteorStrike: 3
   StarHandleCurrentValue: 0
   StarHandleTargetValue: 150
   StarHandleRayonMin: 1.5
@@ -1016,9 +1017,9 @@ MonoBehaviour:
   StarHandleMaxSpeed: 23
   StarHandleCurrentSpeed: 6
   StarHandleSpeedSlowMotion: 8
+  StarHandleCurrentImpulse: 0
   StarHandleImpulseMin: 10
   StarHandleImpulseMax: 30
-  StarHandleCurrentImpulse: 0
   MeteorSpeed: 0.35
   MaxTimeMeteor: 5
   IsTimerRunningMeteor: 1
@@ -1559,10 +1560,5 @@ PrefabInstance:
 --- !u!4 &3551952841521321556 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5404267445093869771, guid: 51c237722cb8bbe4eab7c14c001bf9c1, type: 3}
-  m_PrefabInstance: {fileID: 8913963769300156063}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8749003172385253135 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 206733294889310608, guid: 51c237722cb8bbe4eab7c14c001bf9c1, type: 3}
   m_PrefabInstance: {fileID: 8913963769300156063}
   m_PrefabAsset: {fileID: 0}

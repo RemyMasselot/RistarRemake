@@ -69,7 +69,8 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
-    [FoldoutGroup("MOVE")] public float WalkSpeed = 10;
+    [FoldoutGroup("WALK")] public float WalkMinSpeed = 4;
+    [FoldoutGroup("WALK")] public float WalkMaxSpeed = 10;
 
     [HideInInspector] public Vector2 LadderSnapPosition;
     [HideInInspector] public bool CanSnapPositionLadder = true;

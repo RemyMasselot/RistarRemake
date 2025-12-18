@@ -14,19 +14,34 @@ public class PlayerWalkState : PlayerBaseState
     { 
         _player.CountTimePassedInState();
         CheckSwitchStates();
+        _player.PlayerDirectionVerif();
     }
     public override void FixedUpdateState() 
     {
-        movement();
-        _player.PlayerDirectionVerif();
+        Movement();
     }
 
-    private void movement()
+    private void Movement()
     {
         if (_player.IsGrabing == false)
         {
             float moveValue = _player.MoveH.ReadValue<float>();
-            _player.PlayerRigidbody.velocity = new Vector2(moveValue * _player.WalkSpeed * Time.deltaTime, 0);
+
+            float speed = moveValue * _player.WalkMaxSpeed;
+
+            if (moveValue > 0)
+            {
+                if (speed < _player.WalkMinSpeed)
+                {
+                    speed = _player.WalkMinSpeed;
+                }
+            }
+            else if (speed > -_player.WalkMinSpeed)
+            {
+                speed = -_player.WalkMinSpeed;
+            }
+
+            _player.PlayerRigidbody.velocity = new Vector2(speed, 0);
         }
     }
 

@@ -29,11 +29,11 @@ public class PlayerWallClimbState : PlayerBaseState
             float moveValueV = _player.MoveV.ReadValue<float>();
             if (moveValueV > 0)
             {
-                _player.PlayerRigidbody.velocity = new Vector2(0, _player.WalkSpeed * Time.deltaTime);
+                _player.PlayerRigidbody.velocity = new Vector2(0, _player.WalkMaxSpeed);
             }
             if (moveValueV < 0)
             {
-                _player.PlayerRigidbody.velocity = new Vector2(0, -_player.WalkSpeed * Time.deltaTime);
+                _player.PlayerRigidbody.velocity = new Vector2(0, -_player.WalkMaxSpeed);
             }
         }
         else if (_player.IsLadder == (int)LadderIs.Horizontal)
@@ -42,12 +42,12 @@ public class PlayerWallClimbState : PlayerBaseState
             if (moveValueH > 0)
             {
                 _player.IsPlayerTurnToLeft = false;
-                _player.PlayerRigidbody.velocity = new Vector2(_player.WalkSpeed * Time.deltaTime, 0);
+                _player.PlayerRigidbody.velocity = new Vector2(_player.WalkMaxSpeed, 0);
             }
             if (moveValueH < 0)
             {
                 _player.IsPlayerTurnToLeft = true;
-                _player.PlayerRigidbody.velocity = new Vector2(-_player.WalkSpeed * Time.deltaTime, 0);
+                _player.PlayerRigidbody.velocity = new Vector2(-_player.WalkMaxSpeed, 0);
             }
         }
     }
