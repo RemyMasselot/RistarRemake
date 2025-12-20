@@ -4399,6 +4399,14 @@ PrefabInstance:
       propertyPath: <GroundDetection>k__BackingField
       value: 
       objectReference: {fileID: 1379036548}
+    - target: {fileID: 6234253148292796384, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: layerMask.m_Bits
+      value: 2569
+      objectReference: {fileID: 0}
+    - target: {fileID: 6234253148292796384, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: LadderLayer.m_Bits
+      value: 192
+      objectReference: {fileID: 0}
     - target: {fileID: 6705075075960125178, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.0128

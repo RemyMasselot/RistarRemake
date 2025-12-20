@@ -207,11 +207,11 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void OnCollisionEnter2D(Collision2D collision) { }
 
-    public override void OnCollisionStay2D(Collision2D collision) 
+    public override void OnTriggerStay2D(Collider2D collider) 
     {
         if (_player.TimePassedInState > 0.05f)
         {
-            _player.LadderVerif(collision);
+            _player.LadderVerif(collider);
             
             if (_player.IsLadder != (int)LadderIs.Nothing)
             {

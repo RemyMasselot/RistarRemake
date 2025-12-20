@@ -29,6 +29,7 @@ public class ArmDetection : MonoBehaviour
     public float angleRange = 90f;   
     public float rotationOffset = 0f;
     public LayerMask layerMask;
+    [SerializeField] private LayerMask LadderLayer;
     public Color gizmoColor = Color.red;
     public float SpaceBetweenRays = 0.2f;
 
@@ -69,13 +70,13 @@ public class ArmDetection : MonoBehaviour
                         SetSnapPosCollider(hit);
                         break;
                     }
-                    else if (hit.collider.CompareTag("LadderV") || hit.collider.CompareTag("LadderH"))
-                    {
-                        ObjectDetected = (int)ObjectDetectedIs.Ladder;
-                        //Debug.Log("Ladder detected");
-                        SetSnapPosHitPoint(hit);
-                        break;
-                    }
+                    //else if (hit.collider.CompareTag("LadderV") || hit.collider.CompareTag("LadderH"))
+                    //{
+                    //    ObjectDetected = (int)ObjectDetectedIs.Ladder;
+                    //    //Debug.Log("Ladder detected");
+                    //    SetSnapPosHitPoint(hit);
+                    //    break;
+                    //}
                     else if (hit.collider.CompareTag("Wall"))
                     {
                         //Debug.Log("Wall detected");
@@ -115,7 +116,14 @@ public class ArmDetection : MonoBehaviour
 
             if (isWallRight || isWallLeft)
             {
-                ObjectDetected = (int)ObjectDetectedIs.Wall;
+                if (IsThereALadder(hit.point) != null)
+                {
+                    ObjectDetected = (int)ObjectDetectedIs.Ladder;
+                }
+                else
+                {
+                    ObjectDetected = (int)ObjectDetectedIs.Wall;
+                }
                 //Debug.Log("WALL");
             }
             else
@@ -136,7 +144,14 @@ public class ArmDetection : MonoBehaviour
 
             if (isWallRight || isWallLeft)
             {
-                ObjectDetected = (int)ObjectDetectedIs.Wall;
+                if (IsThereALadder(hit.point) != null)
+                {
+                    ObjectDetected = (int)ObjectDetectedIs.Ladder;
+                }
+                else
+                {
+                    ObjectDetected = (int)ObjectDetectedIs.Wall;
+                }
                 //Debug.Log("WALL");
             }
             else
@@ -147,10 +162,25 @@ public class ArmDetection : MonoBehaviour
         }
         else
         {
-            ObjectDetected = (int)ObjectDetectedIs.Wall;
+            if (IsThereALadder(hit.point) != null)
+            {
+                ObjectDetected = (int)ObjectDetectedIs.Ladder;
+            }
+            else
+            {
+                ObjectDetected = (int)ObjectDetectedIs.Wall;
+            }
             //Debug.Log("WALL");
         }
         SetSnapPosHitPoint(hit);
+    }
+
+    private Collider2D IsThereALadder(Vector2 worldPoint)
+    {
+        Collider2D hit = Physics2D.OverlapPoint(worldPoint, LadderLayer);
+        if (hit == null) return null;
+        if (!hit.isTrigger) return null;
+        return hit is BoxCollider2D ? hit : null;
     }
 
     private void SetSnapPosCollider(RaycastHit2D hit)

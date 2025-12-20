@@ -222,11 +222,11 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
-    public void LadderVerif(Collision2D collision)
+    public void LadderVerif(Collider2D collider)
     {
         IsLadder = (int)LadderIs.Nothing;
 
-        if (collision.gameObject.CompareTag("LadderV"))
+        if (collider.gameObject.CompareTag("LadderV"))
         {
             if (LadderVDetectionL.IsLadderVDectectedL == true)
             {
@@ -237,19 +237,19 @@ public class PlayerStateMachine : MonoBehaviour
                 IsLadder = (int)LadderIs.VerticalRight;
             }
         }
-        else if (collision.gameObject.CompareTag("LadderH"))
+        else if (collider.gameObject.CompareTag("LadderH"))
         {
             IsLadder = (int)LadderIs.Horizontal;
         }
 
         if (IsLadder != (int)LadderIs.Nothing)
         {
-            ColliderLadder = collision.collider;
-            SetLadderSnapPosition(collision);
+            ColliderLadder = collider;
+            SetLadderSnapPosition(collider);
         }
     }
 
-    private void SetLadderSnapPosition(Collision2D collision)
+    private void SetLadderSnapPosition(Collider2D collider)
     {
         CanSnapPositionLadder = true;
         float playerExtentX = PlayerCollider.bounds.extents.x + 0.1f;
@@ -257,10 +257,10 @@ public class PlayerStateMachine : MonoBehaviour
 
         if (IsLadder == (int)LadderIs.VerticalLeft)
         {
-            float collisionRightX = collision.collider.bounds.max.x;
+            float collisionRightX = collider.bounds.max.x;
 
-            float collisionBottomY = collision.collider.bounds.min.y;
-            float collisionTopY = collision.collider.bounds.max.y;
+            float collisionBottomY = collider.bounds.min.y;
+            float collisionTopY = collider.bounds.max.y;
 
 
             float distanceToBottom = Mathf.Abs(transform.position.y - collisionBottomY);
@@ -287,10 +287,10 @@ public class PlayerStateMachine : MonoBehaviour
         }
         else if (IsLadder == (int)LadderIs.VerticalRight)
         {
-            float collisionLeftX = collision.collider.bounds.min.x;
+            float collisionLeftX = collider.bounds.min.x;
 
-            float collisionBottomY = collision.collider.bounds.min.y;
-            float collisionTopY = collision.collider.bounds.max.y;
+            float collisionBottomY = collider.bounds.min.y;
+            float collisionTopY = collider.bounds.max.y;
 
 
             float distanceToBottom = Mathf.Abs(transform.position.y - collisionBottomY);
@@ -317,10 +317,10 @@ public class PlayerStateMachine : MonoBehaviour
         }
         else if (IsLadder == (int)LadderIs.Horizontal)
         {
-            float collisionBottomY = collision.collider.bounds.min.y;
+            float collisionBottomY = collider.bounds.min.y;
 
-            float collisionLeftX = collision.collider.bounds.min.x;
-            float collisionRightX = collision.collider.bounds.max.x;
+            float collisionLeftX = collider.bounds.min.x;
+            float collisionRightX = collider.bounds.max.x;
 
             float distanceToLeft = Mathf.Abs(transform.position.x - collisionLeftX);
             float distanceToRight = Mathf.Abs(transform.position.x - collisionRightX);

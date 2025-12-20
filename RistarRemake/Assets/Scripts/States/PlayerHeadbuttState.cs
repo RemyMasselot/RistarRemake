@@ -42,8 +42,7 @@ public class PlayerHeadbuttState : PlayerBaseState
     }
 
     public override void FixedUpdateState() 
-    {
-    
+    {    
         if (_player.EnemyDetection.IsDectected == true)
         {
             SwitchState(_factory.Spin());
@@ -53,9 +52,11 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void InitializeSubState() { }
     public override void CheckSwitchStates() { }
     public override void OnCollisionEnter2D(Collision2D collision) { }
-    public override void OnCollisionStay2D(Collision2D collision)
+    public override void OnCollisionStay2D(Collision2D collision) { }
+
+    public override void OnTriggerStay2D(Collider2D collider)
     {
-        _player.LadderVerif(collision);
+        _player.LadderVerif(collider);
     }
 
     private void CheckDistanceWithTarget()
@@ -74,6 +75,7 @@ public class PlayerHeadbuttState : PlayerBaseState
             }
             else
             {
+                Debug.Log("HEADBUTT TO SPIN");
                 SwitchState(_factory.Spin());
             }
         }
