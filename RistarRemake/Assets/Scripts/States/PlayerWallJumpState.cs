@@ -70,7 +70,7 @@ public class PlayerWallJumpState : PlayerBaseState
 
     public override void OnTriggerStay2D(Collider2D collider) 
     {
-        _player.LadderVerif(collider);
+        _player.LadderVerif();
 
         if (_player.IsLadder != (int)LadderIs.Nothing)
         {

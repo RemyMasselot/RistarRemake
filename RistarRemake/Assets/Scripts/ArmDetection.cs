@@ -2,18 +2,19 @@ using UnityEngine;
 
 public class ArmDetection : MonoBehaviour
 {
-    public enum ObjectDetectedIs
+    public enum ObjectGrabedIs
     {
         Nothing = 0,
         Other = 1,
         Enemy = 2,
-        Ladder = 3,
-        StarHandle = 4,
-        Wall = 5,
-        Floor = 6,
-        Ceiling= 7
+        LadderHorizontal = 3,
+        LadderVertical = 4,
+        StarHandle = 5,
+        Wall = 6,
+        Floor = 7,
+        Ceiling= 8
     }
-    public int ObjectDetected = (int)ObjectDetectedIs.Nothing;
+    public int ObjectGrabed = (int)ObjectGrabedIs.Nothing;
 
     [SerializeField] private PlayerStateMachine playerStateMachine;
     [SerializeField] private Transform playerTransform;
@@ -29,22 +30,16 @@ public class ArmDetection : MonoBehaviour
     public float angleRange = 90f;   
     public float rotationOffset = 0f;
     public LayerMask layerMask;
-    [SerializeField] private LayerMask LadderLayer;
+    //[SerializeField] private LayerMask LadderLayer;
     public Color gizmoColor = Color.red;
     public float SpaceBetweenRays = 0.2f;
 
     private void Update()
     {
-        //Vector2 origin = transform.position;
-
-        if (ObjectDetected == (int)ObjectDetectedIs.Nothing)
+        if (ObjectGrabed == (int)ObjectGrabedIs.Nothing)
         { 
             for (int i = 1; i < rayCount + 1; i++)
             {
-                //float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
-                //Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-                //float distance = CalculateDistance(origin, direction);
-
                 Vector2 perpendicular = new Vector2(-playerStateMachine.AimDir.y, playerStateMachine.AimDir.x).normalized;
                 float distanceOffset = (rayCount - 1) * SpaceBetweenRays;
 
@@ -58,15 +53,15 @@ public class ArmDetection : MonoBehaviour
 
                 if (hit.collider != null)
                 {
-                    if (hit.collider.CompareTag("Enemy"))
+                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
                     {
-                        ObjectDetected = (int)ObjectDetectedIs.Enemy;
+                        ObjectGrabed = (int)ObjectGrabedIs.Enemy;
                         SetSnapPosCollider(hit);
                         break;
                     }
-                    else if (hit.collider.CompareTag("StarHandle"))
+                    else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("StarHandle"))
                     {
-                        ObjectDetected = (int)ObjectDetectedIs.StarHandle;
+                        ObjectGrabed = (int)ObjectGrabedIs.StarHandle;
                         SetSnapPosCollider(hit);
                         break;
                     }
@@ -77,21 +72,20 @@ public class ArmDetection : MonoBehaviour
                     //    SetSnapPosHitPoint(hit);
                     //    break;
                     //}
-                    else if (hit.collider.CompareTag("Wall"))
+                    else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Platform"))
                     {
-                        //Debug.Log("Wall detected");
                         DetecPlatform(hit);
                         break;
                     }
                     else
                     {
-                        ObjectDetected = (int)ObjectDetectedIs.Other;
+                        ObjectGrabed = (int)ObjectGrabedIs.Other;
                         break;
                     }
                 }
                 else
                 {
-                    ObjectDetected = (int)ObjectDetectedIs.Nothing;
+                    ObjectGrabed = (int)ObjectGrabedIs.Nothing;
                 }
             }
         }
@@ -99,7 +93,7 @@ public class ArmDetection : MonoBehaviour
 
     private void DetecPlatform(RaycastHit2D hit)
     {
-        LayerMask wallMask = LayerMask.GetMask("Wall");
+        LayerMask platformMask = LayerMask.GetMask("Platform");
 
         Vector3 verticalOffset = new Vector2(0f, 0.1f);
         Vector3 horizontalOffset = new Vector2(0.1f, 0f);
@@ -108,94 +102,88 @@ public class ArmDetection : MonoBehaviour
         {
             Vector3 startPointDetection = (Vector3)hit.point - verticalOffset;
 
-            Collider2D newHitRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset);
-            Collider2D newHitLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset);
+            //Collider2D newHitRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset);
+            //Collider2D newHitLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset);
 
-            bool isWallRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset, wallMask) != null;
-            bool isWallLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset, wallMask) != null;
+            bool isWallRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset, platformMask) != null;
+            bool isWallLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset, platformMask) != null;
 
             if (isWallRight || isWallLeft)
             {
                 if (IsThereALadder(hit.point) != null)
                 {
-                    ObjectDetected = (int)ObjectDetectedIs.Ladder;
+                    ObjectGrabed = (int)ObjectGrabedIs.LadderVertical;
                 }
                 else
                 {
-                    ObjectDetected = (int)ObjectDetectedIs.Wall;
+                    ObjectGrabed = (int)ObjectGrabedIs.Wall;
                 }
-                //Debug.Log("WALL");
             }
             else
             {
-                ObjectDetected = (int)ObjectDetectedIs.Ceiling;
-                //Debug.Log("CEILING");
+                if (IsThereALadder(hit.point) != null)
+                {
+                    ObjectGrabed = (int)ObjectGrabedIs.LadderHorizontal;
+                }
+                else
+                {
+                    ObjectGrabed = (int)ObjectGrabedIs.Ceiling;
+                }
             }
         }
         else if (playerStateMachine.AimDir.y < 0)
         {
             Vector3 startPointDetection = (Vector3)hit.point + verticalOffset;
 
-            Collider2D newHitRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset);
-            Collider2D newHitLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset);
+            //Collider2D newHitRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset);
+            //Collider2D newHitLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset);
 
-            bool isWallRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset, wallMask) != null;
-            bool isWallLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset, wallMask) != null;
+            bool isWallRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset, platformMask) != null;
+            bool isWallLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset, platformMask) != null;
 
             if (isWallRight || isWallLeft)
             {
                 if (IsThereALadder(hit.point) != null)
                 {
-                    ObjectDetected = (int)ObjectDetectedIs.Ladder;
+                    ObjectGrabed = (int)ObjectGrabedIs.LadderVertical;
                 }
                 else
                 {
-                    ObjectDetected = (int)ObjectDetectedIs.Wall;
+                    ObjectGrabed = (int)ObjectGrabedIs.Wall;
                 }
-                //Debug.Log("WALL");
             }
             else
             {
-                ObjectDetected = (int)ObjectDetectedIs.Floor;
-                //Debug.Log("GROUND");
+                ObjectGrabed = (int)ObjectGrabedIs.Floor;
             }
         }
         else
         {
             if (IsThereALadder(hit.point) != null)
             {
-                ObjectDetected = (int)ObjectDetectedIs.Ladder;
+                ObjectGrabed = (int)ObjectGrabedIs.LadderVertical;
             }
             else
             {
-                ObjectDetected = (int)ObjectDetectedIs.Wall;
+                ObjectGrabed = (int)ObjectGrabedIs.Wall;
             }
-            //Debug.Log("WALL");
         }
         SetSnapPosHitPoint(hit);
     }
 
     private Collider2D IsThereALadder(Vector2 worldPoint)
     {
-        Collider2D hit = Physics2D.OverlapPoint(worldPoint, LadderLayer);
+        Collider2D hit = Physics2D.OverlapPoint(worldPoint, LayerMask.NameToLayer("Ladder"));
         if (hit == null) return null;
         if (!hit.isTrigger) return null;
         return hit is BoxCollider2D ? hit : null;
     }
 
-    private void SetSnapPosCollider(RaycastHit2D hit)
-    {
-        SnapPosHand = hit.collider.transform.position;
-        SnapPosHandL = SnapPosHand;
-        SnapPosHandR = SnapPosHand;
-    }
-
     private void SetSnapPosHitPoint(RaycastHit2D hit)
     {
         SnapPosHand = hit.point;
-        //Debug.Log(hit.transform.name);
 
-        if (ObjectDetected == (int)ObjectDetectedIs.Ceiling || hit.transform.gameObject.CompareTag("LadderH"))
+        if (ObjectGrabed == (int)ObjectGrabedIs.Ceiling || ObjectGrabed == (int)ObjectGrabedIs.LadderHorizontal)
         {
             if (playerStateMachine.IsPlayerTurnToLeft)
             {
@@ -215,10 +203,16 @@ public class ArmDetection : MonoBehaviour
         }
     }
 
+    private void SetSnapPosCollider(RaycastHit2D hit)
+    {
+        SnapPosHand = hit.collider.transform.position;
+        SnapPosHandL = SnapPosHand;
+        SnapPosHandR = SnapPosHand;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = gizmoColor;
-        //Vector2 origin = transform.position;
 
         for (int i = 1; i < rayCount + 1; i++)
         {
@@ -235,15 +229,6 @@ public class ArmDetection : MonoBehaviour
             float distance = Vector2.Distance(playerTransform.position, pointBetweenHands) + rayDistanceAdd;
 
             Gizmos.DrawRay(startPointRay, playerStateMachine.AimDir * distance);
-
-            //Debug.Log("Draw " + i + " : " + pointBetweenHands);
-
-            //Debug.Log(playerStateMachine.DistanceGrab + 0.2f);
-
-            // Calcul de l'angle pour chaque rayon
-            //float angle = rotationOffset - (angleRange / 2f) + (i * angleRange / (rayCount - 1));
-            //Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
-            //float distance = CalculateDistance(origin, direction);
         }
     }
 
@@ -271,7 +256,6 @@ public class ArmDetection : MonoBehaviour
 
         return Vector2.Distance(origin, targetPoint);
     }
-
     private static Vector2 GetLineIntersection(Vector2 p1, Vector2 dir1, Vector2 p2, Vector2 dir2)
     {
         float a1 = -dir1.y;

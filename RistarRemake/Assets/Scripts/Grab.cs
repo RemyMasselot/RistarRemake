@@ -27,11 +27,11 @@ public class Grab : MonoBehaviour
 
     public void GrabInitialisation()
     {
+        _player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
         NewStateFromGrab = null;
         canStartGrabSituation = true;
         canCancelGrab = true;
         isHoldGrabTimerRunning = false;
-        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
         _player.AimDir = _player.Aim.ReadValue<Vector2>();
 
         DirectionCorrection();
@@ -170,33 +170,37 @@ public class Grab : MonoBehaviour
         if (canStartGrabSituation)
         {
             //Debug.Log(_player.ArmDetection.ObjectDetected);
-            switch (_player.ArmDetection.ObjectDetected)
+            switch (_player.ArmDetection.ObjectGrabed)
             {
-                case (int)ObjectDetectedIs.Other:
+                case (int)ObjectGrabedIs.Other:
                     GrabOther();
                     canStartGrabSituation = false;
                     break;
-                case (int)ObjectDetectedIs.Enemy:
+                case (int)ObjectGrabedIs.Enemy:
                     GrabEnemy();
                     canStartGrabSituation = false;
                     break;
-                case (int)ObjectDetectedIs.Ladder:
+                case (int)ObjectGrabedIs.LadderVertical:
                     GrabLadder();
                     canStartGrabSituation = false;
                     break;
-                case (int)ObjectDetectedIs.StarHandle:
+                case (int)ObjectGrabedIs.LadderHorizontal:
+                    GrabLadder();
+                    canStartGrabSituation = false;
+                    break;
+                case (int)ObjectGrabedIs.StarHandle:
                     GrabStarHandle();
                     canStartGrabSituation = false;
                     break;
-                case (int)ObjectDetectedIs.Wall:
+                case (int)ObjectGrabedIs.Wall:
                     GrabWall();
                     canStartGrabSituation = false;
                     break;
-                case (int)ObjectDetectedIs.Floor:
+                case (int)ObjectGrabedIs.Floor:
                     GrabFloor();
                     canStartGrabSituation = false;
                     break;
-                case (int)ObjectDetectedIs.Ceiling:
+                case (int)ObjectGrabedIs.Ceiling:
                     GrabWall();
                     canStartGrabSituation = false;
                     break;

@@ -3,27 +3,20 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Floor
-  - Enemy
-  - LadderV
-  - LadderH
-  - StarHandle
-  - Wall
-  - Ceiling
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - Platform
   - Water
   - UI
-  - LadderV
-  - LadderH
-  - Player
-  - Wall
-  - Ceiling
   - Enemy
+  - StarHandle
+  - Ladder
+  - 
+  - 
+  - 
   - 
   - 
   - 

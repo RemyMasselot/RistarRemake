@@ -41,6 +41,7 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField, FoldoutGroup("REFERENCES/Detections")] public PlatformCollisionDetection platformCollisionDetection { get; set; }
 
     [FoldoutGroup("GENERAL SETTING")] public int LifesNumber = 4;
+    [FoldoutGroup("GENERAL SETTING")] public int InvicibilityTime = 2;
     [HideInInspector] public UnityEvent NewStatePlayed;
     [HideInInspector] public bool IsPlayerTurnToLeft = false;
     [HideInInspector] public float TimePassedInState = 0;
@@ -205,48 +206,95 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void PlayerDirectionVerif()
     {
-        if (PlayerRigidbody.velocity.x != 0) // VELOCITY
+        if (PlayerRigidbody.velocity.x != 0)
         {
             IsPlayerTurnToLeft = PlayerRigidbody.velocity.x < 0;
         }
-        else if (IsLadder == (int)LadderIs.VerticalLeft || IsLadder == (int)LadderIs.VerticalRight) // VERTICAL LADDER
+        else if (IsLadder == (int)LadderIs.VerticalLeft || IsLadder == (int)LadderIs.VerticalRight)
         {
-            if (LadderVDetectionL.IsLadderVDectectedL == true)
-            {
-                IsPlayerTurnToLeft = true;
-            }
-            if (LadderVDetectionR.IsLadderVDectectedR == true)
-            {
-                IsPlayerTurnToLeft = false;
-            }
+            IsPlayerTurnToLeft = true;
+        }
+        else if (IsLadder == (int)LadderIs.VerticalRight)
+        {
+            IsPlayerTurnToLeft = false;
         }
     }
 
-    public void LadderVerif(Collider2D collider)
+    public void LadderVerif()
     {
         IsLadder = (int)LadderIs.Nothing;
 
-        if (collider.gameObject.CompareTag("LadderV"))
+        // Cr�er une box detection a gauche, qui renvoie true false
+        // Pareil a droite
+        // Pareil au dessus du joueur
+        // Si �a renvoie true alors le ladder prend la valeur correspondante
+
+        // Param�tres de la box (ajustez les multiplicateurs selon vos besoins)
+        float boxWidth = PlayerCollider.bounds.size.x * 0.6f;
+        float boxHeight = PlayerCollider.bounds.size.y * 0.6f;
+        float sideOffset = PlayerCollider.bounds.extents.x + 0.12f; // distance horizontale pour left/right
+        float upOffset = PlayerCollider.bounds.extents.y + 0.12f;   // distance verticale pour top
+
+        LayerMask ladderMask = LayerMask.GetMask("Ladder");
+
+        Vector2 pos = transform.position;
+
+        // Box gauche
+        Vector2 leftCenter = pos + Vector2.left * sideOffset;
+        Collider2D colliderLeft = Physics2D.OverlapBox(leftCenter, new Vector2(boxWidth, boxHeight), 0f, ladderMask);
+        if (colliderLeft != null)
         {
-            if (LadderVDetectionL.IsLadderVDectectedL == true)
-            {
-                IsLadder = (int)LadderIs.VerticalLeft;
-            }
-            else if (LadderVDetectionR.IsLadderVDectectedR == true)
-            {
-                IsLadder = (int)LadderIs.VerticalRight;
-            }
-        }
-        else if (collider.gameObject.CompareTag("LadderH"))
-        {
-            IsLadder = (int)LadderIs.Horizontal;
+            IsLadder = (int)LadderIs.VerticalLeft;
+            ColliderLadder = colliderLeft;
+            SetLadderSnapPosition(colliderLeft);
+            return;
         }
 
-        if (IsLadder != (int)LadderIs.Nothing)
+        // Box droite
+        Vector2 rightCenter = pos + Vector2.right * sideOffset;
+        Collider2D colliderRight = Physics2D.OverlapBox(rightCenter, new Vector2(boxWidth, boxHeight), 0f, ladderMask);
+        if (colliderRight != null)
         {
-            ColliderLadder = collider;
-            SetLadderSnapPosition(collider);
+            IsLadder = (int)LadderIs.VerticalRight;
+            ColliderLadder = colliderRight;
+            SetLadderSnapPosition(colliderRight);
+            return;
         }
+
+        // Box au-dessus
+        Vector2 upCenter = pos + Vector2.up * upOffset;
+        Collider2D colliderUp = Physics2D.OverlapBox(upCenter, new Vector2(boxWidth, boxHeight), 0f, ladderMask);
+        if (colliderUp != null)
+        {
+            IsLadder = (int)LadderIs.Horizontal;
+            ColliderLadder = colliderUp;
+            SetLadderSnapPosition(colliderUp);
+            return;
+        }
+
+
+
+        //if (GetComponent<Collider>().gameObject.CompareTag("LadderV"))
+        //{
+        //    if (LadderVDetectionL.IsLadderVDectectedL == true)
+        //    {
+        //        IsLadder = (int)LadderIs.VerticalLeft;
+        //    }
+        //    else if (LadderVDetectionR.IsLadderVDectectedR == true)
+        //    {
+        //        IsLadder = (int)LadderIs.VerticalRight;
+        //    }
+        //}
+        //else if (GetComponent<Collider>().gameObject.CompareTag("LadderH"))
+        //{
+        //    IsLadder = (int)LadderIs.Horizontal;
+        //}
+
+        //if (IsLadder != (int)LadderIs.Nothing)
+        //{
+        //    ColliderLadder = GetComponent<Collider>();
+        //    SetLadderSnapPosition(GetComponent<Collider>());
+        //}
     }
 
     private void SetLadderSnapPosition(Collider2D collider)
@@ -279,7 +327,7 @@ public class PlayerStateMachine : MonoBehaviour
                 LadderSnapPosition = new Vector2(collisionRightX + playerExtentX, transform.position.y);
             }
 
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.left, playerExtentX + 0.2f, LayerMask.GetMask("LadderV"));
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.left, playerExtentX + 0.2f, LayerMask.GetMask("Ladder"));
             if (hit == false)
             {
                 IsLadder = (int)LadderIs.Nothing;
@@ -309,7 +357,7 @@ public class PlayerStateMachine : MonoBehaviour
                 LadderSnapPosition = new Vector2(collisionLeftX - playerExtentX, transform.position.y);
             }
             
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, playerExtentX + 0.2f, LayerMask.GetMask("LadderV"));
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, playerExtentX + 0.2f, LayerMask.GetMask("Ladder"));
             if (hit == false)
             {
                 IsLadder = (int)LadderIs.Nothing;

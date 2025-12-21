@@ -44,7 +44,7 @@ public class PlayerVisual : MonoBehaviour
                 playerStateMachine.IsPlayerTurnToLeft = false;
             }
 
-            if (playerStateMachine.ArmDetection.ObjectDetected != (int)ObjectDetectedIs.Nothing)
+            if (playerStateMachine.ArmDetection.ObjectGrabed != (int)ObjectGrabedIs.Nothing)
             {
                 // HANDS CLOSE
                 handRight.sprite = handClose;
@@ -110,7 +110,7 @@ public class PlayerVisual : MonoBehaviour
         }
         else if (playerStateMachine.CurrentState is PlayerHangState && playerStateMachine.IsGrabing == false)
         {
-            animator.SetFloat("HangValue", playerStateMachine.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle ? 2 : 1);
+            animator.SetFloat("HangValue", playerStateMachine.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.StarHandle ? 2 : 1);
             animator.SetTrigger("Hang");
         }
         else if (playerStateMachine.CurrentState is PlayerMeteorStrikeState && playerStateMachine.IsGrabing == false)

@@ -11,7 +11,7 @@ public class EnemyDetection : MonoBehaviour
 
     void FixedUpdate()
     {
-        DectectedCollider = Physics2D.OverlapCapsule(transform.position, CapsuleSize, CapsuleDirection2D.Horizontal, 0f, LayerToCheck);
+        IsDectected = Physics2D.OverlapCapsule(transform.position, CapsuleSize, CapsuleDirection2D.Horizontal, 0f, LayerToCheck);
 
         IsDectected = DectectedCollider != null ? true : false;
     }

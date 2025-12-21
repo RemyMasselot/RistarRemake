@@ -24,7 +24,7 @@ public class PlayerFallState : PlayerBaseState
         currentTimerValue = 0;
         canMoveFreeFromLadder = true;
 
-        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
+        if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.StarHandle)
         {
             Debug.Log("FALL from star handle");
             Vector2 dir = (_player.transform.position - _player.StarHandleCentre).normalized;
@@ -34,7 +34,8 @@ public class PlayerFallState : PlayerBaseState
 
             _player.PlayerRigidbody.velocity = dir * _player.StarHandleCurrentImpulse;
         }
-        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
+
+        _player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
 
         if (_player.PreviousState is PlayerWallClimbState
             || _player.PreviousState is PlayerWallIdleState)
@@ -45,12 +46,12 @@ public class PlayerFallState : PlayerBaseState
     
     private void PushAwayFromLadder()
     {
-        if (_player.LadderVDetectionL.IsLadderVDectectedL == true)
+        if (_player.IsPlayerTurnToLeft == true)
         {
             _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalJumpMovementMultiplier / 2, -_player.MaxSpeedToGoToApex / 2);
             canMoveFreeFromLadder = false;
         }
-        else if (_player.LadderVDetectionR.IsLadderVDectectedR == true)
+        else
         {
             _player.PlayerRigidbody.velocity = new Vector2(-_player.HorizontalJumpMovementMultiplier / 2, -_player.MaxSpeedToGoToApex / 2);
             canMoveFreeFromLadder = false;
@@ -202,7 +203,7 @@ public class PlayerFallState : PlayerBaseState
         if (_player.TimePassedInState > 0.05f)
         {
             //Debug.Log("LADDER CHECK FALL");
-            _player.LadderVerif(collider);
+            _player.LadderVerif();
 
             if (_player.IsLadder != (int)LadderIs.Nothing)
             {

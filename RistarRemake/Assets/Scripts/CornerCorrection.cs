@@ -54,10 +54,5 @@ public class CornerCorrection : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(new Vector2(pos.x - sideOffset, pos.y + heightOffset), boxSize);
         Gizmos.DrawWireCube(new Vector2(pos.x + sideOffset, pos.y + heightOffset), boxSize);
-
-        // Linecasts latéraux
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(pos, pos + Vector2.left * (sideOffset + CornerDistance));
-        Gizmos.DrawLine(pos, pos + Vector2.right * (sideOffset + CornerDistance));
     }
 }

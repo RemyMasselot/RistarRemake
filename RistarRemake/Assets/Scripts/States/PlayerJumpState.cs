@@ -33,7 +33,7 @@ public class PlayerJumpState : PlayerBaseState
         canModifyVelocityXLeft = true;
         canModifyVelocityXRight = true;
 
-        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
+        if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.StarHandle)
         {
             //Debug.Log("JUMP from star handle");
             Vector2 dir = _player.transform.position - _player.StarHandleCentre;
@@ -43,7 +43,7 @@ public class PlayerJumpState : PlayerBaseState
             
             _player.PlayerRigidbody.velocity = dir.normalized * _player.StarHandleCurrentImpulse;
         }
-        _player.ArmDetection.ObjectDetected = (int)ObjectDetectedIs.Nothing;
+        _player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
     }
 
     public override void UpdateState() 
@@ -211,7 +211,7 @@ public class PlayerJumpState : PlayerBaseState
     {
         if (_player.TimePassedInState > 0.05f)
         {
-            _player.LadderVerif(collider);
+            _player.LadderVerif();
             
             if (_player.IsLadder != (int)LadderIs.Nothing)
             {

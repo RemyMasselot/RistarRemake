@@ -56,7 +56,7 @@ public class PlayerHeadbuttState : PlayerBaseState
 
     public override void OnTriggerStay2D(Collider2D collider)
     {
-        _player.LadderVerif(collider);
+        _player.LadderVerif();
     }
 
     private void CheckDistanceWithTarget()
@@ -65,7 +65,8 @@ public class PlayerHeadbuttState : PlayerBaseState
 
         if (distanceWithTarget <= DistanceRelative())
         {
-            if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Ladder)
+            if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.LadderVertical
+                || _player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.LadderHorizontal)
             {
 
                 if (_player.IsLadder != (int)LadderIs.Nothing)

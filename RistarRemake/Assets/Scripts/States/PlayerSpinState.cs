@@ -26,7 +26,7 @@ public class PlayerSpinState : PlayerBaseState
     }
     private void SpinMovement()
     {
-        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Wall)
+        if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Wall)
         {
             if (_player.LadderHDetection.IsLadderHDectected == true)
             {
@@ -39,11 +39,11 @@ public class PlayerSpinState : PlayerBaseState
                 //Debug.Log("WALL SPIN");
             }
         }
-        else if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Ceiling)
+        else if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Ceiling)
         {
             _player.PlayerRigidbody.velocity = new Vector2(0, -1);
         }
-        else if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Enemy)
+        else if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Enemy)
         {
             _player.PlayerRigidbody.velocity = new Vector2(0, 1) * 10;
         }

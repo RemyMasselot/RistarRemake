@@ -113,7 +113,7 @@ public class PlayerGrabState : PlayerBaseState
         // Move Right Arm
         _player.IkArmRight.transform.DOLocalMove(_player.DefaultPosRight.localPosition, _player.TimeToExtendArms).OnComplete(() =>
         {
-            if (_player.ArmDetection.ObjectDetected == 0)
+            if (_player.ArmDetection.ObjectGrabed == 0)
             {
                 // Vérification d'un sol ou non
                 if (_player.GroundDetection.IsDectected == false)
@@ -235,7 +235,7 @@ public class PlayerGrabState : PlayerBaseState
             }
         }
 
-        switch (_player.ArmDetection.ObjectDetected)
+        switch (_player.ArmDetection.ObjectGrabed)
         {
             case 1:
                 GrabOther();
@@ -300,7 +300,7 @@ public class PlayerGrabState : PlayerBaseState
                 }
             }
         });
-        _player.ArmDetection.ObjectDetected = 0;
+        _player.ArmDetection.ObjectGrabed = 0;
     }
     private void GrabEnemy()
     {

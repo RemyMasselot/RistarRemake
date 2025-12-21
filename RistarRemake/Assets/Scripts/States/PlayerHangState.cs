@@ -46,7 +46,7 @@ public class PlayerHangState : PlayerBaseState
             snapHands = true;
         });
 
-        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
+        if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.StarHandle)
         {
             _player.StarHandleCentre = _player.ArmDetection.SnapPosHand;
             float x = _player.StarHandleCentre.x + Mathf.Cos(starHandleAngle) * _player.StarHandleCurrentRayon;
@@ -113,7 +113,7 @@ public class PlayerHangState : PlayerBaseState
 
     private void ChargingMeteorStrike()
     {
-        if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
+        if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.StarHandle)
         {
             if (snapHands == true)
             {
@@ -238,11 +238,11 @@ public class PlayerHangState : PlayerBaseState
     {
         if (_player.Grab.WasReleasedThisFrame())
         {
-            if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.Enemy)
+            if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Enemy)
             {
                 SwitchState(_factory.Headbutt());
             }
-            else if (_player.ArmDetection.ObjectDetected == (int)ObjectDetectedIs.StarHandle)
+            else if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.StarHandle)
             {
                 _player.transform.rotation = Quaternion.Euler(0, 0, 0);
 
