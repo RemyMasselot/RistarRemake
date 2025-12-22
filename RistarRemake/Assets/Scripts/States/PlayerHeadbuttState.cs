@@ -28,6 +28,8 @@ public class PlayerHeadbuttState : PlayerBaseState
     }
     public override void UpdateState()
     {
+        _player.LadderVerif();
+
         SetHandPosition();
 
         CheckDistanceWithTarget();
@@ -54,10 +56,7 @@ public class PlayerHeadbuttState : PlayerBaseState
     public override void OnCollisionEnter2D(Collision2D collision) { }
     public override void OnCollisionStay2D(Collision2D collision) { }
 
-    public override void OnTriggerStay2D(Collider2D collider)
-    {
-        _player.LadderVerif();
-    }
+    public override void OnTriggerStay2D(Collider2D collider) { }
 
     private void CheckDistanceWithTarget()
     {
@@ -76,7 +75,6 @@ public class PlayerHeadbuttState : PlayerBaseState
             }
             else
             {
-                Debug.Log("HEADBUTT TO SPIN");
                 SwitchState(_factory.Spin());
             }
         }

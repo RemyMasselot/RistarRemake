@@ -210,7 +210,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             IsPlayerTurnToLeft = PlayerRigidbody.velocity.x < 0;
         }
-        else if (IsLadder == (int)LadderIs.VerticalLeft || IsLadder == (int)LadderIs.VerticalRight)
+        else if (IsLadder == (int)LadderIs.VerticalLeft)
         {
             IsPlayerTurnToLeft = true;
         }

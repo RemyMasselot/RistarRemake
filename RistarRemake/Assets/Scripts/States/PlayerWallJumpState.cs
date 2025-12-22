@@ -20,6 +20,8 @@ public class PlayerWallJumpState : PlayerBaseState
 
     public override void UpdateState() 
     {
+        _player.LadderVerif();
+
         _player.PlayerDirectionVerif();
 
         CheckSwitchStates();
@@ -70,8 +72,6 @@ public class PlayerWallJumpState : PlayerBaseState
 
     public override void OnTriggerStay2D(Collider2D collider) 
     {
-        _player.LadderVerif();
-
         if (_player.IsLadder != (int)LadderIs.Nothing)
         {
             SwitchState(_factory.WallIdle());

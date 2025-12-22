@@ -43,11 +43,13 @@ public class PlayerJumpState : PlayerBaseState
             
             _player.PlayerRigidbody.velocity = dir.normalized * _player.StarHandleCurrentImpulse;
         }
-        _player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
+        //_player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
     }
 
     public override void UpdateState() 
     {
+        _player.LadderVerif();
+
         _player.CountTimePassedInState();
 
         if (canCountTimeApex)
@@ -210,9 +212,7 @@ public class PlayerJumpState : PlayerBaseState
     public override void OnTriggerStay2D(Collider2D collider) 
     {
         if (_player.TimePassedInState > 0.05f)
-        {
-            _player.LadderVerif();
-            
+        {          
             if (_player.IsLadder != (int)LadderIs.Nothing)
             {
                 SwitchState(_factory.WallIdle());

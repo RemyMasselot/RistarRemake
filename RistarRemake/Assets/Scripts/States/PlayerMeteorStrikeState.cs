@@ -31,7 +31,7 @@ public class PlayerMeteorStrikeState : PlayerBaseState
         _player.MeteorStrikeDirection = _player.transform.position - _player.StarHandleCentre;
         _player.PlayerRigidbody.velocity = _player.MeteorStrikeDirection.normalized * 10;
 
-        _player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
+        //_player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
         _player.LadderHDetection.gameObject.SetActive(false);
         _player.LadderVDetectionL.gameObject.SetActive(false);
         _player.LadderVDetectionR.gameObject.SetActive(false);

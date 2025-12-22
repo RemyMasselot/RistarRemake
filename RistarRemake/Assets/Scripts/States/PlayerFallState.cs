@@ -35,23 +35,20 @@ public class PlayerFallState : PlayerBaseState
             _player.PlayerRigidbody.velocity = dir * _player.StarHandleCurrentImpulse;
         }
 
-        _player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
+        //_player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
+        _player.LadderVerif();
 
-        if (_player.PreviousState is PlayerWallClimbState
-            || _player.PreviousState is PlayerWallIdleState)
-        {
-            PushAwayFromLadder();
-        }
+        PushAwayFromLadder();
     }
     
     private void PushAwayFromLadder()
     {
-        if (_player.IsPlayerTurnToLeft == true)
+        if (_player.IsLadder == (int)LadderIs.VerticalLeft)
         {
             _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalJumpMovementMultiplier / 2, -_player.MaxSpeedToGoToApex / 2);
             canMoveFreeFromLadder = false;
         }
-        else
+        else if (_player.IsLadder == (int)LadderIs.VerticalRight)
         {
             _player.PlayerRigidbody.velocity = new Vector2(-_player.HorizontalJumpMovementMultiplier / 2, -_player.MaxSpeedToGoToApex / 2);
             canMoveFreeFromLadder = false;
@@ -62,6 +59,8 @@ public class PlayerFallState : PlayerBaseState
 
     public override void UpdateState() 
     {
+        _player.LadderVerif();
+
         _player.CountTimePassedInState();
 
         // Jump Buffering Timer
@@ -92,11 +91,14 @@ public class PlayerFallState : PlayerBaseState
 
     public override void FixedUpdateState()
     {
-        // Air Control
-        float moveValueH = _player.MoveH.ReadValue<float>();
-        float moveValueV = _player.MoveV.ReadValue<float>();
+        AirControl();
 
-        float velocityX = 0;
+        _player.PlayerDirectionVerif();
+    }
+
+    private void AirControl()
+    {
+        float moveValueV = _player.MoveV.ReadValue<float>();
         float speedInputVertical = 0;
 
         if (moveValueV < 0)
@@ -110,6 +112,8 @@ public class PlayerFallState : PlayerBaseState
 
         float velocityY = speedInputVertical - speedIncreaseCurrent;
 
+        float moveValueH = _player.MoveH.ReadValue<float>();
+        float velocityX = 0;
 
         if (canMoveFreeFromLadder == false)
         {
@@ -123,6 +127,11 @@ public class PlayerFallState : PlayerBaseState
                 canMoveFreeFromLadder = moveValueH < 0;
                 velocityX = _player.PlayerRigidbody.velocity.x;
             }
+            else
+            {
+                canMoveFreeFromLadder = true;
+                velocityX = _player.PlayerRigidbody.velocity.x;
+            }
         }
         else
         {
@@ -130,8 +139,6 @@ public class PlayerFallState : PlayerBaseState
         }
 
         _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);
-
-        _player.PlayerDirectionVerif();
     }
 
     public override void CheckSwitchStates() 
@@ -202,9 +209,6 @@ public class PlayerFallState : PlayerBaseState
     {
         if (_player.TimePassedInState > 0.05f)
         {
-            //Debug.Log("LADDER CHECK FALL");
-            _player.LadderVerif();
-
             if (_player.IsLadder != (int)LadderIs.Nothing)
             {
                 SwitchState(_factory.WallIdle());

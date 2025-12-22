@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ArmDetection : MonoBehaviour
 {
@@ -169,11 +170,12 @@ public class ArmDetection : MonoBehaviour
             }
         }
         SetSnapPosHitPoint(hit);
+        Debug.Log("Object Grabed : " + ObjectGrabed);
     }
 
     private Collider2D IsThereALadder(Vector2 worldPoint)
     {
-        Collider2D hit = Physics2D.OverlapPoint(worldPoint, LayerMask.NameToLayer("Ladder"));
+        Collider2D hit = Physics2D.OverlapPoint(worldPoint, LayerMask.GetMask("Ladder"));
         if (hit == null) return null;
         if (!hit.isTrigger) return null;
         return hit is BoxCollider2D ? hit : null;
