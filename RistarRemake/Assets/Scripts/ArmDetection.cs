@@ -31,7 +31,6 @@ public class ArmDetection : MonoBehaviour
     public float angleRange = 90f;   
     public float rotationOffset = 0f;
     public LayerMask layerMask;
-    //[SerializeField] private LayerMask LadderLayer;
     public Color gizmoColor = Color.red;
     public float SpaceBetweenRays = 0.2f;
 
@@ -50,6 +49,7 @@ public class ArmDetection : MonoBehaviour
                 Vector2 pointBetweenHands = (HandR.position + HandL.position) / 2;
                 float distance = Vector2.Distance(playerTransform.position, pointBetweenHands) + rayDistanceAdd;
 
+
                 RaycastHit2D hit = Physics2D.Raycast(startPointRay, playerStateMachine.AimDir, distance, layerMask);
 
                 if (hit.collider != null)
@@ -66,13 +66,6 @@ public class ArmDetection : MonoBehaviour
                         SetSnapPosCollider(hit);
                         break;
                     }
-                    //else if (hit.collider.CompareTag("LadderV") || hit.collider.CompareTag("LadderH"))
-                    //{
-                    //    ObjectDetected = (int)ObjectDetectedIs.Ladder;
-                    //    //Debug.Log("Ladder detected");
-                    //    SetSnapPosHitPoint(hit);
-                    //    break;
-                    //}
                     else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Platform"))
                     {
                         DetecPlatform(hit);
@@ -83,10 +76,6 @@ public class ArmDetection : MonoBehaviour
                         ObjectGrabed = (int)ObjectGrabedIs.Other;
                         break;
                     }
-                }
-                else
-                {
-                    ObjectGrabed = (int)ObjectGrabedIs.Nothing;
                 }
             }
         }
@@ -102,9 +91,6 @@ public class ArmDetection : MonoBehaviour
         if (playerStateMachine.AimDir.y > 0)
         {
             Vector3 startPointDetection = (Vector3)hit.point - verticalOffset;
-
-            //Collider2D newHitRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset);
-            //Collider2D newHitLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset);
 
             bool isWallRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset, platformMask) != null;
             bool isWallLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset, platformMask) != null;
@@ -135,9 +121,6 @@ public class ArmDetection : MonoBehaviour
         else if (playerStateMachine.AimDir.y < 0)
         {
             Vector3 startPointDetection = (Vector3)hit.point + verticalOffset;
-
-            //Collider2D newHitRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset);
-            //Collider2D newHitLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset);
 
             bool isWallRight = Physics2D.OverlapPoint(startPointDetection + horizontalOffset, platformMask) != null;
             bool isWallLeft = Physics2D.OverlapPoint(startPointDetection - horizontalOffset, platformMask) != null;
@@ -219,15 +202,12 @@ public class ArmDetection : MonoBehaviour
         for (int i = 1; i < rayCount + 1; i++)
         {
             Vector2 perpendicular = new Vector2(-playerStateMachine.AimDir.y, playerStateMachine.AimDir.x).normalized;
-
             float distanceOffset = (rayCount - 1) * SpaceBetweenRays;
 
             Vector2 originOffset = (Vector2)playerTransform.position + perpendicular * SpaceBetweenRays * i;
-
             Vector2 startPointRay = originOffset - perpendicular * distanceOffset;
 
             Vector2 pointBetweenHands = (HandR.position + HandL.position) / 2;
-
             float distance = Vector2.Distance(playerTransform.position, pointBetweenHands) + rayDistanceAdd;
 
             Gizmos.DrawRay(startPointRay, playerStateMachine.AimDir * distance);
