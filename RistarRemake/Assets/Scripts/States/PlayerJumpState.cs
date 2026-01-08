@@ -99,7 +99,7 @@ public class PlayerJumpState : PlayerBaseState
 
     private void ModifyVelocityX()
     {
-        float velocityX = 0;
+        float velocityX = _player.PlayerRigidbody.velocity.x;
         float moveValueH = _player.MoveH.ReadValue<float>();
 
         if (_player.platformCollisionDetection.CeilingDetected)
@@ -141,7 +141,7 @@ public class PlayerJumpState : PlayerBaseState
         }
         else
         {
-            velocityX = 0;
+            //velocityX = 0;
         }
 
         _player.PlayerRigidbody.velocity = new Vector2(velocityX, _player.PlayerRigidbody.velocity.y);
