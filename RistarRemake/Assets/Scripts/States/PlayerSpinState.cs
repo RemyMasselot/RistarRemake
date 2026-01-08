@@ -13,6 +13,7 @@ public class PlayerSpinState : PlayerBaseState
         //_player.PlayerRigidbody.gravityScale = 1;
         //_player.ArmDetection.gameObject.SetActive(false);
 
+        _player.CoyoteCounter = 0;
         _player.GrabScript.NewStateFromGrab = null;
 
         // Move Left Arm
