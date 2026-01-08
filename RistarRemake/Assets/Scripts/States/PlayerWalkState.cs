@@ -56,12 +56,6 @@ public class PlayerWalkState : PlayerBaseState
                 SwitchState(_factory.Damage());
             }
         }
-
-        // Passage en state FALL
-        if (_player.GroundDetection.IsDectected == false)
-        {
-            SwitchState(_factory.Fall());
-        }
         
         // Passage en state IDLE
         float moveValue = _player.MoveH.ReadValue<float>();
@@ -70,8 +64,12 @@ public class PlayerWalkState : PlayerBaseState
             SwitchState(_factory.Idle());
         }
 
-        // Passage en state JUMP
-        if (_player.Jump.WasPerformedThisFrame())
+        // Passage en state FALL
+        if (_player.GroundDetection.IsDectected == false)
+        {
+            SwitchState(_factory.Fall());
+        }
+        else if (_player.Jump.WasPerformedThisFrame()) // Passage en state JUMP
         {
             SwitchState(_factory.Jump());
         }
@@ -80,7 +78,7 @@ public class PlayerWalkState : PlayerBaseState
             _player.LowJumpActivated = true;
             SwitchState(_factory.Jump());
         }
-
+        
         // Passage en state GRAB
         if (_player.IsGrabing == false)
         {
