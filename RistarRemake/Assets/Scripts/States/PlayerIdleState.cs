@@ -10,7 +10,10 @@ public class PlayerIdleState : PlayerBaseState
         //Debug.Log("ENTER IDLE");
         _player.PlayerRigidbody.velocity = Vector2.zero;
         _player.CoyoteCounter = _player.CoyoteTime;
+
+        _player.SetYPositionToGround();
     }
+
     public override void UpdateState()
     {
         _player.CountTimePassedInState();
@@ -38,8 +41,12 @@ public class PlayerIdleState : PlayerBaseState
                 SwitchState(_factory.Walk());
             }
 
-            // Passage en state JUMP
-            if (_player.Jump.WasPerformedThisFrame())
+            // Passage en state FALL
+            if (_player.GroundDetection.IsDectected == false)
+            {
+                SwitchState(_factory.Fall());
+            }
+            else if (_player.Jump.WasPerformedThisFrame()) // Passage en state JUMP
             {
                 SwitchState(_factory.Jump());
             }

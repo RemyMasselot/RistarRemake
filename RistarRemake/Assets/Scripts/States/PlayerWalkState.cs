@@ -9,6 +9,8 @@ public class PlayerWalkState : PlayerBaseState
     {
         //Debug.Log("ENTER WALK");
         _player.CoyoteCounter = _player.CoyoteTime;
+
+        _player.SetYPositionToGround();
     }
     public override void UpdateState() 
     { 

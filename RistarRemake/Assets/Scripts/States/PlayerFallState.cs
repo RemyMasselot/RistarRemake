@@ -215,4 +215,47 @@ public class PlayerFallState : PlayerBaseState
             }
         }
     }
+
+    public override void OnCollisionStay2D(Collision2D collision)
+    {
+        CornerCorrectionGround(collision);
+    }
+
+    private void CornerCorrectionGround(Collision2D collision)
+    {
+        Vector2 collisionPoint = collision.contacts[0].point;
+
+        if (collisionPoint.x > _player.transform.position.x)
+        {
+            // Platform is on the right side
+            if (_player.IsPlayerTurnToLeft == false)
+            {
+                // Character is facing right
+                Vector2 rightBottomCorner = new Vector2(_player.PlayerCollider.bounds.max.x, _player.PlayerCollider.bounds.min.y);
+                Vector2 leftUpCornerPlatform = new Vector2(collision.collider.bounds.min.x, collision.collider.bounds.max.y);
+                float distance = Vector2.Distance(leftUpCornerPlatform, rightBottomCorner);
+                if (distance < 0.15f)
+                {
+                    // Move the character up onto the platform
+                    _player.transform.position = new Vector2(collisionPoint.x, collision.collider.bounds.max.y + _player.PlayerCollider.bounds.extents.y);
+                }
+            }
+        }
+        else
+        {
+            // Platform is on the left side
+            if (_player.IsPlayerTurnToLeft == true)
+            {
+                // Character is facing left
+                Vector2 leftBottomCorner = new Vector2(_player.PlayerCollider.bounds.min.x, _player.PlayerCollider.bounds.min.y);
+                Vector2 rightUpCornerPlatform = new Vector2(collision.collider.bounds.max.x, collision.collider.bounds.max.y);
+                float distance = Vector2.Distance(rightUpCornerPlatform, leftBottomCorner);
+                if (distance < 0.15f)
+                {
+                    // Move the character up onto the platform
+                    _player.transform.position = new Vector2(collisionPoint.x, collision.collider.bounds.max.y + _player.PlayerCollider.bounds.extents.y);
+                }
+            }
+        }
+    }
 }

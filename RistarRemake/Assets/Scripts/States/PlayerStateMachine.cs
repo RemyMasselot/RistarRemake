@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -407,5 +408,23 @@ public class PlayerStateMachine : MonoBehaviour
             StartGrabInitialisation = false;
             GrabScript.GrabInitialisation();
         }
+    }
+
+    public void SetYPositionToGround()
+    {
+        //Vector2 originLeft = new Vector2(PlayerCollider.bounds.min.x, PlayerCollider.bounds.min.y);
+        //Vector2 originRight = new Vector2(PlayerCollider.bounds.max.x, PlayerCollider.bounds.min.y);
+
+        //RaycastHit2D downLeftVerification = Physics2D.Raycast(originLeft, Vector2.down, 0.1f, LayerMask.NameToLayer("Platform"));
+        //RaycastHit2D downRightVerification = Physics2D.Raycast(originRight, Vector2.down, 0.1f, LayerMask.NameToLayer("Platform"));
+
+        //if (downLeftVerification)
+        //{
+        //    transform.position = new Vector2(transform.position.x, downLeftVerification.collider.bounds.max.y - PlayerCollider.bounds.extents.y + 0.1f);
+        //}
+        //else if (downRightVerification)
+        //{
+        //    transform.position = new Vector2(transform.position.x, downRightVerification.collider.bounds.max.y - PlayerCollider.bounds.extents.y + 0.1f);
+        //}
     }
 }
