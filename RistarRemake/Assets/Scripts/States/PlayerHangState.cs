@@ -18,7 +18,8 @@ public class PlayerHangState : PlayerBaseState
 
     private bool snapHands = false;
     private float starHandleAngle = 0;
-    private bool goMeteorStrike = false;
+    private bool canGoMeteorStrike = false;
+    private bool isGoingToMeteorStrike = false;
     private float meteorStrikeChargeTimer = 0;
 
     public override void EnterState()
@@ -29,7 +30,8 @@ public class PlayerHangState : PlayerBaseState
         _player.CameraTargetOverride = _player.ArmDetection.SnapPosHand;
 
         snapHands = false;
-        goMeteorStrike = false;
+        canGoMeteorStrike = false;
+        isGoingToMeteorStrike = false;
         _player.StarHandleCurrentValue = 0;
         starHandleAngle = -1.5f;
         _player.StarHandleCurrentRayon = _player.StarHandleRayonMin;
@@ -141,14 +143,6 @@ public class PlayerHangState : PlayerBaseState
                     Vector3 direction = bodyPos - _player.ArmDetection.SnapPosHand;
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     _player.transform.rotation = Quaternion.Euler(0, 0, angle);
-                    //if (_player.MoveH.ReadValue<float>() < 0)
-                    //{
-                    //    _player.StarHandleCurrentValue++;
-                    //}
-                    //if (_player.MoveH.ReadValue<float>() > 0)
-                    //{
-                    //    _player.StarHandleCurrentValue--;
-                    //}
                 }
                 else
                 {
@@ -156,76 +150,33 @@ public class PlayerHangState : PlayerBaseState
                     Vector3 direction = _player.ArmDetection.SnapPosHand - bodyPos;
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     _player.transform.rotation = Quaternion.Euler(0, 0, angle);
-                    //if (_player.MoveH.ReadValue<float>() > 0)
-                    //{
-                    //    _player.StarHandleCurrentValue++;
-                    //}
-                    //if (_player.MoveH.ReadValue<float>() < 0)
-                    //{
-                    //    _player.StarHandleCurrentValue--;
-                    //}
                 }
-
-                // Lancer un timer dès le début de la charge
-                // en fonction du temps passé, augmenter la valeur de charge
-
-
-                //if (_player.StarHandleCurrentValue <= 0)
-                //{
-                //    _player.StarHandleCurrentValue = 0;
-                //}
-                //else if (_player.StarHandleCurrentValue >= _player.StarHandleTargetValue)
-                //{
-                //    _player.StarHandleCurrentValue = _player.StarHandleTargetValue;
-                //    goMeteorStrike = true;
-                //}
-
-                //if (_player.Grab.WasReleasedThisFrame())
-                //{
-                //    if (_player.StarHandleCurrentValue >= _player.StarHandleTargetValue)
-                //    {
-                //        goMeteorStrike = true;
-                //    }
-                //    else
-                //    {
-                //        // Move Left Arm
-                //        _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
-                //        // Move Right Arm
-                //        _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
-                //        _player.transform.rotation = Quaternion.Euler(0, 0, 0);
-                //        if (_player.transform.position.y <= _player.StarHandleCentre.y)
-                //        {
-                //            SwitchState(_factory.Fall());
-                //        }
-                //        else
-                //        {
-                //            SwitchState(_factory.Jump());
-                //        }
-                //    }
-                //}
 
                 if (meteorStrikeChargeTimer >= _player.TimeToChargeMeteorStrike)
                 {
                     meteorStrikeChargeTimer = _player.TimeToChargeMeteorStrike;
-                    goMeteorStrike = true;
+                    canGoMeteorStrike = true;
+                }
+
+                if (isGoingToMeteorStrike == true)
+                {
+                    float moveH = _player.MoveH.ReadValue<float>();
+                    float moveV = _player.MoveV.ReadValue<float>();
+
+                    float angleDir = Mathf.Atan2(moveV, moveH) * Mathf.Rad2Deg;
+
+                    float currentAngle = _player.transform.eulerAngles.z;
+                    float delta = Mathf.DeltaAngle(currentAngle, angleDir);
+
+                    if (Mathf.Abs(delta) <= 10)
+                    {
+                        SwitchState(_factory.MeteorStrike());
+                    }
                 }
 
                 float percent = meteorStrikeChargeTimer / _player.TimeToChargeMeteorStrike * 100f;
                 _player.StarHandleCurrentRayon = _player.StarHandleRayonMin + (_player.StarHandleRayonMax - _player.StarHandleRayonMin) * (percent / 100f);
                 _player.StarHandleCurrentSpeed = _player.StarHandleMinSpeed + (_player.StarHandleMaxSpeed - _player.StarHandleMinSpeed) * (percent / 100f);
-                
-                //if (goMeteorStrike == false)
-                //{
-                //}
-                //else if (_player.StarHandleCurrentSpeed != _player.StarHandleSpeedSlowMotion)
-                //{
-                //    _player.StarHandleCurrentSpeed = _player.StarHandleSpeedSlowMotion;
-                //    _player.TriggerGoToMeteorStrike.transform.position = _player.transform.position;
-                //    DOVirtual.DelayedCall(0.5f, () =>
-                //    {
-                //        _player.TriggerGoToMeteorStrike.SetActive(true);
-                //    });
-                //}
             }
         }
     }
@@ -246,9 +197,9 @@ public class PlayerHangState : PlayerBaseState
             {
                 _player.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-                if (goMeteorStrike == true)
+                if (canGoMeteorStrike == true)
                 {
-                    SwitchState(_factory.MeteorStrike());
+                    isGoingToMeteorStrike = true;
                 }
                 else
                 {
