@@ -139,9 +139,17 @@ public class PlayerJumpState : PlayerBaseState
         {
             velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalJumpMovementMultiplier : _player.PlayerRigidbody.velocity.x;
         }
-        else
+
+        if (moveValueH > 0)
         {
-            //velocityX = 0;
+            if (velocityX < _player.WalkMinSpeed)
+            {
+                velocityX = _player.WalkMinSpeed;
+            }
+        }
+        else if (moveValueH < 0 && velocityX > -_player.WalkMinSpeed)
+        {
+            velocityX = -_player.WalkMinSpeed;
         }
 
         _player.PlayerRigidbody.velocity = new Vector2(velocityX, _player.PlayerRigidbody.velocity.y);
