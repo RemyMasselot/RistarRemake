@@ -21,9 +21,9 @@ public class PlayerHangState : PlayerBaseState
     private bool snapHands = false;
     private float starHandleAngle = 0;
     private bool canGoMeteorStrike = false;
-    private bool isGoingToMeteorStrike = false;
     private float meteorStrikeChargeTimer = 0;
     private Vector2 meteorStrikeDirection;
+    private Vector2 meteorStrikeStartPoint;
 
     public override void EnterState()
     {
@@ -34,11 +34,11 @@ public class PlayerHangState : PlayerBaseState
 
         snapHands = false;
         canGoMeteorStrike = false;
-        isGoingToMeteorStrike = false;
         _player.StarHandleCurrentValue = 0;
         starHandleAngle = -1.5f;
         _player.StarHandleCurrentRayon = _player.StarHandleRayonMin;
         meteorStrikeChargeTimer = 0;
+        meteorStrikeStartPoint = Vector2.zero;
 
         _player.PlayerRigidbody.velocity = Vector2.zero;
         _player.GrabScript.NewStateFromGrab = null;
@@ -122,109 +122,55 @@ public class PlayerHangState : PlayerBaseState
         {
             if (snapHands)
             {
-                if (isGoingToMeteorStrike == false)
+                TimerMeteorStrikeCharge();
+
+                //Tourner autour du Star Handle
+                if (_player.IsPlayerTurnToLeft == true)
                 {
-                    TimerMeteorStrikeCharge();
-
-                    //Tourner autour du Star Handle
-                    if (_player.IsPlayerTurnToLeft == true)
-                    {
-                        starHandleAngle -= _player.StarHandleCurrentSpeed * Time.deltaTime;
-                    }
-                    else
-                    {
-                        starHandleAngle += _player.StarHandleCurrentSpeed * Time.deltaTime;
-                    }
-
-                    float x = _player.StarHandleCentre.x + Mathf.Cos(starHandleAngle) * _player.StarHandleCurrentRayon;
-                    float y = _player.StarHandleCentre.y + Mathf.Sin(starHandleAngle) * _player.StarHandleCurrentRayon;
-                    _player.transform.position = new Vector2(x, y);
-
-                    if (_player.IsPlayerTurnToLeft == true)
-                    {
-                        // Body Rotation
-                        Vector2 direction = _player.transform.position - _player.ArmDetection.SnapPosHand;
-                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                        _player.transform.rotation = Quaternion.Euler(0, 0, angle);
-                    }
-                    else
-                    {
-                        // Body Rotation
-                        Vector2 direction = _player.ArmDetection.SnapPosHand - _player.transform.position;
-                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                        _player.transform.rotation = Quaternion.Euler(0, 0, angle);
-                    }
-
-                    if (meteorStrikeChargeTimer >= _player.TimeToChargeMeteorStrike)
-                    {
-                        meteorStrikeChargeTimer = _player.TimeToChargeMeteorStrike;
-                        canGoMeteorStrike = true;
-                    }
-
-                    float percent = meteorStrikeChargeTimer / _player.TimeToChargeMeteorStrike * 100f;
-                    _player.StarHandleCurrentRayon = _player.StarHandleRayonMin + (_player.StarHandleRayonMax - _player.StarHandleRayonMin) * (percent / 100f);
-                    _player.StarHandleCurrentSpeed = _player.StarHandleMinSpeed + (_player.StarHandleMaxSpeed - _player.StarHandleMinSpeed) * (percent / 100f);
+                    starHandleAngle -= _player.StarHandleCurrentSpeed * Time.deltaTime;
                 }
-                else if (UpdateRotateToPosition(_player.StarHandleCentre, _player.StarHandleCurrentRayon))
+                else
+                {
+                    starHandleAngle += _player.StarHandleCurrentSpeed * Time.deltaTime;
+                }
+
+                float x = _player.StarHandleCentre.x + Mathf.Cos(starHandleAngle) * _player.StarHandleCurrentRayon;
+                float y = _player.StarHandleCentre.y + Mathf.Sin(starHandleAngle) * _player.StarHandleCurrentRayon;
+                _player.transform.position = new Vector2(x, y);
+
+                if (_player.IsPlayerTurnToLeft == true)
+                {
+                    // Body Rotation
+                    Vector2 direction = _player.transform.position - _player.ArmDetection.SnapPosHand;
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    _player.transform.rotation = Quaternion.Euler(0, 0, angle);
+                }
+                else
+                {
+                    // Body Rotation
+                    Vector2 direction = _player.ArmDetection.SnapPosHand - _player.transform.position;
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    _player.transform.rotation = Quaternion.Euler(0, 0, angle);
+                }
+
+                if (meteorStrikeChargeTimer >= _player.TimeToChargeMeteorStrike)
+                {
+                    meteorStrikeChargeTimer = _player.TimeToChargeMeteorStrike;
+                    canGoMeteorStrike = true;
+                }
+
+                float percent = meteorStrikeChargeTimer / _player.TimeToChargeMeteorStrike * 100f;
+                _player.StarHandleCurrentRayon = _player.StarHandleRayonMin + (_player.StarHandleRayonMax - _player.StarHandleRayonMin) * (percent / 100f);
+                _player.StarHandleCurrentSpeed = _player.StarHandleMinSpeed + (_player.StarHandleMaxSpeed - _player.StarHandleMinSpeed) * (percent / 100f);
+
+                float distanceToMeteorStrikeStartPoint = Vector2.Distance(_player.transform.position, meteorStrikeStartPoint);
+                if (distanceToMeteorStrikeStartPoint <= 0.5f)
                 {
                     SwitchState(_factory.MeteorStrike());
-                    /*
-                    Vector2 meteorStrikeStartPoint = new Vector2(_player.StarHandleCentre.x + meteorStrikeDirection.x, _player.StarHandleCentre.y + meteorStrikeDirection.y) * _player.StarHandleCurrentRayon;
-                    float distanceToMeteorStrikeStartPoint = Vector2.Distance(_player.transform.position, meteorStrikeStartPoint);
-
-                    Debug.Log("Distance to Meteor Strike Start Point: " + distanceToMeteorStrikeStartPoint);
-
-                    if (distanceToMeteorStrikeStartPoint <= 30)
-                    {
-                        SwitchState(_factory.MeteorStrike());
-                    }*/
                 }
             }
         }
     }
-
-    // Champs à ajouter dans la classe (private)
-    private bool rotatingToPos = false;
-    private float rotateDuration = 0f;
-    private float rotateElapsed = 0f;
-    private float rotateStartAngleDeg = 0f;
-    private float rotateTargetAngleDeg = 0f;
-
-    // Démarrer la rotation vers une position cible en un temps donné (seconds)
-    private void StartRotateToPosition(Vector2 center, Vector2 targetPosition, float duration)
-    {
-        rotateDuration = Mathf.Max(0.0001f, duration);
-        rotateElapsed = 0f;
-        rotateStartAngleDeg = starHandleAngle * Mathf.Rad2Deg;
-        rotateTargetAngleDeg = Mathf.Atan2(targetPosition.y - center.y, targetPosition.x - center.x) * Mathf.Rad2Deg;
-        rotatingToPos = true;
-    }
-
-    private bool UpdateRotateToPosition(Vector2 center, float radius)
-    {
-        if (!rotatingToPos) return false;
-
-        rotateElapsed += Time.deltaTime;
-        float t = Mathf.Clamp01(rotateElapsed / rotateDuration);
-        float newDeg = Mathf.LerpAngle(rotateStartAngleDeg, rotateTargetAngleDeg, t);
-        starHandleAngle = newDeg * Mathf.Deg2Rad;
-
-        // Mettre à jour la position autour du centre
-        _player.transform.position = center + new Vector2(Mathf.Cos(starHandleAngle), Mathf.Sin(starHandleAngle)) * radius;
-
-        // Optionnel : orienter le corps pour regarder à l'extérieur du centre
-        float bodyAngle = Mathf.Atan2(_player.transform.position.y - center.y, _player.transform.position.x - center.x) * Mathf.Rad2Deg + 180f;
-        _player.transform.rotation = Quaternion.Euler(0f, 0f, bodyAngle);
-
-        if (t >= 1f)
-        {
-            rotatingToPos = false;
-            return true;
-        }
-
-        return false;
-    }
-
 
     public override void ExitState() { }
 
@@ -244,10 +190,13 @@ public class PlayerHangState : PlayerBaseState
 
                 if (canGoMeteorStrike == true)
                 {
-                    meteorStrikeDirection = new Vector2(_player.MoveH.ReadValue<float>(), _player.MoveV.ReadValue<float>()) * _player.StarHandleCurrentRayon;
-                    Vector2 meteorStrikeStartPoint = new Vector2(_player.StarHandleCentre.x + meteorStrikeDirection.x, _player.StarHandleCentre.y + meteorStrikeDirection.y);
-                    StartRotateToPosition(_player.StarHandleCentre, meteorStrikeStartPoint, 0.2f);
-                    isGoingToMeteorStrike = true;
+                    meteorStrikeDirection = new Vector2(_player.MoveH.ReadValue<float>(), _player.MoveV.ReadValue<float>()).normalized * _player.StarHandleCurrentRayon;
+                    meteorStrikeStartPoint = new Vector2(_player.StarHandleCentre.x + meteorStrikeDirection.x, _player.StarHandleCentre.y + meteorStrikeDirection.y);
+                    Debug.Log("Meteor Strike Direction : " + meteorStrikeDirection);
+                    if (meteorStrikeDirection == Vector2.zero)
+                    {
+                        SwitchState(_factory.MeteorStrike());
+                    }
                 }
                 else
                 {
