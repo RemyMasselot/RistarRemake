@@ -9,15 +9,6 @@ public class PlayerHangState : PlayerBaseState
     public PlayerHangState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
-    /// <summary>
-    /// CHANGER LES CONTROLES :
-    /// - MAINTENIR RIGHT SHOULDER POUR CHARGER LE METEOR STRIKE
-    /// - DIRIGER LA DIRECTION DE PROPULSION AVEC LE JOYSTICK GAUCHE
-    /// - RELACHER RIGHT SHOULDER POUR LANCER
-    /// 
-    /// RETIRER LE SLOW MOTION ET LE TRIGGER DE PROPULSION
-    /// </summary>
-
     private bool snapHands = false;
     private float starHandleAngle = 0;
     private bool canGoMeteorStrike = false;
