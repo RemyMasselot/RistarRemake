@@ -24,6 +24,8 @@ public class PlayerHangState : PlayerBaseState
     private float meteorStrikeChargeTimer = 0;
     private Vector2 meteorStrikeDirection;
     private Vector2 meteorStrikeStartPoint;
+    private Vector2 outHandleDirection;
+    private Vector2 outHandleStartPoint;
 
     public override void EnterState()
     {
@@ -39,6 +41,7 @@ public class PlayerHangState : PlayerBaseState
         _player.StarHandleCurrentRayon = _player.StarHandleRayonMin;
         meteorStrikeChargeTimer = 0;
         meteorStrikeStartPoint = Vector2.zero;
+        outHandleStartPoint = Vector2.zero;
 
         _player.PlayerRigidbody.velocity = Vector2.zero;
         _player.GrabScript.NewStateFromGrab = null;
@@ -168,6 +171,26 @@ public class PlayerHangState : PlayerBaseState
                 {
                     SwitchState(_factory.MeteorStrike());
                 }
+
+                float distanceToOutHandleStartPoint = Vector2.Distance(_player.transform.position, outHandleStartPoint);
+                if (distanceToOutHandleStartPoint <= 0.5f)
+                {
+                    // Move Left Arm
+                    _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
+                    // Move Right Arm
+                    _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
+
+                    Vector2 moveDir = new Vector2(_player.MoveH.ReadValue<float>(), _player.MoveV.ReadValue<float>());
+
+                    if (_player.transform.position.y <= _player.StarHandleCentre.y)
+                    {
+                        SwitchState(_factory.Fall());
+                    }
+                    else
+                    {
+                        SwitchState(_factory.Jump());
+                    }
+                }
             }
         }
     }
@@ -200,20 +223,19 @@ public class PlayerHangState : PlayerBaseState
                 }
                 else
                 {
-                    // Move Left Arm
-                    _player.IkArmLeft.transform.position = _player.DefaultPosLeft.position;
-                    // Move Right Arm
-                    _player.IkArmRight.transform.position = _player.DefaultPosRight.position;
-
-                    Vector2 moveDir = new Vector2(_player.MoveH.ReadValue<float>(), _player.MoveV.ReadValue<float>());
-
-                    if (_player.transform.position.y <= _player.StarHandleCentre.y)
+                    outHandleDirection = new Vector2(_player.MoveH.ReadValue<float>(), _player.MoveV.ReadValue<float>()).normalized * _player.StarHandleCurrentRayon;
+                    outHandleStartPoint = new Vector2(_player.StarHandleCentre.x + outHandleDirection.x, _player.StarHandleCentre.y + outHandleDirection.y);
+                    Debug.Log("Meteor Strike Direction : " + outHandleDirection);
+                    if (outHandleDirection == Vector2.zero)
                     {
-                        SwitchState(_factory.Fall());
-                    }
-                    else
-                    {
-                        SwitchState(_factory.Jump());
+                        if (_player.transform.position.y <= _player.StarHandleCentre.y)
+                        {
+                            SwitchState(_factory.Fall());
+                        }
+                        else
+                        {
+                            SwitchState(_factory.Jump());
+                        }
                     }
                 }
             }
