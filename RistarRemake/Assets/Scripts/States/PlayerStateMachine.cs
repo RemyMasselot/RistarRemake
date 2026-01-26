@@ -273,29 +273,11 @@ public class PlayerStateMachine : MonoBehaviour
             return;
         }
 
-
-
-        //if (GetComponent<Collider>().gameObject.CompareTag("LadderV"))
-        //{
-        //    if (LadderVDetectionL.IsLadderVDectectedL == true)
-        //    {
-        //        IsLadder = (int)LadderIs.VerticalLeft;
-        //    }
-        //    else if (LadderVDetectionR.IsLadderVDectectedR == true)
-        //    {
-        //        IsLadder = (int)LadderIs.VerticalRight;
-        //    }
-        //}
-        //else if (GetComponent<Collider>().gameObject.CompareTag("LadderH"))
-        //{
-        //    IsLadder = (int)LadderIs.Horizontal;
-        //}
-
-        //if (IsLadder != (int)LadderIs.Nothing)
-        //{
-        //    ColliderLadder = GetComponent<Collider>();
-        //    SetLadderSnapPosition(GetComponent<Collider>());
-        //}
+        // Si le joueur se trouve à gauche de la sortie de droite
+        // Si le joueur se dirige vers la gauche
+        // Si le joueur est proche de la sortie
+        // Alors il ne peut pas se snapper à l'échelle
+        // Pareil pour la sortie de gauche
     }
 
     private void SetLadderSnapPosition(Collider2D collider)
