@@ -6,6 +6,8 @@ public class PlayerWallIdleState : PlayerBaseState
     public PlayerWallIdleState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
+    private bool isPositioningLadder;
+
     public override void EnterState()
     {
         //Debug.Log("ENTER WALL IDLE");
@@ -22,13 +24,25 @@ public class PlayerWallIdleState : PlayerBaseState
 
         if (_player.CanSnapPositionLadder)
         {
-            _player.transform.position = _player.LadderSnapPosition;
             _player.CanSnapPositionLadder = false;
+            isPositioningLadder = true;
         }
     }
     public override void UpdateState()
     {
-        CheckSwitchStates();
+        if (isPositioningLadder)
+        {
+            _player.transform.position = Vector3.Lerp(_player.transform.position, _player.LadderSnapPosition, 0.06f);
+            float distanceBetweenPlayerAndSnapPos = Vector3.Distance(_player.transform.position, (Vector3)_player.LadderSnapPosition);
+            if (distanceBetweenPlayerAndSnapPos <= 0.07f)
+            {
+                isPositioningLadder = false;
+            }
+        }
+        else
+        {
+            CheckSwitchStates();
+        }
     }
     public override void FixedUpdateState(){ }
     public override void ExitState(){}
