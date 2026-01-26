@@ -36,6 +36,8 @@ public class PlayerJumpState : PlayerBaseState
         if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.StarHandle)
         {
             //Debug.Log("JUMP from star handle");
+            _player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
+
             Vector2 dir = _player.transform.position - _player.StarHandleCentre;
             
             float percent = (_player.StarHandleCurrentValue - 0) / (_player.StarHandleTargetValue - 0) * 100f;
