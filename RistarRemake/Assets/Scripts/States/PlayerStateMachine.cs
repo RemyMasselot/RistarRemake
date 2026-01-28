@@ -269,15 +269,28 @@ public class PlayerStateMachine : MonoBehaviour
         {
             IsLadder = (int)LadderIs.Horizontal;
             ColliderLadder = colliderUp;
+
+            float distanceToLeft = Mathf.Abs(transform.position.x - colliderUp.bounds.min.x);
+            float distanceToRight = Mathf.Abs(transform.position.x - colliderUp.bounds.max.x);
+
+            if (distanceToLeft <= 0.5f)
+            {
+                if (PlayerRigidbody.velocity.x < 0)
+                {
+                    IsLadder = (int)LadderIs.Nothing;
+                }
+            }
+            else if (distanceToRight <= 0.5f)
+            {
+                if (PlayerRigidbody.velocity.x > 0)
+                {
+                    IsLadder = (int)LadderIs.Nothing;
+                }
+            }
+
             SetLadderSnapPosition(colliderUp);
             return;
         }
-
-        // Si le joueur se trouve à gauche de la sortie de droite
-        // Si le joueur se dirige vers la gauche
-        // Si le joueur est proche de la sortie
-        // Alors il ne peut pas se snapper à l'échelle
-        // Pareil pour la sortie de gauche
     }
 
     private void SetLadderSnapPosition(Collider2D collider)
