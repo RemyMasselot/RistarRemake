@@ -32,7 +32,7 @@ public class PlayerWallIdleState : PlayerBaseState
     {
         if (isPositioningLadder)
         {
-            _player.transform.position = Vector3.Lerp(_player.transform.position, _player.LadderSnapPosition, 0.06f);
+            _player.transform.position = Vector3.Lerp(_player.transform.position, _player.LadderSnapPosition, 0.05f);
             float distanceBetweenPlayerAndSnapPos = Vector3.Distance(_player.transform.position, (Vector3)_player.LadderSnapPosition);
             if (distanceBetweenPlayerAndSnapPos <= 0.07f)
             {

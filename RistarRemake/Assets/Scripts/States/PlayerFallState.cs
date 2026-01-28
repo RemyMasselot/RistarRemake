@@ -38,6 +38,7 @@ public class PlayerFallState : PlayerBaseState
         }
 
         //_player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
+
         _player.LadderVerif();
 
         PushAwayFromLadder();

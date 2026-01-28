@@ -19,6 +19,8 @@ public class PlayerJumpState : PlayerBaseState
     private bool canModifyVelocityXLeft;
     private bool canModifyVelocityXRight;
 
+    private bool canMoveFreeFromLadder = false;
+
     public override void EnterState() 
     {
         //Debug.Log("JUMP ENTER");
@@ -33,6 +35,8 @@ public class PlayerJumpState : PlayerBaseState
         canModifyVelocityXLeft = true;
         canModifyVelocityXRight = true;
 
+        canMoveFreeFromLadder = true;
+
         if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.StarHandle)
         {
             //Debug.Log("JUMP from star handle");
@@ -46,6 +50,24 @@ public class PlayerJumpState : PlayerBaseState
             _player.PlayerRigidbody.velocity = dir.normalized * _player.StarHandleCurrentImpulse;
         }
         //_player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
+
+        _player.LadderVerif();
+
+        PushAwayFromLadder();
+    }
+
+    private void PushAwayFromLadder()
+    {
+        if (_player.IsLadder == (int)LadderIs.VerticalLeft)
+        {
+            _player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalJumpMovementMultiplier / 2, _player.PlayerRigidbody.velocity.y);
+            canMoveFreeFromLadder = false;
+        }
+        else if (_player.IsLadder == (int)LadderIs.VerticalRight)
+        {
+            _player.PlayerRigidbody.velocity = new Vector2(-_player.HorizontalJumpMovementMultiplier / 2, _player.PlayerRigidbody.velocity.y);
+            canMoveFreeFromLadder = false;
+        }
     }
 
     public override void UpdateState() 
@@ -133,25 +155,45 @@ public class PlayerJumpState : PlayerBaseState
             }
         }
 
-        if (moveValueH < 0 && canModifyVelocityXLeft == true)
+        if (canMoveFreeFromLadder == false)
         {
-            velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalJumpMovementMultiplier : _player.PlayerRigidbody.velocity.x;
-        }
-        else if (moveValueH > 0 && canModifyVelocityXRight == true)
-        {
-            velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalJumpMovementMultiplier : _player.PlayerRigidbody.velocity.x;
-        }
-
-        if (moveValueH > 0)
-        {
-            if (velocityX < _player.WalkMinSpeed)
+            if (_player.IsLadder == (int)LadderIs.VerticalLeft)
             {
-                velocityX = _player.WalkMinSpeed;
+                canMoveFreeFromLadder = moveValueH > 0;
             }
+            else if (_player.IsLadder == (int)LadderIs.VerticalRight)
+            {
+                canMoveFreeFromLadder = moveValueH < 0;
+            }
+            else if (_player.TimePassedInState > 0.28f)
+            {
+                canMoveFreeFromLadder = true;
+            }
+
+            velocityX = _player.PlayerRigidbody.velocity.x;
         }
-        else if (moveValueH < 0 && velocityX > -_player.WalkMinSpeed)
+        else
         {
-            velocityX = -_player.WalkMinSpeed;
+            if (moveValueH < 0 && canModifyVelocityXLeft == true)
+            {
+                velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalJumpMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+            }
+            else if (moveValueH > 0 && canModifyVelocityXRight == true)
+            {
+                velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalJumpMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+            }
+
+            if (moveValueH > 0)
+            {
+                if (velocityX < _player.WalkMinSpeed)
+                {
+                    velocityX = _player.WalkMinSpeed;
+                }
+            }
+            else if (moveValueH < 0 && velocityX > -_player.WalkMinSpeed)
+            {
+                velocityX = -_player.WalkMinSpeed;
+            }
         }
 
         _player.PlayerRigidbody.velocity = new Vector2(velocityX, _player.PlayerRigidbody.velocity.y);
