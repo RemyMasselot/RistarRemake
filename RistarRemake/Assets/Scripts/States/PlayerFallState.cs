@@ -138,18 +138,18 @@ public class PlayerFallState : PlayerBaseState
         else
         {
             velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalJumpMovementMultiplier : _player.PlayerRigidbody.velocity.x;
-        }
 
-        if (moveValueH > 0)
-        {
-            if (velocityX < _player.WalkMinSpeed)
+            if (moveValueH > 0)
             {
-                velocityX = _player.WalkMinSpeed;
+                if (velocityX < _player.WalkMinSpeed)
+                {
+                    velocityX = _player.WalkMinSpeed;
+                }
             }
-        }
-        else if (moveValueH < 0 && velocityX > -_player.WalkMinSpeed)
-        {
-            velocityX = -_player.WalkMinSpeed;
+            else if (moveValueH < 0 && velocityX > -_player.WalkMinSpeed)
+            {
+                velocityX = -_player.WalkMinSpeed;
+            }
         }
 
         _player.PlayerRigidbody.velocity = new Vector2(velocityX, velocityY);
