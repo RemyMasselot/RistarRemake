@@ -1,4 +1,5 @@
 using UnityEngine;
+using static PlayerStateMachine;
 
 public class PlayerLeapState : PlayerBaseState
 {
@@ -8,9 +9,12 @@ public class PlayerLeapState : PlayerBaseState
     private float currentTimeLeapCurve = 0f;
     private Vector3 leapStartPosition;
 
+    private bool isLeapingWithoutControl;
+
     public override void EnterState()
     {
         //Debug.Log("JUMP ENTER");
+        isLeapingWithoutControl = true;
 
         leapStartPosition = _player.transform.position;
     }
@@ -20,6 +24,8 @@ public class PlayerLeapState : PlayerBaseState
         _player.PlayerDirectionVerif();
 
         SetPlayerPosition();
+
+        AirControl();
 
         CheckSwitchStates();
     }
@@ -37,24 +43,56 @@ public class PlayerLeapState : PlayerBaseState
             float curveTime = Mathf.Clamp01(currentTimeLeapCurve / _player.TimeToLeap);
             float curveValue = _player.LeapCurve.Evaluate(curveTime); // renvoie une valeur entre 0 et 1
 
-            //float moveValueH = _player.MoveH.ReadValue<float>();
-
-            //curveTime += moveValueH;
-
-            if (_player.IsPlayerTurnToLeft)
+            if (isLeapingWithoutControl)
             {
-                _player.transform.position = leapStartPosition + new Vector3(-curveTime * _player.LeapForce, curveValue * _player.LeapForce / 2, _player.transform.position.z);
+                float valueX = 0;
+
+                if (_player.IsPlayerTurnToLeft)
+                {
+                    //_player.transform.position = leapStartPosition + new Vector3(-curveTime * _player.LeapForce, curveValue * _player.LeapForce / 2, _player.transform.position.z);
+                    valueX = leapStartPosition.x - curveTime * _player.LeapForce;
+                }
+                else if (_player.IsPlayerTurnToLeft == false)
+                {
+                    //_player.transform.position = leapStartPosition + new Vector3(curveTime * _player.LeapForce, curveValue * _player.LeapForce / 2, _player.transform.position.z);
+                    valueX = leapStartPosition.x + curveTime * _player.LeapForce;
+                }
+
+                _player.transform.position = new Vector2(valueX, _player.transform.position.y);
             }
-            else if (_player.IsPlayerTurnToLeft == false)
-            {
-                _player.transform.position = leapStartPosition + new Vector3(curveTime * _player.LeapForce, curveValue * _player.LeapForce / 2, _player.transform.position.z);
-            }
-            //Debug.Log("X : " + curveTime + "Y : " + curveValue);
+            
+            _player.transform.position = new Vector2(_player.transform.position.x, leapStartPosition.y + curveValue * _player.LeapForce / 2);
         }
         else
         {
             SwitchState(_factory.Fall());
         }
+    }
+
+    private void AirControl()
+    {
+        float moveValueH = _player.MoveH.ReadValue<float>();
+        if (moveValueH != 0)
+        {
+            isLeapingWithoutControl = false;
+        }
+
+        float velocityX = _player.PlayerRigidbody.velocity.x;
+        velocityX = moveValueH != 0 ? moveValueH * _player.HorizontalJumpMovementMultiplier : _player.PlayerRigidbody.velocity.x;
+
+        if (moveValueH > 0)
+        {
+            if (velocityX < _player.WalkMinSpeed)
+            {
+                velocityX = _player.WalkMinSpeed;
+            }
+        }
+        else if (moveValueH < 0 && velocityX > -_player.WalkMinSpeed)
+        {
+            velocityX = -_player.WalkMinSpeed;
+        }
+
+        _player.PlayerRigidbody.velocity = new Vector2(velocityX, _player.PlayerRigidbody.velocity.y);
     }
 
     public override void ExitState() { }
