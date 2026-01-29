@@ -52,7 +52,7 @@ public class PlayerIdleState : PlayerBaseState
             }
             else if (_player.JumpBufferCounter <= _player.JumpBufferTime)
             {
-                _player.LowJumpActivated = true;
+                //_player.LowJumpActivated = true;
                 SwitchState(_factory.Jump());
             }
 

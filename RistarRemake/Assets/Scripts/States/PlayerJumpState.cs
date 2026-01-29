@@ -51,6 +51,11 @@ public class PlayerJumpState : PlayerBaseState
         }
         //_player.ArmDetection.ObjectGrabed = (int)ObjectGrabedIs.Nothing;
 
+        if (_player.Jump.ReadValue<float>() < 0.5f)
+        {
+            _player.LowJumpActivated = true;
+        }
+
         _player.LadderVerif();
 
         PushAwayFromLadder();
