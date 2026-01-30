@@ -4,11 +4,6 @@ using static ArmDetection;
 
 public class Grab : MonoBehaviour
 {
-    /// <summary>
-    /// POUVOIR SPAM LE GRAB EN UTILISANT LA TECHNIQUE DU JUMP BUFERING
-    /// </summary>
-    /// 
-
     private PlayerStateMachine _player;
 
     public PlayerBaseState NewStateFromGrab = null;
