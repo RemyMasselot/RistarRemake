@@ -110,14 +110,21 @@ public class PlayerLeapState : PlayerBaseState
         }
 
         // Passage en state GRAB
-        //if (_player.IsGrabing == false)
-        //{
-        //    if (_player.Grab.WasPerformedThisFrame())
-        //    {
-        //        //SwitchState(_factory.Grab());
-        //        _player.StartGrab();
-        //    }
-        //}
+        if (_player.IsGrabing == false)
+        {
+            if (_player.Grab.WasPerformedThisFrame())
+            {
+                //SwitchState(_factory.Grab());
+                _player.StartGrab();
+            }
+
+            // Passage en state HEADBUTT ou HANG
+            if (_player.GrabScript.NewStateFromGrab != null)
+            {
+                SwitchState(_player.GrabScript.NewStateFromGrab);
+                //Debug.Log("FALL to GRAB STATE SWITCH"); 
+            }
+        }
     }
 
     public override void OnCollisionEnter2D(Collision2D collision) { }
