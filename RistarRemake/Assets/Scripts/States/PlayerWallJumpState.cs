@@ -57,6 +57,7 @@ public class PlayerWallJumpState : PlayerBaseState
                 //SwitchState(_factory.Grab());
                 _player.StartGrab();
             }
+            _player.GrabBufferVerification();
         }
 
         // Passage en state FALL

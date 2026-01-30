@@ -18,6 +18,8 @@ public class Grab : MonoBehaviour
     private bool isHoldGrabTimerRunning = false;
     private float currentHoldGrabTimerValue;
 
+    public bool CanCountGrabBufferTime = false;
+
     private void Start()
     {
         _player = GetComponent<PlayerStateMachine>();
@@ -145,6 +147,16 @@ public class Grab : MonoBehaviour
             GrabDetectionVerif();
 
             CancelGrab();
+
+            if (_player.Grab.WasPerformedThisFrame())
+            {
+                CanCountGrabBufferTime = true;
+                _player.GrabBufferCounter = 0;
+            }
+            if (CanCountGrabBufferTime)
+            {
+                _player.GrabBufferCounter += Time.deltaTime;
+            }
         }
     }
 

@@ -996,6 +996,8 @@ MonoBehaviour:
   StartGrabInitialisation: 0
   IsGrabing: 0
   AimDir: {x: 0, y: 0}
+  GrabBufferTime: 0.2
+  GrabBufferCounter: 10
   DistanceGrab: 0.8
   TimeToExtendArms: 0.2
   MaxHoldGrabTime: 1
@@ -1037,6 +1039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11229741ed3be9d4fae7e1e010cf2193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanCountGrabBufferTime: 0
 --- !u!114 &3148767409040524854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1166,7 +1169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c806cea2d116c9f418fe9a70c89ce1b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectDetected: 0
+  ObjectGrabed: 0
   playerStateMachine: {fileID: 5971321630394888149}
   playerTransform: {fileID: 8535036337940793503}
   SnapPosHand: {x: 0, y: 0, z: 0}
@@ -1181,9 +1184,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 9
-  LadderLayer:
-    serializedVersion: 2
-    m_Bits: 192
   gizmoColor: {r: 1, g: 0, b: 0, a: 1}
   SpaceBetweenRays: 0.2
 --- !u!1 &4149872841687808447

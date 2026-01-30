@@ -210,6 +210,7 @@ public class PlayerFallState : PlayerBaseState
                 //SwitchState(_factory.Grab());
                 _player.StartGrab();
             }
+            _player.GrabBufferVerification();
 
             // Passage en state HEADBUTT ou HANG
             if (_player.GrabScript.NewStateFromGrab != null)

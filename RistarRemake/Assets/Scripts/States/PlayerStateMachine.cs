@@ -111,6 +111,8 @@ public class PlayerStateMachine : MonoBehaviour
     [HideInInspector] public bool StartGrabInitialisation = false;
     [HideInInspector] public bool IsGrabing = false;
     [HideInInspector] public Vector2 AimDir;
+    [FoldoutGroup("GRAB")] public float GrabBufferTime = 0.1f;
+    [HideInInspector] public float GrabBufferCounter = 10;
     [FoldoutGroup("GRAB")] public float DistanceGrab = 0.8f;
     [FoldoutGroup("GRAB")] public float TimeToExtendArms = 0.2f;
     [FoldoutGroup("GRAB")] public float MaxHoldGrabTime = 1;
@@ -402,6 +404,8 @@ public class PlayerStateMachine : MonoBehaviour
     {
         IsGrabing = true;
         StartGrabInitialisation = true;
+        GrabScript.CanCountGrabBufferTime = false;
+        GrabBufferCounter = 10;
         if (StartGrabInitialisation == true)
         {
             StartGrabInitialisation = false;
@@ -409,7 +413,16 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
-    public void SetYPositionToGround()
+    public void GrabBufferVerification()
+    {
+        if (GrabBufferCounter <= GrabBufferTime)
+        {
+            StartGrab();
+        }
+
+    }
+
+public void SetYPositionToGround()
     {
         //Vector2 originLeft = new Vector2(PlayerCollider.bounds.min.x, PlayerCollider.bounds.min.y);
         //Vector2 originRight = new Vector2(PlayerCollider.bounds.max.x, PlayerCollider.bounds.min.y);
