@@ -2,7 +2,6 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -270,21 +269,26 @@ public class PlayerStateMachine : MonoBehaviour
             IsLadder = (int)LadderIs.Horizontal;
             ColliderLadder = colliderUp;
 
-            float distanceToLeft = Mathf.Abs(transform.position.x - colliderUp.bounds.min.x);
-            float distanceToRight = Mathf.Abs(transform.position.x - colliderUp.bounds.max.x);
 
-            if (distanceToLeft <= 0.5f)
+            if (CurrentState is PlayerJumpState
+                || CurrentState is PlayerFallState)
             {
-                if (PlayerRigidbody.velocity.x < 0)
+                float distanceToLeft = Mathf.Abs(transform.position.x - colliderUp.bounds.min.x);
+                float distanceToRight = Mathf.Abs(transform.position.x - colliderUp.bounds.max.x);
+
+                if (distanceToLeft <= 0.5f)
                 {
-                    IsLadder = (int)LadderIs.Nothing;
+                    if (PlayerRigidbody.velocity.x < 0)
+                    {
+                        IsLadder = (int)LadderIs.Nothing;
+                    }
                 }
-            }
-            else if (distanceToRight <= 0.5f)
-            {
-                if (PlayerRigidbody.velocity.x > 0)
+                else if (distanceToRight <= 0.5f)
                 {
-                    IsLadder = (int)LadderIs.Nothing;
+                    if (PlayerRigidbody.velocity.x > 0)
+                    {
+                        IsLadder = (int)LadderIs.Nothing;
+                    }
                 }
             }
 

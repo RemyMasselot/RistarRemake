@@ -61,13 +61,13 @@ public class PlayerHeadbuttState : PlayerBaseState
     private void CheckDistanceWithTarget()
     {
         float distanceWithTarget = Vector2.Distance(_player.transform.position, _player.ArmDetection.SnapPosHand);
-
+        
         if (distanceWithTarget <= DistanceRelative())
         {
             if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.LadderVertical
                 || _player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.LadderHorizontal)
             {
-
+                Debug.Log("LADDER DETECTED AFTER HEADBUTT");
                 if (_player.IsLadder != (int)LadderIs.Nothing)
                 {
                     SwitchState(_factory.WallIdle());
