@@ -1,16 +1,10 @@
 using DG.Tweening;
 using UnityEngine;
-using static ArmDetection;
 
 public class PlayerMeteorStrikeState : PlayerBaseState
 {
     public PlayerMeteorStrikeState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
-
-    /// <summary>
-    /// FAIRE LONGER LE PLAYER LE LONG DES PAROIS PLUTOT QUE DE REBONDIR
-    /// </summary>
-
 
     private Vector2 dirPlayer;
     private bool canControl;

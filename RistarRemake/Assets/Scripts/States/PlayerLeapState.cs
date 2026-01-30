@@ -1,5 +1,4 @@
 using UnityEngine;
-using static PlayerStateMachine;
 
 public class PlayerLeapState : PlayerBaseState
 {

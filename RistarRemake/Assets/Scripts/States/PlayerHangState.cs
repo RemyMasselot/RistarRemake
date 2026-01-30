@@ -2,7 +2,6 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using static ArmDetection;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerHangState : PlayerBaseState
 {

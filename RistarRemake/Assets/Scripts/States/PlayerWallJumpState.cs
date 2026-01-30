@@ -12,9 +12,6 @@ public class PlayerWallJumpState : PlayerBaseState
     {
         Debug.Log("WALL JUMP ENTER");
 
-        //_player.PlayerRigidbody.gravityScale = 1;
-        //_player.PlayerRigidbody.velocity = new Vector2(_player.HorizontalMovementMultiplier, _player.JumpSpeedMax);
-
         wallJumpOriginY = _player.transform.position.y;
     }
 
@@ -30,7 +27,6 @@ public class PlayerWallJumpState : PlayerBaseState
     public override void FixedUpdateState() 
     {
         float moveValueX = _player.MoveH.ReadValue<float>();
-        //_player.PlayerRigidbody.velocity = new Vector2 (_player.HorizontalMovementMultiplier * moveValue, _player.PlayerRigidbody.velocity.y);
 
         float velocityY = 2;
 
@@ -54,7 +50,6 @@ public class PlayerWallJumpState : PlayerBaseState
         {
             if (_player.Grab.WasPerformedThisFrame())
             {
-                //SwitchState(_factory.Grab());
                 _player.StartGrab();
             }
             _player.GrabBufferVerification();
