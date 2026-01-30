@@ -269,9 +269,15 @@ public class Grab : MonoBehaviour
                 }
             }
 
-            if (_player.Grab.WasReleasedThisFrame())
+            float distanceToPlayer = Vector2.Distance(_player.ArmDetection.GetComponent<Transform>().position, _player.transform.position);
+
+            if (distanceToPlayer >= 1.5f)
             {
-                ShortenArms();
+                if (_player.Grab.WasReleasedThisFrame()
+                    || _player.Grab.ReadValue<float>() <= 0f)
+                {
+                    ShortenArms();
+                }
             }
         }
     }

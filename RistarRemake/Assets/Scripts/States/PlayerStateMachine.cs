@@ -415,7 +415,8 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void GrabBufferVerification()
     {
-        if (GrabBufferCounter <= GrabBufferTime)
+        if (GrabBufferCounter <= GrabBufferTime
+            && Grab.ReadValue<float>() > 0)
         {
             StartGrab();
         }
