@@ -4704,6 +4704,22 @@ PrefabInstance:
       propertyPath: Layer.m_Bits
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: HeadbuttDuration
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: HeadbuttMoveSpead
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: HeadbuttAcceleration
+      value: 0.641
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
+      propertyPath: HeadbuttDistanceForMaxSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6234253148292796384, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: layerMask.m_Bits
       value: 200

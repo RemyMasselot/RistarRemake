@@ -1005,8 +1005,34 @@ MonoBehaviour:
   FallInGrabValue: -6
   HorizontalGrabMovementMultiplier: 1.5
   VerticalGrabMovementMultiplier: 1
-  HeadbuttMoveSpead: 10
   HeadbuttDirection: {x: 0, y: 0}
+  HeadbuttMinDuration: 0.0494
+  HeadbuttMaxDuration: 0.29
+  HeadbuttAccelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.20686764
+      value: -0.0006058216
+      inSlope: 0.011708501
+      outSlope: 0.011708501
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.26424906
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 3.3441706
+      outSlope: 3.3441706
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.054474887
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HeadbuttDistanceForTimeMax: 3
   SpinTime: 0.3
   StarHandleCentre: {x: 0, y: 0, z: 0}
   TimeToChargeMeteorStrike: 3

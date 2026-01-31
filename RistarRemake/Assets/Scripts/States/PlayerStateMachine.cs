@@ -121,8 +121,11 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("GRAB")] public float HorizontalGrabMovementMultiplier = 1.5f;
     [FoldoutGroup("GRAB")] public float VerticalGrabMovementMultiplier = 1;
 
-    [FoldoutGroup("HEADBUTT")] public float HeadbuttMoveSpead;
     [HideInInspector] public Vector2 HeadbuttDirection;
+    [FoldoutGroup("HEADBUTT"), Range(0f, 0.1f)] public float HeadbuttMinDuration;
+    [FoldoutGroup("HEADBUTT"), Range(0.1f, 0.5f)] public float HeadbuttMaxDuration;
+    [FoldoutGroup("HEADBUTT")] public AnimationCurve HeadbuttAccelerationCurve;
+    [FoldoutGroup("HEADBUTT")] public float HeadbuttDistanceForTimeMax;
 
     [FoldoutGroup("SPIN")] public float SpinTime;
 

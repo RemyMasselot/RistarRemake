@@ -8,6 +8,13 @@ public class PlayerHeadbuttState : PlayerBaseState
     public PlayerHeadbuttState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
     : base(currentContext, playerStateFactory) { }
 
+    private bool headbuttIsMoving = false;
+    private Vector2 headbuttMoveStart;
+    private Vector2 headbuttMoveTarget;
+    private float headbuttMoveDuration = 0f;
+    private float headbuttAccelParam = 0f;
+    private float headbuttMoveElapsed = 0f;
+    private float headbuttMoveInitialDistance = 0f;
 
     public override void EnterState()
     {
@@ -20,11 +27,10 @@ public class PlayerHeadbuttState : PlayerBaseState
 
         _player.GrabScript.NewStateFromGrab = null;
 
+        _player.HeadbuttDirection = _player.ArmDetection.SnapPosHand - _player.transform.position;
+
         DOTween.Kill(_player.IkArmLeft);
         DOTween.Kill(_player.IkArmRight);
-
-        _player.HeadbuttDirection = _player.ArmDetection.SnapPosHand - _player.transform.position;
-        _player.PlayerRigidbody.velocity = _player.HeadbuttDirection.normalized * _player.HeadbuttMoveSpead;
     }
     public override void UpdateState()
     {
@@ -32,7 +38,57 @@ public class PlayerHeadbuttState : PlayerBaseState
 
         SetHandPosition();
 
+        MoveHeadbutt(_player.ArmDetection.SnapPosHand, _player.HeadbuttAccelerationCurve, _player.HeadbuttMinDuration, _player.HeadbuttMaxDuration,  _player.HeadbuttDistanceForTimeMax);
+
         CheckDistanceWithTarget();
+    }
+
+    private bool MoveHeadbutt(Vector2 target, AnimationCurve accelCurve, float timeMin, float timeMax, float maxDistanceForTimeMax)
+    {
+        Vector2 pos = _player.transform.position;
+        float remaining = Vector2.Distance(pos, target);
+
+        // snap si déjà sur la cible
+        if (remaining <= 0.001f)
+        {
+            _player.transform.position = target;
+            headbuttIsMoving = false;
+            return true;
+        }
+
+        // calculer la durée cible en fonction de la distance initiale (sur la première frame)
+        if (!headbuttIsMoving || headbuttMoveTarget != target)
+        {
+            headbuttIsMoving = true;
+            headbuttMoveStart = pos;
+            headbuttMoveTarget = target;
+            headbuttMoveElapsed = 0f;
+
+            float fullDist = Vector2.Distance(headbuttMoveStart, headbuttMoveTarget);
+            // éviter division par zéro
+            float denom = Mathf.Max(0.0001f, maxDistanceForTimeMax);
+            float distanceNorm = Mathf.Clamp01(fullDist / denom); // 0 => proche => timeMin, 1 => très loin => timeMax
+            headbuttMoveDuration = Mathf.Lerp(timeMin, timeMax, distanceNorm);
+        }
+
+        // progression temporelle (0..1)
+        headbuttMoveElapsed += Time.deltaTime;
+        float s = Mathf.Clamp01(headbuttMoveElapsed / Mathf.Max(0.0001f, headbuttMoveDuration));
+
+        // appliquer la courbe d'accélération (fallback linéaire si null)
+        float eval = accelCurve != null ? Mathf.Clamp01(accelCurve.Evaluate(s)) : s;
+
+        // interpolation de la position selon eval
+        Vector2 newPos = Vector2.Lerp(headbuttMoveStart, headbuttMoveTarget, eval);
+        _player.transform.position = newPos;
+
+        if (s >= 1f)
+        {
+            headbuttIsMoving = false;
+            return true;
+        }
+
+        return false;
     }
 
     private void SetHandPosition()
