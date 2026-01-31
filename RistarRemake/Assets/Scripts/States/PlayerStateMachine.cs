@@ -250,10 +250,16 @@ public class PlayerStateMachine : MonoBehaviour
         Collider2D colliderLeft = Physics2D.OverlapBox(leftCenter, new Vector2(boxWidth, boxHeight), 0f, ladderMask);
         if (colliderLeft != null)
         {
-            IsLadder = (int)LadderIs.VerticalLeft;
-            ColliderLadder = colliderLeft;
-            SetLadderSnapPosition(colliderLeft);
-            return;
+            Collider2D wall = Physics2D.OverlapBox(colliderLeft.transform.position, new Vector2(colliderLeft.bounds.size.x, colliderLeft.bounds.size.y), 0f, LayerMask.GetMask("Platform"));
+            RaycastHit2D hitLadder = Physics2D.Linecast(new Vector2(wall.bounds.max.x, wall.bounds.min.y),new Vector2(wall.bounds.max.x, wall.bounds.max.y),LayerMask.GetMask("Ladder"));
+
+            if (hitLadder)
+            {
+                IsLadder = (int)LadderIs.VerticalLeft;
+                ColliderLadder = colliderLeft;
+                SetLadderSnapPosition(colliderLeft);
+                return;
+            }
         }
 
         // Box droite
@@ -261,10 +267,16 @@ public class PlayerStateMachine : MonoBehaviour
         Collider2D colliderRight = Physics2D.OverlapBox(rightCenter, new Vector2(boxWidth, boxHeight), 0f, ladderMask);
         if (colliderRight != null)
         {
-            IsLadder = (int)LadderIs.VerticalRight;
-            ColliderLadder = colliderRight;
-            SetLadderSnapPosition(colliderRight);
-            return;
+            Collider2D wall = Physics2D.OverlapBox(colliderRight.transform.position, new Vector2(colliderRight.bounds.size.x, colliderRight.bounds.size.y), 0f, LayerMask.GetMask("Platform"));
+            RaycastHit2D hitLadder =  Physics2D.Linecast(new Vector2(wall.bounds.min.x, wall.bounds.min.y), new Vector2(wall.bounds.min.x, wall.bounds.max.y), LayerMask.GetMask("Ladder"));
+
+            if (hitLadder)
+            {
+                IsLadder = (int)LadderIs.VerticalRight;
+                ColliderLadder = colliderRight;
+                SetLadderSnapPosition(colliderRight);
+                return;
+            }
         }
 
         // Box au-dessus

@@ -152,7 +152,7 @@ public class ArmDetection : MonoBehaviour
             }
         }
         SetSnapPosHitPoint(hit);
-        Debug.Log("Object Grabed : " + ObjectGrabed);
+        //Debug.Log("Object Grabed : " + ObjectGrabed);
     }
 
     private Collider2D IsThereALadder(Vector2 worldPoint)

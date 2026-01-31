@@ -19,6 +19,8 @@ public class PlayerHeadbuttState : PlayerBaseState
     {
         //Debug.Log("ENTER HEADBUTT");
 
+        _player.IsLadder = (int)LadderIs.Nothing;
+
         if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Enemy)
         {
             headbuttAccelerationCurve = _player.HeadbuttAccelerationCurveEnnemy;
@@ -27,8 +29,6 @@ public class PlayerHeadbuttState : PlayerBaseState
         {
             headbuttAccelerationCurve = _player.HeadbuttAccelerationCurvePlatform;
         }
-
-        _player.IsLadder = (int)LadderIs.Nothing;
 
         // CAMERA BEHAVIOR
         _player.CameraTargetOverride = _player.ArmDetection.SnapPosHand;
