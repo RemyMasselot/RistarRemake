@@ -12,13 +12,21 @@ public class PlayerHeadbuttState : PlayerBaseState
     private Vector2 headbuttMoveStart;
     private Vector2 headbuttMoveTarget;
     private float headbuttMoveDuration = 0f;
-    private float headbuttAccelParam = 0f;
     private float headbuttMoveElapsed = 0f;
-    private float headbuttMoveInitialDistance = 0f;
+    private AnimationCurve headbuttAccelerationCurve;
 
     public override void EnterState()
     {
         //Debug.Log("ENTER HEADBUTT");
+
+        if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Enemy)
+        {
+            headbuttAccelerationCurve = _player.HeadbuttAccelerationCurveEnnemy;
+        }
+        else
+        {
+            headbuttAccelerationCurve = _player.HeadbuttAccelerationCurvePlatform;
+        }
 
         _player.IsLadder = (int)LadderIs.Nothing;
 
@@ -38,7 +46,7 @@ public class PlayerHeadbuttState : PlayerBaseState
 
         SetHandPosition();
 
-        MoveHeadbutt(_player.ArmDetection.SnapPosHand, _player.HeadbuttAccelerationCurve, _player.HeadbuttMinDuration, _player.HeadbuttMaxDuration,  _player.HeadbuttDistanceForTimeMax);
+        MoveHeadbutt(_player.ArmDetection.SnapPosHand, headbuttAccelerationCurve, _player.HeadbuttMinDuration, _player.HeadbuttMaxDuration,  _player.HeadbuttDistanceForTimeMax);
 
         CheckDistanceWithTarget();
     }
