@@ -29,7 +29,6 @@ public class Grab : MonoBehaviour
         canStartGrabSituation = true;
         canCancelGrab = true;
         isHoldGrabTimerRunning = false;
-        _player.AimDir = _player.Aim.ReadValue<Vector2>();
 
         DirectionCorrection();
 
@@ -42,7 +41,7 @@ public class Grab : MonoBehaviour
 
     private void DirectionCorrection()
     {
-        if (_player.AimDir == new Vector2(0, 0))
+        if (_player.Aim.ReadValue<Vector2>() == new Vector2(0, 0))
         {
             _player.AimDir = new Vector2 (_player.MoveH.ReadValue<float>(), _player.MoveV.ReadValue<float>());
 
@@ -58,7 +57,12 @@ public class Grab : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            _player.AimDir = _player.Aim.ReadValue<Vector2>();
+        }
 
+        //Correction facing direction
         if (_player.AimDir != new Vector2(0, 0))
         {
             if (_player.AimDir.x > 0)
@@ -100,29 +104,30 @@ public class Grab : MonoBehaviour
     {
         Vector2 _grabDirection = _player.AimDir.normalized * _player.DistanceGrab;
 
-        //if (_player.GetComponentInChildren<PlayerVisualSpine>() != null)
+        //if (_player.AimDir.x < 0)
         //{
-        //    if (_player.AimDir.x < 0)
-        //    {
-        //        _grabDirection.x *= -1;
-        //    }
+        //    _grabDirection.x *= -1;
         //}
 
-        if (_player.AimDir.x < 0)
-        {
-            _grabDirection.x *= -1;
-        }
-
         // Move Left Arm
-        Vector2 PointDestinationArmLeft = new Vector2(_player.ShoulderLeft.localPosition.x + _grabDirection.x, _player.ShoulderLeft.localPosition.y + _grabDirection.y);
-        _player.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _player.TimeToExtendArms);
+        Vector2 PointDestinationArmLeft = new Vector2(_player.ShoulderLeft.position.x + _grabDirection.x, _player.ShoulderLeft.position.y + _grabDirection.y);
+        //_player.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _player.TimeToExtendArms);
+        _player.IkArmLeft.position = Vector2.Lerp(_player.DefaultPosLeft.position, PointDestinationArmLeft, 0.5f);
+        
         // Move Right Arm
-        Vector2 PointDestinationArmRight = new Vector2(_player.ShoulderRight.localPosition.x + _grabDirection.x, _player.ShoulderRight.localPosition.y + _grabDirection.y);
-        _player.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _player.TimeToExtendArms).OnComplete(() =>
+        Vector2 PointDestinationArmRight = new Vector2(_player.ShoulderRight.position.x + _grabDirection.x, _player.ShoulderRight.position.y + _grabDirection.y);
+        //_player.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _player.TimeToExtendArms).OnComplete(() =>
+        //{
+        //    //Debug.Log("Arms Extended");
+        //    StartHoldGrabTimer();
+        //});
+        _player.IkArmRight.position = Vector2.Lerp(_player.DefaultPosRight.position, PointDestinationArmRight, 0.5f);
+
+        float distanceToTarget = Vector2.Distance(_player.IkArmLeft.position, PointDestinationArmLeft);
+        if (distanceToTarget <= 0.05f)
         {
-            //Debug.Log("Arms Extended");
             StartHoldGrabTimer();
-        });
+        }
     }
 
     void StartHoldGrabTimer()
@@ -137,7 +142,11 @@ public class Grab : MonoBehaviour
     {
         if (_player.IsGrabing)
         {
+            DirectionCorrection();
+
             MoveArmDectection();
+
+            ExtendArms();
 
             GrabDetectionVerif();
 
