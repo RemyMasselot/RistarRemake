@@ -111,6 +111,7 @@ public class PlayerStateMachine : MonoBehaviour
     [HideInInspector] public bool StartGrabInitialisation = false;
     [HideInInspector] public bool IsGrabing = false;
     [HideInInspector] public Vector2 AimDir;
+    [FoldoutGroup("GRAB")] public float ExtendArmSpeed = 10;
     [FoldoutGroup("GRAB")] public float GrabBufferTime = 0.1f;
     [HideInInspector] public float GrabBufferCounter = 10;
     [FoldoutGroup("GRAB")] public float DistanceGrab = 0.8f;

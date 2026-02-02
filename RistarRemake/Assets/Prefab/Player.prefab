@@ -996,9 +996,10 @@ MonoBehaviour:
   StartGrabInitialisation: 0
   IsGrabing: 0
   AimDir: {x: 0, y: 0}
+  ExtendArmSpeed: 20
   GrabBufferTime: 0.2
   GrabBufferCounter: 10
-  DistanceGrab: 0.8
+  DistanceGrab: 3
   TimeToExtendArms: 0.2
   MaxHoldGrabTime: 1
   MaxTimeStayingAtApex: 0.3

@@ -12,6 +12,7 @@ public class Grab : MonoBehaviour
     private bool canCancelGrab = true;
     private bool isHoldGrabTimerRunning = false;
     private float currentHoldGrabTimerValue;
+    private bool canStartHoldGrabTimer = true;
 
     public bool CanCountGrabBufferTime = false;
 
@@ -29,6 +30,7 @@ public class Grab : MonoBehaviour
         canStartGrabSituation = true;
         canCancelGrab = true;
         isHoldGrabTimerRunning = false;
+        canStartHoldGrabTimer = true;
 
         DirectionCorrection();
 
@@ -104,30 +106,47 @@ public class Grab : MonoBehaviour
     {
         Vector2 _grabDirection = _player.AimDir.normalized * _player.DistanceGrab;
 
-        //if (_player.AimDir.x < 0)
-        //{
-        //    _grabDirection.x *= -1;
-        //}
-
         // Move Left Arm
         Vector2 PointDestinationArmLeft = new Vector2(_player.ShoulderLeft.position.x + _grabDirection.x, _player.ShoulderLeft.position.y + _grabDirection.y);
-        //_player.IkArmLeft.transform.DOLocalMove(PointDestinationArmLeft, _player.TimeToExtendArms);
-        _player.IkArmLeft.position = Vector2.Lerp(_player.DefaultPosLeft.position, PointDestinationArmLeft, 0.5f);
-        
+
+        Vector2 pos = _player.IkArmLeft.position;
+        float step = _player.ExtendArmSpeed * Time.deltaTime;
+        float dist = Vector2.Distance(pos, PointDestinationArmLeft);
+
+        if (dist <= 0.001f || step >= dist)
+        {
+            _player.IkArmLeft.position = PointDestinationArmLeft;
+        }
+
+        _player.IkArmLeft.position = Vector2.MoveTowards(pos, PointDestinationArmLeft, step);
+
+
         // Move Right Arm
         Vector2 PointDestinationArmRight = new Vector2(_player.ShoulderRight.position.x + _grabDirection.x, _player.ShoulderRight.position.y + _grabDirection.y);
-        //_player.IkArmRight.transform.DOLocalMove(PointDestinationArmRight, _player.TimeToExtendArms).OnComplete(() =>
-        //{
-        //    //Debug.Log("Arms Extended");
-        //    StartHoldGrabTimer();
-        //});
-        _player.IkArmRight.position = Vector2.Lerp(_player.DefaultPosRight.position, PointDestinationArmRight, 0.5f);
 
-        float distanceToTarget = Vector2.Distance(_player.IkArmLeft.position, PointDestinationArmLeft);
-        if (distanceToTarget <= 0.05f)
+        Vector2 posR = _player.IkArmRight.position;
+        float stepR = _player.ExtendArmSpeed * Time.deltaTime;
+        float distR = Vector2.Distance(posR, PointDestinationArmRight);
+
+        if (distR <= 0.001f || stepR >= distR)
         {
+            _player.IkArmRight.position = PointDestinationArmRight;
+        }
+
+        _player.IkArmRight.position = Vector2.MoveTowards(posR, PointDestinationArmRight, stepR);
+
+
+        float distanceToTarget = Vector2.Distance(_player.IkArmRight.position, PointDestinationArmRight);
+        if (distanceToTarget <= 0.01f && canStartHoldGrabTimer)
+        {
+            canStartHoldGrabTimer = false;
             StartHoldGrabTimer();
         }
+        //if (canStartHoldGrabTimer == false)
+        //{
+        //    float distanceGrab = Vector2.Distance(_player.IkArmRight.position, _player.ShoulderRight.position);
+        //    Debug.Log("Distance Grab : " + distanceGrab);
+        //}
     }
 
     void StartHoldGrabTimer()
