@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ArmDetection : MonoBehaviour
 {
@@ -198,19 +199,40 @@ public class ArmDetection : MonoBehaviour
     {
         Gizmos.color = gizmoColor;
 
-        for (int i = 1; i < rayCount + 1; i++)
-        {
-            Vector2 perpendicular = new Vector2(-playerStateMachine.AimDir.y, playerStateMachine.AimDir.x).normalized;
-            float distanceOffset = (rayCount - 1) * SpaceBetweenRays;
+        //for (int i = 1; i < rayCount + 1; i++)
+        //{
+        //    Vector2 perpendicular = new Vector2(-playerStateMachine.AimDir.y, playerStateMachine.AimDir.x).normalized;
+        //    float distanceOffset = (rayCount - 1) * SpaceBetweenRays;
 
-            Vector2 originOffset = (Vector2)playerTransform.position + perpendicular * SpaceBetweenRays * i;
-            Vector2 startPointRay = originOffset - perpendicular * distanceOffset;
+        //    Vector2 originOffset = (Vector2)playerTransform.position + perpendicular * SpaceBetweenRays * i;
+        //    Vector2 startPointRay = originOffset - perpendicular * distanceOffset;
 
-            Vector2 pointBetweenHands = (HandR.position + HandL.position) / 2;
-            float distance = Vector2.Distance(playerTransform.position, pointBetweenHands) + rayDistanceAdd;
+        //    Vector2 pointBetweenHands = (HandR.position + HandL.position) / 2;
+        //    float distance = Vector2.Distance(playerTransform.position, pointBetweenHands) + rayDistanceAdd;
 
-            Gizmos.DrawRay(startPointRay, playerStateMachine.AimDir * distance);
-        }
+        //    Gizmos.DrawRay(startPointRay, playerStateMachine.AimDir * distance);
+        //}
+
+        // Get the Point AStart which is positionned at the position of the player
+        // Get the Point AEnd which is positionned at the position of the player + aim direction * distance
+        // Get the perpendicular line to the segment AStart - AEnd
+        // Get the Point BStart which is positionned on the perpendicular line at a distance of +0.3f from AStart
+        // Get the Point BEnd which is positionned at the position of BStart + aim direction * distance
+        // Do the same for CStart and CEnd but at a distance of -0.3f from AStart
+
+        float currentDistanceGrab = Vector2.Distance(playerStateMachine.IkArmRight.position, playerStateMachine.ShoulderRight.position);
+
+        Vector2 AStart = playerTransform.position;
+        Vector2 AEnd = AStart + playerStateMachine.AimDir.normalized * currentDistanceGrab;
+        Vector2 perpendicularA = new Vector2(- (AEnd - AStart).y, (AEnd - AStart).x).normalized;
+        Vector2 BStart = AStart + perpendicularA * 0.3f;
+        Vector2 BEnd = AEnd + perpendicularA * 0.3f;
+        Vector2 CStart = AStart - perpendicularA * 0.3f;
+        Vector2 CEnd = AEnd - perpendicularA * 0.3f;
+
+        Gizmos.DrawLine(AStart, AEnd);
+        Gizmos.DrawLine(BStart, BEnd);
+        Gizmos.DrawLine(CStart, CEnd);
     }
 
     private float CalculateDistance(Vector2 origin, Vector2 direction)
