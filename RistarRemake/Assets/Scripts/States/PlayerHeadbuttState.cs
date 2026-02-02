@@ -46,7 +46,7 @@ public class PlayerHeadbuttState : PlayerBaseState
 
         SetHandPosition();
 
-        MoveHeadbutt(_player.ArmDetection.SnapPosHand, headbuttAccelerationCurve, _player.HeadbuttMinDuration, _player.HeadbuttMaxDuration,  _player.HeadbuttDistanceForTimeMax);
+        MoveHeadbutt(_player.ArmDetection.SnapPosHand, headbuttAccelerationCurve, _player.HeadbuttMinDuration, _player.HeadbuttMaxDuration,  _player.DistanceGrab);
 
         CheckDistanceWithTarget();
     }

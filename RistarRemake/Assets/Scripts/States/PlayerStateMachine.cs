@@ -114,7 +114,7 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("GRAB")] public float ExtendArmSpeed = 10;
     [FoldoutGroup("GRAB")] public float GrabBufferTime = 0.1f;
     [HideInInspector] public float GrabBufferCounter = 10;
-    [FoldoutGroup("GRAB")] public float DistanceGrab = 0.8f;
+    [FoldoutGroup("GRAB")] public float DistanceGrab = 3;
     [FoldoutGroup("GRAB")] public float TimeToExtendArms = 0.2f;
     [FoldoutGroup("GRAB")] public float MaxHoldGrabTime = 1;
     [FoldoutGroup("GRAB")] public float MaxTimeStayingAtApex = 0.3f;
@@ -123,7 +123,6 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("GRAB")] public float VerticalGrabMovementMultiplier = 1;
 
     [HideInInspector] public Vector2 HeadbuttDirection;
-    [FoldoutGroup("HEADBUTT")] public float HeadbuttDistanceForTimeMax;
     [FoldoutGroup("HEADBUTT"), Range(0f, 0.1f)] public float HeadbuttMinDuration;
     [FoldoutGroup("HEADBUTT"), Range(0.1f, 0.5f)] public float HeadbuttMaxDuration;
     [FoldoutGroup("HEADBUTT")] public AnimationCurve HeadbuttAccelerationCurveEnnemy;
