@@ -20,6 +20,8 @@ public class PlayerSpinState : PlayerBaseState
 
         _player.transform.position = _player.ArmDetection.SnapPosHand;
 
+        _player.PlayerCollider.enabled = false;
+
         SpinMovement();
     }
     private void SpinMovement()
@@ -44,6 +46,7 @@ public class PlayerSpinState : PlayerBaseState
         else if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Enemy)
         {
             _player.PlayerRigidbody.velocity = new Vector2(0, 1) * 10;
+            _player.ElementGrabed.GetComponent<Enemy>().BeKilled();
         }
         //Debug.Log(_player.ArmDetection.ObjectDetected);
     }
@@ -65,6 +68,7 @@ public class PlayerSpinState : PlayerBaseState
         {
             //Debug.Log(_player.TimePassedInState);
             //_player.PlayerRigidbody.velocity = new Vector2(-1, _player.PlayerRigidbody.velocity.y);
+            _player.PlayerCollider.enabled = true;
             SwitchState(_factory.Fall());
         }
     }

@@ -31,6 +31,7 @@ public class Grab : MonoBehaviour
         canCancelGrab = true;
         isHoldGrabTimerRunning = false;
         canStartHoldGrabTimer = true;
+        _player.ElementGrabed = null;
 
         DirectionCorrection();
 

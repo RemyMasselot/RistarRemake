@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ArmDetection : MonoBehaviour
 {
@@ -57,6 +56,7 @@ public class ArmDetection : MonoBehaviour
                     if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
                     {
                         ObjectGrabed = (int)ObjectGrabedIs.Enemy;
+                        playerStateMachine.ElementGrabed = hit.collider.gameObject;
                         SetSnapPosCollider(hit);
                         break;
                     }
