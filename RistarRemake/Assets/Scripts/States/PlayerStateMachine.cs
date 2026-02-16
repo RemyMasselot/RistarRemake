@@ -436,6 +436,7 @@ public class PlayerStateMachine : MonoBehaviour
             && Grab.ReadValue<float>() > 0)
         {
             StartGrab();
+            Debug.Log("GRAB BUFFER");
         }
 
     }

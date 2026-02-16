@@ -32,6 +32,7 @@ public class Grab : MonoBehaviour
         isHoldGrabTimerRunning = false;
         canStartHoldGrabTimer = true;
         _player.ElementGrabed = null;
+        Debug.Log("Grab Initialisation");
 
         DirectionCorrection();
 
@@ -105,6 +106,12 @@ public class Grab : MonoBehaviour
 
     private void ExtendArms()
     {
+        if (_player.ArmDetection.ObjectGrabed != (int)ObjectGrabedIs.Nothing)
+        {
+            Debug.Log("Object Grabed : " + _player.ArmDetection.ObjectGrabed);
+            return;
+        }
+
         Vector2 _grabDirection = _player.AimDir.normalized * _player.DistanceGrab;
 
         // Move Left Arm
@@ -143,11 +150,6 @@ public class Grab : MonoBehaviour
             canStartHoldGrabTimer = false;
             StartHoldGrabTimer();
         }
-        //if (canStartHoldGrabTimer == false)
-        //{
-        //    float distanceGrab = Vector2.Distance(_player.IkArmRight.position, _player.ShoulderRight.position);
-        //    Debug.Log("Distance Grab : " + distanceGrab);
-        //}
     }
 
     void StartHoldGrabTimer()
