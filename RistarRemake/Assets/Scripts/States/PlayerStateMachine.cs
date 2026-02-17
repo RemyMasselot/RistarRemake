@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using static ArmDetection;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -432,13 +433,13 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void GrabBufferVerification()
     {
-        if (GrabBufferCounter <= GrabBufferTime
+        if (ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Nothing
+            && GrabBufferCounter <= GrabBufferTime
             && Grab.ReadValue<float>() > 0)
         {
             StartGrab();
             Debug.Log("GRAB BUFFER");
         }
-
     }
 
 public void SetYPositionToGround()
