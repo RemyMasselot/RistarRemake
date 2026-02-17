@@ -50,8 +50,10 @@ public class PlayerVisual : MonoBehaviour
                 handRight.sprite = handClose;
                 handLeft.sprite = handClose;
             }
+
+            ChoiceGrabAnimation();
         }
-        
+
         ChangePlayerDirection();
         
         if (playerStateMachine.CurrentState is PlayerMeteorStrikeState) // METEOR STRIKE ONGOING
