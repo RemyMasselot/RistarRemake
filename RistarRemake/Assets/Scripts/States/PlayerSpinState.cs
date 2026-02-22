@@ -48,6 +48,10 @@ public class PlayerSpinState : PlayerBaseState
             _player.PlayerRigidbody.velocity = new Vector2(0, 1) * 10;
             _player.ElementGrabed.GetComponent<Enemy>().BeKilled();
         }
+        else if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Floor)
+        {
+            _player.PlayerRigidbody.velocity = new Vector2(0, 1);
+        }
         //Debug.Log(_player.ArmDetection.ObjectDetected);
     }
 

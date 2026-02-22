@@ -259,7 +259,8 @@ public class Grab : MonoBehaviour
     private void GrabFloor()
     {
         //Debug.Log("Floor Detected");
-        ShortenArms();
+        ExitGrab();
+        NewStateFromGrab = _player.StatesFactory.Headbutt();
     }
     private void GrabEnemy()
     {

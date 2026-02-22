@@ -105,17 +105,14 @@ public class ArmDetection : MonoBehaviour
                 {
                     ObjectGrabed = (int)ObjectGrabedIs.Wall;
                 }
+            } 
+            else if (IsThereALadder(hit.point) != null)
+            {
+                ObjectGrabed = (int)ObjectGrabedIs.LadderHorizontal;
             }
             else
             {
-                if (IsThereALadder(hit.point) != null)
-                {
-                    ObjectGrabed = (int)ObjectGrabedIs.LadderHorizontal;
-                }
-                else
-                {
-                    ObjectGrabed = (int)ObjectGrabedIs.Ceiling;
-                }
+                ObjectGrabed = (int)ObjectGrabedIs.Ceiling;
             }
         }
         else if (playerStateMachine.AimDir.y < 0)
@@ -168,7 +165,9 @@ public class ArmDetection : MonoBehaviour
     {
         SnapPosHand = hit.point;
 
-        if (ObjectGrabed == (int)ObjectGrabedIs.Ceiling || ObjectGrabed == (int)ObjectGrabedIs.LadderHorizontal)
+        if (ObjectGrabed == (int)ObjectGrabedIs.Ceiling 
+            || ObjectGrabed == (int)ObjectGrabedIs.LadderHorizontal
+            || ObjectGrabed == (int)ObjectGrabedIs.Floor)
         {
             if (playerStateMachine.IsPlayerTurnToLeft)
             {

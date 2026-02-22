@@ -25,6 +25,10 @@ public class PlayerHeadbuttState : PlayerBaseState
         {
             headbuttAccelerationCurve = _player.HeadbuttAccelerationCurveEnnemy;
         }
+        else if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Floor)
+        {
+            headbuttAccelerationCurve = _player.HeadbuttAccelerationCurveFloor;
+        }
         else
         {
             headbuttAccelerationCurve = _player.HeadbuttAccelerationCurvePlatform;
@@ -136,6 +140,10 @@ public class PlayerHeadbuttState : PlayerBaseState
                 {
                     SwitchState(_factory.WallIdle());
                 }
+            }
+            else if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Floor)
+            {
+                SwitchState(_factory.Idle());
             }
             else
             {

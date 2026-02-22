@@ -129,6 +129,7 @@ public class PlayerStateMachine : MonoBehaviour
     [FoldoutGroup("HEADBUTT"), Range(0.1f, 0.5f)] public float HeadbuttMaxDuration;
     [FoldoutGroup("HEADBUTT")] public AnimationCurve HeadbuttAccelerationCurveEnnemy;
     [FoldoutGroup("HEADBUTT")] public AnimationCurve HeadbuttAccelerationCurvePlatform;
+    [FoldoutGroup("HEADBUTT")] public AnimationCurve HeadbuttAccelerationCurveFloor;
 
     [FoldoutGroup("SPIN")] public float SpinTime;
 
