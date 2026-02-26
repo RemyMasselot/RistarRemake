@@ -108,7 +108,7 @@ public class Grab : MonoBehaviour
     {
         if (_player.ArmDetection.ObjectGrabed != (int)ObjectGrabedIs.Nothing)
         {
-            Debug.Log("Object Grabed : " + _player.ArmDetection.ObjectGrabed);
+            //Debug.Log("Object Grabed : " + _player.ArmDetection.ObjectGrabed);
             return;
         }
 

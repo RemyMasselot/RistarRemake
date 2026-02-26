@@ -232,6 +232,7 @@ public class PlayerVisual : MonoBehaviour
         {
             arms.SetActive(false);
         }
+
         if (playerStateMachine.CurrentState is PlayerHeadbuttState)
         {
             Vector2 aim = playerStateMachine.AimDir;

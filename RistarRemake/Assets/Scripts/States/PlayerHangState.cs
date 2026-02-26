@@ -81,14 +81,12 @@ public class PlayerHangState : PlayerBaseState
             // Hands rotation
             Vector2 directionL = (Vector2)(_player.IkArmLeft.position - _player.ShoulderLeft.position);
             float angleL = Mathf.Atan2(directionL.y, directionL.x) * Mathf.Rad2Deg;
-            _player.IkArmLeft.rotation = Quaternion.Euler(0, 0, angleL);
 
             // Move Right Arm
             _player.IkArmRight.transform.position = _player.ArmDetection.SnapPosHand;
             // Hands rotation
             Vector2 directionR = (Vector2)(_player.IkArmRight.position - _player.ShoulderRight.position);
             float angleR = Mathf.Atan2(directionR.y, directionR.x) * Mathf.Rad2Deg;
-            _player.IkArmRight.rotation = Quaternion.Euler(0, 0, angleR);
         }
     }
 
