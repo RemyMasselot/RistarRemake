@@ -278,7 +278,10 @@ public class Grab : MonoBehaviour
     {
         //Debug.Log("Star Handle Detected");
         ExitGrab();
-        NewStateFromGrab = _player.StatesFactory.Hang();
+        if (_player.Grab.ReadValue<float>() == 1)
+        {
+            NewStateFromGrab = _player.StatesFactory.Hang();
+        }
     }
 
     #endregion
