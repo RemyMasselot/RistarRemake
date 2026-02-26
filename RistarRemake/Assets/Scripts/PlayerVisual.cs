@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 using static ArmDetection;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerVisual : MonoBehaviour
 {
@@ -231,6 +232,43 @@ public class PlayerVisual : MonoBehaviour
         {
             arms.SetActive(false);
         }
+        if (playerStateMachine.CurrentState is PlayerHeadbuttState)
+        {
+            Vector2 aim = playerStateMachine.AimDir;
+            if (aim.sqrMagnitude > Mathf.Epsilon)
+            {
+                float angle = Mathf.Atan2(aim.y, aim.x) * Mathf.Rad2Deg;
+                float angleOriginal = angle;
+
+                if (angleOriginal == angle)
+                {
+                    if (playerStateMachine.ArmDetection.ObjectGrabed != (int)ObjectGrabedIs.Floor)
+                    {
+                        if (aim.x >= 0)
+                        {
+                            angle -= 90;
+                        }
+                        else if (aim.x <= 0)
+                        {
+                            angle -= 90;
+                        }
+                    }
+                    else
+                    {
+                        if (aim.x <= 0)
+                        {
+                            angle += 180;
+                        }
+                    }
+                }
+
+                playerStateMachine.Shoulders.rotation = Quaternion.Euler(0f, 0f, angle);
+            }
+        }
+        else
+        {
+            playerStateMachine.Shoulders.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }   
     }
 
     private void HandsRotation()
