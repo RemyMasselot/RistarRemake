@@ -1412,11 +1412,6 @@ Transform:
   - {fileID: 579695291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &784454731 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4415232480259466508, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-  m_PrefabInstance: {fileID: 4924099577031079842}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &786681221 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7069899007089779016, guid: 33c7e0e868d4f7c47bb9fdc948849d8e, type: 3}
@@ -4766,10 +4761,6 @@ PrefabInstance:
       propertyPath: Layer.m_Bits
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
-      propertyPath: Shoulders
-      value: 
-      objectReference: {fileID: 784454731}
     - target: {fileID: 5971321630394888149, guid: f5b6bf4b5cbb16f47952e3e64aa11b77, type: 3}
       propertyPath: MaxHoldGrabTime
       value: 5
