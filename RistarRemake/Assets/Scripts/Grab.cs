@@ -32,7 +32,7 @@ public class Grab : MonoBehaviour
         isHoldGrabTimerRunning = false;
         canStartHoldGrabTimer = true;
         _player.ElementGrabed = null;
-        Debug.Log("Grab Initialisation");
+        //Debug.Log("Grab Initialisation");
 
         DirectionCorrection();
 

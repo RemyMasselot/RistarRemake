@@ -19,7 +19,7 @@ public class PlayerHangState : PlayerBaseState
 
     public override void EnterState()
     {
-        Debug.Log("ENTER HANG");
+        //Debug.Log("ENTER HANG");
 
         // CAMERA BEHAVIOR
         _player.CameraTargetOverride = _player.ArmDetection.SnapPosHand;
@@ -203,7 +203,7 @@ public class PlayerHangState : PlayerBaseState
                 {
                     meteorStrikeDirection = new Vector2(_player.MoveH.ReadValue<float>(), _player.MoveV.ReadValue<float>()).normalized * _player.StarHandleCurrentRayon;
                     meteorStrikeStartPoint = new Vector2(_player.StarHandleCentre.x + meteorStrikeDirection.x, _player.StarHandleCentre.y + meteorStrikeDirection.y);
-                    Debug.Log("Meteor Strike Direction : " + meteorStrikeDirection);
+                    //Debug.Log("Meteor Strike Direction : " + meteorStrikeDirection);
                     if (meteorStrikeDirection == Vector2.zero)
                     {
                         SwitchState(_factory.MeteorStrike());
@@ -213,7 +213,7 @@ public class PlayerHangState : PlayerBaseState
                 {
                     outHandleDirection = new Vector2(_player.MoveH.ReadValue<float>(), _player.MoveV.ReadValue<float>()).normalized * _player.StarHandleCurrentRayon;
                     outHandleStartPoint = new Vector2(_player.StarHandleCentre.x + outHandleDirection.x, _player.StarHandleCentre.y + outHandleDirection.y);
-                    Debug.Log("Meteor Strike Direction : " + outHandleDirection);
+                    //Debug.Log("Meteor Strike Direction : " + outHandleDirection);
                     if (outHandleDirection == Vector2.zero)
                     {
                         if (_player.transform.position.y <= _player.StarHandleCentre.y)

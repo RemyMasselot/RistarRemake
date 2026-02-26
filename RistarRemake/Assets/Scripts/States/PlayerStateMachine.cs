@@ -435,12 +435,15 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void GrabBufferVerification()
     {
-        if (ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Nothing
-            && GrabBufferCounter <= GrabBufferTime
-            && Grab.ReadValue<float>() > 0)
+        if (PreviousState is not PlayerHangState)
         {
-            StartGrab();
-            Debug.Log("GRAB BUFFER");
+            if (ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.Nothing
+                && GrabBufferCounter <= GrabBufferTime
+                && Grab.ReadValue<float>() > 0)
+            {
+                StartGrab();
+                Debug.Log("GRAB BUFFER");
+            }
         }
     }
 
