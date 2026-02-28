@@ -135,7 +135,7 @@ public class PlayerHeadbuttState : PlayerBaseState
             if (_player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.LadderVertical
                 || _player.ArmDetection.ObjectGrabed == (int)ObjectGrabedIs.LadderHorizontal)
             {
-                Debug.Log("LADDER DETECTED AFTER HEADBUTT");
+                //Debug.Log("LADDER DETECTED AFTER HEADBUTT");
                 if (_player.IsLadder != (int)LadderIs.Nothing)
                 {
                     SwitchState(_factory.WallIdle());

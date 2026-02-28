@@ -1,7 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 using static ArmDetection;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerVisual : MonoBehaviour
 {

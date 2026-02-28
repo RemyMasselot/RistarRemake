@@ -234,14 +234,13 @@ public class PlayerStateMachine : MonoBehaviour
     {
         IsLadder = (int)LadderIs.Nothing;
 
-        // Cr�er une box detection a gauche, qui renvoie true false
-        // Pareil a droite
-        // Pareil au dessus du joueur
-        // Si �a renvoie true alors le ladder prend la valeur correspondante
+        // Changer la maéthode de détection pour reconnaitre le type de ladder sans bugs
+        // Actuellement la taille des boxes empeche de reconnaitre une vertical ladder quand le perso est en dessous,
+        // Si j'augmente la taille, ça créer des bugs, au lieu de reconnaitre celle de droite il reconnnait celle de gauche
 
         // Param�tres de la box (ajustez les multiplicateurs selon vos besoins)
-        float boxWidth = PlayerCollider.bounds.size.x * 0.6f;
-        float boxHeight = PlayerCollider.bounds.size.y * 0.6f;
+        float boxWidth = PlayerCollider.bounds.size.x * 0.7f;
+        float boxHeight = PlayerCollider.bounds.size.y * 0.7f;
         float sideOffset = PlayerCollider.bounds.extents.x + 0.12f; // distance horizontale pour left/right
         float upOffset = PlayerCollider.bounds.extents.y + 0.12f;   // distance verticale pour top
 
@@ -290,7 +289,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             IsLadder = (int)LadderIs.Horizontal;
             ColliderLadder = colliderUp;
-
+            Debug.Log("LADDER HORIZONTAL");
 
             if (CurrentState is PlayerJumpState
                 || CurrentState is PlayerFallState)
